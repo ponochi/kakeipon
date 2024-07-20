@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="jp"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="ユーザ一覧"></title>
+</head>
+<body>
+<h3>ユーザ一覧</h3>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ニックネーム</th>
+            <th>ロール</th>
+        </tr>
+    </thead>
+    <tbody th:each="user: ${users}">
+        <tr>
+            <th>
+                <a th:href="@{/user/userDetail/__${user.userId}__}"
+                   th:text="${user.userId}"></a>
+            </th>
+            <td><span th:text="${user.nickName}"></span></td>
+            <td><span th:text="${user.roleName}"></span></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
