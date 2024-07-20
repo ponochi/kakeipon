@@ -2,17 +2,16 @@ package org.panda.systems.kakeipon.domain.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name="usr")
+@Table(name = "usr")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique=true)
+    @Column(unique = true)
     private Long userId;
 
     @NotNull

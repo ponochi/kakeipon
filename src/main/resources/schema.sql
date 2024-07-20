@@ -1,4 +1,4 @@
-drop table if exists PUBLIC.USR cascade ;
+drop table if exists PUBLIC.USR cascade;
 
 create table if not exists PUBLIC.USR
 (
@@ -15,5 +15,5 @@ create table if not exists PUBLIC.USR
     ROLE_NAME    VARCHAR(255) not null,
     ENTRY_DATE   TIMESTAMP    not null,
     UPDATE_DATE  TIMESTAMP
-) ;
+);
 
