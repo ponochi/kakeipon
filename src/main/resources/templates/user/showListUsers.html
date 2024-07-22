@@ -19,7 +19,7 @@
     <tbody th:each="user: ${users}">
     <tr>
         <th>
-            <a th:href="@{/user/userDetail/__${user.userId}__}"
+            <a th:href="@{/user/showUserDetail/__${user.userId}__}"
                th:text="${user.userId}"></a>
         </th>
         <td><span th:text="${user.nickName}"></span></td>

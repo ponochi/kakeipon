@@ -5,9 +5,7 @@ import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,24 +14,40 @@ import java.util.List;
 public class UsersController {
     @Autowired
     UserService userService;
+    private Long userId;
+    private Model model;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping("")
     String listUsers(Model model) {
         List<User> users = userService.findAll();
         model.addAttribute("users", users);
         System.out.println("Debug-1!!!");
-        return "user/listUsers";
+        return "user/showListUsers";
     }
 
-    @RequestMapping(path = "userDetail/{userId}", method = RequestMethod.GET)
+    @RequestMapping(path = "/showUserDetail/{userId}", method = RequestMethod.GET)
     public String listUsers(@PathVariable(value = "userId") Long userId, Model model) {
         User user = userService.findByUserId(userId);
         System.out.println("Debug-2!!!");
         if (user != null) {
             model.addAttribute("user", user);
-            return "user/userDetail";
+            return "user/showUserDetail";
         } else {
-            return "user/listUsers";
+            return "user/showListUsers";
+        }
+    }
+
+    @RequestMapping(path = "/editUserDetail/{userId}", method = RequestMethod.GET)
+    public String editUser(@PathVariable(value = "userId") Long userId, Model model) {
+        this.userId = userId;
+        this.model = model;
+        System.out.println("Debug-3!!!");
+        User user = userService.findByUserId(userId);
+        if (user != null) {
+            model.addAttribute("user", user);
+            return "user/editUserDetail";
+        } else {
+            return "user/showUserDetail";
         }
     }
 }

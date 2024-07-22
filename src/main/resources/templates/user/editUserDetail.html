@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="jp"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="ユーザ編集"></title>
+
+    <script>
+        function setBirthdayYear() {
+            const year = new Date(
+                document.getElementById("hdnBirthday").value).getFullYear();
+            const yearSelect = document.getElementById("yearSelect");
+            const yearOpts = yearSelect.options;
+            Array.from(yearOpts).forEach(option => {
+                if (Number(option.value) === year) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        function setBirthdayMonth() {
+            let month = new Date(
+                document.getElementById("hdnBirthday").value).getMonth();
+            month = Number(month) + 1;
+            const monthSelect = document.getElementById("monthSelect");
+            const monthOpts = monthSelect.options;
+            Array.from(monthOpts).forEach(option => {
+                if (Number(option.value) === month) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        function setBirthdayDate() {
+            let date = new Date(
+                document.getElementById("hdnBirthday").value).getDate();
+            const dateSelect = document.getElementById("dateSelect");
+            const dateOpts = dateSelect.options;
+            Array.from(dateOpts).forEach(option => {
+                if (Number(option.value) === date) {
+                    option.selected = true;
+                }
+            });
+        }
+
+        function  resetCanProcDate() {
+            const canProcDate = document.getElementById("hdnCanProcDate");
+            canProcDate.value = true;
+        }
+
+        function populateYears() {
+            const yearSelect = document.getElementById("yearSelect");
+            if (yearSelect) {
+                const date = new Date();
+                const year = date.getFullYear();
+
+                for (let i = 0; i <= 99; i++) {
+                    let option = document.createElement("option");
+                    option.textContent = ((year - 99) + i).toString();
+                    option.value = ((year - 99) + i).toString();
+                    yearSelect.appendChild(option);
+                }
+            } else {
+                // ToDo: Implements error process
+            }
+        }
+
+        function populateDays() {
+            // Get 1st. day of next month.
+            let newYear = document.getElementById("yearSelect").value;
+            let newMonth = document.getElementById("monthSelect").value;
+            let tempYYYYMD = `${newYear}-${newMonth}-1`;
+            let dt1 = new Date();
+            dt1.setFullYear(Number(newYear));
+            dt1.setMonth(newMonth);
+            dt1.setDate(1);
+
+            // Get last day of current month.
+            let dt2 = new Date();
+            dt2.setFullYear(dt1.getFullYear());
+            dt2.setMonth(dt1.getMonth());
+            dt2.setDate(dt1.getDate() - 1);
+            let lastDate = dt2.getDate();
+
+            // Hidden to after of last day.
+            let dateSelect = document.getElementById("dateSelect");
+            let dateOpts = dateSelect.options;
+            Array.from(dateOpts).forEach(option => {
+                if (Number(dateSelect.value) > lastDate) {
+                    if (Number(option.value) === lastDate) {
+                        option.selected = true;
+                    }
+                    dateSelect.value = lastDate;
+                }
+                option.hidden = false;
+                if (Number(option.value) > lastDate) {
+                    option.hidden = true;
+                }
+            });
+        }
+
+        function toBoolean(str) {
+            return str.toLowerCase() === "true";
+        }
+
+        window.addEventListener('load', () => {
+            resetCanProcDate();
+            setBirthdayYear();
+            setBirthdayMonth();
+            populateDays();
+            setBirthdayDate();
+        });
+        window.addEventListener('load', resetCanProcDate, false);
+        window.addEventListener('load', setBirthdayYear, false);
+        window.addEventListener('load', setBirthdayMonth, false);
+        window.addEventListener('load', populateDays, false);
+        window.addEventListener('load', setBirthdayDate, false);
+
+        let yearSelect = document.getElementById("year");
+        yearSelect.addEventListener('load', () => {
+            populateDays();
+            setBirthdayDate();
+        });
+        yearSelect.addEventListener('load', populateDays, false);
+        yearSelect.addEventListener('load', setBirthdayDate, false);
+
+        let monthSelect = document.getElementById("month");
+        monthSelect.addEventListener('load', () => {
+            populateDays();
+            setBirthdayDate();
+        });
+        monthSelect.addEventListener('load', populateDays, false);
+        monthSelect.addEventListener('load', setBirthdayDate, false);
+    </script>
+</head>
+<body>
+<h3>ユーザ編集</h3>
+<form>
+    <table>
+        <tbody>
+        <tr>
+            <th><label for="userId">ID</label></th>
+            <td id="userId" th:text="${user.userId}"></td>
+        </tr>
+        <tr>
+            <th><label for="nickName">ニックネーム</label></th>
+            <td><input type="text" id="nickName"
+                       name="nickName" th:value="${user.nickName}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="lastName">姓</label></th>
+            <td><input type="text" id="lastName"
+                       name="lastName" th:value="${user.lastName}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="firstName">名</label></th>
+            <td><input type="text" id="firstName"
+                       name="firstName" th:value="${user.firstName}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="password">パスワード</label></th>
+            <td><input type="text" id="password"
+                       name="password" th:value="${user.password}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="email">email</label></th>
+            <td><input type="text" id="email"
+                       name="email" th:value="${user.email}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="birthday">生年月日</label></th>
+            <td id="birthday">
+                <div>
+                    <span>
+                        <select id="yearSelect" name="yearSelect"></select>
+                        <label for="yearSelect">年</label>
+                        <script>
+                            populateYears();
+                        </script>
+                    </span>
+                    <span>
+                        <select id="monthSelect" name="monthSelect">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <label for="monthSelect">月</label>
+                    </span>
+                    <span>
+                        <select id="dateSelect" name="dateSelect" onmouseenter="populateDays()">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select>
+                        <label for="dateSelect">日</label>
+                    </span>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="phoneNumber">電話番号</label></th>
+            <td><input type="text" id="phoneNumber"
+                       name="phoneNumber" th:value="${user.phoneNumber}"/>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="roleName">ロール</label></th>
+            <td><input type="text" id="roleName"
+                       name="roleName" th:value="${user.roleName}"/>
+            </td>
+        </tr>
+        <tr>
+            <th>登録日</th>
+            <td th:text="${user.entryDate}"></td>
+        </tr>
+        <tr>
+            <th>変更日</th>
+            <td th:text="${user.updateDate}"></td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><button type="submit">登　録</button></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <input type="hidden" id="hdnBirthday" th:value="${user.birthday}"/>
+    <input type="hidden" id="hdnCanProcDate" th:value="true"/>
+</form>
+</body>
+</html>
