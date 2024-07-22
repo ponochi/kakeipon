@@ -5,134 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="ユーザ編集"></title>
-
-    <script>
-        function setBirthdayYear() {
-            const year = new Date(
-                document.getElementById("hdnBirthday").value).getFullYear();
-            const yearSelect = document.getElementById("yearSelect");
-            const yearOpts = yearSelect.options;
-            Array.from(yearOpts).forEach(option => {
-                if (Number(option.value) === year) {
-                    option.selected = true;
-                }
-            });
-        }
-
-        function setBirthdayMonth() {
-            let month = new Date(
-                document.getElementById("hdnBirthday").value).getMonth();
-            month = Number(month) + 1;
-            const monthSelect = document.getElementById("monthSelect");
-            const monthOpts = monthSelect.options;
-            Array.from(monthOpts).forEach(option => {
-                if (Number(option.value) === month) {
-                    option.selected = true;
-                }
-            });
-        }
-
-        function setBirthdayDate() {
-            let date = new Date(
-                document.getElementById("hdnBirthday").value).getDate();
-            const dateSelect = document.getElementById("dateSelect");
-            const dateOpts = dateSelect.options;
-            Array.from(dateOpts).forEach(option => {
-                if (Number(option.value) === date) {
-                    option.selected = true;
-                }
-            });
-        }
-
-        function resetCanProcDate() {
-            const canProcDate = document.getElementById("hdnCanProcDate");
-            canProcDate.value = true;
-        }
-
-        function populateYears() {
-            const yearSelect = document.getElementById("yearSelect");
-            if (yearSelect) {
-                const date = new Date();
-                const year = date.getFullYear();
-
-                for (let i = 0; i <= 99; i++) {
-                    let option = document.createElement("option");
-                    option.textContent = ((year - 99) + i).toString();
-                    option.value = ((year - 99) + i).toString();
-                    yearSelect.appendChild(option);
-                }
-            } else {
-                // ToDo: Implements error process
-            }
-        }
-
-        function populateDays() {
-            // Get 1st. day of next month.
-            let newYear = document.getElementById("yearSelect").value;
-            let newMonth = document.getElementById("monthSelect").value;
-            let tempYYYYMD = `${newYear}-${newMonth}-1`;
-            let dt1 = new Date();
-            dt1.setFullYear(Number(newYear));
-            dt1.setMonth(newMonth);
-            dt1.setDate(1);
-
-            // Get last day of current month.
-            let dt2 = new Date();
-            dt2.setFullYear(dt1.getFullYear());
-            dt2.setMonth(dt1.getMonth());
-            dt2.setDate(dt1.getDate() - 1);
-            let lastDate = dt2.getDate();
-
-            // Hidden to after of last day.
-            let dateSelect = document.getElementById("dateSelect");
-            let dateOpts = dateSelect.options;
-            Array.from(dateOpts).forEach(option => {
-                if (Number(dateSelect.value) > lastDate) {
-                    if (Number(option.value) === lastDate) {
-                        option.selected = true;
-                    }
-                    dateSelect.value = lastDate;
-                }
-                option.hidden = false;
-                if (Number(option.value) > lastDate) {
-                    option.hidden = true;
-                }
-            });
-        }
-
-        function toBoolean(str) {
-            return str.toLowerCase() === "true";
-        }
-
-        window.addEventListener('load', () => {
-            resetCanProcDate();
-            setBirthdayYear();
-            setBirthdayMonth();
-            populateDays();
-            setBirthdayDate();
-        });
-        window.addEventListener('load', resetCanProcDate, false);
-        window.addEventListener('load', setBirthdayYear, false);
-        window.addEventListener('load', setBirthdayMonth, false);
-        window.addEventListener('load', populateDays, false);
-        window.addEventListener('load', setBirthdayDate, false);
-
-        let yearSelect = document.getElementById("year");
-        yearSelect.addEventListener('load', () => {
-            populateDays();
-            setBirthdayDate();
-        });
-        yearSelect.addEventListener('load', populateDays, false);
-        yearSelect.addEventListener('load', setBirthdayDate, false);
-
-        let monthSelect = document.getElementById("month");
-        monthSelect.addEventListener('load', () => {
-            populateDays();
-            setBirthdayDate();
-        });
-        monthSelect.addEventListener('load', populateDays, false);
-        monthSelect.addEventListener('load', setBirthdayDate, false);
-    </script>
+    <script src="/js/populate.js"></script>
 </head>
 <body>
 <h3>ユーザ編集</h3>
@@ -140,13 +13,16 @@
     <table>
         <tbody>
         <tr>
-            <th><label for="userId">ID</label></th>
-            <td id="userId" th:text="${user.userId}"></td>
+            <th><label for="userId" aria-label="A number of unique user id">ID</label></th>
+            <td><input id="userId" name="userId"
+                       th:value="${user.userId}" readonly=""/>
+            </td>
         </tr>
         <tr>
             <th><label for="nickName">ニックネーム</label></th>
             <td><input id="nickName" name="nickName"
-                       th:value="${user.nickName}" type="text"/>
+                       th:value="${user.nickName}" type="text"
+                        autocomplete="username"/>
             </td>
         </tr>
         <tr>
@@ -170,12 +46,13 @@
         <tr>
             <th><label for="email">email</label></th>
             <td><input id="email" name="email"
-                       th:value="${user.email}" type="text"/>
+                       th:value="${user.email}" type="text"
+                        autocomplete="email"/>
             </td>
         </tr>
         <tr>
-            <th><label for="birthday">生年月日</label></th>
-            <td id="birthday">
+            <th><label for="yearSelect" aria-label="Year and Month, Date of birthday fields">生年月日</label></th>
+            <td>
                 <div>
                     <span>
                         <select id="yearSelect" name="yearSelect"
@@ -275,5 +152,8 @@
     <input id="hdnBirthday" th:value="${user.birthday}" type="hidden"/>
     <input id="hdnCanProcDate" th:value="true" type="hidden"/>
 </form>
+
+<script src="/js/common.js"></script>
+<script src="/js/editUser.js"></script>
 </body>
 </html>
