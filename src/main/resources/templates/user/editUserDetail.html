@@ -178,14 +178,16 @@
             <td id="birthday">
                 <div>
                     <span>
-                        <select id="yearSelect" name="yearSelect"></select>
+                        <select id="yearSelect" name="yearSelect"
+                                onmouseleave="populateDays()"></select>
                         <label for="yearSelect">年</label>
                         <script>
                             populateYears();
                         </script>
                     </span>
                     <span>
-                        <select id="monthSelect" name="monthSelect">
+                        <select id="monthSelect" name="monthSelect"
+                                onmouseleave="populateDays()">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -202,7 +204,8 @@
                         <label for="monthSelect">月</label>
                     </span>
                     <span>
-                        <select id="dateSelect" name="dateSelect" onmouseenter="populateDays()">
+                        <select id="dateSelect" name="dateSelect"
+                                onmouseenter="populateDays()">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
