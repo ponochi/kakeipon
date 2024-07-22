@@ -44,7 +44,7 @@
             });
         }
 
-        function  resetCanProcDate() {
+        function resetCanProcDate() {
             const canProcDate = document.getElementById("hdnCanProcDate");
             canProcDate.value = true;
         }
@@ -145,32 +145,32 @@
         </tr>
         <tr>
             <th><label for="nickName">ニックネーム</label></th>
-            <td><input type="text" id="nickName"
-                       name="nickName" th:value="${user.nickName}"/>
+            <td><input id="nickName" name="nickName"
+                       th:value="${user.nickName}" type="text"/>
             </td>
         </tr>
         <tr>
             <th><label for="lastName">姓</label></th>
-            <td><input type="text" id="lastName"
-                       name="lastName" th:value="${user.lastName}"/>
+            <td><input id="lastName" name="lastName"
+                       th:value="${user.lastName}" type="text"/>
             </td>
         </tr>
         <tr>
             <th><label for="firstName">名</label></th>
-            <td><input type="text" id="firstName"
-                       name="firstName" th:value="${user.firstName}"/>
+            <td><input id="firstName" name="firstName"
+                       th:value="${user.firstName}" type="text"/>
             </td>
         </tr>
         <tr>
             <th><label for="password">パスワード</label></th>
-            <td><input type="text" id="password"
-                       name="password" th:value="${user.password}"/>
+            <td><input id="password" name="password"
+                       th:value="${user.password}" type="text"/>
             </td>
         </tr>
         <tr>
             <th><label for="email">email</label></th>
-            <td><input type="text" id="email"
-                       name="email" th:value="${user.email}"/>
+            <td><input id="email" name="email"
+                       th:value="${user.email}" type="text"/>
             </td>
         </tr>
         <tr>
@@ -242,14 +242,14 @@
         </tr>
         <tr>
             <th><label for="phoneNumber">電話番号</label></th>
-            <td><input type="text" id="phoneNumber"
-                       name="phoneNumber" th:value="${user.phoneNumber}"/>
+            <td><input id="phoneNumber" name="phoneNumber"
+                       th:value="${user.phoneNumber}" type="text"/>
             </td>
         </tr>
         <tr>
             <th><label for="roleName">ロール</label></th>
-            <td><input type="text" id="roleName"
-                       name="roleName" th:value="${user.roleName}"/>
+            <td><input id="roleName" name="roleName"
+                       th:value="${user.roleName}" type="text"/>
             </td>
         </tr>
         <tr>
@@ -262,13 +262,15 @@
         </tr>
         <tr>
             <th></th>
-            <td><button type="submit">登　録</button></td>
+            <td>
+                <button type="submit">登　録</button>
+            </td>
         </tr>
         </tbody>
     </table>
 
-    <input type="hidden" id="hdnBirthday" th:value="${user.birthday}"/>
-    <input type="hidden" id="hdnCanProcDate" th:value="true"/>
+    <input id="hdnBirthday" th:value="${user.birthday}" type="hidden"/>
+    <input id="hdnCanProcDate" th:value="true" type="hidden"/>
 </form>
 </body>
 </html>
