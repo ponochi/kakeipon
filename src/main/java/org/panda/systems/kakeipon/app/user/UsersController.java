@@ -17,8 +17,14 @@ import java.util.List;
 public class UsersController {
     @Autowired
     UserService userService;
+
     private Long userId;
     private Model model;
+
+    // Default constructor
+    public UsersController() {
+        System.out.println("Debug-0!!!");
+    }
 
     @GetMapping("")
     String listUsers(Model model) {
