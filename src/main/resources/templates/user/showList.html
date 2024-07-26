@@ -14,16 +14,21 @@
     <th>ID</th>
     <th>ニックネーム</th>
     <th>ロール</th>
+    <th>操作</th>
   </tr>
   </thead>
   <tbody th:each="user: ${users}">
   <tr>
     <th>
-      <a th:href="@{/user/__${user.userId}__/show}"
-         th:text="${user.userId}"></a>
+      <span th:text="${user.userId}"></span>
     </th>
     <td><span th:text="${user.nickName}"></span></td>
     <td><span th:text="${user.roleName}"></span></td>
+    <td>
+      <form th:action="@{/user/__${user.userId}__/show}" method="get">
+        <button>編　集</button>
+      </form>
+    </td>
   </tr>
   </tbody>
 </table>

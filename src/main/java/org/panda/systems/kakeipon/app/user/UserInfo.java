@@ -1,44 +1,47 @@
 package org.panda.systems.kakeipon.app.user;
 
-import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 import org.panda.systems.kakeipon.domain.model.user.RoleName;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class UserForm implements Serializable {
+public class UserInfo implements Serializable {
+  @Serial
   private static final long serialVersionUID = 1L;
 
-  @NotNull( message = "ユーザIDは必須です" )
+  // Default constructor
+  public UserInfo( ) {
+  }
+
   private Long userId;
 
-  @NotNull( message = "ニックネームは必須です" )
+  @NotBlank( message = "ニックネームは必須です" )
   private String nickName;
 
   private String lastName;
 
   private String firstName;
 
-  @NotNull( message = "パスワードは必須です" )
+  @NotBlank( message = "パスワードは必須です" )
   private String password;
 
-  @NotNull( message = "メールアドレスは必須です" )
+  @NotBlank( message = "メールアドレスは必須です" )
   private String email;
 
   private String yearSelect;
   private String monthSelect;
   private String dateSelect;
-  @NotNull( message = "生年月日は必須です" )
   private String birthdayString;
   private LocalDateTime birthday;
 
-  @NotNull( message = "電話番号は必須です" )
+  @NotBlank( message = "電話番号は必須です" )
   private String phoneNumber;
 
-  @NotNull( message = "権限は必須です" )
   private RoleName roleName;
 
-  @NotNull( message = "登録日時は必須です" )
+//  @NotBlank( message = "登録日時は必須です" )
   private LocalDateTime entryDate;
 
   private LocalDateTime updateDate;
@@ -140,6 +143,9 @@ public class UserForm implements Serializable {
   }
 
   public RoleName getRoleName( ) {
+    if ( this.roleName == null ) {
+      return RoleName.USER;
+    }
     return this.roleName;
   }
 

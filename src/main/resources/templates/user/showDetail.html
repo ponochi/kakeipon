@@ -8,7 +8,7 @@
 </head>
 <body>
 <h3>ユーザ詳細</h3>
-<form id="userId"
+<form id="userInfo"
       method="get"
       th:action="@{/user/__${user.userId}__/edit}">
   <table>
@@ -60,14 +60,17 @@
     <tr>
       <th></th>
       <td>
-        <button form="userId"
-                type="submit"
-                value="${user}">編　集
-        </button>
       </td>
     </tr>
     </tbody>
   </table>
 </form>
+<form id="list" th:object="${userInfo}" th:action="@{'/'}" method="get">
+</form>
+<div>
+  <button form="list"> ユーザ・一覧画面</button>
+  <button form="userInfo" value="${user}">編　集</button>
+</div>
+
 </body>
 </html>

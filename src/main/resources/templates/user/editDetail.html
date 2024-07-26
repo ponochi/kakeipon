@@ -10,50 +10,66 @@
 </head>
 <body>
 <h3>ユーザ編集</h3>
-<form th:object="${userForm}"
-      th:action="@{'/user/__${user.userId}__/commit'}" method="post">
+<form id="confirm" th:object="${userInfo}"
+      th:action="@{/user/__${user.userId}__/confirm}" method="post">
   <table>
     <tbody>
     <tr>
       <th><label for="userId" aria-label="A number of unique user id">ID</label></th>
-      <td><input id="userId" name="userId"
-                 th:value="${user.userId}" readonly=""/>
+      <td></td>
+      <td>
+        <input id="userId" name="userId"
+               th:value="${user.userId}" readonly=""/>
       </td>
     </tr>
     <tr>
       <th><label for="nickName">ニックネーム</label></th>
-      <td><input id="nickName" name="nickName"
-                 th:value="${user.nickName}" type="text"
-                 autocomplete="username"/>
+      <td class="require">*</td>
+      <td>
+        <input id="nickName" name="nickName"
+               th:value="${user.nickName}" type="text"
+               autocomplete="username"/>
+        <span th:if="${#fields.hasErrors('nickName')}"
+              th:errors="*{nickName}" style="color:red">ニックネームは必須です。</span>
       </td>
     </tr>
     <tr>
       <th><label for="lastName">姓</label></th>
+      <td></td>
       <td><input id="lastName" name="lastName"
                  th:value="${user.lastName}" type="text"/>
       </td>
     </tr>
     <tr>
       <th><label for="firstName">名</label></th>
+      <td></td>
       <td><input id="firstName" name="firstName"
                  th:value="${user.firstName}" type="text"/>
       </td>
     </tr>
     <tr>
       <th><label for="password">パスワード</label></th>
-      <td><input id="password" name="password"
-                 th:value="${user.password}" type="text"/>
+      <td class="require">*</td>
+      <td>
+        <input id="password" name="password"
+               th:value="${user.password}" type="text"/>
+        <span th:if="${#fields.hasErrors('password')}"
+              th:errors="*{password}" style="color:red">パスワードは必須です。</span>
       </td>
     </tr>
     <tr>
       <th><label for="email">email</label></th>
-      <td><input id="email" name="email"
-                 th:value="${user.email}" type="text"
-                 autocomplete="email"/>
+      <td class="require">*</td>
+      <td>
+        <input id="email" name="email"
+               th:value="${user.email}" type="text" autocomplete="email"/>
+        <span th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}" style="color:red">emailは必須です。</span>
       </td>
     </tr>
     <tr>
       <th><label for="yearSelect" aria-label="Year and Month, Date of birthday fields">生年月日</label></th>
+      <td>*</td>
       <td>
         <div id="yyyymmdd">
           <span>
@@ -62,15 +78,15 @@
           </span>
           <span>
             <select id="monthSelect" name="monthSelect" onchange="setToBirthdayField()">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
               <option value="10">10</option>
               <option value="11">11</option>
               <option value="12">12</option>
@@ -79,15 +95,15 @@
           </span>
           <span>
             <select id="dateSelect" name="dateSelect" onchange="setToBirthdayField()">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
+              <option value="01">01</option>
+              <option value="02">02</option>
+              <option value="03">03</option>
+              <option value="04">04</option>
+              <option value="05">05</option>
+              <option value="06">06</option>
+              <option value="07">07</option>
+              <option value="08">08</option>
+              <option value="09">09</option>
               <option value="10">10</option>
               <option value="11">11</option>
               <option value="12">12</option>
@@ -116,25 +132,32 @@
           <span>
             <label for="birthdayString" aria-label="A date of birthday"></label>
             <input id="birthdayString" name="birthdayString"
-                   th:value="${user.birthday}" type="hidden"/>
+                   th:value="${user.birthday}"/>
           </span>
         </div>
       </td>
     </tr>
     <tr>
       <th><label for="phoneNumber">電話番号</label></th>
-      <td><input id="phoneNumber" name="phoneNumber"
-                 th:value="${user.phoneNumber}" type="text"/>
+      <td class="require">*</td>
+      <td>
+        <input id="phoneNumber" name="phoneNumber"
+               th:value="${user.phoneNumber}" type="text"/>
+        <span th:if="${#fields.hasErrors('phoneNumber')}"
+              th:errors="*{phoneNumber}" style="color:red">電話番号は必須です。</span>
       </td>
     </tr>
     <tr>
       <th><label for="roleName">ロール</label></th>
-      <td><input id="roleName" name="roleName"
-                 th:value="${user.roleName}" type="text"/>
+      <td class="require">*</td>
+      <td>
+        <input id="roleName" name="roleName"
+               th:value="${user.roleName}" type="text"/>
       </td>
     </tr>
     <tr>
       <th>登録日</th>
+      <td></td>
       <td>
         <div>
           <label for="entryDate" aria-label="A date of entry"></label>
@@ -145,6 +168,7 @@
     </tr>
     <tr>
       <th>変更日</th>
+      <td></td>
       <td>
         <div>
           <label for="updateDate" aria-label="A date of update"></label>
@@ -155,8 +179,8 @@
     </tr>
     <tr>
       <th></th>
+      <td></td>
       <td>
-        <button type="submit">登　録</button>
       </td>
     </tr>
     </tbody>
@@ -166,5 +190,12 @@
   <script>setToBirthdayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>
+<form id="list" th:object="${userInfo}" th:action="@{'/'}" method="get">
+</form>
+<div>
+    <button form="list"> ユーザ・一覧画面</button>
+  <button form="confirm">登　録</button>
+</div>
+
 </body>
 </html>

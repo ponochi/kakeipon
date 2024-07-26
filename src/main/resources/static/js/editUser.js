@@ -7,11 +7,11 @@ function setToBirthdayField() {
     let yearSelect = document.getElementById("yearSelect");
     let monthSelect = document.getElementById("monthSelect");
     let dateSelect = document.getElementById("dateSelect");
-//    let birthdayString = document.getElementById("birthdayString");
     let dt = new Date();
     dt.setFullYear(Number(yearSelect.value));
     dt.setMonth(Number(monthSelect.value));
     dt.setDate(Number(dateSelect.value));
+    let newDate = dateSelect.value;
     dt.setDate(1)
 
     // Calculate last date of current month.
@@ -29,15 +29,12 @@ function setToBirthdayField() {
     monthSelect = document.getElementById("monthSelect");
     dateSelect = document.getElementById("dateSelect");
     let birthdayString = document.getElementById("birthdayString");
-    if (monthSelect.value.length === 1) {
-        mon = '0' + monthSelect.value;
-    } else {
-        mon = monthSelect.value;
-    }
+    mon = monthSelect.value;
     birthdayString.value = yearSelect.value
         + '-' + mon
-        + '-' + dateSelect.value
+        + '-' + newDate
         + 'T00:00';
+    dateSelect.value = newDate;
 }
 
 //=========================================================================

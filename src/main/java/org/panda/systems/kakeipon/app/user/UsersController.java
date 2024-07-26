@@ -1,11 +1,8 @@
 package org.panda.systems.kakeipon.app.user;
 
-import jakarta.validation.Valid;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.convert.Jsr310Converters;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 
 @Controller
@@ -24,11 +20,12 @@ public class UsersController {
   UserService userService;
 
   @ModelAttribute
-  UserForm setUpForm( ) {
-    return new UserForm( );
+  UserInfo setUpForm( ) {
+    return new UserInfo( );
   }
 
-  @GetMapping( "user" )
+
+  @GetMapping( "" )
   String list( Model model ) {
     List<User> users = userService.findAll( );
     model.addAttribute( "users", users );
@@ -42,43 +39,42 @@ public class UsersController {
     return "user/showDetail";
   }
 
-  @GetMapping( "user/create" )
-  String create( Model model ) {
-    return "user/create";
-  }
+//  // ToDo: Implements create new user function.
+//  @GetMapping( "user/create" )
+//  String create( Model model ) {
+//    return "user/create";
+//  }
 
-  @PostMapping( "user/create" )
-  String create( @Valid UserForm form,
-                 BindingResult result, Model model ) {
-    if ( result.hasErrors( ) ) {
-      return create( model );
-    }
-    User user = new User( );
-    user.setUserId( form.getUserId( ) );
-    user.setNickName( form.getNickName( ) );
-    user.setPassword( form.getPassword( ) );
-    user.setPhoneNumber( form.getPhoneNumber( ) );
-    user.setRoleName( form.getRoleName( ) );
-    user.setEntryDate( form.getEntryDate( ) );
-    userService.save( user );
-    return "redirect:/user";
-  }
+//  // ToDo: Implements create new user function.
+//  @PostMapping( "user/create" )
+//  String create( @Valid UserForm form,
+//                 BindingResult result, Model model ) {
+//    if ( result.hasErrors( ) ) {
+//      return create( model );
+//    }
+//    User user = new User( );
+//    user.setUserId( form.getUserId( ) );
+//    user.setNickName( form.getNickName( ) );
+//    user.setPassword( form.getPassword( ) );
+//    user.setPhoneNumber( form.getPhoneNumber( ) );
+//    user.setRoleName( form.getRoleName( ) );
+//    user.setEntryDate( form.getEntryDate( ) );
+//    userService.save( user );
+//    return "redirect:/user";
+//  }
 
   @GetMapping( "user/{id}/edit" )
-  String edit( @PathVariable Long id, Model model ) {
+  String editForm( @PathVariable Long id, Model model ) {
     User user = userService.findByUserId( id );
     model.addAttribute( "user", user );
     return "user/editDetail";
   }
 
-  @PostMapping( "user/{id}/commit" )
-  String edit( @Validated UserForm form,
-               @PathVariable Long id,
-               BindingResult result, Model model ) {
-    if ( result.hasErrors( ) ) {
-      System.out.println( "commit: " );
-      System.out.println( result );
-      return edit( id, model );
+  @PostMapping( "user/{id}/confirm" )
+  String confirm( @Validated UserInfo form, BindingResult bindingResult,
+               @PathVariable Long id, Model model ) {
+    if ( bindingResult.hasErrors( ) ) {
+      return editForm( id, model );
     }
     User user = userService.findByUserId( id );
     user.setUserId( form.getUserId( ) );

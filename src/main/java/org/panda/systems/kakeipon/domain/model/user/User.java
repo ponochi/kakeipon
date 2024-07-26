@@ -1,7 +1,7 @@
 package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
@@ -13,30 +13,28 @@ public class User {
   @Column( unique = true )
   private Long userId;
 
-  @NotNull
+  @NotBlank
   private String nickName;
 
   private String firstName;
 
   private String lastName;
 
-  @NotNull
+  @NotBlank
   private String password;
 
-  @NotNull
+  @NotBlank
   private String email;
 
-  @NotNull
   private LocalDateTime birthday;
 
-  @NotNull
+  @NotBlank
   private String phoneNumber;
 
   @Enumerated( EnumType.STRING )
-  @NotNull
   private RoleName roleName;
 
-  @NotNull
+//  @NotBlank
   private LocalDateTime entryDate;
 
   private LocalDateTime updateDate;
