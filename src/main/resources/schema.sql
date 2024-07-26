@@ -10,7 +10,7 @@ create table if not exists PUBLIC.USR
     FIRST_NAME   VARCHAR(255),
     PASSWORD     VARCHAR(255) not null,
     EMAIL        VARCHAR(255) not null,
-    BIRTHDAY     TIMESTAMP(6) not null,
+    BIRTHDAY     TIMESTAMP    not null,
     PHONE_NUMBER VARCHAR(255) not null,
     ROLE_NAME    VARCHAR(255) not null,
     ENTRY_DATE   TIMESTAMP    not null,

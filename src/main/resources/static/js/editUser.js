@@ -1,91 +1,113 @@
-//=========================================================
-// Initial settings at year birthday of select box.
+//=========================================================================
+// Set to birthday field.
 // @param void
 // @return void
-//=========================================================
-function setBirthdayYear() {
-    const year = new Date(
-        document.getElementById("hdnBirthday").value)
-        .getFullYear();
-    const yearSelect = document.getElementById("yearSelect");
-    const yearOpts = yearSelect.options;
-    Array.from(yearOpts).forEach(option => {
-        if (Number(option.value) === year) {
+//=========================================================================
+function setToBirthdayField() {
+    let yearSelect = document.getElementById("yearSelect");
+    let monthSelect = document.getElementById("monthSelect");
+    let dateSelect = document.getElementById("dateSelect");
+    let birthday = document.getElementById("birthday");
+    birthday
+        = new Date(document.getElementById("birthday").value)
+    let dt = new Date();
+    dt.setFullYear(Number(yearSelect.value));
+    dt.setMonth(Number(monthSelect.value));
+    dt.setDate(1)
+
+    // Calculate last date of current month.
+    if (dt.getMonth() === 0) {
+        dt.setFullYear(dt.getFullYear() + 1);
+    } else {
+        dt.setFullYear(dt.getFullYear());
+    }
+    alert("dt: " + dt);
+    dt.setDate(dt.getDate() - 1);
+    alert("dt: " + dt);
+    let lastDate = dt.getDate();
+    alert("lastDate: " + lastDate);
+    dateSelect = document.getElementById("dateSelect");
+    Array.from(dateSelect.options).forEach(option => {
+        if (Number(option.value) === lastDate) {
             option.selected = true;
         }
+        option.disabled = Number(option.value) > lastDate;
     });
+
+    yearSelect = document.getElementById("yearSelect");
+    monthSelect = document.getElementById("monthSelect");
+    dateSelect = document.getElementById("dateSelect");
+    birthday = document.getElementById("birthday");
+    birthday.value = yearSelect.value
+        + '-' + monthSelect.value
+        + '-' + dateSelect.value
+        + 'T00:00';
 }
 
-//=========================================================
-// Initial settings at month birthday of select box.
+//=========================================================================
+// Initial settings at year, month, date birthday of select box.
 // @param void
 // @return void
-//=========================================================
-function setBirthdayMonth() {
-    let month = new Date(
-        document.getElementById("hdnBirthday").value).getMonth();
-    month = Number(month) + 1;
-    const monthSelect = document.getElementById("monthSelect");
-    const monthOpts = monthSelect.options;
-    Array.from(monthOpts).forEach(option => {
+//=========================================================================
+function setToYYYYMMDDField() {
+    let birthday
+        = document.getElementById("birthday");
+    // birthday.addEventListener('loadeddata', setToYYYYMMDDField, false);
+    //=========================================================================
+    // Processing year
+    //=========================================================================
+    let yearSelect
+            = document.getElementById("yearSelect"),
+        currentYear = new Date().getFullYear(),
+        year = new Date(birthday.value).getFullYear();
+    for (let i = 99; i >= 0; i--) {
+        let option = document.createElement("option");
+        let procYear = currentYear - i;
+        option.textContent = procYear.toString();
+        option.value = procYear.toString();
+        yearSelect.appendChild(option);
+        if (procYear === year) {
+            option.selected = true;
+        }
+    }
+
+    //=========================================================================
+    // Processing month
+    //=========================================================================
+    let monthSelect = document.getElementById("monthSelect");
+    let month = new Date(birthday.value).getMonth() + 1;
+    Array.from(monthSelect.options).forEach(option => {
         if (Number(option.value) === month) {
             option.selected = true;
         }
     });
-}
 
-//=========================================================
-// Initial settings at date birthday of select box.
-// @param void
-// @return void
-//=========================================================
-function setBirthdayDate() {
-    let date = new Date(
-        document.getElementById("hdnBirthday").value).getDate();
-    const dateSelect = document.getElementById("dateSelect");
-    const dateOpts = dateSelect.options;
-    Array.from(dateOpts).forEach(option => {
-        if (Number(option.value) === date) {
+    //=========================================================================
+    // Processing date
+    //=========================================================================
+    let dateSelect
+        = document.getElementById("dateSelect");
+    birthday
+        = new Date(document.getElementById("birthday").value)
+    let dt1 = new Date(birthday);
+    dt1.setDate(1)
+
+    // Calculate last date of current month.
+    dt1.setMonth(dt1.getMonth() + 2);
+    if (dt1.getMonth() === 1) {
+        dt1.setFullYear(dt1.getFullYear() + 1);
+    } else {
+        dt1.setFullYear(dt1.getFullYear());
+    }
+    dt1.setDate(dt1.getDate() - 1);
+    lastDate = dt1.getDate();
+    birthday
+        = new Date(document.getElementById("birthday").value);
+    let dt2 = birthday.getDate();
+    Array.from(dateSelect.options).forEach(option => {
+        option.disabled = Number(option.value) > lastDate;
+        if (Number(option.value) === dt2) {
             option.selected = true;
         }
     });
 }
-
-//=========================================================
-// Initialize flag value of can date processing.
-// @param void
-// @return void
-//=========================================================
-function resetCanDateProc() {
-    const canDateProc = document.getElementById("hdnCanProcDate");
-    canDateProc.value = true;
-}
-
-window.addEventListener('load', () => {
-    resetCanDateProc();
-    setBirthdayYear();
-    setBirthdayMonth();
-    populateDays();
-    setBirthdayDate();
-});
-window.addEventListener('load', resetCanDateProc, false);
-window.addEventListener('load', setBirthdayYear, false);
-window.addEventListener('load', setBirthdayMonth, false);
-window.addEventListener('load', populateDays, false);
-window.addEventListener('load', setBirthdayDate, false);
-
-let yearSelect = document.getElementById("yearSelect");
-yearSelect.addEventListener('load', () => {
-    populateDays();
-    setBirthdayDate();
-});
-yearSelect.addEventListener('load', populateDays, false);
-yearSelect.addEventListener('load', setBirthdayDate, false);
-
-let monthSelect = document.getElementById("monthSelect");
-monthSelect.addEventListener('load', () => {
-    populateDays();
-    setBirthdayDate();
-});
-monthSelect.addEventListener('load', populateDays, false);
-monthSelect.addEventListener('load', setBirthdayDate, false);

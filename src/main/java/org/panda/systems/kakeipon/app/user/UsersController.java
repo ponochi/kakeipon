@@ -1,62 +1,90 @@
 package org.panda.systems.kakeipon.app.user;
 
-import org.panda.systems.kakeipon.domain.model.User;
+import jakarta.validation.Valid;
+import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("user")
+// @RequestMapping( "user" )
 public class UsersController {
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    private Long userId;
-    private Model model;
+  @ModelAttribute
+  UserForm setUpForm( ) {
+    return new UserForm( );
+  }
 
-    // Default constructor
-    public UsersController() {
-        System.out.println("Debug-0!!!");
+  @GetMapping( "user" )
+  String list( Model model ) {
+    List<User> users = userService.findAll( );
+    model.addAttribute( "users", users );
+    return "user/showList";
+  }
+
+  @GetMapping( "user/{id}/show" )
+  String show( @PathVariable Long id, Model model ) {
+    User user = userService.findByUserId( id );
+    model.addAttribute( "user", user );
+    return "user/showDetail";
+  }
+
+  @GetMapping( "user/create" )
+  String create( Model model ) {
+    return "user/create";
+  }
+
+  @PostMapping( "user/create" )
+  String create( @Valid UserForm form, BindingResult result, Model model ) {
+    if ( result.hasErrors( ) ) {
+      return create( model );
     }
+    User user = new User( );
+    user.setUserId( form.getUserId( ) );
+    user.setNickName( form.getNickName( ) );
+    user.setPassword( form.getPassword( ) );
+    user.setPhoneNumber( form.getPhoneNumber( ) );
+    user.setRoleName( form.getRoleName( ) );
+    user.setEntryDate( form.getEntryDate( ) );
+    userService.save( user );
+    return "redirect:/user";
+  }
 
-    @GetMapping("")
-    String listUsers(Model model) {
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
-        System.out.println("Debug-1!!!");
-        return "user/showListUsers";
-    }
+  @GetMapping( "user/{id}/edit" )
+  String edit( @PathVariable Long id, Model model ) {
+    User user = userService.findByUserId( id );
+    model.addAttribute( "user", user );
+    return "user/editDetail";
+  }
 
-    @RequestMapping(path = "/showUserDetail/{userId}", method = RequestMethod.GET)
-    public String listUsers(@PathVariable(value = "userId") Long userId, Model model) {
-        User user = userService.findByUserId(userId);
-        System.out.println("Debug-2!!!");
-        if (user != null) {
-            model.addAttribute("user", user);
-            return "user/showUserDetail";
-        } else {
-            return "user/showListUsers";
-        }
+  @PostMapping( "user/{id}/commit" )
+  String edit( @PathVariable Long id, @Validated UserForm form, BindingResult result, Model model ) {
+    if ( result.hasErrors( ) ) {
+      System.out.println( "commit: " );
+      System.out.println( result );
+      return edit( id, model );
     }
-
-    @RequestMapping(path = "/editUserDetail/{userId}", method = RequestMethod.GET)
-    public String editUser(@PathVariable(value = "userId") Long userId, Model model) {
-        this.userId = userId;
-        this.model = model;
-        System.out.println("Debug-3!!!");
-        User user = userService.findByUserId(userId);
-        if (user != null) {
-            model.addAttribute("user", user);
-            return "user/editUserDetail";
-        } else {
-            return "user/showUserDetail";
-        }
-    }
+    User user = userService.findByUserId( id );
+    user.setUserId( form.getUserId( ) );
+    user.setNickName( form.getNickName( ) );
+    user.setLastName( form.getLastName( ) );
+    user.setFirstName( form.getFirstName( ) );
+    user.setPassword( form.getPassword( ) );
+    user.setEmail( form.getEmail( ) );
+    user.setBirthday( form.getBirthday() );
+    user.setPhoneNumber( form.getPhoneNumber( ) );
+    user.setRoleName( form.getRoleName( ) );
+    user.setEntryDate( form.getEntryDate( ) );
+    user.setUpdateDate( form.getUpdateDate( ) );
+    userService.save( user );
+    return "redirect:/user/{id}/show";
+  }
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="jp"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="ユーザ詳細"></title>
+</head>
+<body>
+<h3>ユーザ詳細</h3>
+<form id="userId"
+      method="get"
+      th:action="@{/user/__${user.userId}__/edit}">
+  <table>
+    <tbody>
+    <tr>
+      <th>ID</th>
+      <td th:text="${user.userId}"></td>
+    </tr>
+    <tr>
+      <th>ニックネーム</th>
+      <td th:text="${user.nickName}"></td>
+    </tr>
+    <tr>
+      <th>姓</th>
+      <td th:text="${user.lastName}"></td>
+    </tr>
+    <tr>
+      <th>名</th>
+      <td th:text="${user.firstName}"></td>
+    </tr>
+    <tr>
+      <th>パスワード</th>
+      <td th:text="${user.password}"></td>
+    </tr>
+    <tr>
+      <th>e-mail</th>
+      <td th:text="${user.email}"></td>
+    </tr>
+    <tr>
+      <th>生年月日</th>
+      <td th:text="${user.birthday}"></td>
+    </tr>
+    <tr>
+      <th>電話番号</th>
+      <td th:text="${user.phoneNumber}"></td>
+    </tr>
+    <tr>
+      <th>ロール</th>
+      <td th:text="${user.roleName}"></td>
+    </tr>
+    <tr>
+      <th>登録日</th>
+      <td th:text="${user.entryDate}"></td>
+    </tr>
+    <tr>
+      <th>変更日</th>
+      <td th:text="${user.updateDate}"></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>
+        <button form="userId"
+                type="submit"
+                value="${user}">編　集
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</form>
+</body>
+</html>
