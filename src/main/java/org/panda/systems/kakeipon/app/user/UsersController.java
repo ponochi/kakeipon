@@ -4,12 +4,17 @@ import jakarta.validation.Valid;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.convert.Jsr310Converters;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 @Controller
@@ -43,7 +48,8 @@ public class UsersController {
   }
 
   @PostMapping( "user/create" )
-  String create( @Valid UserForm form, BindingResult result, Model model ) {
+  String create( @Valid UserForm form,
+                 BindingResult result, Model model ) {
     if ( result.hasErrors( ) ) {
       return create( model );
     }
@@ -66,7 +72,9 @@ public class UsersController {
   }
 
   @PostMapping( "user/{id}/commit" )
-  String edit( @PathVariable Long id, @Validated UserForm form, BindingResult result, Model model ) {
+  String edit( @Validated UserForm form,
+               @PathVariable Long id,
+               BindingResult result, Model model ) {
     if ( result.hasErrors( ) ) {
       System.out.println( "commit: " );
       System.out.println( result );
@@ -79,11 +87,14 @@ public class UsersController {
     user.setFirstName( form.getFirstName( ) );
     user.setPassword( form.getPassword( ) );
     user.setEmail( form.getEmail( ) );
-    user.setBirthday( form.getBirthday() );
+    LocalDateTime dt = LocalDateTime.parse(
+        form.getBirthdayString(),
+        DateTimeFormatter.ISO_DATE_TIME );
+    user.setBirthday( dt );
     user.setPhoneNumber( form.getPhoneNumber( ) );
     user.setRoleName( form.getRoleName( ) );
     user.setEntryDate( form.getEntryDate( ) );
-    user.setUpdateDate( form.getUpdateDate( ) );
+    user.setUpdateDate( LocalDateTime.now() );
     userService.save( user );
     return "redirect:/user/{id}/show";
   }

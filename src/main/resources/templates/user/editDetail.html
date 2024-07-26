@@ -7,11 +7,11 @@
   <title th:text="ユーザ編集"></title>
   <script src="/js/common.js"></script>
   <script src="/js/editUser.js"></script>
-  <script src="/js/event.js"></script>
 </head>
 <body>
 <h3>ユーザ編集</h3>
-<form>
+<form th:object="${userForm}"
+      th:action="@{'/user/__${user.userId}__/commit'}" method="post">
   <table>
     <tbody>
     <tr>
@@ -113,6 +113,11 @@
             </select>
             <label for="dateSelect">日</label>
           </span>
+          <span>
+            <label for="birthdayString" aria-label="A date of birthday"></label>
+            <input id="birthdayString" name="birthdayString"
+                   th:value="${user.birthday}" type="hidden"/>
+          </span>
         </div>
       </td>
     </tr>
@@ -130,11 +135,23 @@
     </tr>
     <tr>
       <th>登録日</th>
-      <td th:text="${user.entryDate}"></td>
+      <td>
+        <div>
+          <label for="entryDate" aria-label="A date of entry"></label>
+          <input id="entryDate" name="entryDate"
+                 th:value="${user.entryDate}" readonly="readonly"/>
+        </div>
+      </td>
     </tr>
     <tr>
       <th>変更日</th>
-      <td th:text="${user.updateDate}"></td>
+      <td>
+        <div>
+          <label for="updateDate" aria-label="A date of update"></label>
+          <input id="updateDate" name="updateDate"
+                 th:value="${user.updateDate}" readonly="readonly"/>
+        </div>
+      </td>
     </tr>
     <tr>
       <th></th>
@@ -145,8 +162,6 @@
     </tbody>
   </table>
 
-  <label for="birthday" aria-label="A date of birthday"></label>
-  <input id="birthday" th:value="${user.birthday}"/>
   <script>setToYYYYMMDDField()</script>
   <script>setToBirthdayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>

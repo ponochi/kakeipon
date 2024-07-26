@@ -29,6 +29,7 @@ public class UserForm implements Serializable {
   private String monthSelect;
   private String dateSelect;
   @NotNull( message = "生年月日は必須です" )
+  private String birthdayString;
   private LocalDateTime birthday;
 
   @NotNull( message = "電話番号は必須です" )
@@ -51,7 +52,7 @@ public class UserForm implements Serializable {
   }
 
   public String getNickName( ) {
-    return nickName;
+    return this.nickName;
   }
 
   public void setNickName( String nickName ) {
@@ -59,7 +60,7 @@ public class UserForm implements Serializable {
   }
 
   public String getLastName( ) {
-    return lastName;
+    return this.lastName;
   }
 
   public void setLastName( String lastName ) {
@@ -67,7 +68,7 @@ public class UserForm implements Serializable {
   }
 
   public String getFirstName( ) {
-    return firstName;
+    return this.firstName;
   }
 
   public void setFirstName( String firstName ) {
@@ -75,7 +76,7 @@ public class UserForm implements Serializable {
   }
 
   public String getPassword( ) {
-    return password;
+    return this.password;
   }
 
   public void setPassword( String password ) {
@@ -83,7 +84,7 @@ public class UserForm implements Serializable {
   }
 
   public String getEmail( ) {
-    return email;
+    return this.email;
   }
 
   public void setEmail( String email ) {
@@ -91,7 +92,7 @@ public class UserForm implements Serializable {
   }
 
   public String getYearSelect( ) {
-    return yearSelect;
+    return this.yearSelect;
   }
 
   public void setYearSelect( String yearSelect ) {
@@ -99,7 +100,7 @@ public class UserForm implements Serializable {
   }
 
   public String getMonthSelect( ) {
-    return monthSelect;
+    return this.monthSelect;
   }
 
   public void setMonthSelect( String monthSelect ) {
@@ -107,11 +108,19 @@ public class UserForm implements Serializable {
   }
 
   public String getDateSelect( ) {
-    return dateSelect;
+    return this.dateSelect;
   }
 
   public void setDateSelect( String dateSelect ) {
     this.dateSelect = dateSelect;
+  }
+
+  public String getBirthdayString( ) {
+    return this.birthdayString;
+  }
+
+  public void setBirthdayString( String birthdayString ) {
+    this.birthdayString = birthdayString;
   }
 
   public LocalDateTime getBirthday( ) {
@@ -123,7 +132,7 @@ public class UserForm implements Serializable {
   }
 
   public String getPhoneNumber( ) {
-    return phoneNumber;
+    return this.phoneNumber;
   }
 
   public void setPhoneNumber( String phoneNumber ) {
@@ -131,7 +140,7 @@ public class UserForm implements Serializable {
   }
 
   public RoleName getRoleName( ) {
-    return roleName;
+    return this.roleName;
   }
 
   public void setRoleName( RoleName roleName ) {
@@ -139,7 +148,7 @@ public class UserForm implements Serializable {
   }
 
   public LocalDateTime getEntryDate( ) {
-    return LocalDateTime.now( );
+    return this.entryDate;
   }
 
   public void setEntryDate( LocalDateTime entryDate ) {
@@ -147,7 +156,7 @@ public class UserForm implements Serializable {
   }
 
   public LocalDateTime getUpdateDate( ) {
-    return updateDate;
+    return this.updateDate;
   }
 
   public void setUpdateDate( LocalDateTime updateDate ) {
