@@ -11,23 +11,21 @@
 <body>
 <h3>ユーザ編集</h3>
 <form id="confirm" th:object="${userInfo}"
-      th:action="@{/user/__${user.userId}__/confirm}" method="post">
+      th:action="@{/user/createConfirm}" method="post">
   <table>
     <tbody>
     <tr>
-      <th><label for="userId" aria-label="A number of unique user id">ID</label></th>
-      <td></td>
+      <th><label for="userId">ユーザID</label></th>
+      <td class="require">*</td>
       <td>
-        <input id="userId" name="userId"
-               th:value="${user.userId}" readonly=""/>
+        <input id="userId" name="userId" type="hidden"/>
       </td>
     </tr>
     <tr>
       <th><label for="nickName">ニックネーム</label></th>
       <td class="require">*</td>
       <td>
-        <input id="nickName" name="nickName"
-               th:value="${user.nickName}" type="text"
+        <input id="nickName" name="nickName" type="text"
                autocomplete="username"/>
         <span th:if="${#fields.hasErrors('nickName')}"
               th:errors="*{nickName}" style="color:red">ニックネームは必須です。</span>
@@ -36,23 +34,20 @@
     <tr>
       <th><label for="lastName">姓</label></th>
       <td></td>
-      <td><input id="lastName" name="lastName"
-                 th:value="${user.lastName}" type="text"/>
+      <td><input id="lastName" name="lastName" type="text"/>
       </td>
     </tr>
     <tr>
       <th><label for="firstName">名</label></th>
       <td></td>
-      <td><input id="firstName" name="firstName"
-                 th:value="${user.firstName}" type="text"/>
+      <td><input id="firstName" name="firstName" type="text"/>
       </td>
     </tr>
     <tr>
       <th><label for="password">パスワード</label></th>
       <td class="require">*</td>
       <td>
-        <input id="password" name="password"
-               th:value="${user.password}" type="text"/>
+        <input id="password" name="password" type="text"/>
         <span th:if="${#fields.hasErrors('password')}"
               th:errors="*{password}" style="color:red">パスワードは必須です。</span>
       </td>
@@ -61,8 +56,7 @@
       <th><label for="email">email</label></th>
       <td class="require">*</td>
       <td>
-        <input id="email" name="email"
-               th:value="${user.email}" type="text" autocomplete="email"/>
+        <input id="email" name="email" type="text" autocomplete="email"/>
         <span th:if="${#fields.hasErrors('email')}"
               th:errors="*{email}" style="color:red">emailは必須です。</span>
       </td>
@@ -131,8 +125,7 @@
           </span>
           <span>
             <label for="birthdayString" aria-label="A date of birthday"></label>
-            <input id="birthdayString" name="birthdayString"
-                   th:value="${user.birthday}" type="hidden"/>
+            <input id="birthdayString" name="birthdayString" type="hidden"/>
           </span>
         </div>
       </td>
@@ -141,8 +134,7 @@
       <th><label for="phoneNumber">電話番号</label></th>
       <td class="require">*</td>
       <td>
-        <input id="phoneNumber" name="phoneNumber"
-               th:value="${user.phoneNumber}" type="text"/>
+        <input id="phoneNumber" name="phoneNumber" type="text"/>
         <span th:if="${#fields.hasErrors('phoneNumber')}"
               th:errors="*{phoneNumber}" style="color:red">電話番号は必須です。</span>
       </td>
@@ -151,8 +143,7 @@
       <th><label for="roleName">ロール</label></th>
       <td class="require">*</td>
       <td>
-        <input id="roleName" name="roleName"
-               th:value="${user.roleName}" type="text"/>
+        <input id="roleName" name="roleName" type="text"/>
       </td>
     </tr>
     <tr>
@@ -160,8 +151,8 @@
       <td></td>
       <td>
         <div>
-          <input id="entryDate" name="entryDate"
-                 th:value="${user.entryDate}" readonly="readonly"/>
+          <label for="entryDate" aria-label="A date of entry"></label>
+          <input id="entryDate" name="entryDate" readonly="readonly"/>
         </div>
       </td>
     </tr>
@@ -171,8 +162,7 @@
       <td>
         <div>
           <label for="updateDate" aria-label="A date of update"></label>
-          <input id="updateDate" name="updateDate"
-                 th:value="${user.updateDate}" readonly="readonly"/>
+          <input id="updateDate" name="updateDate" readonly="readonly"/>
         </div>
       </td>
     </tr>
@@ -185,7 +175,7 @@
     </tbody>
   </table>
 
-  <script>setToYYYYMMDDField()</script>
+  <script>setToDefaultYYYYMMDDField()</script>
   <script>setToBirthdayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>

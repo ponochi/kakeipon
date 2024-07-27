@@ -7,10 +7,8 @@ module org.panda.systems.kakeipon {
   requires spring.data.jpa;
   requires jakarta.persistence;
   requires spring.web;
-  requires spring.webmvc;
   requires spring.boot.starter.data.jpa;
   requires spring.boot.starter.web;
-  requires spring.boot.starter.validation;
   requires spring.data.commons;
   requires org.hibernate.validator;
   exports org.panda.systems.kakeipon;

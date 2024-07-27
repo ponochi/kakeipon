@@ -39,29 +39,24 @@ public class UsersController {
     return "user/showDetail";
   }
 
-//  // ToDo: Implements create new user function.
-//  @GetMapping( "user/create" )
-//  String create( Model model ) {
-//    return "user/create";
-//  }
+  // ToDo: Implements create new user function.
+  @GetMapping( "user/create" )
+  String createForm( UserInfo info, Model model ) {
+    model.addAttribute( "info", info );
+    return "user/createDetail";
+  }
 
-//  // ToDo: Implements create new user function.
-//  @PostMapping( "user/create" )
-//  String create( @Valid UserForm form,
-//                 BindingResult result, Model model ) {
-//    if ( result.hasErrors( ) ) {
-//      return create( model );
-//    }
-//    User user = new User( );
-//    user.setUserId( form.getUserId( ) );
-//    user.setNickName( form.getNickName( ) );
-//    user.setPassword( form.getPassword( ) );
-//    user.setPhoneNumber( form.getPhoneNumber( ) );
-//    user.setRoleName( form.getRoleName( ) );
-//    user.setEntryDate( form.getEntryDate( ) );
-//    userService.save( user );
-//    return "redirect:/user";
-//  }
+  // ToDo: Implements create new user function.
+  @PostMapping( "user/createConfirm" )
+  String createConfirm( @Validated UserInfo info,
+                 BindingResult result, Model model ) {
+    if ( result.hasErrors( ) ) {
+      return createForm( info, model );
+    }
+
+    User user = userService.save( info );
+    return "redirect:/user/" + user.getUserId() + "/show";
+  }
 
   @GetMapping( "user/{id}/edit" )
   String editForm( @PathVariable Long id, Model model ) {
@@ -71,27 +66,24 @@ public class UsersController {
   }
 
   @PostMapping( "user/{id}/confirm" )
-  String confirm( @Validated UserInfo form, BindingResult bindingResult,
-               @PathVariable Long id, Model model ) {
+  String confirm(@Validated UserInfo info, BindingResult bindingResult,
+                 @PathVariable Long id, Model model ) {
     if ( bindingResult.hasErrors( ) ) {
       return editForm( id, model );
     }
     User user = userService.findByUserId( id );
-    user.setUserId( form.getUserId( ) );
-    user.setNickName( form.getNickName( ) );
-    user.setLastName( form.getLastName( ) );
-    user.setFirstName( form.getFirstName( ) );
-    user.setPassword( form.getPassword( ) );
-    user.setEmail( form.getEmail( ) );
-    LocalDateTime dt = LocalDateTime.parse(
-        form.getBirthdayString(),
-        DateTimeFormatter.ISO_DATE_TIME );
-    user.setBirthday( dt );
-    user.setPhoneNumber( form.getPhoneNumber( ) );
-    user.setRoleName( form.getRoleName( ) );
-    user.setEntryDate( form.getEntryDate( ) );
+    user.setUserId( info.getUserId( ) );
+    user.setNickName( info.getNickName( ) );
+    user.setLastName( info.getLastName( ) );
+    user.setFirstName( info.getFirstName( ) );
+    user.setPassword( info.getPassword( ) );
+    user.setEmail( info.getEmail( ) );
+    user.setBirthday( info.getBirthday() );
+    user.setPhoneNumber( info.getPhoneNumber( ) );
+    user.setRoleName( info.getRoleName( ) );
+    user.setEntryDate( info.getEntryDate( ) );
     user.setUpdateDate( LocalDateTime.now() );
-    userService.save( user );
+    user = userService.save( info );
     return "redirect:/user/{id}/show";
   }
 }

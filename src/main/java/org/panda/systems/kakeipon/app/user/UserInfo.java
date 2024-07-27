@@ -2,6 +2,9 @@ package org.panda.systems.kakeipon.app.user;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.panda.systems.kakeipon.domain.model.user.RoleName;
+import org.panda.systems.kakeipon.domain.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -41,7 +44,6 @@ public class UserInfo implements Serializable {
 
   private RoleName roleName;
 
-//  @NotBlank( message = "登録日時は必須です" )
   private LocalDateTime entryDate;
 
   private LocalDateTime updateDate;
@@ -177,7 +179,8 @@ public class UserInfo implements Serializable {
       ", lastName='" + lastName + '\'' +
       ", firstName='" + firstName + '\'' +
       ", password='" + password + '\'' +
-      ", birthday=" + birthday +
+      ", birthday=" + birthday + '\'' +
+      ", email='" + email + '\'' +
       ", phoneNumber='" + phoneNumber + '\'' +
       ", roleName=" + roleName +
       ", entryDate=" + entryDate +

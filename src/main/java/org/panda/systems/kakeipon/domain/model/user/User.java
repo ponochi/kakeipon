@@ -2,8 +2,10 @@ package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
 import org.hibernate.validator.constraints.NotBlank;
+import org.panda.systems.kakeipon.app.user.UserInfo;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table( name = "usr" )
@@ -34,10 +36,33 @@ public class User {
   @Enumerated( EnumType.STRING )
   private RoleName roleName;
 
-//  @NotBlank
   private LocalDateTime entryDate;
 
   private LocalDateTime updateDate;
+
+  // Default Constructor
+  public User( ) {
+  }
+
+  // Constructor
+  public User( UserInfo info ) {
+    this.userId = info.getUserId();
+    this.nickName = info.getNickName();
+    this.lastName = info.getLastName();
+    this.firstName = info.getFirstName();
+    this.password = info.getPassword();
+    this.email = info.getEmail();
+    this.birthday = LocalDateTime.parse(
+            info.getBirthdayString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME );
+    this.phoneNumber = info.getPhoneNumber();
+    this.roleName = info.getRoleName();
+    if ( info.getEntryDate() == null ) {
+      this.entryDate = LocalDateTime.now();
+    } else {
+      this.entryDate = info.getEntryDate();
+    }
+    this.updateDate = info.getUpdateDate();
+  }
 
   public Long getUserId( ) {
     return this.userId;
@@ -127,5 +152,22 @@ public class User {
 
   public void setUpdateDate( LocalDateTime updateDate ) {
     this.updateDate = updateDate;
+  }
+
+  @Override
+  public String toString( ) {
+    return "User{" +
+            "userId=" + this.userId +
+            ", nickName='" + this.nickName + '\'' +
+            ", lastName='" + this.lastName + '\'' +
+            ", firstName='" + this.firstName + '\'' +
+            ", password='" + this.password + '\'' +
+            ", birthday=" + this.birthday + '\'' +
+            ", email='" + this.email + '\'' +
+            ", phoneNumber='" + this.phoneNumber + '\'' +
+            ", roleName=" + this.roleName +
+            ", entryDate=" + this.entryDate +
+            ", updateDate=" + this.updateDate +
+            '}';
   }
 }

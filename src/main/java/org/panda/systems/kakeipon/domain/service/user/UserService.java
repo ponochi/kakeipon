@@ -1,5 +1,6 @@
 package org.panda.systems.kakeipon.domain.service.user;
 
+import org.panda.systems.kakeipon.app.user.UserInfo;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,15 @@ public class UserService {
     return userRepository.findByUserId( userId );
   }
 
-  public User save( User user ) {
-    userRepository.save( user );
+  public Long getMaxUserId( ) {
+    return userRepository.getMaxUserId( );
+  }
+
+  public User save( UserInfo info ) {
+    User user = new User( info );
+    System.out.println( "before UserService User: " + user.toString() );
+    userRepository.saveAndFlush( user );
+    System.out.println( "after UserService User: " + user.toString() );
     return user;
   }
 }
