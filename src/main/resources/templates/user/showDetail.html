@@ -46,7 +46,7 @@
       <td th:text="${user.phoneNumber}"></td>
     </tr>
     <tr>
-      <th>ロール</th>
+      <th>権限</th>
       <td th:text="${user.roleName}"></td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@
     </tbody>
   </table>
 </form>
-<form id="list" th:object="${userInfo}" th:action="@{'/'}" method="get">
+<form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
   <button form="list"> ユーザ・一覧画面</button>

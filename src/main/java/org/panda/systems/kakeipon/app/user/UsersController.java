@@ -1,6 +1,8 @@
 package org.panda.systems.kakeipon.app.user;
 
+import org.panda.systems.kakeipon.domain.model.common.Role;
 import org.panda.systems.kakeipon.domain.model.user.User;
+import org.panda.systems.kakeipon.domain.service.common.RoleService;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,80 +12,116 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-// @RequestMapping( "user" )
+@RequestMapping( "user" )
 public class UsersController {
   @Autowired
   UserService userService;
+  @Autowired
+  RoleService roleService;
 
   @ModelAttribute
-  UserInfo setUpForm( ) {
-    return new UserInfo( );
+  UserForm setUpForm( )
+  {
+    UserForm form = new UserForm( );
+    // form.setRoleId( Long.parseLong( "2" ) );
+    if (form.getRole() == null ) {
+      form.setRole(roleService.findByRoleId( form.getRoleId() ) );
+    }
+    return form;
   }
-
 
   @GetMapping( "" )
   String list( Model model ) {
     List<User> users = userService.findAll( );
     model.addAttribute( "users", users );
-    return "user/showList";
+    return "/user/showList";
   }
 
-  @GetMapping( "user/{id}/show" )
+  @GetMapping( "{id}/show" )
   String show( @PathVariable Long id, Model model ) {
     User user = userService.findByUserId( id );
+    System.out.println( "*>>*********** : " + user.toString() );
+    // user.setRole( roleService.findByRoleId( user.getRoleId() ) );
     model.addAttribute( "user", user );
-    return "user/showDetail";
+    return "/user/showDetail";
   }
 
   // ToDo: Implements create new user function.
-  @GetMapping( "user/create" )
-  String createForm( UserInfo info, Model model ) {
-    model.addAttribute( "info", info );
-    return "user/createDetail";
+  @GetMapping( "create" )
+  String createForm(UserForm form, Model model ) {
+    List<Role> roles = roleService.findAll( );
+    form.setRoleId(Long.parseLong("1"));
+    model.addAttribute( "form", form );
+    model.addAttribute( "roles", roles );
+    return "/user/createDetail";
   }
 
   // ToDo: Implements create new user function.
-  @PostMapping( "user/createConfirm" )
-  String createConfirm( @Validated UserInfo info,
-                 BindingResult result, Model model ) {
+  @PostMapping( "createConfirm" )
+  String createConfirm( @Validated UserForm form, BindingResult result,
+                        Model model ) {
     if ( result.hasErrors( ) ) {
-      return createForm( info, model );
+      return createForm( form, model );
     }
-
-    User user = userService.save( info );
-    return "redirect:/user/" + user.getUserId() + "/show";
+    Role role = roleService.findByRoleId( form.getRoleId() );
+    if (role == null) {
+      role = new Role();
+      role.setRoleId( form.getRoleId() );
+    }
+    System.out.println( ">>>>>>>>>>>>>>>>>>>>> before : " + form.getRoleId() );
+    System.out.println( ">>>>>>>>>>>>>>>>>>>>> before : " + role.getRoleName() );
+    User user = new User( );
+    user.setUserId( form.getUserId() );
+    user.setNickName( form.getNickName() );
+    user.setLastName( form.getLastName() );
+    user.setFirstName( form.getFirstName() );
+    user.setPassword( form.getPassword() );
+    user.setEmail( form.getEmail() );
+    user.setBirthday( form.getBirthday() );
+    user.setPhoneNumber( form.getPhoneNumber() );
+    user.setRoleId( 2L );
+//     user.setRole( role );
+    user.setEntryDate( form.getEntryDate() );
+    user.setUpdateDate( LocalDateTime.now() );
+    System.out.println( "before : " + user.toString() );
+    User resultUser = userService.saveUser( user );
+    resultUser = userService.findByUserId( resultUser.getUserId() );
+    System.out.println( "after : " + resultUser.toString() );
+    return "redirect:/user/" + resultUser.getUserId() + "/show";
   }
 
-  @GetMapping( "user/{id}/edit" )
+  @GetMapping( "{id}/edit" )
   String editForm( @PathVariable Long id, Model model ) {
     User user = userService.findByUserId( id );
+    List<Role> roles = roleService.findAll( );
     model.addAttribute( "user", user );
-    return "user/editDetail";
+    model.addAttribute( "roles", roles );
+    return "/user/editDetail";
   }
 
-  @PostMapping( "user/{id}/confirm" )
-  String confirm(@Validated UserInfo info, BindingResult bindingResult,
+  @PostMapping( "{id}/confirm" )
+  String confirm(@Validated UserForm form, BindingResult bindingResult,
                  @PathVariable Long id, Model model ) {
     if ( bindingResult.hasErrors( ) ) {
       return editForm( id, model );
     }
     User user = userService.findByUserId( id );
-    user.setUserId( info.getUserId( ) );
-    user.setNickName( info.getNickName( ) );
-    user.setLastName( info.getLastName( ) );
-    user.setFirstName( info.getFirstName( ) );
-    user.setPassword( info.getPassword( ) );
-    user.setEmail( info.getEmail( ) );
-    user.setBirthday( info.getBirthday() );
-    user.setPhoneNumber( info.getPhoneNumber( ) );
-    user.setRoleName( info.getRoleName( ) );
-    user.setEntryDate( info.getEntryDate( ) );
+    user.setUserId( form.getUserId() );
+    user.setNickName( form.getNickName() );
+    user.setLastName( form.getLastName() );
+    user.setFirstName( form.getFirstName() );
+    user.setPassword( form.getPassword() );
+    user.setEmail( form.getEmail() );
+    user.setBirthday( form.getBirthday() );
+    user.setPhoneNumber( form.getPhoneNumber() );
+    user.setRoleId( form.getRoleId() );
+    user.setRole( form.getRole() );
+    user.setEntryDate( form.getEntryDate() );
     user.setUpdateDate( LocalDateTime.now() );
-    user = userService.save( info );
-    return "redirect:/user/{id}/show";
+    User result = userService.saveUser( user );
+    return "redirect:/user/" + result.getUserId() + "/show";
   }
 }

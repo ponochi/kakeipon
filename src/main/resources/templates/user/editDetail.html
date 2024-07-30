@@ -10,7 +10,7 @@
 </head>
 <body>
 <h3>ユーザ編集</h3>
-<form id="confirm" th:object="${userInfo}"
+<form id="confirm" th:object="${userForm}"
       th:action="@{/user/__${user.userId}__/confirm}" method="post">
   <table>
     <tbody>
@@ -130,8 +130,8 @@
             <label for="dateSelect">日</label>
           </span>
           <span>
-            <label for="birthdayString" aria-label="A date of birthday"></label>
-            <input id="birthdayString" name="birthdayString"
+            <label for="birthday" aria-label="A date of birthday"></label>
+            <input id="birthday" name="birthday"
                    th:value="${user.birthday}" type="hidden"/>
           </span>
         </div>
@@ -148,11 +148,14 @@
       </td>
     </tr>
     <tr>
-      <th><label for="roleName">ロール</label></th>
+      <th><label for="roleId">権限</label></th>
       <td class="require">*</td>
       <td>
-        <input id="roleName" name="roleName"
-               th:value="${user.roleName}" type="text"/>
+        <select id="roleId" name="roleId" th:value="${user.roleId}">
+          <option th:each="item : ${roles}" th:value="${item.getRoleId()}"
+                  th:text="${item.getRoleName()}"
+                  th:selected="${item.getRoleId()} == ${user.roleId}"></option>
+        </select>
       </td>
     </tr>
     <tr>
@@ -189,7 +192,7 @@
   <script>setToBirthdayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>
-<form id="list" th:object="${userInfo}" th:action="@{'/'}" method="get">
+<form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
     <button form="list"> ユーザ・一覧画面</button>

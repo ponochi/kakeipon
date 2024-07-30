@@ -4,174 +4,179 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="ユーザ編集"></title>
+  <title th:text="ユーザ登録"></title>
   <script src="/js/common.js"></script>
   <script src="/js/editUser.js"></script>
 </head>
 <body>
-<h3>ユーザ編集</h3>
-<form id="confirm" th:object="${userInfo}"
+<h3>ユーザ登録</h3>
+<form id="confirm" th:object="${userForm}"
       th:action="@{/user/createConfirm}" method="post">
   <table>
     <tbody>
-    <tr>
-      <th><label for="userId">ユーザID</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="userId" name="userId" type="hidden"/>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="nickName">ニックネーム</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="nickName" name="nickName" type="text"
-               autocomplete="username"/>
-        <span th:if="${#fields.hasErrors('nickName')}"
-              th:errors="*{nickName}" style="color:red">ニックネームは必須です。</span>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="lastName">姓</label></th>
-      <td></td>
-      <td><input id="lastName" name="lastName" type="text"/>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="firstName">名</label></th>
-      <td></td>
-      <td><input id="firstName" name="firstName" type="text"/>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="password">パスワード</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="password" name="password" type="text"/>
-        <span th:if="${#fields.hasErrors('password')}"
-              th:errors="*{password}" style="color:red">パスワードは必須です。</span>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="email">email</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="email" name="email" type="text" autocomplete="email"/>
-        <span th:if="${#fields.hasErrors('email')}"
-              th:errors="*{email}" style="color:red">emailは必須です。</span>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="yearSelect" aria-label="Year and Month, Date of birthday fields">生年月日</label></th>
-      <td>*</td>
-      <td>
-        <div id="yyyymmdd">
-          <span>
-            <select id="yearSelect" name="yearSelect" onchange="setToBirthdayField()"></select>
-            <label for="yearSelect">年</label>
-          </span>
-          <span>
-            <select id="monthSelect" name="monthSelect" onchange="setToBirthdayField()">
-              <option value="01">01</option>
-              <option value="02">02</option>
-              <option value="03">03</option>
-              <option value="04">04</option>
-              <option value="05">05</option>
-              <option value="06">06</option>
-              <option value="07">07</option>
-              <option value="08">08</option>
-              <option value="09">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-            </select>
-            <label for="monthSelect">月</label>
-          </span>
-          <span>
-            <select id="dateSelect" name="dateSelect" onchange="setToBirthdayField()">
-              <option value="01">01</option>
-              <option value="02">02</option>
-              <option value="03">03</option>
-              <option value="04">04</option>
-              <option value="05">05</option>
-              <option value="06">06</option>
-              <option value="07">07</option>
-              <option value="08">08</option>
-              <option value="09">09</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15</option>
-              <option value="16">16</option>
-              <option value="17">17</option>
-              <option value="18">18</option>
-              <option value="19">19</option>
-              <option value="20">20</option>
-              <option value="21">21</option>
-              <option value="22">22</option>
-              <option value="23">23</option>
-              <option value="24">24</option>
-              <option value="25">25</option>
-              <option value="26">26</option>
-              <option value="27">27</option>
-              <option value="28">28</option>
-              <option value="29">29</option>
-              <option value="30">30</option>
-              <option value="31">31</option>
-            </select>
-            <label for="dateSelect">日</label>
-          </span>
-          <span>
-            <label for="birthdayString" aria-label="A date of birthday"></label>
-            <input id="birthdayString" name="birthdayString" type="hidden"/>
-          </span>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="phoneNumber">電話番号</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="phoneNumber" name="phoneNumber" type="text"/>
-        <span th:if="${#fields.hasErrors('phoneNumber')}"
-              th:errors="*{phoneNumber}" style="color:red">電話番号は必須です。</span>
-      </td>
-    </tr>
-    <tr>
-      <th><label for="roleName">ロール</label></th>
-      <td class="require">*</td>
-      <td>
-        <input id="roleName" name="roleName" type="text"/>
-      </td>
-    </tr>
-    <tr>
-      <th>登録日</th>
-      <td></td>
-      <td>
-        <div>
-          <label for="entryDate" aria-label="A date of entry"></label>
-          <input id="entryDate" name="entryDate" readonly="readonly"/>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th>変更日</th>
-      <td></td>
-      <td>
-        <div>
-          <label for="updateDate" aria-label="A date of update"></label>
-          <input id="updateDate" name="updateDate" readonly="readonly"/>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th></th>
-      <td></td>
-      <td>
-      </td>
-    </tr>
+    <!--
+      <tr>
+        <th><label for="userId"></label></th>
+        <td></td>
+        <td>
+          <input id="userId" name="userId" th:field="*{userId}" type="text"/>
+        </td>
+      </tr>
+    -->
+      <tr>
+        <th><label for="nickName">ニックネーム</label></th>
+        <td class="require">*</td>
+        <td>
+          <input id="nickName" name="nickName" type="text"
+                 autocomplete="username"/>
+          <span th:if="${#fields.hasErrors('nickName')}"
+                th:errors="*{nickName}" style="color:red">ニックネームは必須です。</span>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="lastName">姓</label></th>
+        <td></td>
+        <td><input id="lastName" name="lastName" type="text"/>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="firstName">名</label></th>
+        <td></td>
+        <td><input id="firstName" name="firstName" type="text"/>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="password">パスワード</label></th>
+        <td class="require">*</td>
+        <td>
+          <input id="password" name="password" type="text"/>
+          <span th:if="${#fields.hasErrors('password')}"
+                th:errors="*{password}" style="color:red">パスワードは必須です。</span>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="email">email</label></th>
+        <td class="require">*</td>
+        <td>
+          <input id="email" name="email" type="text" autocomplete="email"/>
+          <span th:if="${#fields.hasErrors('email')}"
+                th:errors="*{email}" style="color:red">emailは必須です。</span>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="yearSelect" aria-label="Year and Month, Date of birthday fields">生年月日</label></th>
+        <td>*</td>
+        <td>
+          <div id="yyyymmdd">
+            <span>
+              <select id="yearSelect" name="yearSelect" onchange="setToBirthdayField()"></select>
+              <label for="yearSelect">年</label>
+            </span>
+            <span>
+              <select id="monthSelect" name="monthSelect" onchange="setToBirthdayField()">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+              </select>
+              <label for="monthSelect">月</label>
+            </span>
+            <span>
+              <select id="dateSelect" name="dateSelect" onchange="setToBirthdayField()">
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <option value="03">03</option>
+                <option value="04">04</option>
+                <option value="05">05</option>
+                <option value="06">06</option>
+                <option value="07">07</option>
+                <option value="08">08</option>
+                <option value="09">09</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+                <option value="21">21</option>
+                <option value="22">22</option>
+                <option value="23">23</option>
+                <option value="24">24</option>
+                <option value="25">25</option>
+                <option value="26">26</option>
+                <option value="27">27</option>
+                <option value="28">28</option>
+                <option value="29">29</option>
+                <option value="30">30</option>
+                <option value="31">31</option>
+              </select>
+              <label for="dateSelect">日</label>
+            </span>
+            <span>
+              <label for="birthday" aria-label="A date of birthday"></label>
+              <input id="birthday" name="birthday" th:field="*{birthday}" type="hidden"/>
+            </span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="phoneNumber">電話番号</label></th>
+        <td class="require">*</td>
+        <td>
+          <input id="phoneNumber" name="phoneNumber" type="text"/>
+          <span th:if="${#fields.hasErrors('phoneNumber')}"
+                th:errors="*{phoneNumber}" style="color:red">電話番号は必須です。</span>
+        </td>
+      </tr>
+      <tr>
+        <th><label for="roleId">権限</label></th>
+        <td class="require">*</td>
+        <td>
+          <select id="roleId" name="roleId">
+            <option th:each="item : ${roles}" th:value="${item.getRoleId()}"
+                    th:text="${item.getRoleName()}" th:selected="${item.getRoleId()} == '2'"></option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>登録日</th>
+        <td></td>
+        <td>
+          <div>
+            <label for="entryDate" aria-label="A date of entry"></label>
+            <input id="entryDate" name="entryDate" readonly="readonly"/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th>変更日</th>
+        <td></td>
+        <td>
+          <div>
+            <label for="updateDate" aria-label="A date of update"></label>
+            <input id="updateDate" name="updateDate" readonly="readonly"/>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td></td>
+        <td>
+        </td>
+      </tr>
     </tbody>
   </table>
 
@@ -179,11 +184,11 @@
   <script>setToBirthdayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>
-<form id="list" th:object="${userInfo}" th:action="@{'/'}" method="get">
+<form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
     <button form="list"> ユーザ・一覧画面</button>
-  <button form="confirm">登　録</button>
+  <button form="confirm" type="submit" onclick="alert(${user.getRoleName()})">登　録</button>
 </div>
 
 </body>

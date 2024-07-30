@@ -28,9 +28,9 @@ function setToBirthdayField() {
   yearSelect = document.getElementById("yearSelect");
   monthSelect = document.getElementById("monthSelect");
   dateSelect = document.getElementById("dateSelect");
-  let birthdayString = document.getElementById("birthdayString");
+  let birthday = document.getElementById("birthday");
   mon = monthSelect.value;
-  birthdayString.value = yearSelect.value
+  birthday.value = yearSelect.value
     + '-' + mon
     + '-' + newDate
     + 'T00:00';
@@ -43,15 +43,15 @@ function setToBirthdayField() {
 // @return void
 //=========================================================================
 function setToYYYYMMDDField() {
-  let birthdayString
-    = document.getElementById("birthdayString");
+  let birthday
+    = document.getElementById("birthday");
   //=========================================================================
   // Processing year
   //=========================================================================
   let yearSelect
       = document.getElementById("yearSelect"),
     currentYear = new Date().getFullYear(),
-    year = new Date(birthdayString.value).getFullYear();
+    year = new Date(birthday.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
     let option = document.createElement("option");
     let procYear = currentYear - i;
@@ -67,7 +67,7 @@ function setToYYYYMMDDField() {
   // Processing month
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
-  let month = new Date(birthdayString.value).getMonth() + 1;
+  let month = new Date(birthday.value).getMonth() + 1;
   Array.from(monthSelect.options).forEach(option => {
     if (Number(option.value) === month) {
       option.selected = true;
@@ -80,7 +80,7 @@ function setToYYYYMMDDField() {
   let dateSelect
     = document.getElementById("dateSelect");
   birthday
-    = new Date(document.getElementById("birthdayString").value)
+    = new Date(document.getElementById("birthday").value)
 
   // Calculate last date of current month.
   let dt1 = new Date(birthday);
@@ -90,7 +90,7 @@ function setToYYYYMMDDField() {
   dt1.setDate(dt1.getDate() - 1);
   lastDate = dt1.getDate();
   birthday
-    = new Date(document.getElementById("birthdayString").value);
+    = new Date(document.getElementById("birthday").value);
   let dt2 = birthday.getDate();
   Array.from(dateSelect.options).forEach(option => {
     option.disabled = Number(option.value) > lastDate;
@@ -106,16 +106,16 @@ function setToYYYYMMDDField() {
 // @return void
 //=========================================================================
 function setToDefaultYYYYMMDDField() {
-  let birthdayString
-    = document.getElementById("birthdayString");
-  birthdayString.value = "1970-01-01T00:00";
+  let birthday
+    = document.getElementById("birthday");
+  birthday.value = "1970-01-01T00:00";
   //=========================================================================
   // Processing year
   //=========================================================================
   let yearSelect
       = document.getElementById("yearSelect"),
     currentYear = new Date().getFullYear(),
-    year = new Date(birthdayString.value).getFullYear();
+    year = new Date(birthday.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
     let option = document.createElement("option");
     let procYear = currentYear - i;
@@ -131,7 +131,7 @@ function setToDefaultYYYYMMDDField() {
   // Processing month
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
-  let month = new Date(birthdayString.value).getMonth() + 1;
+  let month = new Date(birthday.value).getMonth() + 1;
   Array.from(monthSelect.options).forEach(option => {
     if (Number(option.value) === month) {
       option.selected = true;
@@ -144,7 +144,7 @@ function setToDefaultYYYYMMDDField() {
   let dateSelect
     = document.getElementById("dateSelect");
   birthday
-    = new Date(document.getElementById("birthdayString").value)
+    = new Date(document.getElementById("birthday").value)
 
   // Calculate last date of current month.
   let dt1 = new Date(birthday);
@@ -154,7 +154,7 @@ function setToDefaultYYYYMMDDField() {
   dt1.setDate(dt1.getDate() - 1);
   lastDate = dt1.getDate();
   birthday
-    = new Date(document.getElementById("birthdayString").value);
+    = new Date(document.getElementById("birthday").value);
   let dt2 = birthday.getDate();
   Array.from(dateSelect.options).forEach(option => {
     option.disabled = Number(option.value) > lastDate;
