@@ -68,6 +68,7 @@
 <form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
+  <button onclick="location.href='/top'">トップ画面</button>
   <button form="list"> ユーザ・一覧画面</button>
   <button form="userInfo" value="${user}">編　集</button>
 </div>

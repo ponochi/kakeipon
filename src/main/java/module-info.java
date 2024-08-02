@@ -11,14 +11,16 @@ module org.panda.systems.kakeipon {
   requires spring.boot.starter.web;
   requires spring.data.commons;
   requires org.hibernate.validator;
-    requires spring.core;
-    exports org.panda.systems.kakeipon;
+  requires spring.core;
+  exports org.panda.systems.kakeipon;
+  exports org.panda.systems.kakeipon.app.common;
   exports org.panda.systems.kakeipon.app.user;
   exports org.panda.systems.kakeipon.domain.model.common;
   exports org.panda.systems.kakeipon.domain.model.user;
   exports org.panda.systems.kakeipon.domain.repository.user;
   exports org.panda.systems.kakeipon.domain.service.user;
   opens org.panda.systems.kakeipon;
+  opens org.panda.systems.kakeipon.app.common;
   opens org.panda.systems.kakeipon.app.user;
   opens org.panda.systems.kakeipon.domain.model.common;
   opens org.panda.systems.kakeipon.domain.model.user;
