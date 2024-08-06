@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="jp"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="費目一覧"></title>
+</head>
+<body>
+<h3>費目一覧</h3>
+<tbody th:each="classes: ${classes}">
+<tr>
+    <th><label for="firstClassSelect" aria-label="Income and Expenditure">収入支出</label></th>
+    <td>*</td>
+    <td>
+        <div id="firstClassSelect">
+          <span>
+            <select id="firstClass" name="firstClassSelect"></select>
+            <!-- <label for="firstClass"></label> -->
+          </span>
+        </div>
+    </td>
+</tr>
+</tbody>
+</table>
+<div>
+    <button onclick="location.href='/top'">トップ画面</button>
+    <!-- <button onclick="location.href='/user/create'">新規ユーザ・登　録</button> -->
+</div>
+</body>
+</html>
