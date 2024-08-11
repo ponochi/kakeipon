@@ -26,8 +26,7 @@ public class ThirdClassification {
   public boolean equals( Object o ) {
     if ( this == o ) return true;
     if ( o == null || getClass() != o.getClass() ) return false;
-    if ( !( o instanceof ThirdClassification) ) return false;
-    ThirdClassification that = (ThirdClassification) o;
+    if ( !(o instanceof ThirdClassification that) ) return false;
     if ( firstClassId == null || secondClassId == null || thirdClassId == null ) {
       return false;
     } else {
@@ -81,10 +80,10 @@ public class ThirdClassification {
   @Override
   public String toString() {
     return "ThirdClassification{" +
-           "firstClassId=" + firstClassId +
-           ", secondClassId=" + secondClassId +
-           ", thirdClassId=" + thirdClassId +
-           ", thirdClassName='" + thirdClassName + '\'' +
-           '}';
+        "firstClassId=" + firstClassId +
+        ", secondClassId=" + secondClassId +
+        ", thirdClassId=" + thirdClassId +
+        ", thirdClassName='" + thirdClassName + '\'' +
+        '}';
   }
 }

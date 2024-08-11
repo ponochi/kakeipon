@@ -25,8 +25,7 @@ public class SecondClassification implements Serializable {
   public boolean equals( Object o ) {
     if ( this == o ) return true;
     if ( o == null || getClass() != o.getClass() ) return false;
-    if ( !( o instanceof SecondClassification) ) return false;
-    SecondClassification that = (SecondClassification) o;
+    if ( !(o instanceof SecondClassification that) ) return false;
     if ( firstClassId == null || secondClassId == null ) {
       return false;
     } else {
@@ -71,9 +70,9 @@ public class SecondClassification implements Serializable {
   @Override
   public String toString() {
     return "SecondClassification{" +
-           "firstClassId=" + firstClassId +
-           ", secondClassId=" + secondClassId +
-           ", secondClassName='" + secondClassName + '\'' +
-           '}';
+        "firstClassId=" + firstClassId +
+        ", secondClassId=" + secondClassId +
+        ", secondClassName='" + secondClassName + '\'' +
+        '}';
   }
 }

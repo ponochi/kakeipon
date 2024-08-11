@@ -2,7 +2,6 @@ package org.panda.systems.kakeipon.domain.model.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
 
 import java.io.Serializable;
 

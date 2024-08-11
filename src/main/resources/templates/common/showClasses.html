@@ -10,66 +10,66 @@
 <body>
 <h3>区分</h3>
 <form id="classifications" method="get">
-<table>
-    <thead>
-    <tr>
-        <!-- firstClassSelect -->
-        <th>
-            <span><label for="firstClassSelect" aria-label="Income and Expenditure">収入支出</label></span>
-            <span>*</span>
-        </th>
-        <!-- secondClassSelect -->
-        <th>
-            <span><label for="secondClassSelect" aria-label="Major expense category">費目大分類</label></span>
-            <span>*</span>
-        </th>
-        <!-- thirdClassSelect -->
-        <th>
-            <span><label for="thirdClassSelect" aria-label="Minor expense category">費目小分類</label></span>
-            <span>*</span>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <!-- firstClassSelect -->
-        <td>
-            <div>
+    <table>
+        <thead>
+        <tr>
+            <!-- firstClassSelect -->
+            <th>
+                <span><label aria-label="Income and Expenditure" for="firstClassSelect">収入支出</label></span>
+                <span>*</span>
+            </th>
+            <!-- secondClassSelect -->
+            <th>
+                <span><label aria-label="Major expense category" for="secondClassSelect">費目大分類</label></span>
+                <span>*</span>
+            </th>
+            <!-- thirdClassSelect -->
+            <th>
+                <span><label aria-label="Minor expense category" for="thirdClassSelect">費目小分類</label></span>
+                <span>*</span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <!-- firstClassSelect -->
+            <td>
+                <div>
               <span th:object="${firstClasses}">
                 <select id="firstClassSelect" name="firstClassSelect"
                         onchange="setMajorAndMinorExpenseField()">
                 </select>
               </span>
-            </div>
-        </td>
-        <!-- secondClassSelect -->
-        <td>
-            <div>
+                </div>
+            </td>
+            <!-- secondClassSelect -->
+            <td>
+                <div>
               <span th:object="${secondClasses}">
                 <select id="secondClassSelect" name="secondClassSelect"
                         onchange="setMinorExpenseField()">
                 </select>
               </span>
-            </div>
-        </td>
-        <!-- thirdClassSelect -->
-        <td>
-            <div>
+                </div>
+            </td>
+            <!-- thirdClassSelect -->
+            <td>
+                <div>
               <span th:object="${thirdClasses}">
                 <select id="thirdClassSelect" name="thirdClassSelect">
                 </select>
               </span>
-            </div>
-        </td>
-    </tr>
-    </tbody>
+                </div>
+            </td>
+        </tr>
+        </tbody>
 </table>
-<script th:inline="javascript">
-  const firstClasses = /*[[${firstClasses}]]*/"firstClasses";
-  const secondClasses = /*[[${secondClasses}]]*/"secondClasses";
-  const thirdClasses = /*[[${thirdClasses}]]*/"thirdClasses";
-  setToClassificationsField();
-</script>
+    <script th:inline="javascript">
+      const firstClasses = /*[[${firstClasses}]]*/"firstClasses";
+      const secondClasses = /*[[${secondClasses}]]*/"secondClasses";
+      const thirdClasses = /*[[${thirdClasses}]]*/"thirdClasses";
+      setToClassificationsField();
+    </script>
 </form>
 <div>
     <button onclick="location.href='/top'">トップ画面</button>

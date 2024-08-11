@@ -58,6 +58,26 @@ public class UsersController {
     return "/user/createDetail";
   }
 
+  private static void setUser(UserForm form, User user) {
+    user.setUserId( form.getUserId() );
+    user.setNickName( form.getNickName() );
+    user.setLastName( form.getLastName() );
+    user.setFirstName( form.getFirstName() );
+    user.setPassword( form.getPassword() );
+    user.setEmail( form.getEmail() );
+    user.setBirthday( form.getBirthday() );
+    user.setPhoneNumber( form.getPhoneNumber() );
+  }
+
+  @GetMapping( "{id}/edit" )
+  String editForm( @PathVariable Long id, Model model ) {
+    User user = userService.findByUserId( id );
+    List<Role> roles = roleService.findAll( );
+    model.addAttribute( "user", user );
+    model.addAttribute( "roles", roles );
+    return "/user/editDetail";
+  }
+
   // ToDo: Implements create new user function.
   @PostMapping( "createConfirm" )
   String createConfirm( @Validated UserForm form, BindingResult result,
@@ -81,15 +101,6 @@ public class UsersController {
     return "redirect:/user/" + resultUser.getUserId() + "/show";
   }
 
-  @GetMapping( "{id}/edit" )
-  String editForm( @PathVariable Long id, Model model ) {
-    User user = userService.findByUserId( id );
-    List<Role> roles = roleService.findAll( );
-    model.addAttribute( "user", user );
-    model.addAttribute( "roles", roles );
-    return "/user/editDetail";
-  }
-
   @PostMapping( "{id}/confirm" )
   String confirm(@Validated UserForm form, BindingResult bindingResult,
                  @PathVariable Long id, Model model ) {
@@ -98,22 +109,11 @@ public class UsersController {
     }
     User user = userService.findByUserId( id );
     setUser(form, user);
-    user.setRoleId( form.getRoleId() );
-    user.setRole( form.getRole() );
-    user.setEntryDate( form.getEntryDate() );
-    user.setUpdateDate( LocalDateTime.now() );
-    User result = userService.saveUser( user );
+    user.setRoleId(form.getRoleId());
+    user.setRole(form.getRole());
+    user.setEntryDate(form.getEntryDate());
+    user.setUpdateDate(LocalDateTime.now());
+    User result = userService.saveUser(user);
     return "redirect:/user/" + result.getUserId() + "/show";
-  }
-
-  private static void setUser(UserForm form, User user) {
-    user.setUserId( form.getUserId() );
-    user.setNickName( form.getNickName() );
-    user.setLastName( form.getLastName() );
-    user.setFirstName( form.getFirstName() );
-    user.setPassword( form.getPassword() );
-    user.setEmail( form.getEmail() );
-    user.setBirthday( form.getBirthday() );
-    user.setPhoneNumber( form.getPhoneNumber() );
   }
 }

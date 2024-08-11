@@ -41,7 +41,7 @@ public class ClassificationsController {
   }
 
   @GetMapping( "" )
-  String list( Model model ) {
+  String list(Model model) {
     List<FirstClassification> firstClasses
         = firstClassificationService.findAll();
     List<SecondClassification> secondClasses
@@ -49,9 +49,9 @@ public class ClassificationsController {
     List<ThirdClassification> thirdClasses
         = thirdClassificationService.findAll();
 
-    model.addAttribute( "firstClasses", firstClasses );
-    model.addAttribute( "secondClasses", secondClasses );
-    model.addAttribute( "thirdClasses", thirdClasses );
+    model.addAttribute("firstClasses", firstClasses);
+    model.addAttribute("secondClasses", secondClasses);
+    model.addAttribute("thirdClasses", thirdClasses);
     return "/common/showClasses";
   }
 }

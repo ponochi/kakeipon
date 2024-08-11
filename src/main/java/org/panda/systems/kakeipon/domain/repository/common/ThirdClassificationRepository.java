@@ -14,7 +14,7 @@ import java.util.List;
 @EnableJpaRepositories
 public interface ThirdClassificationRepository
     extends JpaRepository<ThirdClassification,
-                          ThirdClassificationEntityPkey> {
+    ThirdClassificationEntityPkey> {
 
   @Query(value = "SELECT" +
       " tc.third_class_id," +

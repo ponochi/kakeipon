@@ -17,17 +17,32 @@ public class FirstClassification implements Serializable {
 
   private String firstClassName;
 
+  public FirstClassification() {
+  }
+
+  public FirstClassification(Long firstClassId, String firstClassName) {
+    this.firstClassId = firstClassId;
+    this.firstClassName = firstClassName;
+  }
+
+  public FirstClassification(String firstClassName) {
+    this.firstClassName = firstClassName;
+  }
+
+  public FirstClassification(Long firstClassId) {
+    this.firstClassId = firstClassId;
+  }
+
   @Override
-  public boolean equals( Object o ) {
-    if ( this == o ) return true;
-    if ( o == null || getClass() != o.getClass() ) return false;
-    if ( !( o instanceof FirstClassification) ) return false;
-    FirstClassification that = (FirstClassification) o;
-    if ( firstClassId == null ) {
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!(o instanceof FirstClassification that)) return false;
+    if (firstClassId == null) {
       return false;
     } else {
-      return firstClassId.equals( that.firstClassId ) &&
-             firstClassName.equals( that.firstClassName );
+      return firstClassId.equals(that.firstClassId) &&
+          firstClassName.equals(that.firstClassName);
     }
   }
 
@@ -35,7 +50,7 @@ public class FirstClassification implements Serializable {
   public int hashCode() {
     int result = 17;
     result = 31 * result + (firstClassId.intValue());
-    result = 31 * result + ( firstClassName == null ? 0 : firstClassName.hashCode() );
+    result = 31 * result + (firstClassName == null ? 0 : firstClassName.hashCode());
     return result;
   }
 
@@ -53,21 +68,5 @@ public class FirstClassification implements Serializable {
 
   public void setFirstClassName(String firstClassName) {
     this.firstClassName = firstClassName;
-  }
-
-  public FirstClassification() {
-  }
-
-  public FirstClassification(Long firstClassId, String firstClassName) {
-    this.firstClassId = firstClassId;
-    this.firstClassName = firstClassName;
-  }
-
-  public FirstClassification(String firstClassName) {
-    this.firstClassName = firstClassName;
-  }
-
-  public FirstClassification(Long firstClassId) {
-    this.firstClassId = firstClassId;
   }
 }

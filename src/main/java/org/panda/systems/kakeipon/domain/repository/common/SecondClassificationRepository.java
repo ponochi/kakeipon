@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface SecondClassificationRepository
     extends JpaRepository<SecondClassification,
-                          SecondClassificationEntityPkey> {
+    SecondClassificationEntityPkey> {
 
   @Query(value = "SELECT" +
       " sc.second_class_id," +
