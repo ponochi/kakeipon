@@ -1,6 +1,5 @@
 package org.panda.systems.kakeipon.domain.service.user;
 
-import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

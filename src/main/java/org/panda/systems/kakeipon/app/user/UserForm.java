@@ -21,6 +21,7 @@ public class UserForm implements Serializable {
   @SequenceGenerator(name = "tblUserSeq", allocationSize = 1)
   private Long userId;
 
+  @SuppressWarnings("deprecation")
   @NotBlank(message = "ニックネームは必須です")
   private String nickName;
 
@@ -28,9 +29,11 @@ public class UserForm implements Serializable {
 
   private String firstName;
 
+  @SuppressWarnings("deprecation")
   @NotBlank(message = "パスワードは必須です")
   private String password;
 
+  @SuppressWarnings("deprecation")
   @NotBlank(message = "メールアドレスは必須です")
   private String email;
 
@@ -40,6 +43,7 @@ public class UserForm implements Serializable {
   private String birthdayString;
   private LocalDateTime birthday;
 
+  @SuppressWarnings("deprecation")
   @NotBlank(message = "電話番号は必須です")
   private String phoneNumber;
 

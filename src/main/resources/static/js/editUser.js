@@ -8,21 +8,30 @@ function setToBirthdayField() {
   let monthSelect = document.getElementById("monthSelect");
   let dateSelect = document.getElementById("dateSelect");
   let dt = new Date();
-  dt.setFullYear(Number(yearSelect.value));
-  dt.setMonth(Number(monthSelect.value));
-  dt.setDate(Number(dateSelect.value));
+  dt.setFullYear(yearSelect.value.toString());
+  dt.setMonth(monthSelect.value.toString());
+  dt.setDate(dateSelect.value.toString());
   let newDate = dateSelect.value;
+  let mon = monthSelect.value;
+  // Fix number of month.
+  if ((dt.getMonth() - Number(mon)) === 1) {
+    dt.setMonth(dt.getMonth() - 1);
+  }
+
   dt.setDate(1);
 
   // Calculate last date of current month.
-  dt.setDate(dt.getDate() - 1);
+  dt.setDate((dt.getDate() - 1).toString());
   let lastDate = dt.getDate();
   dateSelect = document.getElementById("dateSelect");
-  Array.from(dateSelect.options).forEach(option => {
-    if (Number(option.value) === lastDate) {
-      option.selected = true;
+  Array.from(dateSelect.options).forEach(dt_option => {
+    console.log("1_dt_option.value : " + dt_option.value);
+    if (Number(dt_option.value) <= lastDate) {
+      dt_option.hidden = false;
     }
-    option.disabled = Number(option.value) > lastDate;
+    if (Number(dt_option.value) > lastDate) {
+      dt_option.hidden = true;
+    }
   });
 
   yearSelect = document.getElementById("yearSelect");
@@ -34,7 +43,7 @@ function setToBirthdayField() {
     + '-' + mon
     + '-' + newDate
     + 'T00:00';
-  dateSelect.value = newDate;
+  dateSelect.selectedIndex = lastDate - 1;
 }
 
 //=========================================================================
@@ -53,13 +62,13 @@ function setToYYYYMMDDField() {
     currentYear = new Date().getFullYear(),
     year = new Date(birthday.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
-    let option = document.createElement("option");
+    let yr_option = document.createElement("option");
     let procYear = currentYear - i;
-    option.textContent = procYear.toString();
-    option.value = procYear.toString();
-    yearSelect.appendChild(option);
+    yr_option.textContent = procYear.toString();
+    yr_option.value = procYear.toString();
+    yearSelect.appendChild(yr_option);
     if (procYear === year) {
-      option.selected = true;
+      yr_option.selected = true;
     }
   }
 
@@ -68,9 +77,9 @@ function setToYYYYMMDDField() {
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
   let month = new Date(birthday.value).getMonth() + 1;
-  Array.from(monthSelect.options).forEach(option => {
-    if (Number(option.value) === month) {
-      option.selected = true;
+  Array.from(monthSelect.options).forEach(mt_option => {
+    if (Number(mt_option.value) === month) {
+      mt_option.selected = true;
     }
   });
 
@@ -85,18 +94,28 @@ function setToYYYYMMDDField() {
   // Calculate last date of current month.
   let dt1 = new Date(birthday);
   dt1.setFullYear(dt1.getFullYear());
+  console.log("dt1.getMonth() : " + dt1.getMonth());
+  console.log("dt1.getMonth() + 1 : " + (Number(dt1.getMonth()) + 1));
   dt1.setMonth(dt1.getMonth() + 1);
   dt1.setDate(1)
   dt1.setDate(dt1.getDate() - 1);
+  console.log("dt1 : " + dt1);
   lastDate = dt1.getDate();
   birthday
     = new Date(document.getElementById("birthday").value);
   let dt2 = birthday.getDate();
-  Array.from(dateSelect.options).forEach(option => {
-    option.disabled = Number(option.value) > lastDate;
-    if (Number(option.value) === dt2) {
-      option.selected = true;
+  Array.from(dateSelect.options).forEach(dt2_option => {
+    dt2_option.hidden = Number(dt2_option.value) > lastDate;
+    if (Number(dt2_option.value) === dt2) {
+      dt2_option.selected = true;
+      dt2_option.hidden = false;
     }
+    if (Number(dt2_option.value) > lastDate) {
+      dt2_option.hidden = true;
+    } else if (Number(dt2_option.value) <= lastDate) {
+      dt2_option.hidden = false;
+    }
+
   });
 }
 
@@ -117,13 +136,13 @@ function setToDefaultYYYYMMDDField() {
     currentYear = new Date().getFullYear(),
     year = new Date(birthday.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
-    let option = document.createElement("option");
+    let yr_option = document.createElement("option");
     let procYear = currentYear - i;
-    option.textContent = procYear.toString();
-    option.value = procYear.toString();
-    yearSelect.appendChild(option);
+    yr_option.textContent = procYear.toString();
+    yr_option.value = procYear.toString();
+    yearSelect.appendChild(yr_option);
     if (procYear === year) {
-      option.selected = true;
+      yr_option.selected = true;
     }
   }
 
@@ -132,9 +151,9 @@ function setToDefaultYYYYMMDDField() {
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
   let month = new Date(birthday.value).getMonth() + 1;
-  Array.from(monthSelect.options).forEach(option => {
-    if (Number(option.value) === month) {
-      option.selected = true;
+  Array.from(monthSelect.options).forEach(mt_option => {
+    if (Number(mt_option.value) === month) {
+      mt_option.selected = true;
     }
   });
 
@@ -156,10 +175,17 @@ function setToDefaultYYYYMMDDField() {
   birthday
     = new Date(document.getElementById("birthday").value);
   let dt2 = birthday.getDate();
-  Array.from(dateSelect.options).forEach(option => {
-    option.disabled = Number(option.value) > lastDate;
-    if (Number(option.value) === dt2) {
-      option.selected = true;
+  Array.from(dateSelect.options).forEach(dt2_option => {
+    dt2_option.hidden = Number(dt2_option.value) > lastDate;
+    if (Number(dt2_option.value) === dt2) {
+      dt2_option.selected = true;
+      dt2_option.hidden = false;
     }
+    if (Number(dt2_option.value) > lastDate) {
+      dt2_option.hidden = true;
+    } else if (Number(dt2_option.value) <= lastDate) {
+      dt2_option.hidden = false;
+    }
+
   });
 }

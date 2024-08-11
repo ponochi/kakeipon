@@ -6,18 +6,19 @@ import jakarta.persistence.*;
 //
 @Entity
 @Table( name = "tbl_third_class" )
+@IdClass(ThirdClassificationEntityPkey.class)
 public class ThirdClassification {
-
-  @Id
-  private Long firstClassId;
-
-  @Id
-  private Long secondClassId;
 
   @Id
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   @SequenceGenerator(name = "tbl_third_class_seq", allocationSize = 1)
   private Long thirdClassId;
+
+  @Id
+  private Long secondClassId;
+
+  @Id
+  private Long firstClassId;
 
   private String thirdClassName;
 
@@ -43,5 +44,47 @@ public class ThirdClassification {
     result = 31 * result + (firstClassId.intValue() + secondClassId.intValue() + thirdClassId.intValue());
     result = 31 * result + ( thirdClassName == null ? 0 : thirdClassName.hashCode() );
     return result;
+  }
+
+  public Long getThirdClassId() {
+    return thirdClassId;
+  }
+
+  public void setThirdClassId(Long thirdClassId) {
+    this.thirdClassId = thirdClassId;
+  }
+
+  public Long getSecondClassId() {
+    return secondClassId;
+  }
+
+  public void setSecondClassId(Long secondClassId) {
+    this.secondClassId = secondClassId;
+  }
+
+  public Long getFirstClassId() {
+    return firstClassId;
+  }
+
+  public void setFirstClassId(Long firstClassId) {
+    this.firstClassId = firstClassId;
+  }
+
+  public String getThirdClassName() {
+    return thirdClassName;
+  }
+
+  public void setThirdClassName(String thirdClassName) {
+    this.thirdClassName = thirdClassName;
+  }
+
+  @Override
+  public String toString() {
+    return "ThirdClassification{" +
+           "firstClassId=" + firstClassId +
+           ", secondClassId=" + secondClassId +
+           ", thirdClassId=" + thirdClassId +
+           ", thirdClassName='" + thirdClassName + '\'' +
+           '}';
   }
 }

@@ -43,7 +43,6 @@ public class UsersController {
   @GetMapping( "{id}/show" )
   String show( @PathVariable Long id, Model model ) {
     User user = userService.findByUserId( id );
-    System.out.println( "*>>*********** : " + user.toString() );
     // user.setRole( roleService.findByRoleId( user.getRoleId() ) );
     model.addAttribute( "user", user );
     return "/user/showDetail";
@@ -71,25 +70,14 @@ public class UsersController {
       role = new Role();
       role.setRoleId( form.getRoleId() );
     }
-    System.out.println( ">>>>>>>>>>>>>>>>>>>>> before : " + form.getRoleId() );
-    System.out.println( ">>>>>>>>>>>>>>>>>>>>> before : " + role.getRoleName() );
     User user = new User( );
-    user.setUserId( form.getUserId() );
-    user.setNickName( form.getNickName() );
-    user.setLastName( form.getLastName() );
-    user.setFirstName( form.getFirstName() );
-    user.setPassword( form.getPassword() );
-    user.setEmail( form.getEmail() );
-    user.setBirthday( form.getBirthday() );
-    user.setPhoneNumber( form.getPhoneNumber() );
+    setUser(form, user);
     user.setRoleId( 2L );
 //     user.setRole( role );
     user.setEntryDate( form.getEntryDate() );
     user.setUpdateDate( LocalDateTime.now() );
-    System.out.println( "before : " + user.toString() );
     User resultUser = userService.saveUser( user );
     resultUser = userService.findByUserId( resultUser.getUserId() );
-    System.out.println( "after : " + resultUser.toString() );
     return "redirect:/user/" + resultUser.getUserId() + "/show";
   }
 
@@ -109,6 +97,16 @@ public class UsersController {
       return editForm( id, model );
     }
     User user = userService.findByUserId( id );
+    setUser(form, user);
+    user.setRoleId( form.getRoleId() );
+    user.setRole( form.getRole() );
+    user.setEntryDate( form.getEntryDate() );
+    user.setUpdateDate( LocalDateTime.now() );
+    User result = userService.saveUser( user );
+    return "redirect:/user/" + result.getUserId() + "/show";
+  }
+
+  private static void setUser(UserForm form, User user) {
     user.setUserId( form.getUserId() );
     user.setNickName( form.getNickName() );
     user.setLastName( form.getLastName() );
@@ -117,11 +115,5 @@ public class UsersController {
     user.setEmail( form.getEmail() );
     user.setBirthday( form.getBirthday() );
     user.setPhoneNumber( form.getPhoneNumber() );
-    user.setRoleId( form.getRoleId() );
-    user.setRole( form.getRole() );
-    user.setEntryDate( form.getEntryDate() );
-    user.setUpdateDate( LocalDateTime.now() );
-    User result = userService.saveUser( user );
-    return "redirect:/user/" + result.getUserId() + "/show";
   }
 }

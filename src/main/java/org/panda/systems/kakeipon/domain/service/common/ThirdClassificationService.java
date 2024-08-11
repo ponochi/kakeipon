@@ -24,4 +24,7 @@ public class ThirdClassificationService implements Serializable {
         secondClassId);
   }
 
+  public List<ThirdClassification> findAll() {
+    return thirdClassificationRepository.findAll();
+  }
 }

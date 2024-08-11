@@ -1,6 +1,11 @@
 package org.panda.systems.kakeipon.app.common;
 
+import org.panda.systems.kakeipon.domain.model.common.FirstClassification;
+import org.panda.systems.kakeipon.domain.model.common.SecondClassification;
+import org.panda.systems.kakeipon.domain.model.common.ThirdClassification;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class ClassificationsForm implements Serializable {
   private static final long serialVersionUID = 1L;
@@ -10,12 +15,18 @@ public class ClassificationsForm implements Serializable {
 
   private Long firstClassId;
   private String firstClassName;
+  private FirstClassification firstClassification;
+  private List<FirstClassification> firstClassifications;
 
   private Long secondClassId;
   private String secondClassName;
+  private SecondClassification secondClassification;
+  private List<SecondClassification> secondClassifications;
 
   private Long thirdClassId;
   private String thirdClassName;
+  private ThirdClassification thirdClassification;
+  private List<ThirdClassification> thirdClassifications;
 
   public Long getFirstClassId() {
     return firstClassId;
@@ -33,6 +44,22 @@ public class ClassificationsForm implements Serializable {
     this.firstClassName = firstClassName;
   }
 
+  public FirstClassification getFirstClassification() {
+    return firstClassification;
+  }
+
+  public void setFirstClassification(FirstClassification firstClassification) {
+    this.firstClassification = firstClassification;
+  }
+
+//  public List<FirstClassification> getFirstClassifications() {
+//    return firstClassifications;
+//  }
+//
+//  public void setFirstClassifications(List<FirstClassification> firstClassifications) {
+//    this.firstClassifications = firstClassifications;
+//  }
+
   public Long getSecondClassId() {
     return secondClassId;
   }
@@ -47,6 +74,22 @@ public class ClassificationsForm implements Serializable {
 
   public void setSecondClassName(String secondClassName) {
     this.secondClassName = secondClassName;
+  }
+
+  public SecondClassification getSecondClassification() {
+    return secondClassification;
+  }
+
+  public void setSecondClassification(SecondClassification secondClassification) {
+    this.secondClassification = secondClassification;
+  }
+
+  public List<SecondClassification> getSecondClassifications() {
+    return secondClassifications;
+  }
+
+  public void setSecondClassifications(List<SecondClassification> secondClassifications) {
+    this.secondClassifications = secondClassifications;
   }
 
   public Long getThirdClassId() {
@@ -65,7 +108,23 @@ public class ClassificationsForm implements Serializable {
     this.thirdClassName = thirdClassName;
   }
 
-  public String getClasses() {
+  public ThirdClassification getThirdClassification() {
+    return thirdClassification;
+  }
+
+  public void setThirdClassification(ThirdClassification thirdClassification) {
+    this.thirdClassification = thirdClassification;
+  }
+
+  public List<ThirdClassification> getThirdClassifications() {
+    return thirdClassifications;
+  }
+
+  public void setThirdClassifications(List<ThirdClassification> thirdClassifications) {
+    this.thirdClassifications = thirdClassifications;
+  }
+
+  public String toString() {
     return firstClassId + ":" + firstClassName +
         " > " + secondClassId + ":" + secondClassName +
         " > " + thirdClassId + ":" + thirdClassName;

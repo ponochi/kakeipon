@@ -8,6 +8,7 @@ import java.io.Serializable;
 //
 @Entity
 @Table( name = "tbl_second_class" )
+@IdClass(SecondClassificationEntityPkey.class)
 public class SecondClassification implements Serializable {
 
   @Id
@@ -41,5 +42,38 @@ public class SecondClassification implements Serializable {
     result = 31 * result + (firstClassId.intValue() + secondClassId.intValue());
     result = 31 * result + ( secondClassName == null ? 0 : secondClassName.hashCode() );
     return result;
+  }
+
+  public Long getFirstClassId() {
+    return firstClassId;
+  }
+
+  public void setFirstClassId(Long firstClassId) {
+    this.firstClassId = firstClassId;
+  }
+
+  public Long getSecondClassId() {
+    return secondClassId;
+  }
+
+  public void setSecondClassId(Long secondClassId) {
+    this.secondClassId = secondClassId;
+  }
+
+  public String getSecondClassName() {
+    return secondClassName;
+  }
+
+  public void setSecondClassName(String secondClassName) {
+    this.secondClassName = secondClassName;
+  }
+
+  @Override
+  public String toString() {
+    return "SecondClassification{" +
+           "firstClassId=" + firstClassId +
+           ", secondClassId=" + secondClassId +
+           ", secondClassName='" + secondClassName + '\'' +
+           '}';
   }
 }

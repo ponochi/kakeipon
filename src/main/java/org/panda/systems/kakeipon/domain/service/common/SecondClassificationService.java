@@ -21,4 +21,8 @@ public class SecondClassificationService implements Serializable {
   public List<SecondClassification> getSecondClassificationsByFirstClassId(Long firstClassId) {
     return secondClassificationRepository.getSecondClassificationsByFirstClassId(firstClassId);
   }
+
+  public List<SecondClassification> findAll() {
+    return secondClassificationRepository.findAll();
+  }
 }

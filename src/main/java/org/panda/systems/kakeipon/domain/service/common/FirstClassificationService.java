@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Service
 public class FirstClassificationService implements Serializable {
@@ -17,7 +18,11 @@ public class FirstClassificationService implements Serializable {
     super();
   }
 
-  FirstClassification getById(Long firstClassId) {
+  public FirstClassification getById(Long firstClassId) {
     return firstClassificationRepository.getById(firstClassId);
+  }
+
+  public List<FirstClassification> findAll() {
+    return firstClassificationRepository.findAll();
   }
 }
