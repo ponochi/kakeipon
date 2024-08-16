@@ -101,9 +101,16 @@
                 </th:block>
                 <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm} ne null">
                     <label for="accountDestinationFormId"></label>
-                    <input id="accountDestinationFormId" name="accountDestinationFormId"
-                           th:value="${accountDestinationForm.accountId}"
-                           type="text">
+                    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} ne null">
+                        <input id="accountDestinationFormId" name="accountDestinationFormId"
+                               th:value="${accountDestinationForm.accountId}"
+                               type="text">
+                    </th:block>
+                    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} eq null">
+                        <input id="accountDestinationFormId" name="accountDestinationFormId"
+                               th:value="0"
+                               type="text">
+                    </th:block>
                     <label for="accountDestinationFormName"></label>
                     <input id="accountDestinationFormName" name="accountDestinationFormName"
                            th:value="${accountDestinationForm.accountName}"
@@ -141,39 +148,93 @@
 <th:block th:if="${accountDestination} ne null AND ${accountDestinationForm} eq null">
     <form id="searchAccountSource"
           method="get"
-          th:action="@{'/searchAccountSource/__${accountDestination.accountId}__/__${accountSource.accountId}__'}" th:object="${groupForm}">
+          th:action="@{'/searchAccountSource/__${accountDestination.accountId}__/__${accountSource.accountId}__'}"
+          th:object="${groupForm}">
     </form>
 </th:block>
 <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} ne null">
     <form id="searchAccountSourceForm"
           method="get"
-          th:action="@{'/searchAccountSource/__${accountDestinationForm.accountId}__/__${accountSourceForm.accountId}__'}" th:object="${groupForm}">
+          th:action="@{'/searchAccountSource/__${accountDestinationForm.accountId}__/__${accountSourceForm.accountId}__'}"
+          th:object="${groupForm}">
     </form>
 </th:block>
 <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} eq null">
     <form id="searchAccountSourceFormNull"
           method="get"
-          th:action="@{'/searchAccountSource/0/0'}" th:object="${groupForm}">
+          th:action="@{'/searchAccountSource/0/0'}"
+          th:object="${groupForm}">
     </form>
 </th:block>
 
-<th:block th:if="${accountSource} ne null AND ${accountSourceForm} eq null">
-    <form id="searchAccountDestination"
-          method="get"
-          th:action="@{'/searchAccountDestination/__${accountSource.accountId}__/__${accountDestination.accountId}__'}" th:object="${groupForm}">
-    </form>
+<th:block th:if="${accountSource} ne null AND ${accountSourceForm.accountId} eq null">
+    <th:block th:if="${accountDestination} ne null AND ${accountDestinationForm} eq null">
+        <form id="searchAccountDestination"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSource.accountId}__/__${accountDestination.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} ne null">
+        <form id="searchAccountDestination"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSource.accountId}__/__${accountDestinationForm.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} eq null">
+        <form id="searchAccountDestination"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSource.accountId}__/0'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
 </th:block>
-<th:block th:if="${accountSource} eq null AND ${accountSourceForm} ne null">
-    <form id="searchAccountDestinationForm"
-          method="get"
-          th:action="@{'/searchAccountDestination/__${accountSourceForm.accountId}__/__${accountDestinationForm.accountId}__'}" th:object="${groupForm}">
-    </form>
+<th:block th:if="${accountSource} eq null AND ${accountSourceForm.accountId} ne null">
+    <th:block th:if="${accountDestination} ne null AND ${accountDestinationForm} eq null">
+        <form id="searchAccountDestinationForm"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSourceForm.accountId}__/__${accountDestination.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} ne null">
+        <form id="searchAccountDestinationForm"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSourceForm.accountId}__/__${accountDestinationForm.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} eq null">
+        <form id="searchAccountDestinationForm"
+              method="get"
+              th:action="@{'/searchAccountDestination/__${accountSourceForm.accountId}__/0'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
 </th:block>
 <th:block th:if="${accountSource} eq null AND ${accountSourceForm.accountId} eq null">
-    <form id="searchAccountDestinationFormNull"
-          method="get"
-          th:action="@{'/searchAccountDestination/0/0'}" th:object="${groupForm}">
-    </form>
+    <th:block th:if="${accountDestination} ne null AND ${accountDestinationForm} eq null">
+        <form id="searchAccountDestinationFormNull"
+              method="get"
+              th:action="@{'/searchAccountDestination/0/__${accountDestination.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} ne null">
+        <form id="searchAccountDestinationFormNull"
+              method="get"
+              th:action="@{'/searchAccountDestination/0/__${accountDestinationForm.accountId}__'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
+    <th:block th:if="${accountDestination} eq null AND ${accountDestinationForm.accountId} eq null">
+        <form id="searchAccountDestinationFormNull"
+              method="get"
+              th:action="@{'/searchAccountDestination/0/0'}"
+              th:object="${groupForm}">
+        </form>
+    </th:block>
 </th:block>
 </body>
 </html>

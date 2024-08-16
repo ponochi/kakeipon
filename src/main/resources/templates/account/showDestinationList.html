@@ -11,7 +11,7 @@
         <td>
             <form enctype="multipart/form-data"
                   method="post"
-                  th:action="@{'setAccountDestination/__${accountSourceForm.accountId}__/__${accountDestination.accountId}__'}">
+                  th:action="@{'/setAccountDestination/__${accountSourceForm.accountId}__/__${accountDestination.accountId}__'}">
                 <button type="submit">[[${accountDestination.accountName}]]</button>
             </form>
         </td>

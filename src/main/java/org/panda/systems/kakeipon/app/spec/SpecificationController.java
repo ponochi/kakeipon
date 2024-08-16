@@ -101,9 +101,10 @@ public class SpecificationController {
     return "/account/showSourceList";
   }
 
-  @GetMapping("searchAccountDestination/{accountSourceId}")
+  @GetMapping("searchAccountDestination/{accountSourceId}/{accountDestinationId}")
   String searchAccountDestination(
       @PathVariable("accountSourceId") String accountSourceId,
+      @PathVariable("accountDestinationId") String accountDestinationId,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
@@ -133,6 +134,6 @@ public class SpecificationController {
 
     model.addAttribute("accountSourceForm", sourceForm);
 
-    return "/account/showSourceList";
+    return "/account/showDestinationList";
   }
 }

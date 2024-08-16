@@ -40,7 +40,7 @@ public class AccountController {
       Model model,
       UriComponentsBuilder builder) {
 
-    AccountDestinationForm destinationForm = new AccountDestinationForm();
+    var destinationForm = new AccountDestinationForm();
     if (accountDestinationId > 0) {
       Account accountDestination = accountService.findById(accountDestinationId);
       destinationForm.setAccountId(accountDestinationId);
@@ -69,23 +69,23 @@ public class AccountController {
     return "/spec/createGroup";
   }
 
-  @GetMapping("setAccountDestination/{accountSourceId}/{accountDestinationId}")
+  @PostMapping("/setAccountDestination/{accountSourceId}/{accountDestinationId}")
   String setAccountDestinationToSpecificationGroup(
       @PathVariable("accountSourceId") Long accountSourceId,
       @PathVariable("accountDestinationId") Long accountDestinationId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
-      @ModelAttribute AccountSourceForm accountSourceForm,
       Model model) {
 
-    AccountSourceForm sourceForm = new AccountSourceForm();
-
-    Account accountSource = accountService.findById(accountSourceId);
-    sourceForm.setAccountId(accountSourceId);
-    sourceForm.setAccountName(sourceForm.getAccountName());
-    sourceForm.setBranchName(sourceForm.getBranchName());
-    sourceForm.setEntryDate(sourceForm.getEntryDate());
-    sourceForm.setUpdateDate(sourceForm.getUpdateDate());
+    var sourceForm = new AccountSourceForm();
+    if (accountSourceId > 0) {
+      Account accountSource = accountService.findById(accountSourceId);
+      sourceForm.setAccountId(accountSourceId);
+      sourceForm.setAccountName(accountSource.getAccountName());
+      sourceForm.setBranchName(accountSource.getBranchName());
+      sourceForm.setEntryDate(accountSource.getEntryDate());
+      sourceForm.setUpdateDate(accountSource.getUpdateDate());
+    }
 
     model.addAttribute("groupForm", groupForm);
     model.addAttribute("shopForm", shopForm);
