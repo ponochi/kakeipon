@@ -5,11 +5,14 @@ import org.panda.systems.kakeipon.domain.repository.common.ThirdClassificationRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 @Service
 public class ThirdClassificationService implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   @Autowired
   private ThirdClassificationRepository thirdClassificationRepository;

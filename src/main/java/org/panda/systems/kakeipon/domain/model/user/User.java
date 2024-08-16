@@ -1,7 +1,7 @@
 package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import org.panda.systems.kakeipon.domain.model.common.Role;
 
 import java.io.Serializable;
@@ -15,7 +15,7 @@ public class User implements Serializable {
   @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
   private Long userId;
 
-  @NotBlank
+  @NotEmpty
   @Column
   private String nickName;
 
@@ -23,15 +23,15 @@ public class User implements Serializable {
 
   private String lastName;
 
-  @NotBlank
+  @NotEmpty
   private String password;
 
-  @NotBlank
+  @NotEmpty
   private String email;
 
   private LocalDateTime birthday;
 
-  @NotBlank
+  @NotEmpty
   private String phoneNumber;
 
   private Long roleId;
@@ -77,8 +77,8 @@ public class User implements Serializable {
     return this.userId;
   }
 
-  public void setUserId(Long userId ) {
-    this.userId = userId;
+  public void setUserId(Long user_id ) {
+    this.userId = user_id;
   }
 
   public String getNickName( ) {
@@ -155,7 +155,7 @@ public class User implements Serializable {
   public String getRoleName( ) {
     if ( this.role == null ) {
       Role role = new Role();
-      role.setRoleId( this.roleId );
+      role.setRoleId( this.roleId);
       return role.getRoleName();
     } else {
       return this.getRole().getRoleName();

@@ -1,8 +1,7 @@
 package org.panda.systems.kakeipon.domain.model.common;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.NotBlank;
-import org.panda.systems.kakeipon.domain.model.user.User;
+import jakarta.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 
@@ -12,9 +11,10 @@ public class Role implements Serializable {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY )
     @SequenceGenerator(name = "tbl_role_seq", allocationSize = 1)
+    @Column
     private Long roleId;
 
-    @NotBlank
+    @NotEmpty
     private String roleName;
 
 

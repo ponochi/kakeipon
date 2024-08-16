@@ -480,3 +480,13 @@ INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_clas
 INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (147, 24, 3, 1, false);
 --[振替] その他 -----------------------------------------------------------------------------------
 INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (148, 25, 3, 1, false);
+
+
+--[tbl_shop]========================================================================================
+INSERT INTO tbl_shop(shop_name, branch_name, entry_date) VALUES ('AAAマート', '本店', '2023-08-12T00:00:00');
+INSERT INTO tbl_shop(shop_name, branch_name, entry_date) VALUES ('スーパーBBB', 'BBB店', '2024-04-01T00:00:00');
+
+--[tbl_account]========================================================================================
+INSERT INTO tbl_account(account_name, branch_name, entry_date) VALUES ('お財布', '', '2023-08-12T00:00:00');
+INSERT INTO tbl_account(account_name, branch_name, entry_date) VALUES ('AAA銀行', '本店', '2024-04-01T00:00:00');
+INSERT INTO tbl_account(account_name, branch_name, entry_date) VALUES ('BBBネット銀行', 'ダイヤモンド支店', '2024-04-01T00:00:00');

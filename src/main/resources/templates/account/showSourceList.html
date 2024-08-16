@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>口座検索</title>
+</head>
+<body>
+口座名
+<table th:object="${accounts}">
+    <tr th:each="accountSource : ${accounts}">
+        <td>
+            <form enctype="multipart/form-data"
+                  th:action="@{'/setAccountSource/__${accountDestinationForm.accountId}__/__${accountSource.accountId}__'}"
+                  method="post">
+                <button type="submit">[[${accountSource.accountName}]]</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+</html>

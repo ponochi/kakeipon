@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>お店検索</title>
+</head>
+<body>
+        店名
+        <table th:object="${shops}">
+            <tr th:each="shop : ${shops}">
+                <td>
+                    <form th:action="@{'setShop'}" th:object="${shop}" method="get">
+                        <label for="shopId"></label>
+                        <input id="shopId" name="shopId"
+                               type="hidden" th:value="${shop.shopId}">
+                        <button type="submit">[[${shop.shopName}]]</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    <form id="selectShop" th:action="@{'setShop'}"
+          th:object="${shop}" method="get">
+    </form>
+</body>
+</html>

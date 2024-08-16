@@ -1,7 +1,7 @@
 package org.panda.systems.kakeipon.app.user;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.panda.systems.kakeipon.domain.model.common.Role;
 
 import java.io.Serial;
@@ -19,10 +19,11 @@ public class UserForm implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tblUserSeq", allocationSize = 1)
+  @Column
   private Long userId;
 
   @SuppressWarnings("deprecation")
-  @NotBlank(message = "ニックネームは必須です")
+  @NotEmpty(message = "ニックネームは必須です")
   private String nickName;
 
   private String lastName;
@@ -30,11 +31,11 @@ public class UserForm implements Serializable {
   private String firstName;
 
   @SuppressWarnings("deprecation")
-  @NotBlank(message = "パスワードは必須です")
+  @NotEmpty(message = "パスワードは必須です")
   private String password;
 
   @SuppressWarnings("deprecation")
-  @NotBlank(message = "メールアドレスは必須です")
+  @NotEmpty(message = "メールアドレスは必須です")
   private String email;
 
   private String yearSelect;
@@ -44,7 +45,7 @@ public class UserForm implements Serializable {
   private LocalDateTime birthday;
 
   @SuppressWarnings("deprecation")
-  @NotBlank(message = "電話番号は必須です")
+  @NotEmpty(message = "電話番号は必須です")
   private String phoneNumber;
 
   private Long roleId;
@@ -193,8 +194,6 @@ public class UserForm implements Serializable {
         ", email='" + email + '\'' +
         ", phone_number='" + phoneNumber + '\'' +
         ", role_id='" + roleId + '\'' +
-//         ", role.role_id='" + role.getRoleId() + '\'' +
-//         ", role.role_name='" + role.getRoleName() + '\'' +
         ", entry_date=" + entryDate +
         ", update_date=" + updateDate + '}';
   }
