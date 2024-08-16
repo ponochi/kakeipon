@@ -10,8 +10,8 @@
     <tr th:each="accountDestination : ${accounts}">
         <td>
             <form enctype="multipart/form-data"
-                  th:action="@{'setAccountDestination/__${accountSourceForm.accountId}__/__${accountDestination.accountId}__'}"
-                  method="post">
+                  method="post"
+                  th:action="@{'setAccountDestination/__${accountSourceForm.accountId}__/__${accountDestination.accountId}__'}">
                 <button type="submit">[[${accountDestination.accountName}]]</button>
             </form>
         </td>

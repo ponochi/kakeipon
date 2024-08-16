@@ -10,7 +10,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class AccountSourceForm implements Serializable {
   @Serial
@@ -47,8 +46,7 @@ public class AccountSourceForm implements Serializable {
     return accountId;
   }
 
-  public void setAccountId(Long accountId)
-  {
+  public void setAccountId(Long accountId) {
     this.accountId = accountId;
   }
 

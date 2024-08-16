@@ -1,6 +1,5 @@
 package org.panda.systems.kakeipon.domain.service.spec;
 
-import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;

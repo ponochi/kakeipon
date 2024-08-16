@@ -14,7 +14,7 @@ public class Role implements Serializable {
     @Column
     private Long roleId;
 
-    @NotEmpty
+  @NotEmpty
     private String roleName;
 
 

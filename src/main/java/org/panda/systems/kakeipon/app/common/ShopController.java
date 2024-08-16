@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping( "" )
+@RequestMapping("")
 public class ShopController {
   @Autowired
   SpecificationGroupService specificationGroupService;
@@ -22,15 +22,15 @@ public class ShopController {
   @Autowired
   ShopService shopService;
 
-  @GetMapping( "setShop" )
+  @GetMapping("setShop")
   String setShopToSpecificationGroup(
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
-      Model model ) {
-    Shop shop = shopService.findById( shopForm.getShopId() );
+      Model model) {
+    Shop shop = shopService.findById(shopForm.getShopId());
 
-    model.addAttribute( "shopForm", shop );
-    model.addAttribute( "groupForm", groupForm );
+    model.addAttribute("shopForm", shop);
+    model.addAttribute("groupForm", groupForm);
 
     return "/spec/createGroup";
   }

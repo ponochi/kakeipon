@@ -9,9 +9,9 @@ import java.util.Optional;
 public interface SpecificationRepository extends JpaRepository<Specification, Long> {
 
   @Override
-  public List<Specification> findAll();
+  List<Specification> findAll();
 
-  public Optional<Specification> findById(Long specificationGroupId);
+  Optional<Specification> findById(Long specificationGroupId);
 
   <S extends Specification> List<S> saveAndFlush(List<S> entities);
 }

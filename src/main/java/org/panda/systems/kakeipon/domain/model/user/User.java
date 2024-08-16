@@ -77,7 +77,7 @@ public class User implements Serializable {
     return this.userId;
   }
 
-  public void setUserId(Long user_id ) {
+  public void setUserId(Long user_id) {
     this.userId = user_id;
   }
 
@@ -155,7 +155,7 @@ public class User implements Serializable {
   public String getRoleName( ) {
     if ( this.role == null ) {
       Role role = new Role();
-      role.setRoleId( this.roleId);
+      role.setRoleId(this.roleId);
       return role.getRoleName();
     } else {
       return this.getRole().getRoleName();

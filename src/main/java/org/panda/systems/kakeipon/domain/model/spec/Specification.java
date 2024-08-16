@@ -7,12 +7,10 @@ import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
-import java.util.Currency;
 
 @Entity
-@Table( name = "tbl_specification" )
+@Table(name = "tbl_specification")
 public class Specification implements Serializable {
   @NotEmpty
   @Column

@@ -4,10 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Entity
-@Table( name = "tbl_account" )
+@Table(name = "tbl_account")
 public class Account {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +41,7 @@ public class Account {
     }
   }
 
-  public void setAccountId(Long shopId)
-  {
+  public void setAccountId(Long shopId) {
     this.accountId = accountId;
   }
 

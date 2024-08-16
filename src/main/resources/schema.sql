@@ -101,52 +101,52 @@ CREATE TABLE IF NOT EXISTS kp.tbl_third_class_by_order
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_specification_group_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.tbl_specification_group
 (
-    specification_group_id      BIGINT      DEFAULT nextval('kp.tbl_specification_group_seq'),
-    user_id                     BIGINT      NOT NULL,
-    shop_id                     BIGINT      NOT NULL,
-    receiving_and_payment_date  DATE        NOT NULL,
-    receiving_and_payment_time  TIME        NOT NULL,
-    receiving_and_payment_type  BIGINT      NOT NULL,
-    account_source              BIGINT      NOT NULL,
-    account_destination         BIGINT,
-    memo                        TEXT,       -- 1000文字まで
-    entry_date                  TIMESTAMPTZ NOT NULL,
-    update_date                 TIMESTAMPTZ,
+    specification_group_id     BIGINT DEFAULT nextval('kp.tbl_specification_group_seq'),
+    user_id                    BIGINT      NOT NULL,
+    shop_id                    BIGINT      NOT NULL,
+    receiving_and_payment_date DATE        NOT NULL,
+    receiving_and_payment_time TIME        NOT NULL,
+    receiving_and_payment_type BIGINT      NOT NULL,
+    account_source             BIGINT      NOT NULL,
+    account_destination        BIGINT,
+    memo                       TEXT, -- 1000文字まで
+    entry_date                 TIMESTAMPTZ NOT NULL,
+    update_date                TIMESTAMPTZ,
     PRIMARY KEY (specification_group_id, user_id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_specification_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.tbl_specification
 (
-    specification_group_id  BIGINT          NOT NULL,
-    specification_id        BIGINT          DEFAULT nextval('kp.tbl_specification_seq'),
-    user_id                 BIGINT          NOT NULL,
-    item_name               VARCHAR(255)    NOT NULL,
-    items_jpy_price         DECIMAL(10, 2)  NOT NULL,
-    currency_name           VARCHAR(3)      NOT NULL,
-    items_price             DECIMAL(10, 2)  NOT NULL,
-    item_count              INTEGER         NOT NULL DEFAULT 1,
-    memo                    TEXT,       -- 1000文字まで
-    entry_date              TIMESTAMPTZ     NOT NULL,
-    update_date             TIMESTAMPTZ,
+    specification_group_id BIGINT         NOT NULL,
+    specification_id       BIGINT                  DEFAULT nextval('kp.tbl_specification_seq'),
+    user_id                BIGINT         NOT NULL,
+    item_name              VARCHAR(255)   NOT NULL,
+    items_jpy_price        DECIMAL(10, 2) NOT NULL,
+    currency_name          VARCHAR(3)     NOT NULL,
+    items_price            DECIMAL(10, 2) NOT NULL,
+    item_count             INTEGER        NOT NULL DEFAULT 1,
+    memo                   TEXT, -- 1000文字まで
+    entry_date             TIMESTAMPTZ    NOT NULL,
+    update_date            TIMESTAMPTZ,
     PRIMARY KEY (specification_group_id, specification_id, user_id),
     FOREIGN KEY (specification_group_id, user_id)
-        REFERENCES kp.tbl_specification_group(specification_group_id, user_id)
+        REFERENCES kp.tbl_specification_group (specification_group_id, user_id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_shop_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.tbl_shop
 (
-    shop_id         BIGINT          DEFAULT nextval('kp.tbl_shop_seq'),
-    shop_name       VARCHAR(255)    NOT NULL,
-    branch_name     VARCHAR(255)    ,
-    shop_url        VARCHAR(255)    ,
-    phone_number    VARCHAR(255)    ,
-    email           VARCHAR(255)    ,
-    open_shop_date  DATE            ,
-    close_shop_date DATE            ,
-    shop_memo       TEXT,       -- 1000文字まで
-    entry_date      TIMESTAMPTZ     NOT NULL,
+    shop_id         BIGINT DEFAULT nextval('kp.tbl_shop_seq'),
+    shop_name       VARCHAR(255) NOT NULL,
+    branch_name     VARCHAR(255),
+    shop_url        VARCHAR(255),
+    phone_number    VARCHAR(255),
+    email           VARCHAR(255),
+    open_shop_date  DATE,
+    close_shop_date DATE,
+    shop_memo       TEXT, -- 1000文字まで
+    entry_date      TIMESTAMPTZ  NOT NULL,
     update_date     TIMESTAMPTZ,
     PRIMARY KEY (shop_id)
 );
@@ -154,10 +154,10 @@ CREATE TABLE IF NOT EXISTS kp.tbl_shop
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_account_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.tbl_account
 (
-    account_id      BIGINT          DEFAULT nextval('kp.tbl_account_seq'),
-    account_name    VARCHAR(255)    NOT NULL,
-    branch_name     VARCHAR(255)    ,
-    entry_date      TIMESTAMPTZ     NOT NULL,
-    update_date     TIMESTAMPTZ,
+    account_id   BIGINT DEFAULT nextval('kp.tbl_account_seq'),
+    account_name VARCHAR(255) NOT NULL,
+    branch_name  VARCHAR(255),
+    entry_date   TIMESTAMPTZ  NOT NULL,
+    update_date  TIMESTAMPTZ,
     PRIMARY KEY (account_id)
 );
