@@ -11,15 +11,15 @@
 <table>
     <tr>
         <td>
-            <form id="accountSourceForm" enctype="multipart/form-data"
-                  th:object="${accountSourceForm}" method="get">
+            <form enctype="multipart/form-data" id="accountSourceForm"
+                  method="get" th:object="${accountSourceForm}">
                 <label for="accountSourceId"></label>
                 <input id="accountSourceId" name="accountSourceId"
                        th:value="accountSourceForm.accountSourceId"
                        type="text">
             </form>
-            <form id="accountDestinationForm" enctype="multipart/form-data"
-                  th:object="${accountDestinationForm}" method="get">
+            <form enctype="multipart/form-data" id="accountDestinationForm"
+                  method="get" th:object="${accountDestinationForm}">
                 <label for="accountDestinationId"></label>
                 <input id="accountDestinationId" name="accountDestinationId"
                        th:value="accountDestinationForm.accountDestinationId"
@@ -29,7 +29,7 @@
     </tr>
     <tr th:each="shop : ${shops}">
         <td>
-            <form th:action="@{'setShop'}" th:object="${shop}" method="get">
+            <form method="get" th:action="@{'setShop'}" th:object="${shop}">
                 <label for="shopId"></label>
                 <input id="shopId" name="shopId"
                        th:value="${shop.shopId}" type="hidden">

@@ -13,7 +13,7 @@ public class FirstClassification implements Serializable {
   @Id
   @GeneratedValue( strategy = GenerationType.IDENTITY )
   @SequenceGenerator(name = "tbl_first_class_seq", allocationSize = 1)
-  @Column( name = "first_class_id" )
+  @Column(name = "first_class_id")
   private Long firstClassId;
 
   @Column

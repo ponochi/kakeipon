@@ -3,7 +3,6 @@ package org.panda.systems.kakeipon.domain.model.common;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
-import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 
 import java.time.LocalDateTime;
 

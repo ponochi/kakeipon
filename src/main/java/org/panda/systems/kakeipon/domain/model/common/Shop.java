@@ -13,7 +13,7 @@ public class Shop {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_shop_seq", allocationSize = 1)
-  @Column(name="shop_id")
+  @Column(name = "shop_id")
   private Long shopId;
 
   @NotEmpty

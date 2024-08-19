@@ -1,9 +1,9 @@
 package org.panda.systems.kakeipon.domain.model.common;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 public class AccountAndBalance {

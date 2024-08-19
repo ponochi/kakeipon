@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class AccountAndBalancePkey implements Serializable {
@@ -69,8 +70,8 @@ public class AccountAndBalancePkey implements Serializable {
 
     AccountAndBalancePkey that = (AccountAndBalancePkey) o;
 
-    if (accountId != null ? !accountId.equals(that.accountId) : that.accountId != null) return false;
-    return balanceId != null ? balanceId.equals(that.balanceId) : that.balanceId == null;
+    if (!Objects.equals(accountId, that.accountId)) return false;
+    return Objects.equals(balanceId, that.balanceId);
   }
 
   // hashCode

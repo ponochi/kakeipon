@@ -92,7 +92,7 @@ public class UsersController {
     }
     User user = new User( );
     setUser(form, user);
-    user.setRole( role );
+    user.setRole(role);
     user.setEntryDate( form.getEntryDate() );
     user.setUpdateDate( LocalDateTime.now() );
     User resultUser = userService.saveUser( user );

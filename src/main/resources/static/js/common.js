@@ -13,10 +13,10 @@ function toBoolean(boolStr) {
 }
 
 function transitionCreateGroup() {
-    var shopId = document.getElementById("shopId").value;
-    var accountSourceId = document.getElementById("accountSource").value;
-    var accountDestinationId = document.getElementById("accountDestination").value;
-    window.sessionStorage.setItem("accountSourceId", accountSourceId);
-    window.sessionStorage.setItem("accountDestinationId", accountDestinationId);
-    location.href = "/shop/list";
+  var shopId = document.getElementById("shopId").value;
+  var accountSourceId = document.getElementById("accountSource").value;
+  var accountDestinationId = document.getElementById("accountDestination").value;
+  window.sessionStorage.setItem("accountSourceId", accountSourceId);
+  window.sessionStorage.setItem("accountDestinationId", accountDestinationId);
+  location.href = "/shop/list";
 }
