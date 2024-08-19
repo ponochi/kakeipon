@@ -1,15 +1,17 @@
 package org.panda.systems.kakeipon.app.spec;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class SpecificationGroupForm implements Serializable {
   @Serial
@@ -18,39 +20,56 @@ public class SpecificationGroupForm implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tblSpecificationGroupSeq", allocationSize = 1)
+  @Column(name = "specification_group_id")
   Long specificationGroupId;
 
-  @NotEmpty
   @OneToOne
   @JoinColumn(name = "user_id", table = "tbl_user",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
+  @Column
   User user;
 
-  @NotEmpty
   @OneToOne
   @JoinColumn(name = "shop_id", table = "tbl_shop",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
+  @Column
   Shop shop;
 
-  Date receivingAndPaymentDate;
+  @PastOrPresent
+  @Column
+  LocalDate receivingAndPaymentDate;
 
-  @NotEmpty
-  Time receivingAndPaymentTime;
+  @Column
+  LocalTime receivingAndPaymentTime;
 
-  @NotEmpty
+  @PositiveOrZero
+  @Column
   Long receivingAndPaymentType;
 
-  Long accountSource;
+  @OneToOne
+  @JoinColumn(name = "account_source_id", table = "tbl_account",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
+  @Column
+  AccountAndBalance accountSource;
 
-  Long accountDestination;
+  @OneToOne
+  @JoinColumn(name = "account_destination_id", table = "tbl_account",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
+  @Column
+  AccountAndBalance accountDestination;
 
+  @Column
   String memo;
 
-  @NotEmpty
+  @PastOrPresent
+  @Column
   LocalDateTime entry_date;
 
+  @Column
   LocalDateTime update_date;
 
   // Default constructor
@@ -81,19 +100,19 @@ public class SpecificationGroupForm implements Serializable {
     this.shop = shop;
   }
 
-  public Date getReceivingAndPaymentDate() {
+  public LocalDate getReceivingAndPaymentDate() {
     return receivingAndPaymentDate;
   }
 
-  public void setReceivingAndPaymentDate(Date receivingAndPaymentDate) {
+  public void setReceivingAndPaymentDate(LocalDate receivingAndPaymentDate) {
     this.receivingAndPaymentDate = receivingAndPaymentDate;
   }
 
-  public Time getReceivingAndPaymentTime() {
+  public LocalTime getReceivingAndPaymentTime() {
     return receivingAndPaymentTime;
   }
 
-  public void setReceivingAndPaymentTime(Time receivingAndPaymentTime) {
+  public void setReceivingAndPaymentTime(LocalTime receivingAndPaymentTime) {
     this.receivingAndPaymentTime = receivingAndPaymentTime;
   }
 
@@ -105,19 +124,19 @@ public class SpecificationGroupForm implements Serializable {
     this.receivingAndPaymentType = receivingAndPaymentType;
   }
 
-  public Long getAccountSource() {
+  public AccountAndBalance getAccountSource() {
     return accountSource;
   }
 
-  public void setAccountSource(Long accountSource) {
+  public void setAccountSource(AccountAndBalance accountSource) {
     this.accountSource = accountSource;
   }
 
-  public Long getAccountDestination() {
+  public AccountAndBalance getAccountDestination() {
     return accountDestination;
   }
 
-  public void setAccountDestination(Long accountDestination) {
+  public void setAccountDestination(AccountAndBalance accountDestination) {
     this.accountDestination = accountDestination;
   }
 

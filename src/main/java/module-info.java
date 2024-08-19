@@ -3,7 +3,6 @@ module org.panda.systems.kakeipon {
   requires spring.boot.autoconfigure;
   requires spring.context;
   requires spring.beans;
-  requires spring.tx;
   requires spring.data.jpa;
   requires jakarta.persistence;
   requires spring.web;
@@ -13,7 +12,7 @@ module org.panda.systems.kakeipon {
   requires org.hibernate.validator;
   requires spring.core;
   requires jakarta.validation;
-  requires jdk.compiler;
+  requires spring.tx;
   exports org.panda.systems.kakeipon;
   exports org.panda.systems.kakeipon.app.common;
   exports org.panda.systems.kakeipon.app.spec;

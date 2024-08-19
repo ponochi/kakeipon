@@ -2,6 +2,7 @@ package org.panda.systems.kakeipon.domain.model.spec;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
@@ -23,7 +24,7 @@ public class Specification implements Serializable {
   private Long specificationId;
 
   @OneToOne
-  @JoinColumn(name = "userId", referencedColumnName = "userId",
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id",
       insertable = false, updatable = false)
   private User user;
 
@@ -47,7 +48,8 @@ public class Specification implements Serializable {
   @Size(max = 1000, message = "メモは1000文字以内で入力してください")
   private String memo;
 
-  @Column
+  @PastOrPresent
+  @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
   @Column

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>口座検索</title>
+    <script src="/js/common.js"></script>
 </head>
 <body>
 口座名
@@ -11,12 +12,19 @@
         <td>
             <form enctype="multipart/form-data"
                   method="post"
-                  th:action="@{'/setAccountSource/__${accountDestinationForm.accountId}__/__${accountSource.accountId}__'}">
-                <button type="submit">[[${accountSource.accountName}]]</button>
+                  th:action="@{'/setAccountSource'}">
+                <label for="accountSourceId"></label>
+                <input id="accountSourceId" name="accountSourceId"
+                       th:value="${accountSource.accountId}"
+                       type="text">
+                <label for="accountSourceName"></label>
+                <input id="accountSourceName" name="accountSourceName"
+                       th:value="${accountSource.accountName}"
+                       type="text">
+                <button type="submit" onclick="transitionCreateGroup()">[[${accountSource.accountName}]]</button>
             </form>
         </td>
     </tr>
 </table>
-</form>
 </body>
 </html>

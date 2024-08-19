@@ -92,8 +92,7 @@ public class UsersController {
     }
     User user = new User( );
     setUser(form, user);
-    user.setRoleId( 2L );
-//     user.setRole( role );
+    user.setRole( role );
     user.setEntryDate( form.getEntryDate() );
     user.setUpdateDate( LocalDateTime.now() );
     User resultUser = userService.saveUser( user );
@@ -109,7 +108,7 @@ public class UsersController {
     }
     User user = userService.findByUserId( id );
     setUser(form, user);
-    user.setRoleId(form.getRoleId());
+    user.setRole(form.getRole());
     user.setRole(form.getRole());
     user.setEntryDate(form.getEntryDate());
     user.setUpdateDate(LocalDateTime.now());

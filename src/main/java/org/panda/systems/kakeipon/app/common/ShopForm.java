@@ -2,6 +2,7 @@ package org.panda.systems.kakeipon.app.common;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,31 +15,41 @@ public class ShopForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tblShopSeq", allocationSize = 1)
-  @Column
+  @SequenceGenerator(name = "tbl_shop_seq", allocationSize = 1)
+  @Column(name = "shop_id")
   private Long shopId;
 
   @NotEmpty
+  @Column
   private String shopName;
 
   @NotEmpty
+  @Column
   private String branchName;
 
+  @Column
   private String shopUrl;
 
+  @Column
   private String phoneNumber;
 
+  @Column
   private String email;
 
+  @Column
   private Date openShopDate;
 
+  @Column
   private Date closeShopDate;
 
+  @Column
   private String shopMemo;
 
-  @NotEmpty
+  @PastOrPresent
+  @Column
   private LocalDateTime entryDate;
 
+  @Column
   private LocalDateTime updateDate;
 
   // Default constructor

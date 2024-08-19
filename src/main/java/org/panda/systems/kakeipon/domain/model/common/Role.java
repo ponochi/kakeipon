@@ -6,31 +6,32 @@ import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
-@Table( name = "tbl_role" )
+@Table(name = "tbl_role")
 public class Role implements Serializable {
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
-    @SequenceGenerator(name = "tbl_role_seq", allocationSize = 1)
-    @Column
-    private Long roleId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "tbl_role_seq", allocationSize = 1)
+  @Column(name = "role_id")
+  private Long roleId;
 
   @NotEmpty
-    private String roleName;
+  @Column
+  private String roleName;
 
 
-    public Long getRoleId( ) {
-        return roleId;
-    }
+  public Long getRoleId() {
+    return roleId;
+  }
 
-    public void setRoleId(Long roleId ) {
-        this.roleId = roleId;
-    }
+  public void setRoleId(Long roleId) {
+    this.roleId = roleId;
+  }
 
-    public String getRoleName( ) {
-        return roleName;
-    }
+  public String getRoleName() {
+    return roleName;
+  }
 
-    public void setRoleName(String roleName ) {
-        this.roleName = roleName;
-    }
+  public void setRoleName(String roleName) {
+    this.roleName = roleName;
+  }
 }

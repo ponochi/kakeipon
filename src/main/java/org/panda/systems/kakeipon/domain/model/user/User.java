@@ -2,47 +2,57 @@ package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 import org.panda.systems.kakeipon.domain.model.common.Role;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table( name = "tbl_user" )
+@Table(name = "tbl_user")
 public class User implements Serializable {
   @Id
-  @GeneratedValue( strategy = GenerationType.IDENTITY )
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
+  @Column(name = "user_id")
   private Long userId;
 
   @NotEmpty
   @Column
   private String nickName;
 
+  @Column
   private String firstName;
 
+  @Column
   private String lastName;
 
   @NotEmpty
+  @Column
   private String password;
 
   @NotEmpty
+  @Column
   private String email;
 
+  @Column
   private LocalDateTime birthday;
 
   @NotEmpty
+  @Column
   private String phoneNumber;
 
-  private Long roleId;
-
+  @NotEmpty
   @OneToOne
-  @JoinColumn( name = "roleId", referencedColumnName = "roleId",
-      insertable = false, updatable = false )
+  @JoinColumn(name = "role_id", referencedColumnName = "role_id",
+      insertable = false, updatable = false)
   private Role role;
 
+  @PastOrPresent
+  @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
+  @Column
   private LocalDateTime updateDate;
 
   // Default Constructor
@@ -50,30 +60,7 @@ public class User implements Serializable {
 
   }
 
-  // Constructor
-  public User( User user ) {
-    this.userId = user.getUserId();
-    this.nickName = user.getNickName();
-    this.lastName = user.getLastName();
-    this.firstName = user.getFirstName();
-    this.password = user.getPassword();
-    this.email = user.getEmail();
-    if ( user.getBirthday() == null ) {
-      this.birthday = LocalDateTime.parse("1970-01-01T00:00");
-    } else {
-      this.birthday = user.getBirthday();
-    }
-    this.phoneNumber = user.getPhoneNumber();
-    this.roleId = user.getRoleId();
-    if ( user.getEntryDate() == null ) {
-      this.entryDate = LocalDateTime.now();
-    } else {
-      this.entryDate = user.getEntryDate();
-    }
-    this.updateDate = user.getUpdateDate();
-  }
-
-  public Long getUserId( ) {
+  public Long getUserId() {
     return this.userId;
   }
 
@@ -81,105 +68,99 @@ public class User implements Serializable {
     this.userId = user_id;
   }
 
-  public String getNickName( ) {
+  public String getNickName() {
     return this.nickName;
   }
 
-  public void setNickName(String nickName ) {
+  public void setNickName(String nickName) {
     this.nickName = nickName;
   }
 
-  public String getFirstName( ) {
+  public String getFirstName() {
     return this.firstName;
   }
 
-  public void setFirstName(String firstName ) {
+  public void setFirstName(String firstName) {
     this.firstName = firstName;
   }
 
-  public String getLastName( ) {
+  public String getLastName() {
     return this.lastName;
   }
 
-  public void setLastName(String lastName ) {
+  public void setLastName(String lastName) {
     this.lastName = lastName;
   }
 
   // ToDo: implements decryption
-  public String getPassword( ) {
+  public String getPassword() {
     return password;
   }
 
   // ToDo: implements encryption
-  public void setPassword(String password ) {
+  public void setPassword(String password) {
     this.password = password;
   }
 
-  public String getEmail( ) {
+  public String getEmail() {
     return this.email;
   }
 
-  public void setEmail(String email ) {
+  public void setEmail(String email) {
     this.email = email;
   }
 
-  public LocalDateTime getBirthday( ) {
+  public LocalDateTime getBirthday() {
     return this.birthday;
   }
 
-  public void setBirthday(LocalDateTime birthday ) {
+  public void setBirthday(LocalDateTime birthday) {
     this.birthday = birthday;
   }
 
-  public String getPhoneNumber( ) {
+  public String getPhoneNumber() {
     return this.phoneNumber;
   }
 
-  public void setPhoneNumber(String phoneNumber ) {
+  public void setPhoneNumber(String phoneNumber) {
     this.phoneNumber = phoneNumber;
   }
 
-  public Long getRoleId( ) { return this.roleId; }
-
-  public void setRoleId(Long roleId ) { this.roleId = roleId; }
-
-  public Role getRole( )
-  {
+  public Role getRole() {
     return this.role;
   }
 
-  public void setRole( Role role ) {
+  public void setRole(Role role) {
     this.role = role;
   }
 
-  public String getRoleName( ) {
-    if ( this.role == null ) {
+  public String getRoleName() {
+    if (this.role == null) {
       Role role = new Role();
-      role.setRoleId(this.roleId);
       return role.getRoleName();
     } else {
       return this.getRole().getRoleName();
     }
   }
 
-  public LocalDateTime getEntryDate( ) {
+  public LocalDateTime getEntryDate() {
     return this.entryDate;
   }
 
-  public void setEntryDate(LocalDateTime entryDate ) {
+  public void setEntryDate(LocalDateTime entryDate) {
     this.entryDate = entryDate;
   }
 
-  public LocalDateTime getUpdateDate( ) {
+  public LocalDateTime getUpdateDate() {
     return this.updateDate;
   }
 
-  public void setUpdateDate(LocalDateTime updateDate ) {
+  public void setUpdateDate(LocalDateTime updateDate) {
     this.updateDate = updateDate;
   }
 
   @Override
-  public String toString( ) {
+  public String toString() {
     String strRole;
     if (this.role == null) {
       strRole = ", role=null";
@@ -187,19 +168,18 @@ public class User implements Serializable {
       strRole = ", role=" + this.role.getRoleName();
     }
     return "User {" +
-            "user_id=" + this.userId +
-            ", nick_name='" + this.nickName + '\'' +
-            ", last_name='" + this.lastName + '\'' +
-            ", first_name='" + this.firstName + '\'' +
-            ", password='" + this.password + '\'' +
-            ", birthday=" + this.birthday + '\'' +
-            ", email='" + this.email + '\'' +
-            ", phone_number='" + this.phoneNumber + '\'' +
-            ", role_id=" + this.roleId +
-            strRole +
-//             ", role.role_name" + this.getRole().getRoleName() +
-            ", entry_date=" + this.entryDate +
-            ", update_date=" + this.updateDate +
-            '}';
+        "user_id=" + this.userId +
+        ", nick_name='" + this.nickName + '\'' +
+        ", last_name='" + this.lastName + '\'' +
+        ", first_name='" + this.firstName + '\'' +
+        ", password='" + this.password + '\'' +
+        ", birthday=" + this.birthday + '\'' +
+        ", email='" + this.email + '\'' +
+        ", phone_number='" + this.phoneNumber + '\'' +
+        ", role_id=" + this.getRole().getRoleId() +
+        ", role_name" + this.getRole().getRoleName() +
+        ", entry_date=" + this.entryDate +
+        ", update_date=" + this.updateDate +
+        '}';
   }
 }

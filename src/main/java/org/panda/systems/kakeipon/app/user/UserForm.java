@@ -1,7 +1,8 @@
 package org.panda.systems.kakeipon.app.user;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 import org.panda.systems.kakeipon.domain.model.common.Role;
 
 import java.io.Serial;
@@ -12,53 +13,63 @@ public class UserForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  // Default constructor
-  public UserForm() {
-  }
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tblUserSeq", allocationSize = 1)
-  @Column
+  @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
+  @Column(name = "user_id")
   private Long userId;
 
-  @SuppressWarnings("deprecation")
   @NotEmpty(message = "ニックネームは必須です")
+  @Column
   private String nickName;
 
+  @Column
   private String lastName;
 
+  @Column
   private String firstName;
 
   @SuppressWarnings("deprecation")
   @NotEmpty(message = "パスワードは必須です")
+  @Column
   private String password;
 
   @SuppressWarnings("deprecation")
   @NotEmpty(message = "メールアドレスは必須です")
+  @Column
   private String email;
 
   private String yearSelect;
   private String monthSelect;
   private String dateSelect;
   private String birthdayString;
+  @Column
   private LocalDateTime birthday;
 
-  @SuppressWarnings("deprecation")
   @NotEmpty(message = "電話番号は必須です")
+  @Column
   private String phoneNumber;
 
+  @Column
   private Long roleId;
 
   @OneToOne
-  @JoinColumn(name = "roleId", table = "tbl_role",
+  @JoinColumn(name = "role_id", table = "tbl_role",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
+  @Column
   private Role role;
 
+  @PastOrPresent
+  @Column
   private LocalDateTime entryDate;
 
+  @Column
   private LocalDateTime updateDate;
+
+  // Default constructor
+  public UserForm() {
+  }
 
   public Long getUserId() {
     return userId;

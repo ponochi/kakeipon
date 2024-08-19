@@ -306,180 +306,180 @@ INSERT INTO tbl_third_class(second_class_id, first_class_id, third_class_name) V
 --[tbl_third_class_by_order]========================================================================
 --[支出]===========================================================================================
 --[支出] 食費 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (1, 1, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (2, 1, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (3, 1, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (4, 1, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (5, 1, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (6, 1, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (7, 1, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (8, 1, 1, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (9, 1, 1, 9, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (10, 1, 1, 10, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (11, 1, 1, 11, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (1, 1, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (2, 1, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (3, 1, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (4, 1, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (5, 1, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (6, 1, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (7, 1, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (8, 1, 1, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (9, 1, 1, 9);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (10, 1, 1, 10);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (11, 1, 1, 11);
 --[支出] 日用品 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (12, 2, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (13, 2, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (14, 2, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (15, 2, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (16, 2, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (17, 2, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (18, 2, 1, 7, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (12, 2, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (13, 2, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (14, 2, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (15, 2, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (16, 2, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (17, 2, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (18, 2, 1, 7);
 --[支出] 交通費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (19, 3, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (20, 3, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (21, 3, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (22, 3, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (23, 3, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (24, 3, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (25, 3, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (26, 3, 1, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (27, 3, 1, 9, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (19, 3, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (20, 3, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (21, 3, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (22, 3, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (23, 3, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (24, 3, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (25, 3, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (26, 3, 1, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (27, 3, 1, 9);
 --[支出] 医療費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (28, 4, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (29, 4, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (30, 4, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (31, 4, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (32, 4, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (33, 4, 1, 6, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (28, 4, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (29, 4, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (30, 4, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (31, 4, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (32, 4, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (33, 4, 1, 6);
 --[支出] 保険料 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (34, 5, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (35, 5, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (36, 5, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (37, 5, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (38, 5, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (39, 5, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (40, 5, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (41, 5, 1, 8, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (34, 5, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (35, 5, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (36, 5, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (37, 5, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (38, 5, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (39, 5, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (40, 5, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (41, 5, 1, 8);
 --[支出] 水道光熱費 -------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (42, 6, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (43, 6, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (44, 6, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (45, 6, 1, 4, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (42, 6, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (43, 6, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (44, 6, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (45, 6, 1, 4);
 --[支出] 通信費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (46, 7, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (47, 7, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (48, 7, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (49, 7, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (50, 7, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (51, 7, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (52, 7, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (53, 7, 1, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (54, 7, 1, 9, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (55, 7, 1, 10, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (56, 7, 1, 11, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (46, 7, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (47, 7, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (48, 7, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (49, 7, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (50, 7, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (51, 7, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (52, 7, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (53, 7, 1, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (54, 7, 1, 9);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (55, 7, 1, 10);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (56, 7, 1, 11);
 --[支出] 教育費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (57, 8, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (58, 8, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (59, 8, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (60, 8, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (61, 8, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (62, 8, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (63, 8, 1, 7, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (57, 8, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (58, 8, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (59, 8, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (60, 8, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (61, 8, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (62, 8, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (63, 8, 1, 7);
 --[支出] 交際費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (64, 9, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (65, 9, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (66, 9, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (67, 9, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (68, 9, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (69, 9, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (70, 9, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (71, 9, 1, 8, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (64, 9, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (65, 9, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (66, 9, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (67, 9, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (68, 9, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (69, 9, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (70, 9, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (71, 9, 1, 8);
 --[支出] 娯楽費 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (72, 10, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (73, 10, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (74, 10, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (75, 10, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (76, 10, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (77, 10, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (78, 10, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (79, 10, 1, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (80, 10, 1, 9, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (81, 10, 1, 10, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (82, 10, 1, 11, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (72, 10, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (73, 10, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (74, 10, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (75, 10, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (76, 10, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (77, 10, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (78, 10, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (79, 10, 1, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (80, 10, 1, 9);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (81, 10, 1, 10);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (82, 10, 1, 11);
 --[支出] 大型出費 ---------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (83, 11, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (84, 11, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (85, 11, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (86, 11, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (87, 11, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (88, 11, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (89, 11, 1, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (90, 11, 1, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (91, 11, 1, 9, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (92, 11, 1, 10, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (93, 11, 1, 11, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (94, 11, 1, 12, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (95, 11, 1, 13, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (96, 11, 1, 14, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (83, 11, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (84, 11, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (85, 11, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (86, 11, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (87, 11, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (88, 11, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (89, 11, 1, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (90, 11, 1, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (91, 11, 1, 9);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (92, 11, 1, 10);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (93, 11, 1, 11);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (94, 11, 1, 12);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (95, 11, 1, 13);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (96, 11, 1, 14);
 --[支出] 年金 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (97, 12, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (98, 12, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (99, 12, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (100, 12, 1, 4, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (97, 12, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (98, 12, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (99, 12, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (100, 12, 1, 4);
 --[支出] その他 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (101, 13, 1, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (102, 13, 1, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (103, 13, 1, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (104, 13, 1, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (105, 13, 1, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (106, 13, 1, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (107, 13, 1, 7, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (101, 13, 1, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (102, 13, 1, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (103, 13, 1, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (104, 13, 1, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (105, 13, 1, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (106, 13, 1, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (107, 13, 1, 7);
 --[収入]===========================================================================================
 --[収入] 給与・報酬 -------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (108, 14, 2, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (109, 14, 2, 2, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (108, 14, 2, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (109, 14, 2, 2);
 --[収入] 賞与 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (110, 15, 2, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (111, 15, 2, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (112, 15, 2, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (113, 15, 2, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (114, 15, 2, 5, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (110, 15, 2, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (111, 15, 2, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (112, 15, 2, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (113, 15, 2, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (114, 15, 2, 5);
 --[収入] 副業 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (115, 16, 2, 1, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (115, 16, 2, 1);
 --[収入] 年金 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (116, 17, 2, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (117, 17, 2, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (118, 17, 2, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (119, 17, 2, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (120, 17, 2, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (121, 17, 2, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (122, 17, 2, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (123, 17, 2, 8, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (116, 17, 2, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (117, 17, 2, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (118, 17, 2, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (119, 17, 2, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (120, 17, 2, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (121, 17, 2, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (122, 17, 2, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (123, 17, 2, 8);
 --[収入] 臨時収入 ---------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (124, 18, 2, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (125, 18, 2, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (126, 18, 2, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (127, 18, 2, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (128, 18, 2, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (129, 18, 2, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (130, 18, 2, 7, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (131, 18, 2, 8, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (132, 18, 2, 9, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (133, 18, 2, 10, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (124, 18, 2, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (125, 18, 2, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (126, 18, 2, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (127, 18, 2, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (128, 18, 2, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (129, 18, 2, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (130, 18, 2, 7);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (131, 18, 2, 8);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (132, 18, 2, 9);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (133, 18, 2, 10);
 --[収入] その他 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (134, 19, 2, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (135, 19, 2, 2, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (134, 19, 2, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (135, 19, 2, 2);
 --[振替]===========================================================================================
 --[振替] 普通預貯金 -------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (136, 20, 3, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (137, 20, 3, 2, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (138, 20, 3, 3, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (139, 20, 3, 4, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (140, 20, 3, 5, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (141, 20, 3, 6, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (142, 20, 3, 7, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (136, 20, 3, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (137, 20, 3, 2);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (138, 20, 3, 3);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (139, 20, 3, 4);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (140, 20, 3, 5);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (141, 20, 3, 6);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (142, 20, 3, 7);
 --[振替] 定期預貯金 -------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (143, 21, 3, 1, false);
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (144, 21, 3, 2, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (143, 21, 3, 1);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (144, 21, 3, 2);
 --[振替] 投資 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (145, 22, 3, 1, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (145, 22, 3, 1);
 --[振替] 投機 -------------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (146, 23, 3, 1, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (146, 23, 3, 1);
 --[振替] ショッピング -----------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (147, 24, 3, 1, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (147, 24, 3, 1);
 --[振替] その他 -----------------------------------------------------------------------------------
-INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number, disabled) VALUES (148, 25, 3, 1, false);
+INSERT INTO tbl_third_class_by_order(third_class_id, second_class_id, first_class_id, order_number) VALUES (148, 25, 3, 1);
 
 
 --[tbl_shop]========================================================================================
@@ -488,10 +488,14 @@ VALUES ('AAAマート', '本店', '2023-08-12T00:00:00');
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
 VALUES ('スーパーBBB', 'BBB店', '2024-04-01T00:00:00');
 
---[tbl_account]========================================================================================
-INSERT INTO tbl_account(account_name, branch_name, entry_date)
+--[tbl_account_info]===================================================================================
+INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
 VALUES ('お財布', '', '2023-08-12T00:00:00');
-INSERT INTO tbl_account(account_name, branch_name, entry_date)
+INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
 VALUES ('AAA銀行', '本店', '2024-04-01T00:00:00');
-INSERT INTO tbl_account(account_name, branch_name, entry_date)
+INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
 VALUES ('BBBネット銀行', 'ダイヤモンド支店', '2024-04-01T00:00:00');
+
+INSERT INTO tbl_balance(balance_name) VALUES ('支出');
+INSERT INTO tbl_balance(balance_name) VALUES ('収入');
+INSERT INTO tbl_balance(balance_name) VALUES ('振替');

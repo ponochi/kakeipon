@@ -1,3 +1,7 @@
+var shopId = window.sessionStorage.getItem("shopId");
+var accountSourceId = window.sessionStorage.getItem("accountSourceId");
+var accountDestinationId = window.sessionStorage.getItem("accountDestinationId");
+
 //=========================================================
 // Convert boolean value with a type of string literal
 // to value of boolean type.
@@ -6,4 +10,13 @@
 //=========================================================
 function toBoolean(boolStr) {
     return boolStr.toLowerCase() === "true";
+}
+
+function transitionCreateGroup() {
+    var shopId = document.getElementById("shopId").value;
+    var accountSourceId = document.getElementById("accountSource").value;
+    var accountDestinationId = document.getElementById("accountDestination").value;
+    window.sessionStorage.setItem("accountSourceId", accountSourceId);
+    window.sessionStorage.setItem("accountDestinationId", accountDestinationId);
+    location.href = "/shop/list";
 }

@@ -1,10 +1,8 @@
 package org.panda.systems.kakeipon.app.common;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.io.Serial;
@@ -19,17 +17,22 @@ public class AccountSourceForm implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tblAccountSeq", allocationSize = 1)
   @PositiveOrZero
+  @Column(name = "account_id")
   private Long accountId;
 
   @NotEmpty
+  @Column
   private String accountName;
 
   @NotEmpty
+  @Column
   private String branchName;
 
-  @NotEmpty
+  @PastOrPresent
+  @Column
   private LocalDateTime entryDate;
 
+  @Column
   private LocalDateTime updateDate;
 
   // Default constructor

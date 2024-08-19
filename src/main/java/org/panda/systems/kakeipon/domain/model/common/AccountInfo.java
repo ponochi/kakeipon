@@ -2,26 +2,26 @@ package org.panda.systems.kakeipon.domain.model.common;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tbl_account")
-public class Account {
-  @Id
+@Table(name = "tbl_account_info")
+public class AccountInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_account_seq", allocationSize = 1)
-  @Column
-  private Long accountId;
+  @SequenceGenerator(name = "tbl_account_info_seq", allocationSize = 1)
+  @EmbeddedId
+  private AccountPkey accountPkey;
 
   @NotEmpty
-  @Column
+  @Column(name = "account_name")
   private String accountName;
 
-  @Column
+  @Column(name = "branch_name")
   private String branchName;
 
-  @NotEmpty
+  @PastOrPresent
   @Column
   private LocalDateTime entryDate;
 
@@ -29,28 +29,24 @@ public class Account {
   private LocalDateTime updateDate;
 
   // Default Constructor
-  public Account() {
+  public AccountInfo() {
   }
 
   // Getters and Setters
-  public Long getAccountId() {
-    if (accountId == null) {
-      return 0L;
-    } else {
-      return accountId;
-    }
+  public AccountPkey getAccountPkey() {
+    return accountPkey;
   }
 
-  public void setAccountId(Long shopId) {
-    this.accountId = accountId;
+  public void setAccountPkey(AccountPkey accountId) {
+    this.accountPkey = accountId;
   }
 
   public String getAccountName() {
     return accountName;
   }
 
-  public void setAccountName(String shopName) {
-    this.accountName = shopName;
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
   }
 
   public String getBranchName() {
@@ -80,9 +76,9 @@ public class Account {
   // toString
   @Override
   public String toString() {
-    return "Account{" +
-        "shopId=" + accountId +
-        ", shopName='" + accountName + '\'' +
+    return "AccountInfo{" +
+        "accountId=" + accountPkey.getAccountId() +
+        ", accountName='" + accountName + '\'' +
         ", branchName='" + branchName + '\'' +
         ", entryDate=" + entryDate +
         ", updateDate=" + updateDate +

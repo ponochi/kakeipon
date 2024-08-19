@@ -2,16 +2,22 @@ package org.panda.systems.kakeipon.domain.model.spec;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_specification_group")
+@SecondaryTable(name = "tbl_account_and_balance",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
 public class SpecificationGroup implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,37 +25,44 @@ public class SpecificationGroup implements Serializable {
   private Long specificationGroupId;
 
   @ManyToOne
-  @JoinColumn(name = "userId", referencedColumnName = "userId",
+  @JoinColumn(name = "user_id", referencedColumnName = "user_id",
       insertable = false, updatable = false)
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "shopId", referencedColumnName = "shopId",
+  @JoinColumn(name = "shop_id", referencedColumnName = "shop_id",
       insertable = false, updatable = false)
   private Shop shop;
 
-  @NotEmpty
+  @PastOrPresent
   @Column
-  private Date receivingAndPaymentDate;
-
-  @Column
-  private Time receivingAndPaymentTime;
+  private LocalDate receivingAndPaymentDate;
 
   @NotEmpty
+  @Column
+  private LocalTime receivingAndPaymentTime;
+
+  @PositiveOrZero
   @Column
   private Long receivingAndPaymentType;
 
-  @NotEmpty
-  @Column
-  private Long accountSource;
+  @OneToOne
+  @JoinColumns({
+      @JoinColumn(name = "account_id", table = "tbl_account_and_balance"),
+  })
+  private AccountAndBalance accountAndBalanceSource;
 
-  @Column
-  private Long accountDestination;
+  @OneToOne
+  @JoinColumns({
+      @JoinColumn(name = "account_id", table = "tbl_account_and_balance"),
+  })
+  private AccountAndBalance accountAndBalanceDestination;
 
   @Column
   private String memo;
 
-  @Column
+  @PastOrPresent
+  @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
   @Column
@@ -84,19 +97,19 @@ public class SpecificationGroup implements Serializable {
     this.shop = shop;
   }
 
-  public Date getReceivingAndPaymentDate() {
+  public LocalDate getReceivingAndPaymentDate() {
     return receivingAndPaymentDate;
   }
 
-  public void setReceivingAndPaymentDate(Date receivingAndPaymentDate) {
+  public void setReceivingAndPaymentDate(LocalDate receivingAndPaymentDate) {
     this.receivingAndPaymentDate = receivingAndPaymentDate;
   }
 
-  public Time getReceivingAndPaymentTime() {
+  public LocalTime getReceivingAndPaymentTime() {
     return receivingAndPaymentTime;
   }
 
-  public void setReceivingAndPaymentTime(Time receivingAndPaymentTime) {
+  public void setReceivingAndPaymentTime(LocalTime receivingAndPaymentTime) {
     this.receivingAndPaymentTime = receivingAndPaymentTime;
   }
 
@@ -108,21 +121,21 @@ public class SpecificationGroup implements Serializable {
     this.receivingAndPaymentType = receivingAndPaymentType;
   }
 
-  public Long getAccountSource() {
-    return accountSource;
-  }
-
-  public void setAccountSource(Long receivingAndPaymentSource) {
-    this.accountSource = receivingAndPaymentSource;
-  }
-
-  public Long getAccountDestination() {
-    return accountDestination;
-  }
-
-  public void setAccountDestination(Long receivingAndPaymentDestination) {
-    this.accountDestination = receivingAndPaymentDestination;
-  }
+//  public AccountAndBalance getAccountSource() {
+//    return accountSource;
+//  }
+//
+//  public void setAccountSource(AccountAndBalance accountSource) {
+//    this.accountSource = accountSource;
+//  }
+//
+//  public AccountAndBalance getAccountDestination() {
+//    return accountDestination;
+//  }
+//
+//  public void setAccountDestination(AccountAndBalance accountDestination) {
+//    this.accountDestination = accountDestination;
+//  }
 
   public String getMemo() {
     return memo;
@@ -158,8 +171,8 @@ public class SpecificationGroup implements Serializable {
         ", receivingAndPaymentDate=" + receivingAndPaymentDate +
         ", receivingAndPaymentTime=" + receivingAndPaymentTime +
         ", receivingAndPaymentType=" + receivingAndPaymentType +
-        ", accountSource=" + accountSource +
-        ", accountDestination=" + accountDestination +
+//        ", accountSource=" + accountSource +
+//        ", accountDestination=" + accountDestination +
         ", memo='" + memo + '\'' +
         ", entryDate=" + entryDate +
         ", updateDate=" + updateDate +

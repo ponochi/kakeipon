@@ -2,6 +2,7 @@ package org.panda.systems.kakeipon.domain.model.common;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ public class Shop {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_shop_seq", allocationSize = 1)
-  @Column
+  @Column(name="shop_id")
   private Long shopId;
 
   @NotEmpty
@@ -41,6 +42,7 @@ public class Shop {
   @Column
   private String shopMemo;
 
+  @PastOrPresent
   @Column
   private LocalDateTime entryDate;
 
