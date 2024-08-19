@@ -15,15 +15,13 @@ DROP SEQUENCE IF EXISTS kp.tbl_specification_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_specification_group_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_balance_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_account_info_seq CASCADE;
+DROP SEQUENCE IF EXISTS kp.tbl_account_and_balance_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_shop_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_third_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_second_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_first_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_user_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_role_seq CASCADE;
-
---select setval('kp.tbl_role_seq', 1, FALSE);
---select setval('kp.tbl_user_seq', 1, FALSE);
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_role_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.tbl_role -- 権限テーブル
@@ -124,14 +122,16 @@ CREATE TABLE IF NOT EXISTS kp.tbl_shop -- 店舗情報テーブル
     PRIMARY KEY (shop_id)
 );
 
-CREATE TABLE IF NOT EXISTS kp.tbl_account_and_balance -- 口座収支複合キーテーブル
+CREATE SEQUENCE IF NOT EXISTS kp.tbl_account_and_balance_seq START 1 INCREMENT 1;
+CREATE TABLE IF NOT EXISTS kp.tbl_account_and_balance                   -- 口座収支複合キーテーブル
 (
-    account_and_balance_id BIGINT,               -- 口座収支複合キーID
-    account_id             BIGINT,               -- 口座ID
-    balance_id             BIGINT,               -- 収支ID
-    entry_date             TIMESTAMPTZ NOT NULL, -- 登録日時
-    update_date            TIMESTAMPTZ,          -- 更新日時
-    PRIMARY KEY (account_and_balance_id, account_id, balance_id)
+    account_and_balance_id BIGINT DEFAULT
+                            nextval('kp.tbl_account_and_balance_seq'),  -- 口座収支複合キーID
+    account_source_id      BIGINT,                                      -- 口座支出元ID
+    account_destination_id BIGINT,                                      -- 収支収入先ID
+    entry_date             TIMESTAMPTZ NOT NULL,                        -- 登録日時
+    update_date            TIMESTAMPTZ,                                 -- 更新日時
+    PRIMARY KEY (account_and_balance_id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_account_info_seq START 1 INCREMENT 1;
@@ -164,22 +164,16 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification_group -- 明細グループテ�
     receiving_and_payment_date DATE        NOT NULL,                                 -- 受取支払日
     receiving_and_payment_time TIME        NOT NULL,                                 -- 受取支払時間
     balance_id                 BIGINT      NOT NULL,                                 -- 受取支払種別ID (支出 / 収入 / 振替)
-    account_source_id          BIGINT,                                               -- 口座ID (任意) (支出 / 振替: 送金元)
-    account_destination_id     BIGINT,                                               -- 口座ID (任意) (収入 / 振替: 送金先)
+    account_and_balance_id     BIGINT,                                               -- 口座ID (任意) (支出 / 振替: 送金元)
     memo                       TEXT,                                                 -- メモ (任意) 1000文字まで
     entry_date                 TIMESTAMPTZ NOT NULL,                                 -- 登録日時
     update_date                TIMESTAMPTZ,                                          -- 更新日時
     PRIMARY KEY (specification_group_id, user_id),
-    FOREIGN KEY (user_id)
-        REFERENCES kp.tbl_user (user_id),
-    FOREIGN KEY (shop_id)
-        REFERENCES kp.tbl_shop (shop_id),
-    FOREIGN KEY (account_source_id)
-        REFERENCES kp.tbl_account_info (account_id),
-    FOREIGN KEY (account_destination_id)
-        REFERENCES kp.tbl_account_info (account_id),
-    FOREIGN KEY (balance_id)
-        REFERENCES kp.tbl_balance (balance_id)
+    FOREIGN KEY (user_id) REFERENCES kp.tbl_user (user_id),
+    FOREIGN KEY (shop_id) REFERENCES kp.tbl_shop (shop_id),
+    FOREIGN KEY (account_and_balance_id)
+        REFERENCES kp.tbl_account_and_balance (account_and_balance_id),
+    FOREIGN KEY (balance_id) REFERENCES kp.tbl_balance (balance_id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_specification_seq START 1 INCREMENT 1;

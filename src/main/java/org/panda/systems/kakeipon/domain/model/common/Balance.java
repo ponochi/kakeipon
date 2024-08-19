@@ -9,38 +9,26 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tbl_balance")
 public class Balance {
-  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_balance_seq", allocationSize = 1)
-  @Column(name = "balance_id")
-  private Long balanceId;
+  @EmbeddedId
+  private BalancePkey balancePkey;
 
   @NotEmpty
   @Column(name = "balance_name")
   private String balanceName;
-
-  @PastOrPresent
-  @Column
-  private LocalDateTime entryDate;
-
-  @Column
-  private LocalDateTime updateDate;
 
   // Default Constructor
   public Balance() {
   }
 
   // Getters and Setters
-  public Long getBalanceId() {
-    if (balanceId == null) {
-      return 1L;
-    } else {
-      return balanceId;
-    }
+  public BalancePkey getBalancePkey() {
+    return balancePkey;
   }
 
-  public void setBalanceId(Long balanceId) {
-    this.balanceId = balanceId;
+  public void setBalancePkey(BalancePkey balancePkey) {
+    this.balancePkey = balancePkey;
   }
 
   public String getBalanceName() {
@@ -51,30 +39,12 @@ public class Balance {
     this.balanceName = balanceName;
   }
 
-  public LocalDateTime getEntryDate() {
-    return entryDate;
-  }
-
-  public void setEntryDate(LocalDateTime entryDate) {
-    this.entryDate = entryDate;
-  }
-
-  public LocalDateTime getUpdateDate() {
-    return updateDate;
-  }
-
-  public void setUpdateDate(LocalDateTime updateDate) {
-    this.updateDate = updateDate;
-  }
-
   // toString
   @Override
   public String toString() {
     return "Balance{" +
-        "balanceId=" + balanceId +
+        "balancePkey=" + balancePkey +
         ", balanceName='" + balanceName + '\'' +
-        ", entryDate=" + entryDate +
-        ", updateDate=" + updateDate +
         '}';
   }
 }

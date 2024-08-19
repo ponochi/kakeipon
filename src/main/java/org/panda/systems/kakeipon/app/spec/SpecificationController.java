@@ -4,7 +4,6 @@ import org.panda.systems.kakeipon.app.common.AccountDestinationForm;
 import org.panda.systems.kakeipon.app.common.AccountSourceForm;
 import org.panda.systems.kakeipon.app.common.ShopForm;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.model.common.AccountAndBalancePkey;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
@@ -31,7 +30,7 @@ public class SpecificationController {
   @Autowired
   ShopService shopService;
   @Autowired
-  AccountAndBalanceService accountService;
+  AccountAndBalanceService accountAndBalanceService;
 
   @ModelAttribute("specificationGroupForm")
   SpecificationGroupForm setUpSpecificationGroupForm() {
@@ -81,7 +80,7 @@ public class SpecificationController {
                              @Validated ShopForm shopForm,
                              @Validated AccountSourceForm accountSourceForm,
                              @Validated AccountDestinationForm accountDestinationForm,
-                             @Validated AccountAndBalancePkey accountAndBalancePkey,
+                             @Validated Long accountAndBalanceId,
                              BindingResult result,
                              @ModelAttribute("specificationGroupId") Long specificationGroupId,
                              @ModelAttribute("shopId") Long shopId,
@@ -89,7 +88,7 @@ public class SpecificationController {
                              @ModelAttribute("accountDestinationId") Long accountDestinationId,
                              Model model) {
 
-    List<AccountAndBalance> accounts = accountService.findAll();
+    List<AccountAndBalance> accounts = accountAndBalanceService.findAll();
     model.addAttribute("specificationGroupForm", specificationGroupForm);
     model.addAttribute("shopForm", shopForm);
     model.addAttribute("accounts", accounts);
@@ -98,7 +97,7 @@ public class SpecificationController {
     if (accountDestinationId.equals(0L)) {
       accountDestination = new AccountAndBalance();
     } else {
-      accountDestination = accountService.findById(accountAndBalancePkey);
+      accountDestination = accountAndBalanceService.getById(accountAndBalanceId);
     }
 
     var destinationForm = new AccountDestinationForm();
@@ -117,7 +116,7 @@ public class SpecificationController {
                                   @Validated ShopForm shopForm,
                                   @Validated AccountSourceForm accountSourceForm,
                                   @Validated AccountDestinationForm accountDestinationForm,
-                                  @Validated AccountAndBalancePkey accountAndBalancePkey,
+                                  @Validated Long accountAndBalanceId,
                                   BindingResult result,
                                   @ModelAttribute("specificationGroupId") Long specificationGroupId,
                                   @ModelAttribute("shopId") Long shopId,
@@ -125,7 +124,7 @@ public class SpecificationController {
                                   @ModelAttribute("accountDestinationId") Long accountDestinationId,
                                   Model model) {
 
-    List<AccountAndBalance> accounts = accountService.findAll();
+    List<AccountAndBalance> accounts = accountAndBalanceService.findAll();
     model.addAttribute("specificationGroupForm", specificationGroupForm);
     model.addAttribute("shopForm", shopForm);
     model.addAttribute("accounts", accounts);
@@ -134,7 +133,7 @@ public class SpecificationController {
     if (accountSourceId.equals(0L)) {
       accountSource = new AccountAndBalance();
     } else {
-      accountSource = accountService.findById(accountAndBalancePkey);
+      accountSource = accountAndBalanceService.getById(accountAndBalanceId);
     }
 
     var sourceForm = new AccountSourceForm();

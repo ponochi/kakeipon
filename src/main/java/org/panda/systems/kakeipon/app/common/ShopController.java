@@ -2,7 +2,6 @@ package org.panda.systems.kakeipon.app.common;
 
 import org.panda.systems.kakeipon.app.spec.SpecificationGroupForm;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.model.common.AccountAndBalancePkey;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
@@ -29,7 +28,7 @@ public class ShopController {
   @Autowired
   ShopService shopService;
   @Autowired
-  AccountAndBalanceService accountService;
+  AccountAndBalanceService accountAndBalanceService;
 
   @GetMapping("setShop")
   String setShopToSpecificationGroup(
@@ -37,7 +36,7 @@ public class ShopController {
       @Validated ShopForm shopForm,
       @Validated AccountSourceForm accountSourceForm,
       @Validated AccountDestinationForm accountDestinationForm,
-      @Validated AccountAndBalancePkey accountAndBalancePkey,
+      @Validated Long accountAndBalanceId,
       BindingResult result,
       @ModelAttribute("shopId") Long shopId,
       @ModelAttribute("accountSourceId") Long accountSourceId,
@@ -53,7 +52,7 @@ public class ShopController {
     var sourceForm = new AccountSourceForm();
     if (accountSourceId > 0) {
       AccountAndBalance accountSource
-          = accountService.findById(accountAndBalancePkey);
+          = accountAndBalanceService.getById(accountAndBalanceId);
       sourceForm.setAccountId(accountSourceId);
       sourceForm.setEntryDate(accountSource.getEntryDate());
       sourceForm.setUpdateDate(accountSource.getUpdateDate());
@@ -64,7 +63,7 @@ public class ShopController {
     model.addAttribute("accountSourceForm", sourceForm);
 
     AccountAndBalance accountDestination
-        = accountService.findById(accountAndBalancePkey);
+        = accountAndBalanceService.getById(accountAndBalanceId);
     AccountDestinationForm destinationForm = new AccountDestinationForm();
     destinationForm.setAccountId(accountDestinationId);
     destinationForm.setEntryDate(accountDestination.getEntryDate());

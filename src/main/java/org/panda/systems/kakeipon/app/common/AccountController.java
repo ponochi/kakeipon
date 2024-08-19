@@ -2,7 +2,6 @@ package org.panda.systems.kakeipon.app.common;
 
 import org.panda.systems.kakeipon.app.spec.SpecificationGroupForm;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.model.common.AccountAndBalancePkey;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
@@ -20,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequestMapping("")
 public class AccountController {
   @Autowired
-  AccountAndBalanceService accountService;
+  AccountAndBalanceService accountAndBalanceService;
   @Autowired
   ShopService shopService;
   @Autowired
@@ -38,18 +37,19 @@ public class AccountController {
 
   @PostMapping("/setAccountSource")
   String setAccountSourceToSpecificationGroup(
-      @Validated AccountAndBalancePkey accountAndBalancePkey,
+      @Validated AccountAndBalance accountAndBalance,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
       Model model,
       UriComponentsBuilder builder) {
 
     var destinationForm = new AccountDestinationForm();
-    if (accountAndBalancePkey.getAccountId() > 0) {
+    if (accountAndBalance.getAccountSourceId() > 0) {
       AccountAndBalance accountDestination
-          = accountService.findById(accountAndBalancePkey);
+          = accountAndBalanceService.getById(
+              accountAndBalance.getAccountAndBalanceId());
       destinationForm.setAccountId(
-          accountDestination.getAccountAndBalancePkey().getAccountId());
+          accountDestination.getAccountSourceId());
       destinationForm.setEntryDate(accountDestination.getEntryDate());
       destinationForm.setUpdateDate(accountDestination.getUpdateDate());
     }
@@ -59,10 +59,11 @@ public class AccountController {
     model.addAttribute("accountDestinationForm", destinationForm);
 
     AccountAndBalance accountSource
-        = accountService.findById(accountAndBalancePkey);
+        = accountAndBalanceService.getById(
+            accountAndBalance.getAccountAndBalanceId());
     AccountSourceForm sourceForm = new AccountSourceForm();
     sourceForm.setAccountId(
-        accountSource.getAccountAndBalancePkey().getAccountId());
+        accountSource.getAccountAndBalanceId());
     sourceForm.setEntryDate(accountSource.getEntryDate());
     sourceForm.setUpdateDate(accountSource.getUpdateDate());
 
@@ -75,7 +76,7 @@ public class AccountController {
   String setAccountDestinationToSpecificationGroup(
       @PathVariable("accountSourceId") Long accountSourceId,
       @PathVariable("accountDestinationId") Long accountDestinationId,
-      @Validated AccountAndBalancePkey accountAndBalancePkey,
+      @Validated Long accountAndBalanceId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
       Model model) {
@@ -83,7 +84,7 @@ public class AccountController {
     var sourceForm = new AccountSourceForm();
     if (accountSourceId > 0) {
       AccountAndBalance accountSource
-          = accountService.findById(accountAndBalancePkey);
+          = accountAndBalanceService.getById(accountAndBalanceId);
       sourceForm.setAccountId(accountSourceId);
       sourceForm.setEntryDate(accountSource.getEntryDate());
       sourceForm.setUpdateDate(accountSource.getUpdateDate());
@@ -94,7 +95,7 @@ public class AccountController {
     model.addAttribute("accountSourceForm", sourceForm);
 
     AccountAndBalance accountDestination
-        = accountService.findById(accountAndBalancePkey);
+        = accountAndBalanceService.getById(accountAndBalanceId);
     AccountDestinationForm destinationForm = new AccountDestinationForm();
     destinationForm.setAccountId(accountDestinationId);
     destinationForm.setEntryDate(accountDestination.getEntryDate());

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
+import org.panda.systems.kakeipon.domain.model.common.Balance;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
@@ -15,6 +16,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "tbl_specification_group")
+@SecondaryTable(name = "tbl_balance",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_id"))
 @SecondaryTable(name = "tbl_account_and_balance",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
 public class SpecificationGroup implements Serializable {
@@ -41,21 +44,22 @@ public class SpecificationGroup implements Serializable {
   @Column
   private LocalTime receivingAndPaymentTime;
 
-  @PositiveOrZero
-  @Column
-  private Long receivingAndPaymentType;
+  @OneToOne
+  @JoinColumns({
+      @JoinColumn(name = "balance_id", table = "tbl_balance",
+          referencedColumnName = "balance_id",
+          insertable = false, updatable = false),
+  })
+  private Balance balance;
 
   @OneToOne
   @JoinColumns({
-      @JoinColumn(name = "account_id", table = "tbl_account_and_balance"),
+      @JoinColumn(name = "account_and_balance_id",
+          table = "tbl_account_and_balance",
+          referencedColumnName = "account_and_balance_id",
+          insertable = false, updatable = false),
   })
-  private AccountAndBalance accountAndBalanceSource;
-
-  @OneToOne
-  @JoinColumns({
-      @JoinColumn(name = "account_id", table = "tbl_account_and_balance"),
-  })
-  private AccountAndBalance accountAndBalanceDestination;
+  private AccountAndBalance accountAndBalance;
 
   @Column
   private String memo;
@@ -96,45 +100,38 @@ public class SpecificationGroup implements Serializable {
     this.shop = shop;
   }
 
-  public LocalDate getReceivingAndPaymentDate() {
+  public @PastOrPresent LocalDate getReceivingAndPaymentDate() {
     return receivingAndPaymentDate;
   }
 
-  public void setReceivingAndPaymentDate(LocalDate receivingAndPaymentDate) {
+  public void setReceivingAndPaymentDate(@PastOrPresent LocalDate receivingAndPaymentDate) {
     this.receivingAndPaymentDate = receivingAndPaymentDate;
   }
 
-  public LocalTime getReceivingAndPaymentTime() {
+  public @NotEmpty LocalTime getReceivingAndPaymentTime() {
     return receivingAndPaymentTime;
   }
 
-  public void setReceivingAndPaymentTime(LocalTime receivingAndPaymentTime) {
+  public void setReceivingAndPaymentTime(@NotEmpty LocalTime receivingAndPaymentTime) {
     this.receivingAndPaymentTime = receivingAndPaymentTime;
   }
 
-  public Long getReceivingAndPaymentType() {
-    return receivingAndPaymentType;
+  public @PositiveOrZero Balance getBalance() {
+    return balance;
   }
 
-  public void setReceivingAndPaymentType(Long receivingAndPaymentType) {
-    this.receivingAndPaymentType = receivingAndPaymentType;
+  public void setBalanceId(@PositiveOrZero Balance balance) {
+    this.balance = balance;
   }
 
-//  public AccountAndBalance getAccountSource() {
-//    return accountSource;
-//  }
-//
-//  public void setAccountSource(AccountAndBalance accountSource) {
-//    this.accountSource = accountSource;
-//  }
-//
-//  public AccountAndBalance getAccountDestination() {
-//    return accountDestination;
-//  }
-//
-//  public void setAccountDestination(AccountAndBalance accountDestination) {
-//    this.accountDestination = accountDestination;
-//  }
+  public AccountAndBalance getAccountAndBalanceSource() {
+    return accountAndBalance;
+  }
+
+  public void setAccountAndBalance(
+      AccountAndBalance accountAndBalance) {
+    this.accountAndBalance = accountAndBalance;
+  }
 
   public String getMemo() {
     return memo;
@@ -144,11 +141,11 @@ public class SpecificationGroup implements Serializable {
     this.memo = memo;
   }
 
-  public LocalDateTime getEntryDate() {
+  public @PastOrPresent LocalDateTime getEntryDate() {
     return entryDate;
   }
 
-  public void setEntryDate(LocalDateTime entryDate) {
+  public void setEntryDate(@PastOrPresent LocalDateTime entryDate) {
     this.entryDate = entryDate;
   }
 
@@ -169,9 +166,8 @@ public class SpecificationGroup implements Serializable {
         ", shop=" + shop +
         ", receivingAndPaymentDate=" + receivingAndPaymentDate +
         ", receivingAndPaymentTime=" + receivingAndPaymentTime +
-        ", receivingAndPaymentType=" + receivingAndPaymentType +
-//        ", accountSource=" + accountSource +
-//        ", accountDestination=" + accountDestination +
+        ", balance=" + balance +
+        ", accountAndBalance=" + accountAndBalance +
         ", memo='" + memo + '\'' +
         ", entryDate=" + entryDate +
         ", updateDate=" + updateDate +

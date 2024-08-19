@@ -8,11 +8,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_account_info")
-public class AccountInfo {
+public class AccountSource {
+  @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_account_info_seq", allocationSize = 1)
-  @EmbeddedId
-  private AccountPkey accountPkey;
+  @Column(name = "account_id")
+  private Long accountSourceId;
 
   @NotEmpty
   @Column(name = "account_name")
@@ -29,23 +30,24 @@ public class AccountInfo {
   private LocalDateTime updateDate;
 
   // Default Constructor
-  public AccountInfo() {
+  public AccountSource() {
   }
 
   // Getters and Setters
-  public AccountPkey getAccountPkey() {
-    return accountPkey;
+
+  public Long getAccountSourceId() {
+    return accountSourceId;
   }
 
-  public void setAccountPkey(AccountPkey accountId) {
-    this.accountPkey = accountId;
+  public void setAccountSourceId(Long accountSourceId) {
+    this.accountSourceId = accountSourceId;
   }
 
-  public String getAccountName() {
+  public @NotEmpty String getAccountName() {
     return accountName;
   }
 
-  public void setAccountName(String accountName) {
+  public void setAccountName(@NotEmpty String accountName) {
     this.accountName = accountName;
   }
 
@@ -57,11 +59,11 @@ public class AccountInfo {
     this.branchName = branchName;
   }
 
-  public LocalDateTime getEntryDate() {
+  public @PastOrPresent LocalDateTime getEntryDate() {
     return entryDate;
   }
 
-  public void setEntryDate(LocalDateTime entryDate) {
+  public void setEntryDate(@PastOrPresent LocalDateTime entryDate) {
     this.entryDate = entryDate;
   }
 
@@ -76,8 +78,8 @@ public class AccountInfo {
   // toString
   @Override
   public String toString() {
-    return "AccountInfo{" +
-        "accountId=" + accountPkey.getAccountId() +
+    return "AccountSource{" +
+        "accountSourceId=" + accountSourceId +
         ", accountName='" + accountName + '\'' +
         ", branchName='" + branchName + '\'' +
         ", entryDate=" + entryDate +
