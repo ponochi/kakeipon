@@ -19,13 +19,11 @@ public class AccountSourceService implements Serializable {
     return accountSourceRepository.saveAndFlush(accountSource);
   }
 
-  public AccountSource getById(Long accountId)
-  {
+  public AccountSource getById(Long accountId) {
     return accountSourceRepository.getById(accountId);
   }
 
-  public List<AccountSource> findAll()
-  {
+  public List<AccountSource> findAll() {
     return accountSourceRepository.findAll();
   }
 }

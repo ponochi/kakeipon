@@ -11,26 +11,20 @@ import java.util.List;
 
 @Service
 public class AccountDestinationService implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
   @Autowired
   private AccountDestinationRepository accountDestinationRepository;
 
-  @Serial
-  private static final long serialVersionUID = 1L;
-
-  public AccountDestination saveAndFlush(AccountDestination accountDestination)
-  {
+  public AccountDestination saveAndFlush(AccountDestination accountDestination) {
     return accountDestinationRepository.saveAndFlush(accountDestination);
   }
 
-  public AccountDestination getById(Long accountId)
-
-  {
+  public AccountDestination getById(Long accountId) {
     return accountDestinationRepository.getById(accountId);
   }
 
-  public List<AccountDestination> findAll()
-
-  {
+  public List<AccountDestination> findAll() {
     return accountDestinationRepository.findAll();
   }
 }

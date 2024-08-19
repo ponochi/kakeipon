@@ -47,7 +47,7 @@ public class AccountController {
     if (accountAndBalance.getAccountSourceId() > 0) {
       AccountAndBalance accountDestination
           = accountAndBalanceService.getById(
-              accountAndBalance.getAccountAndBalanceId());
+          accountAndBalance.getAccountAndBalanceId());
       destinationForm.setAccountId(
           accountDestination.getAccountSourceId());
       destinationForm.setEntryDate(accountDestination.getEntryDate());
@@ -60,7 +60,7 @@ public class AccountController {
 
     AccountAndBalance accountSource
         = accountAndBalanceService.getById(
-            accountAndBalance.getAccountAndBalanceId());
+        accountAndBalance.getAccountAndBalanceId());
     AccountSourceForm sourceForm = new AccountSourceForm();
     sourceForm.setAccountId(
         accountSource.getAccountAndBalanceId());
