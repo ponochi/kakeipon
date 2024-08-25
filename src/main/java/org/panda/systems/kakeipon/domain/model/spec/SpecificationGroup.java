@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.panda.systems.kakeipon.domain.model.common.Balance;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
@@ -20,6 +21,7 @@ import java.time.LocalTime;
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_id"))
 @SecondaryTable(name = "tbl_account_and_balance",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
+@Data
 public class SpecificationGroup implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,107 +72,4 @@ public class SpecificationGroup implements Serializable {
 
   @Column
   private LocalDateTime updateDate;
-
-  // Default Constructor
-  public SpecificationGroup() {
-  }
-
-  // Getters and Setters
-  public Long getSpecificationGroupId() {
-    return specificationGroupId;
-  }
-
-  public void setSpecificationGroupId(Long specificationGroupId) {
-    this.specificationGroupId = specificationGroupId;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public Shop getShop() {
-    return shop;
-  }
-
-  public void setShop(Shop shop) {
-    this.shop = shop;
-  }
-
-  public @PastOrPresent LocalDate getReceivingAndPaymentDate() {
-    return receivingAndPaymentDate;
-  }
-
-  public void setReceivingAndPaymentDate(@PastOrPresent LocalDate receivingAndPaymentDate) {
-    this.receivingAndPaymentDate = receivingAndPaymentDate;
-  }
-
-  public @NotEmpty LocalTime getReceivingAndPaymentTime() {
-    return receivingAndPaymentTime;
-  }
-
-  public void setReceivingAndPaymentTime(@NotEmpty LocalTime receivingAndPaymentTime) {
-    this.receivingAndPaymentTime = receivingAndPaymentTime;
-  }
-
-  public @PositiveOrZero Balance getBalance() {
-    return balance;
-  }
-
-  public void setBalanceId(@PositiveOrZero Balance balance) {
-    this.balance = balance;
-  }
-
-  public AccountAndBalance getAccountAndBalanceSource() {
-    return accountAndBalance;
-  }
-
-  public void setAccountAndBalance(
-      AccountAndBalance accountAndBalance) {
-    this.accountAndBalance = accountAndBalance;
-  }
-
-  public String getMemo() {
-    return memo;
-  }
-
-  public void setMemo(String memo) {
-    this.memo = memo;
-  }
-
-  public @PastOrPresent LocalDateTime getEntryDate() {
-    return entryDate;
-  }
-
-  public void setEntryDate(@PastOrPresent LocalDateTime entryDate) {
-    this.entryDate = entryDate;
-  }
-
-  public LocalDateTime getUpdateDate() {
-    return updateDate;
-  }
-
-  public void setUpdateDate(LocalDateTime updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  // toString
-  @Override
-  public String toString() {
-    return "SpecificationGroup{" +
-        "specificationGroupId=" + specificationGroupId +
-        ", user=" + user +
-        ", shop=" + shop +
-        ", receivingAndPaymentDate=" + receivingAndPaymentDate +
-        ", receivingAndPaymentTime=" + receivingAndPaymentTime +
-        ", balance=" + balance +
-        ", accountAndBalance=" + accountAndBalance +
-        ", memo='" + memo + '\'' +
-        ", entryDate=" + entryDate +
-        ", updateDate=" + updateDate +
-        '}';
-  }
 }

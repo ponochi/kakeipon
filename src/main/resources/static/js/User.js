@@ -1,9 +1,21 @@
 //=========================================================================
-// Set to birthday field.
+// Transition showDetail.html to editDetail.html.
 // @param void
 // @return void
 //=========================================================================
-function setToBirthdayField() {
+function transitToEditDetail() {
+  let form = document.getElementById("showDetailForm");
+  // window.sessionStorage.setItem("user", user);
+  form.action = "/user/edit";
+  form.submit();
+}
+
+//=========================================================================
+// Set to birthDay field.
+// @param void
+// @return void
+//=========================================================================
+function setToBirthDayField() {
   let yearSelect = document.getElementById("yearSelect");
   let monthSelect = document.getElementById("monthSelect");
   let dateSelect = document.getElementById("dateSelect");
@@ -18,6 +30,7 @@ function setToBirthdayField() {
     dt.setMonth(dt.getMonth() - 1);
   }
 
+  backupDate = Number(dt.getDate());
   dt.setDate(1);
 
   // Calculate last date of current month.
@@ -25,7 +38,6 @@ function setToBirthdayField() {
   let lastDate = dt.getDate();
   dateSelect = document.getElementById("dateSelect");
   Array.from(dateSelect.options).forEach(dt_option => {
-    console.log("1_dt_option.value : " + dt_option.value);
     if (Number(dt_option.value) <= lastDate) {
       dt_option.hidden = false;
     }
@@ -37,30 +49,35 @@ function setToBirthdayField() {
   yearSelect = document.getElementById("yearSelect");
   monthSelect = document.getElementById("monthSelect");
   dateSelect = document.getElementById("dateSelect");
-  let birthday = document.getElementById("birthday");
+  let birthDay = document.getElementById("birthDay");
   mon = monthSelect.value;
-  birthday.value = yearSelect.value
+  birthDay.value = yearSelect.value
     + '-' + mon
     + '-' + newDate
     + 'T00:00';
   dateSelect.selectedIndex = lastDate - 1;
+  Array.from(dateSelect.options).forEach(dt_option => {
+    if (Number(dt_option.value) === Number(backupDate)) {
+      dt_option.selected = true;
+    }
+  });
 }
 
 //=========================================================================
-// Initial settings at year, month, date birthday of select box.
+// Initial settings at year, month, date birthDay of select box.
 // @param void
 // @return void
 //=========================================================================
 function setToYYYYMMDDField() {
-  let birthday
-    = document.getElementById("birthday");
+  let birthDay
+    = document.getElementById("birthDay");
   //=========================================================================
   // Processing year
   //=========================================================================
   let yearSelect
       = document.getElementById("yearSelect"),
     currentYear = new Date().getFullYear(),
-    year = new Date(birthday.value).getFullYear();
+    year = new Date(birthDay.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
     let yr_option = document.createElement("option");
     let procYear = currentYear - i;
@@ -76,7 +93,7 @@ function setToYYYYMMDDField() {
   // Processing month
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
-  let month = new Date(birthday.value).getMonth() + 1;
+  let month = new Date(birthDay.value).getMonth() + 1;
   Array.from(monthSelect.options).forEach(mt_option => {
     if (Number(mt_option.value) === month) {
       mt_option.selected = true;
@@ -88,26 +105,23 @@ function setToYYYYMMDDField() {
   //=========================================================================
   let dateSelect
     = document.getElementById("dateSelect");
-  birthday
-    = new Date(document.getElementById("birthday").value)
+  birthDay
+    = new Date(document.getElementById("birthDay").value)
 
   // Calculate last date of current month.
-  let dt1 = new Date(birthday);
+  let dt1 = new Date(birthDay);
   dt1.setFullYear(dt1.getFullYear());
-  console.log("dt1.getMonth() : " + dt1.getMonth());
-  console.log("dt1.getMonth() + 1 : " + (Number(dt1.getMonth()) + 1));
   dt1.setMonth(dt1.getMonth() + 1);
+  backupDate = Number(dt1.getDate());
   dt1.setDate(1)
   dt1.setDate(dt1.getDate() - 1);
-  console.log("dt1 : " + dt1);
   lastDate = dt1.getDate();
-  birthday
-    = new Date(document.getElementById("birthday").value);
-  let dt2 = birthday.getDate();
+  birthDay
+    = new Date(document.getElementById("birthDay").value);
+  let dt2 = birthDay.getDate();
   Array.from(dateSelect.options).forEach(dt2_option => {
     dt2_option.hidden = Number(dt2_option.value) > lastDate;
     if (Number(dt2_option.value) === dt2) {
-      dt2_option.selected = true;
       dt2_option.hidden = false;
     }
     if (Number(dt2_option.value) > lastDate) {
@@ -115,26 +129,28 @@ function setToYYYYMMDDField() {
     } else if (Number(dt2_option.value) <= lastDate) {
       dt2_option.hidden = false;
     }
-
+    if (Number(dt2_option.value) === backupDate) {
+      dt2_option.selected = true;
+    }
   });
 }
 
 //=========================================================================
-// Initial settings at year, month, date birthday of select box.
+// Initial settings at year, month, date birthDay of select box.
 // @param void
 // @return void
 //=========================================================================
 function setToDefaultYYYYMMDDField() {
-  let birthday
-    = document.getElementById("birthday");
-  birthday.value = "1970-01-01T00:00";
+  let birthDay
+    = document.getElementById("birthDay");
+  birthDay.value = "1970-01-01T00:00";
   //=========================================================================
   // Processing year
   //=========================================================================
   let yearSelect
       = document.getElementById("yearSelect"),
     currentYear = new Date().getFullYear(),
-    year = new Date(birthday.value).getFullYear();
+    year = new Date(birthDay.value).getFullYear();
   for (let i = 99; i >= 0; i--) {
     let yr_option = document.createElement("option");
     let procYear = currentYear - i;
@@ -150,7 +166,7 @@ function setToDefaultYYYYMMDDField() {
   // Processing month
   //=========================================================================
   let monthSelect = document.getElementById("monthSelect");
-  let month = new Date(birthday.value).getMonth() + 1;
+  let month = new Date(birthDay.value).getMonth() + 1;
   Array.from(monthSelect.options).forEach(mt_option => {
     if (Number(mt_option.value) === month) {
       mt_option.selected = true;
@@ -162,19 +178,19 @@ function setToDefaultYYYYMMDDField() {
   //=========================================================================
   let dateSelect
     = document.getElementById("dateSelect");
-  birthday
-    = new Date(document.getElementById("birthday").value)
+  birthDay
+    = new Date(document.getElementById("birthDay").value)
 
   // Calculate last date of current month.
-  let dt1 = new Date(birthday);
+  let dt1 = new Date(birthDay);
   dt1.setFullYear(dt1.getFullYear());
   dt1.setMonth(dt1.getMonth() + 1);
   dt1.setDate(1)
   dt1.setDate(dt1.getDate() - 1);
   lastDate = dt1.getDate();
-  birthday
-    = new Date(document.getElementById("birthday").value);
-  let dt2 = birthday.getDate();
+  birthDay
+    = new Date(document.getElementById("birthDay").value);
+  let dt2 = birthDay.getDate();
   Array.from(dateSelect.options).forEach(dt2_option => {
     dt2_option.hidden = Number(dt2_option.value) > lastDate;
     if (Number(dt2_option.value) === dt2) {

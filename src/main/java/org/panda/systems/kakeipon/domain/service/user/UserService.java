@@ -33,6 +33,6 @@ public class UserService {
 
   @Transactional
   public User saveUser(User user) {
-    return userRepository.saveAndFlush(new User());
+    return userRepository.saveAndFlush(user);
   }
 }

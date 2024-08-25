@@ -15,100 +15,106 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-@RequestMapping( "user" )
+@RequestMapping("user")
 public class UsersController {
   @Autowired
   UserService userService;
   @Autowired
   RoleService roleService;
 
-  @ModelAttribute
-  UserForm setUpForm( )
-  {
-    UserForm form = new UserForm( );
-    // form.setRoleId( Long.parseLong( "2" ) );
-    if (form.getRole() == null ) {
-      form.setRole(roleService.findByRoleId( form.getRoleId() ) );
-    }
+  // Default constructor
+  public UsersController() {
+  }
+
+  @ModelAttribute(name = "userForm")
+  UserForm setUpUserForm() {
+    UserForm form = new UserForm();
+//    form.setRoleId(Long.parseLong("2"));
+//    form.setRole(roleService.findByRoleId(form.getRoleId()));
     return form;
   }
 
-  @GetMapping( "" )
-  String list( Model model ) {
-    List<User> users = userService.findAll( );
-    model.addAttribute( "users", users );
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  String list(Model model) {
+    List<User> users = userService.findAll();
+    model.addAttribute("users", users);
     return "/user/showList";
   }
 
-  @GetMapping( "{id}/show" )
-  String show( @PathVariable Long id, Model model ) {
-    User user = userService.findByUserId( id );
-    // user.setRole( roleService.findByRoleId( user.getRoleId() ) );
-    model.addAttribute( "user", user );
+  @RequestMapping(value = "{userId}/show", method = RequestMethod.GET)
+  String show(@PathVariable Long userId, Model model ) {
+    User user = userService.findByUserId(userId);
+    model.addAttribute("user", user);
     return "/user/showDetail";
   }
 
   // ToDo: Implements create new user function.
-  @GetMapping( "create" )
-  String createForm(UserForm form, Model model ) {
-    List<Role> roles = roleService.findAll( );
-    form.setRoleId(Long.parseLong("1"));
-    model.addAttribute( "form", form );
-    model.addAttribute( "roles", roles );
+  @GetMapping("user/create")
+  String createForm(UserForm form, Model model) {
+    List<Role> roles = roleService.findAll();
+//    form.setRoleId(Long.parseLong("2"));
+    form.setRole(roleService.findByRoleId(Long.parseLong("2")));
+    model.addAttribute("form", form);
+    model.addAttribute("roles", roles);
     return "/user/createDetail";
   }
 
   private static void setUser(UserForm form, User user) {
-    user.setUserId( form.getUserId() );
-    user.setNickName( form.getNickName() );
-    user.setLastName( form.getLastName() );
-    user.setFirstName( form.getFirstName() );
-    user.setPassword( form.getPassword() );
-    user.setEmail( form.getEmail() );
-    user.setBirthday( form.getBirthday() );
-    user.setPhoneNumber( form.getPhoneNumber() );
+    user.setUserId(form.getUserId());
+    user.setNickName(form.getNickName());
+    user.setLastName(form.getLastName());
+    user.setFirstName(form.getFirstName());
+    user.setPassword(form.getPassword());
+    user.setEmail(form.getEmail());
+    user.setBirthDay(form.getBirthDay());
+    user.setPhoneNumber(form.getPhoneNumber());
+
   }
 
-  @GetMapping( "{id}/edit" )
-  String editForm( @PathVariable Long id, Model model ) {
-    User user = userService.findByUserId( id );
-    List<Role> roles = roleService.findAll( );
-    model.addAttribute( "user", user );
-    model.addAttribute( "roles", roles );
+  @RequestMapping(value = "{userId}/edit", method = RequestMethod.POST)
+  String editForm(@PathVariable Long userId,
+                  Model model) {
+    User user = userService.findByUserId(userId);
+    List<Role> roles = roleService.findAll();
+    System.out.println("userForm : " + user.toString());
+    model.addAttribute("user", user);
+    model.addAttribute("roles", roles);
     return "/user/editDetail";
   }
 
   // ToDo: Implements create new user function.
-  @PostMapping( "createConfirm" )
-  String createConfirm( @Validated UserForm form, BindingResult result,
-                        Model model ) {
-    if ( result.hasErrors( ) ) {
-      return createForm( form, model );
+  @PostMapping("user/createConfirm")
+  String createConfirm(@Validated UserForm form, BindingResult result,
+                       Model model) {
+    if (result.hasErrors()) {
+      return createForm(form, model);
     }
-    Role role = roleService.findByRoleId( form.getRoleId() );
+    Role role = roleService.findByRoleId(form.getRole().getRoleId());
     if (role == null) {
       role = new Role();
-      role.setRoleId( form.getRoleId() );
+      role.setRoleId(Long.parseLong("2"));
     }
-    User user = new User( );
+    User user = new User();
     setUser(form, user);
     user.setRole(role);
-    user.setEntryDate( form.getEntryDate() );
-    user.setUpdateDate( LocalDateTime.now() );
-    User resultUser = userService.saveUser( user );
-    resultUser = userService.findByUserId( resultUser.getUserId() );
+    user.setEntryDate(form.getEntryDate());
+    user.setUpdateDate(LocalDateTime.now());
+    User resultUser = userService.saveUser(user);
+    resultUser = userService.findByUserId(resultUser.getUserId());
+    model.addAttribute("user", resultUser);
     return "redirect:/user/" + resultUser.getUserId() + "/show";
   }
 
-  @PostMapping( "{id}/confirm" )
+  @RequestMapping(value = "{userId}/confirm", method = RequestMethod.POST)
   String confirm(@Validated UserForm form, BindingResult bindingResult,
-                 @PathVariable Long id, Model model ) {
-    if ( bindingResult.hasErrors( ) ) {
-      return editForm( id, model );
+                 @PathVariable Long userId, Model model) {
+    System.out.println("confirm__ : " + form.toString());
+    if (bindingResult.hasErrors()) {
+      System.out.println("bindingResult.hasErrors()");
+      return editForm(userId, model);
     }
-    User user = userService.findByUserId( id );
+    User user = userService.findByUserId(userId);
     setUser(form, user);
-    user.setRole(form.getRole());
     user.setRole(form.getRole());
     user.setEntryDate(form.getEntryDate());
     user.setUpdateDate(LocalDateTime.now());

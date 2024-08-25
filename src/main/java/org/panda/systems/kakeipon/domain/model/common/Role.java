@@ -2,11 +2,13 @@ package org.panda.systems.kakeipon.domain.model.common;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
 import java.io.Serializable;
 
 @Entity
 @Table(name = "tbl_role")
+@Data
 public class Role implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,21 +19,4 @@ public class Role implements Serializable {
   @NotEmpty
   @Column
   private String roleName;
-
-
-  public Long getRoleId() {
-    return roleId;
-  }
-
-  public void setRoleId(Long roleId) {
-    this.roleId = roleId;
-  }
-
-  public String getRoleName() {
-    return roleName;
-  }
-
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
-  }
 }

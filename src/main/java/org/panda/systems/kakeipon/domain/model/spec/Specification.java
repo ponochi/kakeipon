@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_specification")
+@Data
 public class Specification implements Serializable {
   @NotEmpty
   @Column
@@ -54,115 +56,4 @@ public class Specification implements Serializable {
 
   @Column
   private LocalDateTime updateDate;
-
-  // Default Constructor
-  public Specification() {
-  }
-
-  // Getters and Setters
-  public Long getSpecificationGroupId() {
-    return specificationGroupId;
-  }
-
-  public void setSpecificationGroupId(Long specificationGroupId) {
-    this.specificationGroupId = specificationGroupId;
-  }
-
-  public Long getSpecificationId() {
-    return specificationId;
-  }
-
-  public void setSpecificationId(Long specificationId) {
-    this.specificationId = specificationId;
-  }
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public String getItemName() {
-    return itemName;
-  }
-
-  public void setItemName(String itemName) {
-    this.itemName = itemName;
-  }
-
-  public BigDecimal getItemsJpyPrice() {
-    return itemsJpyPrice;
-  }
-
-  public void setItemsJpyPrice(BigDecimal itemsJpyPrice) {
-    this.itemsJpyPrice = itemsJpyPrice;
-  }
-
-  public String getCurrencyName() {
-    return currencyName;
-  }
-
-  public void setCurrencyName(String currencyName) {
-    this.currencyName = currencyName;
-  }
-
-  public BigDecimal getItemsPrice() {
-    return itemsPrice;
-  }
-
-  public void setItemsPrice(BigDecimal itemsPrice) {
-    this.itemsPrice = itemsPrice;
-  }
-
-  public Integer getItemCount() {
-    return itemCount;
-  }
-
-  public void setItemCount(Integer itemCount) {
-    this.itemCount = itemCount;
-  }
-
-  public String getMemo() {
-    return memo;
-  }
-
-  public void setMemo(String memo) {
-    this.memo = memo;
-  }
-
-  public LocalDateTime getEntryDate() {
-    return entryDate;
-  }
-
-  public void setEntryDate(LocalDateTime entryDate) {
-    this.entryDate = entryDate;
-  }
-
-  public LocalDateTime getUpdateDate() {
-    return updateDate;
-  }
-
-  public void setUpdateDate(LocalDateTime updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  // toString
-  @Override
-  public String toString() {
-    return "Specification{" +
-        "specificationGroupId=" + specificationGroupId +
-        ", specificationId=" + specificationId +
-        ", user=" + user +
-        ", itemName='" + itemName + '\'' +
-        ", itemsJpyPrice=" + itemsJpyPrice +
-        ", currency='" + currencyName + '\'' +
-        ", itemsPrice=" + itemsPrice +
-        ", itemCount=" + itemCount +
-        ", memo='" + memo + '\'' +
-        ", entryDate=" + entryDate +
-        ", updateDate=" + updateDate +
-        '}';
-  }
 }

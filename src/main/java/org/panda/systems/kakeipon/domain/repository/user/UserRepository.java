@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
       " tu.first_name," +
       " tu.password," +
       " tu.email," +
-      " tu.birthday," +
+      " tu.birth_day," +
       " tu.phone_number," +
       " tu.role_id," +
       " tr.role_name," +
@@ -35,7 +35,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
       " tu.first_name," +
       " tu.password," +
       " tu.email," +
-      " tu.birthday," +
+      " tu.birth_day," +
       " tu.phone_number," +
       " tu.role_id," +
       " (select tr.role_name from tbl_role tr where tr.role_id = tu.role_id) as role_name," +

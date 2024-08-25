@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
+import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Data
 public class AccountSourceForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
@@ -34,65 +36,4 @@ public class AccountSourceForm implements Serializable {
 
   @Column
   private LocalDateTime updateDate;
-
-  // Default constructor
-  public AccountSourceForm() {
-  }
-
-  // Parameterized constructor
-  public AccountSourceForm(Long accountId) {
-    this.accountId = accountId;
-  }
-
-  // Getters and Setters
-  public Long getAccountId() {
-    return accountId;
-  }
-
-  public void setAccountId(Long accountId) {
-    this.accountId = accountId;
-  }
-
-  public String getAccountName() {
-    return accountName;
-  }
-
-  public void setAccountName(String accountName) {
-    this.accountName = accountName;
-  }
-
-  public String getBranchName() {
-    return branchName;
-  }
-
-  public void setBranchName(String branchName) {
-    this.branchName = branchName;
-  }
-
-  public LocalDateTime getEntryDate() {
-    return entryDate;
-  }
-
-  public void setEntryDate(LocalDateTime entryDate) {
-    this.entryDate = entryDate;
-  }
-
-  public LocalDateTime getUpdateDate() {
-    return updateDate;
-  }
-
-  public void setUpdateDate(LocalDateTime updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  @Override
-  public String toString() {
-    return "ShopForm{" +
-        "shopId=" + accountId +
-        ", shopName='" + accountName + '\'' +
-        ", branchName='" + branchName + '\'' +
-        ", entryDate=" + entryDate +
-        ", updateDate=" + updateDate +
-        '}';
-  }
 }

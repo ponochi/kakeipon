@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <title th:text="ユーザ編集"></title>
   <script src="/js/common.js"></script>
-  <script src="/js/editUser.js"></script>
+  <script src="/js/User.js"></script>
 </head>
 <body>
 <h3>ユーザ編集</h3>
@@ -19,7 +19,7 @@
       <td></td>
       <td>
         <input id="userId" name="userId"
-               th:value="${user.userId}" readonly=""/>
+               th:value="${user.userId}" readonly/>
       </td>
     </tr>
     <tr>
@@ -68,16 +68,16 @@
       </td>
     </tr>
     <tr>
-      <th><label for="yearSelect" aria-label="Year and Month, Date of birthday fields">生年月日</label></th>
+      <th><label for="yearSelect" aria-label="Year and Month, Date of birthDay fields">生年月日</label></th>
       <td>*</td>
       <td>
         <div id="yyyymmdd">
           <span>
-            <select id="yearSelect" name="yearSelect" onchange="setToBirthdayField()"></select>
+            <select id="yearSelect" name="yearSelect" onchange="setToBirthDayField()"></select>
             <label for="yearSelect">年</label>
           </span>
           <span>
-            <select id="monthSelect" name="monthSelect" onchange="setToBirthdayField()">
+            <select id="monthSelect" name="monthSelect" onchange="setToBirthDayField()">
               <option value="01">01</option>
               <option value="02">02</option>
               <option value="03">03</option>
@@ -94,7 +94,7 @@
             <label for="monthSelect">月</label>
           </span>
           <span>
-            <select id="dateSelect" name="dateSelect" onchange="setToBirthdayField()">
+            <select id="dateSelect" name="dateSelect" onchange="setToBirthDayField()">
               <option value="01">01</option>
               <option value="02">02</option>
               <option value="03">03</option>
@@ -130,9 +130,9 @@
             <label for="dateSelect">日</label>
           </span>
           <span>
-            <label for="birthday" aria-label="A date of birthday"></label>
-            <input id="birthday" name="birthday"
-                   th:value="${user.birthday}" type="hidden"/>
+            <label for="birthDay" aria-label="A date of birthDay"></label>
+            <input id="birthDay" name="birthDay"
+                   th:value="${user.birthDay}" type="hidden"/>
           </span>
         </div>
       </td>
@@ -151,10 +151,10 @@
       <th><label for="roleId">権限</label></th>
       <td class="require">*</td>
       <td>
-        <select id="roleId" name="roleId" th:value="${user.roleId}">
+        <select id="roleId" name="roleId" th:value="${user.role.roleId}">
           <option th:each="item : ${roles}" th:value="${item.getRoleId()}"
                   th:text="${item.getRoleName()}"
-                  th:selected="${item.getRoleId()} == ${user.roleId}"></option>
+                  th:selected="${item.getRoleId()} == ${user.role.roleId}"></option>
         </select>
       </td>
     </tr>
@@ -196,9 +196,9 @@
 <form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
-  <button onclick="location.href='/top'">トップ画面</button>
-  <button form="list"> ユーザ・一覧画面</button>
-  <button form="confirm">登　録</button>
+  <input type="submit" onclick="location.href='/top'" value="トップ画面" />
+  <input type="submit" form="list" value="ユーザ・一覧画面" />
+  <button type="submit" form="confirm">登　録</button>
 </div>
 
 </body>
