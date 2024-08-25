@@ -19,7 +19,7 @@
       <td></td>
       <td>
         <input id="userId" name="userId"
-               th:value="${user.userId}" readonly/>
+               readonly th:value="${user.userId}"/>
       </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@
       </td>
     </tr>
     <tr>
-      <th><label for="yearSelect" aria-label="Year and Month, Date of birthDay fields">生年月日</label></th>
+      <th><label aria-label="Year and Month, Date of birthDay fields" for="yearSelect">生年月日</label></th>
       <td>*</td>
       <td>
         <div id="yyyymmdd">
@@ -130,7 +130,7 @@
             <label for="dateSelect">日</label>
           </span>
           <span>
-            <label for="birthDay" aria-label="A date of birthDay"></label>
+            <label aria-label="A date of birthDay" for="birthDay"></label>
             <input id="birthDay" name="birthDay"
                    th:value="${user.birthDay}" type="hidden"/>
           </span>
@@ -196,9 +196,9 @@
 <form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
 </form>
 <div>
-  <input type="submit" onclick="location.href='/top'" value="トップ画面" />
-  <input type="submit" form="list" value="ユーザ・一覧画面" />
-  <button type="submit" form="confirm">登　録</button>
+  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+  <input form="list" type="submit" value="ユーザ・一覧画面"/>
+  <button form="confirm" type="submit">登　録</button>
 </div>
 
 </body>

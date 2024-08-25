@@ -5,67 +5,89 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="ユーザ詳細"></title>
-    <script src="/js/User.js"></script>
+  <script src="/js/User.js"></script>
 </head>
 <body>
 <h3>ユーザ詳細</h3>
-<form id="userInfo" th:action="@{'/user/__${user.userId}__/edit'}"
-      th:object="${user}" method="post">
+<form id="userInfo" method="post"
+      th:action="@{'/user/__${user.userId}__/edit'}" th:object="${user}">
   <table>
     <tbody>
     <tr>
       <th>ID</th>
-      <td><div id="userId" th:text="${user.userId}"></div></td>
+      <td>
+        <div id="userId" th:text="${user.userId}"></div>
+      </td>
     </tr>
     <tr>
       <th>ニックネーム</th>
-      <td><div id="nickName" th:text="${user.nickName}"></div></td>
+      <td>
+        <div id="nickName" th:text="${user.nickName}"></div>
+      </td>
     </tr>
     <tr>
       <th>姓</th>
-      <td><div id="lastName" th:text="${user.lastName}"></div></td>
+      <td>
+        <div id="lastName" th:text="${user.lastName}"></div>
+      </td>
     </tr>
     <tr>
       <th>名</th>
-      <td><div id="firstName" th:text="${user.firstName}"></div></td>
+      <td>
+        <div id="firstName" th:text="${user.firstName}"></div>
+      </td>
     </tr>
     <tr>
       <th>パスワード</th>
-      <td><div id="password" th:text="${user.password}"></div></td>
+      <td>
+        <div id="password" th:text="${user.password}"></div>
+      </td>
     </tr>
     <tr>
       <th>e-mail</th>
-      <td><div id="email" th:text="${user.email}"></div></td>
+      <td>
+        <div id="email" th:text="${user.email}"></div>
+      </td>
     </tr>
     <tr>
       <th>生年月日</th>
-      <td><div id="birthDay" th:text="${user.birthDay}"></div></td>
+      <td>
+        <div id="birthDay" th:text="${user.birthDay}"></div>
+      </td>
     </tr>
     <tr>
       <th>電話番号</th>
-      <td><div id="phoneNumber" th:text="${user.phoneNumber}"></div></td>
+      <td>
+        <div id="phoneNumber" th:text="${user.phoneNumber}"></div>
+      </td>
     </tr>
     <tr>
       <th>権限</th>
-      <td><div id="roleName" th:text="${user.role.getRoleName()}"></div></td>
+      <td>
+        <div id="roleName" th:text="${user.role.getRoleName()}"></div>
+      </td>
     </tr>
     <tr>
       <th>登録日</th>
-      <td><div id="entryDate" th:text="${user.entryDate}"></div></td>
+      <td>
+        <div id="entryDate" th:text="${user.entryDate}"></div>
+      </td>
     </tr>
     <tr>
       <th>変更日</th>
-      <td><div id="updateDate" th:text="${user.updateDate}"></div></td>
+      <td>
+        <div id="updateDate" th:text="${user.updateDate}"></div>
+      </td>
     </tr>
     </tbody>
   </table>
 </form>
-<form id="list" th:action="@{'/user'}" method="get">
+<form id="list" method="get" th:action="@{'/user'}">
 </form>
 <div>
-  <input type="submit" onclick="location.href='/top'" value="トップ画面" />
-  <input type="submit" form="list" value="ユーザ・一覧画面" />
-  <input type="submit" form="userInfo" value="編　集" />
+  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+  <input form="list" type="submit" value="ユーザ・一覧画面"/>
+  <input form="userInfo" type="submit" value="編　集"/>
 </div>
 
 </body>

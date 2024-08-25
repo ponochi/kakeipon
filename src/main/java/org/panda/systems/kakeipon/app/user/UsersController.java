@@ -26,6 +26,18 @@ public class UsersController {
   public UsersController() {
   }
 
+  private static void setUser(UserForm form, User user) {
+    user.setUserId(form.getUserId());
+    user.setNickName(form.getNickName());
+    user.setLastName(form.getLastName());
+    user.setFirstName(form.getFirstName());
+    user.setPassword(form.getPassword());
+    user.setEmail(form.getEmail());
+    user.setBirthDay(form.getBirthDay());
+    user.setPhoneNumber(form.getPhoneNumber());
+
+  }
+
   @ModelAttribute(name = "userForm")
   UserForm setUpUserForm() {
     UserForm form = new UserForm();
@@ -42,7 +54,7 @@ public class UsersController {
   }
 
   @RequestMapping(value = "{userId}/show", method = RequestMethod.GET)
-  String show(@PathVariable Long userId, Model model ) {
+  String show(@PathVariable Long userId, Model model) {
     User user = userService.findByUserId(userId);
     model.addAttribute("user", user);
     return "/user/showDetail";
@@ -57,18 +69,6 @@ public class UsersController {
     model.addAttribute("form", form);
     model.addAttribute("roles", roles);
     return "/user/createDetail";
-  }
-
-  private static void setUser(UserForm form, User user) {
-    user.setUserId(form.getUserId());
-    user.setNickName(form.getNickName());
-    user.setLastName(form.getLastName());
-    user.setFirstName(form.getFirstName());
-    user.setPassword(form.getPassword());
-    user.setEmail(form.getEmail());
-    user.setBirthDay(form.getBirthDay());
-    user.setPhoneNumber(form.getPhoneNumber());
-
   }
 
   @RequestMapping(value = "{userId}/edit", method = RequestMethod.POST)

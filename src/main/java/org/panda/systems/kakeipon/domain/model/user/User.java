@@ -1,7 +1,6 @@
 package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.common.Role;
@@ -13,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Component
-@Scope(value= "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Entity
 @Table(name = "tbl_user")
 @SecondaryTable(name = "tbl_role",

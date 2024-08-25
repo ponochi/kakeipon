@@ -26,8 +26,8 @@
     <td><span th:text="${user.nickName}"></span></td>
     <td><span th:text="${user.role.getRoleName()}"></span></td>
     <td>
-      <form id="userInfo" th:action="@{'/user/__${user.userId}__/show'}" method="get">
-        <input type="hidden" id="userId" th:value="${user.userId}">
+      <form id="userInfo" method="get" th:action="@{'/user/__${user.userId}__/show'}">
+        <input id="userId" th:value="${user.userId}" type="hidden">
         <input type="submit" value="詳　細"/>
       </form>
     </td>
