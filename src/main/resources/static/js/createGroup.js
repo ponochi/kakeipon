@@ -12,6 +12,7 @@ function changedReceivingAndPaymentType() {
   let accountSourceButton = document.getElementById("accountSourceButton");
   let accountDestinationName = document.getElementById("accountDestinationName");
   let accountDestinationButton = document.getElementById("accountDestinationButton");
+
   if (receivingAndPaymentType == 1) {
     accountSourceName.disabled = false;
     accountSourceButton.disabled = false;
@@ -36,11 +37,23 @@ function changedReceivingAndPaymentType() {
 // @return none
 //=========================================================
 function windowLoad() {
-  let receivingAndPaymentType = window.sessionStorage.getItem("receivingAndPaymentType");
+  let receivingAndPaymentType
+    = window.sessionStorage.getItem("receivingAndPaymentType");
+  let shopId
+    = document.getElementById("shopId");
+  let accountSourceId
+    = document.getElementById("accountSourceId");
+  let accountDestinationId
+    = document.getElementById("accountDestinationId");
+
+  if (shopId.value == 1 && accountSourceId.value == 1 && accountDestinationId.value == 1) {
+    receivingAndPaymentType = 1;
+  }
+
   if (receivingAndPaymentType == null) {
-    document.getElementById("receivingAndPaymentType").value = 1;
+    receivingAndPaymentType.value = 1;
   } else {
-    document.getElementById("receivingAndPaymentType").value = receivingAndPaymentType;
+    receivingAndPaymentType.value = receivingAndPaymentType;
   }
   changedReceivingAndPaymentType();
 }

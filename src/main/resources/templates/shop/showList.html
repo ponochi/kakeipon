@@ -11,9 +11,6 @@
 <table>
     <tr th:each="shop : ${shops}">
         <td>
-            accountAndBalanceId : [[${accountAndBalanceId}]]</br>
-            [[${shop.shopId}]] : [[${shop.shopName}]]</br>
-            [[${accountSourceId}]] : [[${accountDestinationId}]]</br>
             <th:block th:if="${shop.shopId} ne null">
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">

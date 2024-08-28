@@ -38,14 +38,14 @@
         </tr>
         <tr>
             <td><label for="shop">お店</label></td>
-            <td>
-                <th:block th:if="${specificationGroupForm.shop} ne null">
+            <td th:object="${shop}">
+                <th:block th:if="${shop.shopId} ne null">
                     <input id="shopId" name="shopId"
-                           readonly th:value="${specificationGroupForm.shop.shopId}" type="hidden">
+                           readonly th:value="${shop.shopId}" type="hidden">
                     <input id="shop" name="shop"
-                           readonly th:value="${specificationGroupForm.shop.shopName}" type="text">
+                           readonly th:value="${shop.shopName}" type="text">
                 </th:block>
-                <th:block th:unless="${specificationGroupForm.shop} ne null">
+                <th:block th:unless="${shop.shopId} ne null">
                     <input id="shopId" name="shopId"
                            readonly th:value="1" type="hidden">
                     <input id="shop" name="shop" readonly type="text">
@@ -73,17 +73,17 @@
             <td th:object="${accountSource}">
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
-                           readonly
-                           th:value="${accountSource.accountSourceId}" type="hidden">
+                           th:value="${accountSource.accountSourceId}"
+                           type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
-                           readonly
-                           th:value="${accountSource.accountName}" type="text">
+                           th:value="${accountSource.accountName}"
+                           type="text" readonly>
                 </th:block>
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
-                           readonly th:value="1" type="hidden">
+                           th:value="1" type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
-                           readonly type="text">
+                           type="text" readonly>
                 </th:block>
                 <input form="searchAccountSource" id="accountSourceButton"
                        type="submit" value="検　索"/>
@@ -129,6 +129,19 @@
                 <form id="searchShop" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchShop'}" th:object="${shopForm}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestinationId} eq null">
+                <form id="searchShop" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestinationId}__' +
                       '/searchShop'}" th:object="${shopForm}">
                 </form>
             </th:block>
@@ -211,6 +224,19 @@
                 <form id="searchShop" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchShop'}" th:object="${shopForm}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestinationId} eq null">
+                <form id="searchShop" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestinationId}__' +
                       '/searchShop'}" th:object="${shopForm}">
                 </form>
             </th:block>
@@ -293,6 +319,9 @@
                 <form id="searchShop" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
                       '/searchShop'}" th:object="${shopForm}">
                 </form>
             </th:block>
@@ -387,6 +416,19 @@
                 <form id="searchAccountSource" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchAccountSource'}" th:object="${shopAccountSource}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestinationId} eq null">
+                <form id="searchAccountSource" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestinationId}__' +
                       '/searchAccountSource'}" th:object="${shopAccountSource}">
                 </form>
             </th:block>
@@ -469,6 +511,19 @@
                 <form id="searchAccountSource" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchAccountSource'}" th:object="${shopAccountSource}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestinationId} eq null">
+                <form id="searchAccountSource" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestinationId}__' +
                       '/searchAccountSource'}" th:object="${shopAccountSource}">
                 </form>
             </th:block>
@@ -551,6 +606,9 @@
                 <form id="searchAccountSource" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
                       '/searchAccountSource'}" th:object="${shopAccountSource}">
                 </form>
             </th:block>
@@ -645,6 +703,19 @@
                 <form id="searchAccountDestination" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchAccountDestination'}" th:object="${shopAccountDestination}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestination.accountDestinationId} eq null">
+                <form id="searchAccountDestination" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestination.accountDestinationId}__' +
                       '/searchAccountDestination'}" th:object="${shopAccountDestination}">
                 </form>
             </th:block>
@@ -727,6 +798,19 @@
                 <form id="searchAccountDestination" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
+                      '/searchAccountDestination'}" th:object="${shopAccountDestination}">
+                </form>
+            </th:block>
+            <th:block th:unless="${accountDestination.accountDestinationId} eq null">
+                <form id="searchAccountDestination" method="get"
+                      th:action="@{
+                      '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/__${accountDestination.accountDestinationId}__' +
                       '/searchAccountDestination'}" th:object="${shopAccountDestination}">
                 </form>
             </th:block>
@@ -809,6 +893,9 @@
                 <form id="searchAccountDestination" method="get"
                       th:action="@{
                       '/__${accountAndBalanceId}__' +
+                      '/1' +
+                      '/1' +
+                      '/1' +
                       '/searchAccountDestination'}" th:object="${shopAccountDestination}">
                 </form>
             </th:block>

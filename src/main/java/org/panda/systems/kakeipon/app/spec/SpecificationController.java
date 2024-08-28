@@ -63,10 +63,13 @@ public class SpecificationController {
     accountAndBalance.setAccountSourceId(Long.parseLong("1"));
     accountAndBalance.setAccountDestinationId(Long.parseLong("1"));
     accountAndBalance.setEntryDate(LocalDateTime.now());
+
     accountAndBalanceService.saveAndFlush(accountAndBalance);
+
     SpecificationGroup specificationGroup = new SpecificationGroup();
     specificationGroup.setUser(user);
     specificationGroup.setShopId(Long.parseLong("1"));
+    Shop shop = shopService.findById(specificationGroup.getShopId());
     specificationGroup.setReceivingAndPaymentDate(LocalDate.now());
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
     specificationGroup.setBalanceId(Long.parseLong("1"));
@@ -85,6 +88,7 @@ public class SpecificationController {
 
     model.addAttribute("specificationGroup", specificationGroup);
     model.addAttribute("user", user);
+    model.addAttribute("shop", shop);
     model.addAttribute("accountSource", accountSource);
     model.addAttribute("accountDestination", accountDestination);
     model.addAttribute(

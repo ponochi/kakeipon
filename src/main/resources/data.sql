@@ -638,7 +638,7 @@ VALUES (148, 25, 3, 1);
 
 --[tbl_shop]========================================================================================
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
-VALUES ('　', '　', '1970-01-01T00:00:00');
+VALUES ('指定なし', '', '1970-01-01T00:00:00');
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
 VALUES ('AAAマート', '本店', '2023-08-12T00:00:00');
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
