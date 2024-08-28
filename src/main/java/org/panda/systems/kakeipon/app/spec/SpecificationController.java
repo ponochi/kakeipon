@@ -21,8 +21,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static java.time.LocalTime.now;
-
 @Controller
 @RequestMapping("")
 public class SpecificationController {
@@ -46,8 +44,7 @@ public class SpecificationController {
   User user;
 
   @ModelAttribute("specificationGroupForm")
-  SpecificationGroupForm setUpSpecificationGroupForm()
-  {
+  SpecificationGroupForm setUpSpecificationGroupForm() {
     SpecificationGroupForm form = new SpecificationGroupForm();
     form.setReceivingAndPaymentType(Long.parseLong("1"));
     return form;
@@ -109,7 +106,7 @@ public class SpecificationController {
     if (groupForm.getReceivingAndPaymentType() == null) {
       groupForm.setReceivingAndPaymentType(Long.parseLong("1"));
     }
-    User user  = userService.findById(Long.parseLong("2"));
+    User user = userService.findById(Long.parseLong("2"));
     // Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shopId);
     groupForm.setShop(shopService.findById(shopId));

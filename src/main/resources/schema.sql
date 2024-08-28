@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_user -- ユーザテーブル
     first_name   VARCHAR(255),                          -- 名前 (任意)
     password     VARCHAR(255) NOT NULL,                 -- パスワード
     email        VARCHAR(255) NOT NULL,                 -- メールアドレス
-    birth_day    TIMESTAMPTZ  NOT NULL,                 -- 誕生日
+    birth_day TIMESTAMPTZ NOT NULL,                     -- 誕生日
     phone_number VARCHAR(255) NOT NULL,                 -- 電話番号
     role_id      BIGINT       NOT NULL,                 -- 権限ID
     entry_date   TIMESTAMPTZ  NOT NULL,                 -- 登録日時

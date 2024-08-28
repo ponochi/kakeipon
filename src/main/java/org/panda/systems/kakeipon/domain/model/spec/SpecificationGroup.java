@@ -1,7 +1,6 @@
 package org.panda.systems.kakeipon.domain.model.spec;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
