@@ -9,14 +9,10 @@
       th:action="@{'/spec'}" th:object="${specificationGroupForm}">
     <table>
         <tr>
-            <td><label for="user"></label></td>
+            <td></td>
             <td th:object="${user}">
                 <input id="userId" name="userId"
-                       readonly
-                       th:value="${specificationGroupForm.userId}" type="hidden">
-                <input id="user" name="user"
-                       readonly
-                       th:value="${user.nickName}" type="hidden">
+                       th:value="${specificationGroupForm.userId}" type="hidden" readonly>
             </td>
         </tr>
         <tr>
@@ -26,29 +22,34 @@
                     <label for="receivingAndPaymentDate"></label>
                     <input id="receivingAndPaymentDate" name="receivingAndPaymentDate"
                            th:value="${specificationGroupForm.receivingAndPaymentDate}"
+                           onchange="changedReceivingAndPaymentDate()"
                            type="date">
                 </span>
                 <span>
                     <label for="receivingAndPaymentTime"></label>
                     <input id="receivingAndPaymentTime" name="receivingAndPaymentTime"
                            th:value="${specificationGroupForm.receivingAndPaymentTime}"
+                           onchange="changedReceivingAndPaymentTime()"
                            type="time">
                 </span>
             </td>
         </tr>
         <tr>
             <td><label for="shop">お店</label></td>
-            <td th:object="${shop}">
-                <th:block th:if="${shop.shopId} ne null">
+            <td th:object="${specificationGroupForm.shopForm.shopId}">
+                <th:block th:if="${shop} ne null">
                     <input id="shopId" name="shopId"
-                           readonly th:value="${shop.shopId}" type="hidden">
-                    <input id="shop" name="shop"
-                           readonly th:value="${shop.shopName}" type="text">
+                           th:value="${specificationGroupForm.shopForm.shopId}"
+                           type="hidden" readonly>
+                    <input form="dummy" id="shop" name="shop"
+                           th:value="${specificationGroupForm.shopForm.shopName}"
+                           type="text" readonly>
                 </th:block>
-                <th:block th:unless="${shop.shopId} ne null">
+                <th:block th:unless="${shop} ne null">
                     <input id="shopId" name="shopId"
-                           readonly th:value="1" type="hidden">
-                    <input id="shop" name="shop" readonly type="text">
+                           th:value="1" type="hidden" readonly>
+                    <input form="dummy" id="shop" name="shop"
+                           type="text" readonly>
                 </th:block>
                 <input form="searchShop" type="submit" value="検　索"/>
             </td>
@@ -60,8 +61,7 @@
                 <select id="receivingAndPaymentType"
                         name="receivingAndPaymentType"
                         onchange="changedReceivingAndPaymentType()"
-                        th:value="${specificationGroupForm.receivingAndPaymentType}"
-                >
+                        th:value="${specificationGroupForm.receivingAndPaymentType}">
                     <option value="1">出金</option>
                     <option value="2">入金</option>
                     <option value="3">振替</option>
@@ -70,16 +70,16 @@
         </tr>
         <tr>
             <td>出金元</td>
-            <td th:object="${accountSource}">
-                <th:block th:if="${accountSource.accountSourceId} ne null">
+            <td th:object="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId}">
+                <th:block th:if="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
-                           th:value="${accountSource.accountSourceId}"
+                           th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId}"
                            type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
-                           th:value="${accountSource.accountName}"
+                           th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountName}"
                            type="text" readonly>
                 </th:block>
-                <th:block th:unless="${accountSource.accountSourceId} ne null">
+                <th:block th:unless="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
                            th:value="1" type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
@@ -92,17 +92,17 @@
         <tr>
             <td>入金先</td>
             <td th:object="${accountDestination}">
-                <th:block th:if="${accountDestination.accountDestinationId} ne null">
+                <th:block th:if="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
-                           readonly
-                           th:value="${accountDestination.accountDestinationId}" type="hidden">
+                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId}"
+                           type="hidden" readonly>
                     <input id="accountDestinationName" name="accountDestinationName"
-                           th:value="${accountDestination.accountName}"
+                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountName}"
                            type="text" readonly>
                 </th:block>
-                <th:block th:unless="${accountDestination.accountDestinationId} ne null">
+                <th:block th:unless="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
-                           readonly th:value="1" type="hidden">
+                           th:value="1" type="hidden" readonly>
                     <input id="accountDestinationName" name="accountDestinationName"
                            type="text" readonly>
                 </th:block>
@@ -981,6 +981,7 @@
     </th:block>
 </th:block>
 
+<form id="dummy"></form>
 <script src="/js/createGroup.js"></script>
 </body>
 </html>

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
+import org.panda.systems.kakeipon.app.common.ShopForm;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
@@ -52,7 +54,7 @@ public class SpecificationGroupForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "shop_id")
-  Shop shop;
+  ShopForm shopForm;
 
   @PastOrPresent
   @Column
@@ -71,22 +73,8 @@ public class SpecificationGroupForm implements Serializable {
   @OneToOne
   @JoinColumn(name = "account_and_balance_id", table = "tbl_account_and_balance",
       insertable = false, updatable = false)
-  @Column(name = "account_and_balance_id")
-  AccountAndBalance accountAndBalance;
-
-//  @OneToOne
-//  @JoinColumn(name = "account_source_id", table = "tbl_account_info",
-//      insertable = false, updatable = false)
-//  @PrimaryKeyJoinColumn
-//  @Column
-//  AccountSource accountSource;
-//
-//  @OneToOne
-//  @JoinColumn(name = "account_destination_id", table = "tbl_account_info",
-//      insertable = false, updatable = false)
-//  @PrimaryKeyJoinColumn
-//  @Column
-//  AccountDestination accountDestination;
+  @Column(name = "account_and_balance_form")
+  AccountAndBalanceForm accountAndBalanceForm;
 
   @Column
   String memo;

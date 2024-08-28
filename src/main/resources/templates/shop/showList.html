@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>お店検索</title>
+    <link rel="stylesheet" href="/css/common.css">
     <script src="/js/Shop.js"></script>
 </head>
 <body>
@@ -22,7 +23,16 @@
                             '/setShop'}" th:object="${shop}">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
-                            <input th:value="${shop.shopName}" type="submit"></input>
+                            <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
+                                       type="submit" />
+                            </th:block>
+                            <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__'"
+                                       type="submit" />
+                            </th:block>
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
@@ -34,7 +44,16 @@
                             '/setShop'}" th:object="${shop}">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
-                            <input th:value="${shop.shopName}" type="submit"></input>
+                            <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
+                                       type="submit" />
+                            </th:block>
+                            <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__'"
+                                       type="submit" />
+                            </th:block>
                         </form>
                     </th:block>
                 </th:block>
@@ -48,7 +67,16 @@
                             '/setShop'}" th:object="${shop}">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
-                            <input th:value="${shop.shopName}" type="submit"></input>
+                            <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
+                                       type="submit" />
+                            </th:block>
+                            <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__'"
+                                       type="submit" />
+                            </th:block>
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
@@ -60,7 +88,16 @@
                             '/setShop'}" th:object="${shop}">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
-                            <input th:value="${shop.shopName}" type="submit"></input>
+                            <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
+                                       type="submit" />
+                            </th:block>
+                            <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
+                                <input class="shop-button"
+                                       th:value="'__${shop.shopName}__'"
+                                       type="submit" />
+                            </th:block>
                         </form>
                     </th:block>
                 </th:block>
@@ -71,5 +108,6 @@
 <form id="selectShop" method="get"
       th:action="@{'setShop'}" th:object="${shop}">
 </form>
+
 </body>
 </html>
