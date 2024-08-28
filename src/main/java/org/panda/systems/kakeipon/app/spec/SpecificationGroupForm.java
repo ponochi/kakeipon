@@ -6,8 +6,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
 import org.panda.systems.kakeipon.app.common.ShopForm;
-import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serial;

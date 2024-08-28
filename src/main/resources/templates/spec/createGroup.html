@@ -12,7 +12,7 @@
             <td></td>
             <td th:object="${user}">
                 <input id="userId" name="userId"
-                       th:value="${specificationGroupForm.userId}" type="hidden" readonly>
+                       readonly th:value="${specificationGroupForm.userId}" type="hidden">
             </td>
         </tr>
         <tr>
@@ -39,17 +39,17 @@
             <td th:object="${specificationGroupForm.shopForm.shopId}">
                 <th:block th:if="${shop} ne null">
                     <input id="shopId" name="shopId"
-                           th:value="${specificationGroupForm.shopForm.shopId}"
-                           type="hidden" readonly>
+                           readonly
+                           th:value="${specificationGroupForm.shopForm.shopId}" type="hidden">
                     <input form="dummy" id="shop" name="shop"
-                           th:value="${specificationGroupForm.shopForm.shopName}"
-                           type="text" readonly>
+                           readonly
+                           th:value="${specificationGroupForm.shopForm.shopName}" type="text">
                 </th:block>
                 <th:block th:unless="${shop} ne null">
                     <input id="shopId" name="shopId"
-                           th:value="1" type="hidden" readonly>
+                           readonly th:value="1" type="hidden">
                     <input form="dummy" id="shop" name="shop"
-                           type="text" readonly>
+                           readonly type="text">
                 </th:block>
                 <input form="searchShop" type="submit" value="検　索"/>
             </td>
@@ -79,7 +79,8 @@
                            th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountName}"
                            type="text" readonly>
                 </th:block>
-                <th:block th:unless="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
+                <th:block
+                        th:unless="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
                            th:value="1" type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
@@ -92,17 +93,19 @@
         <tr>
             <td>入金先</td>
             <td th:object="${accountDestination}">
-                <th:block th:if="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
+                <th:block
+                        th:if="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId}"
-                           type="hidden" readonly>
+                           readonly
+                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId}" type="hidden">
                     <input id="accountDestinationName" name="accountDestinationName"
                            th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountName}"
                            type="text" readonly>
                 </th:block>
-                <th:block th:unless="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
+                <th:block
+                        th:unless="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
-                           th:value="1" type="hidden" readonly>
+                           readonly th:value="1" type="hidden">
                     <input id="accountDestinationName" name="accountDestinationName"
                            type="text" readonly>
                 </th:block>

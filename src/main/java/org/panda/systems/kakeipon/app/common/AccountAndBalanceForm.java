@@ -1,11 +1,9 @@
 package org.panda.systems.kakeipon.app.common;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.common.AccountSource;
 
 import java.io.Serial;
 import java.io.Serializable;

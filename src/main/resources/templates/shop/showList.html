@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>お店検索</title>
-    <link rel="stylesheet" href="/css/common.css">
+    <link href="/css/common.css" rel="stylesheet">
     <script src="/js/Shop.js"></script>
 </head>
 <body>
@@ -26,12 +26,12 @@
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                         </form>
                     </th:block>
@@ -47,12 +47,12 @@
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                         </form>
                     </th:block>
@@ -70,12 +70,12 @@
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                         </form>
                     </th:block>
@@ -91,12 +91,12 @@
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__ (__${shop.branchName}__)'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${shop.branchName}__')} > 0">
                                 <input class="shop-button"
                                        th:value="'__${shop.shopName}__'"
-                                       type="submit" />
+                                       type="submit"/>
                             </th:block>
                         </form>
                     </th:block>

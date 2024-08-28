@@ -240,7 +240,7 @@ public class SpecificationController {
     return "redirect:/spec";
   }
 
-    @RequestMapping(value = "/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setShop",
+  @RequestMapping(value = "/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setShop",
       method = RequestMethod.GET)
   String setShopToSpecificationGroup(
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
@@ -260,22 +260,22 @@ public class SpecificationController {
     groupForm.setShopForm(setShopForm(shop));
 
 
-      AccountAndBalanceForm accountAndBalanceForm = new AccountAndBalanceForm();
-      AccountAndBalance accountAndBalance
-          = accountAndBalanceService.getById(accountAndBalanceId);
-      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+    AccountAndBalanceForm accountAndBalanceForm = new AccountAndBalanceForm();
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(accountAndBalanceId);
+    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
 
-      groupForm.getAccountAndBalanceForm().setAccountSourceId(accountSourceId);
+    groupForm.getAccountAndBalanceForm().setAccountSourceId(accountSourceId);
       AccountSource accountSource
           = accountSourceService.getById(accountSourceId);
-      groupForm.getAccountAndBalanceForm().setAccountSourceForm(
-          setAccountSourceForm(accountSource));
+    groupForm.getAccountAndBalanceForm().setAccountSourceForm(
+        setAccountSourceForm(accountSource));
 
-      groupForm.getAccountAndBalanceForm().setAccountDestinationId(accountDestinationId);
+    groupForm.getAccountAndBalanceForm().setAccountDestinationId(accountDestinationId);
       AccountDestination accountDestination
           = accountDestinationService.getById(accountDestinationId);
-      groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
-          setAccountDestinationForm(accountDestination));
+    groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
+        setAccountDestinationForm(accountDestination));
 
     model.addAttribute("groupForm", groupForm);
     model.addAttribute("shop", shop);
