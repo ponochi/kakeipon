@@ -23,7 +23,7 @@ public class UserService {
     return userRepository.findAll();
   }
 
-  public User findByUserId(Long userId) {
+  public User findById(Long userId) {
     return userRepository.findByUserAndRoleKeyId(userId);
   }
 

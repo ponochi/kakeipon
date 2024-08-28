@@ -32,7 +32,7 @@ public class SpecificationGroupService implements Serializable {
   }
 
   @Transactional
-  SpecificationGroup saveAndFlush(SpecificationGroup entity) {
+  public SpecificationGroup saveAndFlush(SpecificationGroup entity) {
     return specificationGroupRepository.saveAndFlush(entity);
   }
 }

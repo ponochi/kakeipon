@@ -55,7 +55,7 @@ public class UsersController {
 
   @RequestMapping(value = "{userId}/show", method = RequestMethod.GET)
   String show(@PathVariable Long userId, Model model) {
-    User user = userService.findByUserId(userId);
+    User user = userService.findById(userId);
     model.addAttribute("user", user);
     return "/user/showDetail";
   }
@@ -74,7 +74,7 @@ public class UsersController {
   @RequestMapping(value = "{userId}/edit", method = RequestMethod.POST)
   String editForm(@PathVariable Long userId,
                   Model model) {
-    User user = userService.findByUserId(userId);
+    User user = userService.findById(userId);
     List<Role> roles = roleService.findAll();
     System.out.println("userForm : " + user.toString());
     model.addAttribute("user", user);
@@ -100,7 +100,7 @@ public class UsersController {
     user.setEntryDate(form.getEntryDate());
     user.setUpdateDate(LocalDateTime.now());
     User resultUser = userService.saveUser(user);
-    resultUser = userService.findByUserId(resultUser.getUserId());
+    resultUser = userService.findById(resultUser.getUserId());
     model.addAttribute("user", resultUser);
     return "redirect:/user/" + resultUser.getUserId() + "/show";
   }
@@ -113,7 +113,7 @@ public class UsersController {
       System.out.println("bindingResult.hasErrors()");
       return editForm(userId, model);
     }
-    User user = userService.findByUserId(userId);
+    User user = userService.findById(userId);
     setUser(form, user);
     user.setRole(form.getRole());
     user.setEntryDate(form.getEntryDate());

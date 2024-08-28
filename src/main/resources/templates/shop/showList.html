@@ -3,38 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>お店検索</title>
-    <script src="/js/showShopList.js"></script>
+    <script src="/js/Shop.js"></script>
 </head>
 <body>
 店名
 
 <table>
-    <tr>
-        <td>
-            <form enctype="multipart/form-data" id="accountSourceForm"
-                  method="get" th:object="${accountSourceForm}">
-                <label for="accountSourceId"></label>
-                <input id="accountSourceId" name="accountSourceId"
-                       th:value="accountSourceForm.accountSourceId"
-                       type="text">
-            </form>
-            <form enctype="multipart/form-data" id="accountDestinationForm"
-                  method="get" th:object="${accountDestinationForm}">
-                <label for="accountDestinationId"></label>
-                <input id="accountDestinationId" name="accountDestinationId"
-                       th:value="accountDestinationForm.accountDestinationId"
-                       type="text">
-            </form>
-        </td>
-    </tr>
     <tr th:each="shop : ${shops}">
         <td>
-            <form method="get" th:action="@{'setShop'}" th:object="${shop}">
-                <label for="shopId"></label>
-                <input id="shopId" name="shopId"
-                       th:value="${shop.shopId}" type="hidden">
-                <button type="submit">[[${shop.shopName}]]</button>
-            </form>
+            accountAndBalanceId : [[${accountAndBalanceId}]]</br>
+            [[${shop.shopId}]] : [[${shop.shopName}]]</br>
+            [[${accountSourceId}]] : [[${accountDestinationId}]]</br>
+            <th:block th:if="${shop.shopId} ne null">
+                <th:block th:if="${accountSourceId} ne null">
+                    <th:block th:if="${accountDestinationId} eq null">
+                        <form th:action="@{
+                            '/__${accountAndBalanceId}__' +
+                            '/__${shop.shopId}__' +
+                            '/__${accountSourceId}__' +
+                            '/1' +
+                            '/setShop'}" th:object="${shop}" method="get">
+                            <label for="shopId"></label>
+                            <input id="shopId" th:value="${shop.shopId}" type="hidden">
+                            <input type="submit" th:value="${shop.shopName}"></input>
+                        </form>
+                    </th:block>
+                    <th:block th:unless="${accountDestinationId} eq null">
+                        <form th:action="@{
+                            '/__${accountAndBalanceId}__' +
+                            '/__${shop.shopId}__' +
+                            '/__${accountSourceId}__' +
+                            '/__${accountDestinationId}__' +
+                            '/setShop'}" th:object="${shop}" method="get">
+                            <label for="shopId"></label>
+                            <input id="shopId" th:value="${shop.shopId}" type="hidden">
+                            <input type="submit" th:value="${shop.shopName}"></input>
+                        </form>
+                    </th:block>
+                </th:block>
+                <th:block th:unless="${accountSourceId} ne null">
+                    <th:block th:if="${accountDestinationId} ne null">
+                        <form th:action="@{
+                            '/__${accountAndBalanceId}__' +
+                            '/__${shop.shopId}__' +
+                            '/1' +
+                            '/__${accountDestinationId}__' +
+                            '/setShop'}" th:object="${shop}" method="get">
+                            <label for="shopId"></label>
+                            <input id="shopId" th:value="${shop.shopId}" type="hidden">
+                            <input type="submit" th:value="${shop.shopName}"></input>
+                        </form>
+                    </th:block>
+                    <th:block th:unless="${accountDestinationId} ne null">
+                        <form th:action="@{
+                            '/__${accountAndBalanceId}__' +
+                            '/__${shop.shopId}__' +
+                            '/1' +
+                            '/1' +
+                            '/setShop'}" th:object="${shop}" method="get">
+                            <label for="shopId"></label>
+                            <input id="shopId" th:value="${shop.shopId}" type="hidden">
+                            <input type="submit" th:value="${shop.shopName}"></input>
+                        </form>
+                    </th:block>
+                </th:block>
+            </th:block>
         </td>
     </tr>
 </table>

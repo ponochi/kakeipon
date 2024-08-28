@@ -3,6 +3,8 @@ package org.panda.systems.kakeipon.app.common;
 import org.panda.systems.kakeipon.app.spec.SpecificationGroupForm;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
+import org.panda.systems.kakeipon.domain.service.common.AccountSourceService;
+import org.panda.systems.kakeipon.domain.service.common.AccountDestinationService;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +26,17 @@ public class AccountController {
   ShopService shopService;
   @Autowired
   SpecificationGroupService specificationGroupService;
+  @Autowired
+  AccountSourceService accountSourceService;
+  @Autowired
+  AccountDestinationService accountDestinationService;
 
-  @ModelAttribute
+  @ModelAttribute("accountAndBalance")
   AccountSourceForm setUpSourceForm() {
     return new AccountSourceForm();
   }
 
-  @ModelAttribute
+  @ModelAttribute("accountAndBalance")
   AccountDestinationForm setUpDestinationForm() {
     return new AccountDestinationForm();
   }
@@ -40,8 +46,7 @@ public class AccountController {
       @Validated AccountAndBalance accountAndBalance,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute ShopForm shopForm,
-      Model model,
-      UriComponentsBuilder builder) {
+      Model model) {
 
     var destinationForm = new AccountDestinationForm();
     if (accountAndBalance.getAccountSourceId() > 0) {

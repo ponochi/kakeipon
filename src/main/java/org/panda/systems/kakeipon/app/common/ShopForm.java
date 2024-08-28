@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
+@Table(name = "tbl_shop")
 @Data
 public class ShopForm implements Serializable {
   @Serial

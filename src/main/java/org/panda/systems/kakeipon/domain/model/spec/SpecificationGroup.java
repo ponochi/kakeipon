@@ -16,6 +16,8 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "tbl_specification_group")
+@SecondaryTable(name = "tbl_user",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @SecondaryTable(name = "tbl_balance",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_id"))
 @SecondaryTable(name = "tbl_account_and_balance",
@@ -27,10 +29,16 @@ public class SpecificationGroup implements Serializable {
   @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
   private Long specificationGroupId;
 
+//  @Column(name = "user_id")
+//  private Long userId;
+
   @ManyToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "user_id",
-      insertable = false, updatable = false)
+  @JoinColumn(name = "user_id")
+//  @MapsId("userId")
   private User user;
+
+  @Column(name = "shop_id")
+  private Long shopId;
 
   @ManyToOne
   @JoinColumn(name = "shop_id", referencedColumnName = "shop_id",
@@ -41,9 +49,11 @@ public class SpecificationGroup implements Serializable {
   @Column
   private LocalDate receivingAndPaymentDate;
 
-  @NotEmpty
   @Column
   private LocalTime receivingAndPaymentTime;
+
+  @Column(name = "balance_id")
+  private Long balanceId;
 
   @OneToOne
   @JoinColumns({
@@ -52,6 +62,9 @@ public class SpecificationGroup implements Serializable {
           insertable = false, updatable = false),
   })
   private Balance balance;
+
+  @Column(name = "account_and_balance_id")
+  private Long accountAndBalanceId;
 
   @OneToOne
   @JoinColumns({

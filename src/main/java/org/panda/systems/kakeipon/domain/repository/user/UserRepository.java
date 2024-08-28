@@ -48,5 +48,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(value = "SELECT MAX(user_id) FROM tbl_user", nativeQuery = true)
   Long getMaxUserId();
 
+  @SuppressWarnings({"unchecked", "NullableProblems"})
   User saveAndFlush(User user);
 }

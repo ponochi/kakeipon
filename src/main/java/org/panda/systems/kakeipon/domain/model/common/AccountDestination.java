@@ -5,12 +5,13 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_account_info")
 @Data
-public class AccountDestination {
+public class AccountDestination implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_account_info_seq", allocationSize = 1)

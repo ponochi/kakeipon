@@ -17,9 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("")
-@SessionAttributes({"specificationGroupForm", "shopForm", "accountSourceForm", "accountDestinationForm"})
 public class ShopController {
   @Autowired
   SpecificationGroupService specificationGroupService;
@@ -30,46 +31,20 @@ public class ShopController {
   @Autowired
   AccountAndBalanceService accountAndBalanceService;
 
-  @GetMapping("setShop")
-  String setShopToSpecificationGroup(
-      @Validated SpecificationGroupForm specificationGroupForm,
-      @Validated ShopForm shopForm,
-      @Validated AccountSourceForm accountSourceForm,
-      @Validated AccountDestinationForm accountDestinationForm,
-      @Validated Long accountAndBalanceId,
-      BindingResult result,
-      @ModelAttribute("shopId") Long shopId,
-      @ModelAttribute("accountSourceId") Long accountSourceId,
-      @ModelAttribute("accountDestinationId") Long accountDestinationId,
-      Model model) {
+//  @GetMapping("setShop")
+//  String setShopToSpecificationGroup(
+//      @ModelAttribute SpecificationGroupForm groupForm,
+//      Model model) {
+//    model.addAttribute("groupForm", groupForm);
+//    return "/spec/createGroup";
+//  }
 
-    Shop shop = shopService.findById(shopId);
-    shopForm.setShopName(shop.getShopName());
-    shopForm.setBranchName(shop.getBranchName());
-    shopForm.setEntryDate(shop.getEntryDate());
-    shopForm.setUpdateDate(shop.getUpdateDate());
-
-    var sourceForm = new AccountSourceForm();
-    if (accountSourceId > 0) {
-      AccountAndBalance accountSource
-          = accountAndBalanceService.getById(accountAndBalanceId);
-      sourceForm.setAccountId(accountSourceId);
-      sourceForm.setEntryDate(accountSource.getEntryDate());
-      sourceForm.setUpdateDate(accountSource.getUpdateDate());
-    }
-
-    model.addAttribute("specificationGroupForm", specificationGroupForm);
-    model.addAttribute("shopForm", shopForm);
-    model.addAttribute("accountSourceForm", sourceForm);
-
-    AccountAndBalance accountDestination
-        = accountAndBalanceService.getById(accountAndBalanceId);
-    AccountDestinationForm destinationForm = new AccountDestinationForm();
-    destinationForm.setAccountId(accountDestinationId);
-    destinationForm.setEntryDate(accountDestination.getEntryDate());
-    destinationForm.setUpdateDate(accountDestination.getUpdateDate());
-    model.addAttribute("accountDestinationForm", destinationForm);
-
-    return "/spec/createGroup";
-  }
+//  @GetMapping("searchShop")
+//  String searchShop(
+//      @ModelAttribute ShopForm shopForm,
+//      Model model) {
+//    List<Shop> shops = shopService.findAll();
+//    model.addAttribute("shops", shops);
+//    return "/shop/showList";
+//  }
 }

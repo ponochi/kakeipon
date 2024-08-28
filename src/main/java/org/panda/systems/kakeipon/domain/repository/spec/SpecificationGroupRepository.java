@@ -16,5 +16,6 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
   @Override
   Optional<SpecificationGroup> findById(Long specificationGroupId);
 
-  SpecificationGroup saveAndFlush(SpecificationGroup entity);
+  @SuppressWarnings({"NullableProblems", "unchecked"})
+  SpecificationGroup saveAndFlush(SpecificationGroup specificationGroup);
 }

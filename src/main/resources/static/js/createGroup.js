@@ -1,13 +1,33 @@
 //=========================================================
-// Global variables
+// Change event of Receiving and Payment Type
+// @param none
+// @return none
 //=========================================================
-function transitionSearchShop() {
-  var shopId = window.sessionStorage.getItem("shopId").value;
-  var accountSourceId = document.getElementById("accountSource").value;
-  var accountDestinationId = document.getElementById("accountDestination").value;
-  window.sessionStorage.setItem("accountSourceId", accountSourceId);
-  window.sessionStorage.setItem("accountDestinationId", accountDestinationId);
-  location.href = "/shop/list";
+function changedReceivingAndPaymentType() {
+  let receivingAndPaymentType = document.getElementById("receivingAndPaymentType").value;
+
+  window.sessionStorage.setItem("receivingAndPaymentType", receivingAndPaymentType);
+
+  let accountSourceName = document.getElementById("accountSourceName");
+  let accountSourceButton = document.getElementById("accountSourceButton");
+  let accountDestinationName = document.getElementById("accountDestinationName");
+  let accountDestinationButton = document.getElementById("accountDestinationButton");
+  if (receivingAndPaymentType == 1) {
+    accountSourceName.disabled = false;
+    accountSourceButton.disabled = false;
+    accountDestinationName.disabled = true;
+    accountDestinationButton.disabled = true;
+  } else if (receivingAndPaymentType == 2) {
+    accountSourceName.disabled = true;
+    accountSourceButton.disabled = true;
+    accountDestinationName.disabled = false;
+    accountDestinationButton.disabled = false;
+  } else {
+    accountSourceName.disabled = false;
+    accountSourceButton.disabled = false;
+    accountDestinationName.disabled = false;
+    accountDestinationButton.disabled = false;
+  }
 }
 
 //=========================================================
@@ -16,26 +36,13 @@ function transitionSearchShop() {
 // @return none
 //=========================================================
 function windowLoad() {
-  if (shopId == null) {
-    document.getElementById("shopId").value = 0;
+  let receivingAndPaymentType = window.sessionStorage.getItem("receivingAndPaymentType");
+  if (receivingAndPaymentType == null) {
+    document.getElementById("receivingAndPaymentType").value = 1;
   } else {
-    document.getElementById("shopId").value = shopId;
+    document.getElementById("receivingAndPaymentType").value = receivingAndPaymentType;
   }
-
-  if (accountSourceId == null) {
-    document.getElementById("accountSource").value = 0;
-  } else {
-    document.getElementById("accountSource").value = accountSourceId;
-  }
-
-  if (accountDestinationId == null) {
-    document.getElementById("accountDestination").value = 0;
-  } else {
-    document.getElementById("accountDestination").value = accountDestinationId;
-  }
-
+  changedReceivingAndPaymentType();
 }
 
 window.addEventListener("load", windowLoad, false);
-let searchShopButton = document.getElementById("searchShop");
-searchShopButton.addEventListener("click", transitionSearchShop, false);

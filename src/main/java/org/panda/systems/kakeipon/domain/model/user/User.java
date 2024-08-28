@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Component
-@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 @Entity
 @Table(name = "tbl_user")
 @SecondaryTable(name = "tbl_role",

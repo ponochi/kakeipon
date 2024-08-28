@@ -1,10 +1,13 @@
 package org.panda.systems.kakeipon.app.spec;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
+import org.panda.systems.kakeipon.domain.model.common.AccountDestination;
+import org.panda.systems.kakeipon.domain.model.common.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
@@ -14,6 +17,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@Table(name = "tbl_specification_group")
+@SecondaryTable(name = "tbl_user",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+@SecondaryTable(name = "tbl_shop",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "shop_id"))
+@SecondaryTable(name = "tbl_account_info",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_source_id"))
+@SecondaryTable(name = "tbl_account_info",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_destination_id"))
 @Data
 public class SpecificationGroupForm implements Serializable {
   @Serial
@@ -25,18 +37,24 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "specification_group_id")
   Long specificationGroupId;
 
-  @OneToOne
+  @Column(name = "user_id")
+  Long userId;
+
+  @ManyToOne
   @JoinColumn(name = "user_id", table = "tbl_user",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column
   User user;
 
+  @Column(name = "shop_id")
+  Long shopId;
+
   @OneToOne
   @JoinColumn(name = "shop_id", table = "tbl_shop",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
-  @Column
+  @Column(name = "shop_id")
   Shop shop;
 
   @PastOrPresent
@@ -50,19 +68,28 @@ public class SpecificationGroupForm implements Serializable {
   @Column
   Long receivingAndPaymentType;
 
-  @OneToOne
-  @JoinColumn(name = "account_source_id", table = "tbl_account",
-      insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn
-  @Column
-  AccountAndBalance accountSource;
+  @Column(name = "balance_id")
+  Long balanceId;
 
   @OneToOne
-  @JoinColumn(name = "account_destination_id", table = "tbl_account",
+  @JoinColumn(name = "account_and_balance_id", table = "tbl_account_and_balance",
       insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn
-  @Column
-  AccountAndBalance accountDestination;
+  @Column(name = "account_and_balance_id")
+  AccountAndBalance accountAndBalance;
+
+//  @OneToOne
+//  @JoinColumn(name = "account_source_id", table = "tbl_account_info",
+//      insertable = false, updatable = false)
+//  @PrimaryKeyJoinColumn
+//  @Column
+//  AccountSource accountSource;
+//
+//  @OneToOne
+//  @JoinColumn(name = "account_destination_id", table = "tbl_account_info",
+//      insertable = false, updatable = false)
+//  @PrimaryKeyJoinColumn
+//  @Column
+//  AccountDestination accountDestination;
 
   @Column
   String memo;
@@ -73,8 +100,4 @@ public class SpecificationGroupForm implements Serializable {
 
   @Column
   LocalDateTime update_date;
-
-  // Default constructor
-  public SpecificationGroupForm() {
-  }
 }

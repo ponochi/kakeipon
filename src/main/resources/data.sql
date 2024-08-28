@@ -638,11 +638,15 @@ VALUES (148, 25, 3, 1);
 
 --[tbl_shop]========================================================================================
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
+VALUES ('　', '　', '1970-01-01T00:00:00');
+INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
 VALUES ('AAAマート', '本店', '2023-08-12T00:00:00');
 INSERT INTO tbl_shop(shop_name, branch_name, entry_date)
 VALUES ('スーパーBBB', 'BBB店', '2024-04-01T00:00:00');
 
 --[tbl_account_info]===================================================================================
+INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
+VALUES ('指定なし', '', '1970-01-01T00:00:00');
 INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
 VALUES ('お財布', '', '2023-08-12T00:00:00');
 INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
