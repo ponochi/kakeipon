@@ -52,6 +52,9 @@ public class SpecificationController {
 
   @GetMapping("/spec")
   String addSpecificationGroup(Model model) {
+
+    User user = userService.findById(Long.parseLong("2"));
+
     AccountAndBalance accountAndBalance = new AccountAndBalance();
     AccountSource accountSource
         = accountSourceService.getById(Long.parseLong("1"));
@@ -62,8 +65,6 @@ public class SpecificationController {
     accountAndBalance.setEntryDate(LocalDateTime.now());
     accountAndBalanceService.saveAndFlush(accountAndBalance);
     SpecificationGroup specificationGroup = new SpecificationGroup();
-//    specificationGroup.setUserId(Long.parseLong("2"));
-    User user = userService.findById(Long.parseLong("2"));
     specificationGroup.setUser(user);
     specificationGroup.setShopId(Long.parseLong("1"));
     specificationGroup.setReceivingAndPaymentDate(LocalDate.now());
@@ -73,16 +74,14 @@ public class SpecificationController {
     String nowHour = formatter.format(localTime);
 
     if (nowHour.length() == 1) {
-      nowHour = "0" + nowHour + ":00:00";
+      nowHour = "0" + nowHour + ":00";
     } else {
-      nowHour = nowHour + ":00:00";
+      nowHour = nowHour + ":00";
     }
     specificationGroup.setReceivingAndPaymentTime(LocalTime.parse(nowHour));
     specificationGroup.setAccountAndBalanceId(
         accountAndBalance.getAccountAndBalanceId());
     specificationGroup.setEntryDate(LocalDateTime.now());
-
-//    specificationGroupService.saveAndFlush(specificationGroup);
 
     model.addAttribute("specificationGroup", specificationGroup);
     model.addAttribute("user", user);
@@ -107,11 +106,8 @@ public class SpecificationController {
       groupForm.setReceivingAndPaymentType(Long.parseLong("1"));
     }
     User user = userService.findById(Long.parseLong("2"));
-    // Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shopId);
     groupForm.setShop(shopService.findById(shopId));
-//    Long accountAndBalanceId
-//        = groupForm.getAccountAndBalance().getAccountAndBalanceId();
     AccountAndBalance accountAndBalance
         = accountAndBalanceService.getById(accountAndBalanceId);
     if (accountSourceId >= 1) {
@@ -136,11 +132,13 @@ public class SpecificationController {
     return "/spec/createGroup";
   }
 
-  @GetMapping("/searchShop")
+  @GetMapping("/{accountAndBalanceId}/searchShop")
   String searchShopList(
+      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       Model model) {
     List<Shop> shops = shopService.findAll();
     model.addAttribute("shops", shops);
+    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
     return "/shop/showList";
   }
 
