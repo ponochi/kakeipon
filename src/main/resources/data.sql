@@ -654,9 +654,9 @@ VALUES ('AAA銀行', '本店', '2024-04-01T00:00:00');
 INSERT INTO tbl_account_info(account_name, branch_name, entry_date)
 VALUES ('BBBネット銀行', 'ダイヤモンド支店', '2024-04-01T00:00:00');
 
-INSERT INTO tbl_balance(balance_name)
+INSERT INTO tbl_balance_type(balance_type_name)
 VALUES ('支出');
-INSERT INTO tbl_balance(balance_name)
+INSERT INTO tbl_balance_type(balance_type_name)
 VALUES ('収入');
-INSERT INTO tbl_balance(balance_name)
+INSERT INTO tbl_balance_type(balance_type_name)
 VALUES ('振替');

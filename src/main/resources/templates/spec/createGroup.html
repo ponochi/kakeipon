@@ -5,14 +5,13 @@
     <title>入出金登録</title>
 </head>
 <body>
-<form enctype="multipart/form-data" method="post"
-      th:action="@{'/spec'}" th:object="${specificationGroupForm}">
+<form th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="post">
     <table>
         <tr>
             <td></td>
-            <td th:object="${user}">
+            <td th:object="${specificationGroupForm.getUserForm().userId}">
                 <input id="userId" name="userId"
-                       readonly th:value="${specificationGroupForm.userId}" type="hidden">
+                       th:value="${specificationGroupForm.getUserForm().userId}" type="text" readonly>
             </td>
         </tr>
         <tr>
@@ -36,14 +35,14 @@
         </tr>
         <tr>
             <td><label for="shop">お店</label></td>
-            <td th:object="${specificationGroupForm.shopForm.shopId}">
+            <td th:object="${specificationGroupForm.shopId}">
                 <th:block th:if="${shop} ne null">
                     <input id="shopId" name="shopId"
                            readonly
-                           th:value="${specificationGroupForm.shopForm.shopId}" type="hidden">
+                           th:value="${specificationGroupForm.shopId}" type="hidden">
                     <input form="dummy" id="shop" name="shop"
                            readonly
-                           th:value="${specificationGroupForm.shopForm.shopName}" type="text">
+                           th:value="${shop.shopName}" type="text">
                 </th:block>
                 <th:block th:unless="${shop} ne null">
                     <input id="shopId" name="shopId"
@@ -56,12 +55,12 @@
         </tr>
         <tr>
             <td>入出金区分</td>
-            <td>
-                <label for="receivingAndPaymentType"></label>
-                <select id="receivingAndPaymentType"
-                        name="receivingAndPaymentType"
-                        onchange="changedReceivingAndPaymentType()"
-                        th:value="${specificationGroupForm.receivingAndPaymentType}">
+            <td th:object="${specificationGroupForm.balanceTypeId}">
+                <label for="balanceType"></label>
+                <select id="balanceType"
+                        name="balanceType"
+                        onchange="changedBalanceType()"
+                        th:value="${specificationGroupForm.balanceTypeId}">
                     <option value="1">出金</option>
                     <option value="2">入金</option>
                     <option value="3">振替</option>
@@ -70,17 +69,17 @@
         </tr>
         <tr>
             <td>出金元</td>
-            <td th:object="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId}">
-                <th:block th:if="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
+            <td th:object="${accountSource.accountSourceId}">
+                <th:block th:if="${accountSource.accountSourceId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId}"
+                           th:value="${accountSource.accountSourceId}"
                            type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountName}"
+                           th:value="${accountSource.accountName}"
                            type="text" readonly>
                 </th:block>
                 <th:block
-                        th:unless="${specificationGroupForm.accountAndBalanceForm.accountSourceForm.accountId} ne null">
+                        th:unless="${accountSource.accountSourceId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
                            th:value="1" type="hidden" readonly>
                     <input id="accountSourceName" name="accountSourceName"
@@ -94,16 +93,16 @@
             <td>入金先</td>
             <td th:object="${accountDestination}">
                 <th:block
-                        th:if="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
+                        th:if="${accountDestination.accountDestinationId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
                            readonly
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId}" type="hidden">
+                           th:value="${accountDestination.accountDestinationId}" type="hidden">
                     <input id="accountDestinationName" name="accountDestinationName"
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountName}"
+                           th:value="${accountDestination.accountName}"
                            type="text" readonly>
                 </th:block>
                 <th:block
-                        th:unless="${specificationGroupForm.accountAndBalanceForm.accountDestinationForm.accountId} ne null">
+                        th:unless="${accountDestination.accountDestinationId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
                            readonly th:value="1" type="hidden">
                     <input id="accountDestinationName" name="accountDestinationName"
@@ -125,7 +124,7 @@
 </form>
 
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 1">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 1">
     <th:block th:if="${shop} eq null">
         <th:block th:if="${accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -220,7 +219,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 2">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 2">
     <th:block th:if="${shop} eq null">
         <th:block th:if="${accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -315,7 +314,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 3">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 3">
     <th:block th:if="${shop} eq null">
         <th:block th:if="${accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -412,7 +411,7 @@
 
 
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 1">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 1">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSource.accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -507,7 +506,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 2">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 2">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSource.accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -602,7 +601,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 3">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 3">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSource.accountSourceId} eq null">
             <th:block th:if="${accountDestinationId} eq null">
@@ -699,7 +698,7 @@
 
 
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 1">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 1">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSourceId} eq null">
             <th:block th:if="${accountDestination.accountDestinationId} eq null">
@@ -794,7 +793,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 2">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 2">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSource} eq null">
             <th:block th:if="${accountDestination.accountDestinationId} eq null">
@@ -889,7 +888,7 @@
     </th:block>
 </th:block>
 <!--==================================================================================================-->
-<th:block th:if="${specificationGroupForm.receivingAndPaymentType} eq 3">
+<th:block th:if="${specificationGroupForm.balanceTypeId} eq 3">
     <th:block th:if="${shopId} eq null">
         <th:block th:if="${accountSourceId} eq null">
             <th:block th:if="${accountDestination.accountDestinationId} eq null">

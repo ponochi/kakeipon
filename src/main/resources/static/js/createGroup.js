@@ -27,12 +27,12 @@ function changedShop() {
   let accountDestination
     = document.getElementById("accountDestinationId");
   let receivingAndPaymentType
-    = document.getElementById("receivingAndPaymentType");
+    = document.getElementById("balanceType");
   if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
-    receivingAndPaymentType = 1;
-    changedReceivingAndPaymentType();
+    balanceType = 1;
+    changedBalanceType();
   }
-  window.sessionStorage.setItem("receivingAndPaymentType", receivingAndPaymentType);
+  window.sessionStorage.setItem("balanceeType", balanceType);
 }
 
 function changedAccountSource() {
@@ -42,13 +42,13 @@ function changedAccountSource() {
     = document.getElementById("accountSourceId");
   let accountDestination
     = document.getElementById("accountDestinationId");
-  let receivingAndPaymentType
-    = document.getElementById("receivingAndPaymentType");
+  let balanceType
+    = document.getElementById("balanceType");
   if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
-    receivingAndPaymentType = 1;
-    changedReceivingAndPaymentType();
+    balanceType = 1;
+    changedBalanceType();
   }
-  window.sessionStorage.setItem("receivingAndPaymentType", receivingAndPaymentType);
+  window.sessionStorage.setItem("balanceType", balanceType);
 }
 
 function changedAccountDestination() {
@@ -57,26 +57,26 @@ function changedAccountDestination() {
     = document.getElementById("accountSourceId");
   let accountDestination
     = document.getElementById("accountDestinationId");
-  let receivingAndPaymentType
-    = document.getElementById("receivingAndPaymentType");
+  let balanceType
+    = document.getElementById("balanceType");
   if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
-    receivingAndPaymentType = 1;
-    changedReceivingAndPaymentType();
+    balanceType = 1;
+    changedBalanceType();
   }
-  window.sessionStorage.setItem("receivingAndPaymentType", receivingAndPaymentType);
+  window.sessionStorage.setItem("balanceType", balanceType);
 }
 
 //=========================================================
-// Change event of Receiving and Payment Type
+// Change event of Balance Type
 // @param none
 // @return none
 //=========================================================
-function changedReceivingAndPaymentType() {
-  let receivingAndPaymentTypeControl
-    = document.getElementById("receivingAndPaymentType");
+function changedBalanceType() {
+  let balanceTypeControl
+    = document.getElementById("balanceType");
 
   window.sessionStorage.setItem(
-    "receivingAndPaymentType", receivingAndPaymentTypeControl.value);
+    "balanceType", balanceTypeControl.value);
 
   let accountSourceName
     = document.getElementById("accountSourceName");
@@ -87,12 +87,12 @@ function changedReceivingAndPaymentType() {
   let accountDestinationButton
     = document.getElementById("accountDestinationButton");
 
-  if (receivingAndPaymentTypeControl.value == 1) {
+  if (balanceTypeControl.value == 1) {
     accountSourceName.disabled = false;
     accountSourceButton.disabled = false;
     accountDestinationName.disabled = true;
     accountDestinationButton.disabled = true;
-  } else if (receivingAndPaymentTypeControl.value == 2) {
+  } else if (balanceTypeControl.value == 2) {
     accountSourceName.disabled = true;
     accountSourceButton.disabled = true;
     accountDestinationName.disabled = false;
@@ -122,15 +122,15 @@ function getTime(now) {
 // @return none
 //=========================================================
 function windowLoad() {
-  let receivingAndPaymentType
-    = window.sessionStorage.getItem("receivingAndPaymentType");
+  let balanceType
+    = window.sessionStorage.getItem("balanceType");
   let receivingAndPaymentDate
     = window.sessionStorage.getItem("receivingAndPaymentDate");
   let receivingAndPaymentTime
     = window.sessionStorage.getItem("receivingAndPaymentTime");
 
-  let receivingAndPaymentTypeControl
-    = document.getElementById("receivingAndPaymentType");
+  let balanceTypeControl
+    = document.getElementById("balanceType");
   let receivingAndPaymentDateControl
     = document.getElementById("receivingAndPaymentDate");
   let receivingAndPaymentTimeControl
@@ -173,16 +173,16 @@ function windowLoad() {
   if (Number(shopIdControl.value) === 1
     && Number(accountSourceIdControl.value) === 1
     && Number(accountDestinationIdControl.value) === 1) {
-    receivingAndPaymentType = 1;
+    balanceType = 1;
   }
 
-  if (receivingAndPaymentType == null) {
-    receivingAndPaymentTypeControl.value = 1;
-    window.sessionStorage.setItem("receivingAndPaymentType", 1);
+  if (balanceType == null) {
+    balanceTypeControl.value = 1;
+    window.sessionStorage.setItem("balanceType", 1);
   } else {
-    receivingAndPaymentTypeControl.value = receivingAndPaymentType;
+    balanceTypeControl.value = balanceType;
   }
-  changedReceivingAndPaymentType();
+  changedBalanceType();
 }
 
 window.addEventListener("load", windowLoad, false);

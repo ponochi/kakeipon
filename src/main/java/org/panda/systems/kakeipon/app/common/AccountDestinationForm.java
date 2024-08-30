@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.AccountDestination;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,20 +21,19 @@ public class AccountDestinationForm implements Serializable {
   @SequenceGenerator(name = "tblAccountSeq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "account_id")
-  private Long accountId;
+  private Long accountDestinationId;
 
   @NotEmpty
-  @Column
+  @Column(name = "account_name")
   private String accountName;
 
-  @NotEmpty
-  @Column
+  @Column(name = "branch_name")
   private String branchName;
 
   @PastOrPresent
-  @Column
+  @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
-  @Column
+  @Column(name = "update_date")
   private LocalDateTime updateDate;
 }

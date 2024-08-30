@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.AccountDestination;
+import org.panda.systems.kakeipon.domain.model.common.AccountSource;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -39,4 +41,28 @@ public class AccountAndBalanceForm implements Serializable {
 
   @Column
   private LocalDateTime updateDate;
+
+  public AccountSourceForm setAccountSourceToForm(AccountSource accountSource) {
+    AccountSourceForm form = new AccountSourceForm();
+
+    form.setAccountSourceId(accountSource.getAccountSourceId());
+    form.setAccountName(accountSource.getAccountName());
+    form.setBranchName(accountSource.getBranchName());
+    form.setEntryDate(accountSource.getEntryDate());
+
+    return form;
+  }
+
+  public AccountDestinationForm setAccountDestinationToForm(
+      AccountDestination accountDestination) {
+    AccountDestinationForm form = new AccountDestinationForm();
+
+    form.setAccountDestinationId(accountDestination.getAccountDestinationId());
+    form.setAccountName(accountDestination.getAccountName());
+    form.setBranchName(accountDestination.getBranchName());
+    form.setEntryDate(accountDestination.getEntryDate());
+    form.setUpdateDate(accountDestination.getUpdateDate());
+
+    return form;
+  }
 }

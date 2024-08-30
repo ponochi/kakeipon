@@ -15,12 +15,12 @@
             <th:block th:if="${shop.shopId} ne null">
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
                             '/1' +
-                            '/setShop'}" th:object="${shop}">
+                            '/setShop'}" th:object="${shop}" method="get">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
@@ -36,12 +36,12 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
                             '/__${accountDestinationId}__' +
-                            '/setShop'}" th:object="${shop}">
+                            '/setShop'}" th:object="${shop}" method="get">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
@@ -59,12 +59,12 @@
                 </th:block>
                 <th:block th:unless="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} ne null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
                             '/__${accountDestinationId}__' +
-                            '/setShop'}" th:object="${shop}">
+                            '/setShop'}" th:object="${shop}" method="get">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">
@@ -80,12 +80,12 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
                             '/1' +
-                            '/setShop'}" th:object="${shop}">
+                            '/setShop'}" th:object="${shop}" method="get">
                             <label for="shopId"></label>
                             <input id="shopId" th:value="${shop.shopId}" type="hidden">
                             <th:block th:if="${#strings.length('__${shop.branchName}__')} > 0">

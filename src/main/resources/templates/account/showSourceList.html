@@ -13,12 +13,13 @@
             <th:block th:if="${shop} eq null">
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSource.accountSourceId}__' +
                             '/1' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="${accountSource.accountSourceId}"
@@ -27,12 +28,13 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSource.accountSourceId}__' +
                             '/__${accountDestination.accountDestinationId}__' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="${accountSource.accountSourceId}"
@@ -43,9 +45,10 @@
                 </th:block>
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="1"
@@ -59,12 +62,13 @@
             <th:block th:unless="${shop} eq null">
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSource.accountSourceId}__' +
                             '/1' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="${accountSource.accountSourceId}"
@@ -73,12 +77,13 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSource.accountSourceId}__' +
                             '/__${accountDestination.accountDestinationId}__' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="${accountSource.accountSourceId}"
@@ -89,12 +94,13 @@
                 </th:block>
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestination} eq null">
-                        <form method="get" th:action="@{
+                        <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
                             '/1' +
-                            '/setAccountSource'}" th:object="${accountSource}">
+                            '/setAccountSource'}"
+                              th:object="${accountSource}" method="get">
                             <label for="accountSourceId"></label>
                             <input id="accountSourceId" name="accountSourceId"
                                    th:value="1"

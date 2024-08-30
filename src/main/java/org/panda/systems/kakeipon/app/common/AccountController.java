@@ -52,7 +52,7 @@ public class AccountController {
       AccountAndBalance accountDestination
           = accountAndBalanceService.getById(
           accountAndBalance.getAccountAndBalanceId());
-      destinationForm.setAccountId(
+      destinationForm.setAccountDestinationId(
           accountDestination.getAccountSourceId());
       destinationForm.setEntryDate(accountDestination.getEntryDate());
       destinationForm.setUpdateDate(accountDestination.getUpdateDate());
@@ -66,8 +66,8 @@ public class AccountController {
         = accountAndBalanceService.getById(
         accountAndBalance.getAccountAndBalanceId());
     AccountSourceForm sourceForm = new AccountSourceForm();
-    sourceForm.setAccountId(
-        accountSource.getAccountAndBalanceId());
+    sourceForm.setAccountSourceId(
+        accountSource.getAccountSourceId());
     sourceForm.setEntryDate(accountSource.getEntryDate());
     sourceForm.setUpdateDate(accountSource.getUpdateDate());
 
@@ -89,7 +89,7 @@ public class AccountController {
     if (accountSourceId > 0) {
       AccountAndBalance accountSource
           = accountAndBalanceService.getById(accountAndBalanceId);
-      sourceForm.setAccountId(accountSourceId);
+      sourceForm.setAccountSourceId(accountSourceId);
       sourceForm.setEntryDate(accountSource.getEntryDate());
       sourceForm.setUpdateDate(accountSource.getUpdateDate());
     }
@@ -101,7 +101,7 @@ public class AccountController {
     AccountAndBalance accountDestination
         = accountAndBalanceService.getById(accountAndBalanceId);
     AccountDestinationForm destinationForm = new AccountDestinationForm();
-    destinationForm.setAccountId(accountDestinationId);
+    destinationForm.setAccountDestinationId(accountDestinationId);
     destinationForm.setEntryDate(accountDestination.getEntryDate());
     destinationForm.setUpdateDate(accountDestination.getUpdateDate());
     model.addAttribute("accountDestinationForm", destinationForm);
