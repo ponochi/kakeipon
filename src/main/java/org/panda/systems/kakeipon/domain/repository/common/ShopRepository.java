@@ -19,5 +19,6 @@ public interface ShopRepository extends JpaRepository<Shop, Long> {
   Optional<Shop> findById(Long id);
 
   @SuppressWarnings({"NullableProblems", "unchecked"})
+  @Override
   Shop saveAndFlush(@SuppressWarnings("NullableProblems") Shop entity);
 }

@@ -13,18 +13,19 @@ import java.util.List;
 public class AccountDestinationService implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
+
   @Autowired
   private AccountDestinationRepository accountDestinationRepository;
 
-  public AccountDestination saveAndFlush(AccountDestination accountDestination) {
-    return accountDestinationRepository.saveAndFlush(accountDestination);
-  }
-
-  public AccountDestination getById(Long accountId) {
-    return accountDestinationRepository.getById(accountId);
-  }
-
   public List<AccountDestination> findAll() {
     return accountDestinationRepository.findAll();
+  }
+
+  public AccountDestination findById(Long accountDestinationId) {
+    return accountDestinationRepository.findById(accountDestinationId).orElse(null);
+  }
+
+  public AccountDestination saveAndFlush(AccountDestination accountDestination) {
+    return accountDestinationRepository.saveAndFlush(accountDestination);
   }
 }

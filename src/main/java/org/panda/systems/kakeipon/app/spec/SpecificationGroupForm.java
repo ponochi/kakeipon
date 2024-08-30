@@ -104,7 +104,7 @@ public class SpecificationGroupForm implements Serializable {
     specificationGroup.setShopId(specificationGroupForm.getShopId());
     specificationGroup.setReceivingAndPaymentDate(specificationGroupForm.getReceivingAndPaymentDate());
     specificationGroup.setReceivingAndPaymentTime(specificationGroupForm.getReceivingAndPaymentTime());
-    specificationGroup.setBalanceTypeId(specificationGroupForm.getBalanceTypeForm().getBalanceTypeId());
+    specificationGroup.setBalanceTypeId(specificationGroupForm.getBalanceTypeId());
     specificationGroup.setAccountAndBalanceId(specificationGroupForm.getAccountAndBalanceId());
     specificationGroup.setMemo(specificationGroupForm.getMemo());
     specificationGroup.setEntryDate(LocalDateTime.now());
@@ -154,7 +154,6 @@ public class SpecificationGroupForm implements Serializable {
 
   public BalanceTypeForm setBalanceTypeToForm(BalanceType balanceType) {
     this.balanceTypeForm = new BalanceTypeForm();
-System.out.println("balanceType.getBalanceTypeId() : " + balanceType.getBalanceTypeId());
     this.balanceTypeForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     this.balanceTypeForm.setBalanceTypeName(balanceType.getBalanceTypeName());
 

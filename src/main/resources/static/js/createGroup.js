@@ -74,6 +74,24 @@ function changedAccountDestination() {
 function changedBalanceType() {
   let balanceTypeControl
     = document.getElementById("balanceType");
+  let balanceTypeIdControl
+    = document.getElementById("balanceTypeId");
+
+  let searchShop
+    = document.getElementById("searchShop");
+  let searchAccountSource
+    = document.getElementById("searchAccountSource");
+  let searchAccountDestination
+    = document.getElementById("searchAccountDestination");
+
+  let shopIdControl
+    = document.getElementById("shopId");
+  let accountSourceIdControl
+    = document.getElementById("accountSourceId");
+  let accountDestinationIdControl
+    = document.getElementById("accountDestinationId");
+  let accountAndBalanceIdControl
+    = document.getElementById("accountAndBalanceId");
 
   window.sessionStorage.setItem(
     "balanceType", balanceTypeControl.value);
@@ -103,6 +121,68 @@ function changedBalanceType() {
     accountDestinationName.disabled = false;
     accountDestinationButton.disabled = false;
   }
+
+  balanceTypeIdControl.value = balanceTypeControl.value;
+
+  //==== Set action of search shop form ====//
+  console.log("shop.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
+  searchShop.action = "/" + accountAndBalanceIdControl.value;
+  if (shopIdControl.value) {
+    searchShop.action += "/" + shopIdControl.value;
+  } else {
+    searchShop.action += "/1";
+  }
+  if (accountSourceIdControl.value) {
+    searchShop.action += "/" + accountSourceIdControl.value;
+  } else {
+    searchShop.action += "/1";
+  }
+  if (accountDestinationIdControl.value) {
+    searchShop.action += "/" + accountDestinationIdControl.value;
+  } else {
+    searchShop.action += "/1";
+  }
+  searchShop.action += "/searchShop";
+
+  //==== Set action of search account source form ====//
+  console.log("accountSource.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
+  searchAccountSource.action = "/" + accountAndBalanceIdControl.value;
+  if (shopIdControl.value) {
+    searchAccountSource.action += "/" + shopIdControl.value;
+  } else {
+    searchAccountSource.action += "/1";
+  }
+  if (accountSourceIdControl.value) {
+    searchAccountSource.action += "/" + accountSourceIdControl.value;
+  } else {
+    searchAccountSource.action += "/1";
+  }
+  if (accountDestinationIdControl.value) {
+    searchAccountSource.action += "/" + accountDestinationIdControl.value;
+  } else {
+    searchAccountSource.action += "/1";
+  }
+  searchAccountSource.action += "/searchAccountSource";
+
+  //==== Set action of search account destination form ====//
+  console.log("accountDestination.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
+  searchAccountDestination.action = "/" + accountAndBalanceIdControl.value;
+  if (shopIdControl.value) {
+    searchAccountDestination.action += "/" + shopIdControl.value;
+  } else {
+    searchAccountDestination.action += "/1";
+  }
+  if (accountSourceIdControl.value) {
+    searchAccountDestination.action += "/" + accountSourceIdControl.value;
+  } else {
+    searchAccountDestination.action += "/1";
+  }
+  if (accountDestinationIdControl.value) {
+    searchAccountDestination.action += "/" + accountDestinationIdControl.value;
+  } else {
+    searchAccountDestination.action += "/1";
+  }
+  searchAccountDestination.action += "/searchAccountDestination";
 }
 
 function getDate(now) {

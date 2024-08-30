@@ -30,82 +30,82 @@ public class AccountController {
   @Autowired
   AccountDestinationService accountDestinationService;
 
-  @ModelAttribute("accountAndBalance")
-  AccountSourceForm setUpSourceForm() {
-    return new AccountSourceForm();
-  }
-
-  @ModelAttribute("accountAndBalance")
-  AccountDestinationForm setUpDestinationForm() {
-    return new AccountDestinationForm();
-  }
-
-  @PostMapping("/setAccountSource")
-  String setAccountSourceToSpecificationGroup(
-      @Validated AccountAndBalance accountAndBalance,
-      @ModelAttribute SpecificationGroupForm groupForm,
-      @ModelAttribute ShopForm shopForm,
-      Model model) {
-
-    var destinationForm = new AccountDestinationForm();
-    if (accountAndBalance.getAccountSourceId() > 0) {
-      AccountAndBalance accountDestination
-          = accountAndBalanceService.getById(
-          accountAndBalance.getAccountAndBalanceId());
-      destinationForm.setAccountDestinationId(
-          accountDestination.getAccountSourceId());
-      destinationForm.setEntryDate(accountDestination.getEntryDate());
-      destinationForm.setUpdateDate(accountDestination.getUpdateDate());
-    }
-
-    model.addAttribute("groupForm", groupForm);
-    model.addAttribute("shopForm", shopForm);
-    model.addAttribute("accountDestinationForm", destinationForm);
-
-    AccountAndBalance accountSource
-        = accountAndBalanceService.getById(
-        accountAndBalance.getAccountAndBalanceId());
-    AccountSourceForm sourceForm = new AccountSourceForm();
-    sourceForm.setAccountSourceId(
-        accountSource.getAccountSourceId());
-    sourceForm.setEntryDate(accountSource.getEntryDate());
-    sourceForm.setUpdateDate(accountSource.getUpdateDate());
-
-    model.addAttribute("accountSourceForm", sourceForm);
-
-    return "/spec/createGroup";
-  }
-
-  @PostMapping("/setAccountDestination/{accountSourceId}/{accountDestinationId}")
-  String setAccountDestinationToSpecificationGroup(
-      @PathVariable("accountSourceId") Long accountSourceId,
-      @PathVariable("accountDestinationId") Long accountDestinationId,
-      @Validated Long accountAndBalanceId,
-      @ModelAttribute SpecificationGroupForm groupForm,
-      @ModelAttribute ShopForm shopForm,
-      Model model) {
-
-    var sourceForm = new AccountSourceForm();
-    if (accountSourceId > 0) {
-      AccountAndBalance accountSource
-          = accountAndBalanceService.getById(accountAndBalanceId);
-      sourceForm.setAccountSourceId(accountSourceId);
-      sourceForm.setEntryDate(accountSource.getEntryDate());
-      sourceForm.setUpdateDate(accountSource.getUpdateDate());
-    }
-
-    model.addAttribute("groupForm", groupForm);
-    model.addAttribute("shopForm", shopForm);
-    model.addAttribute("accountSourceForm", sourceForm);
-
-    AccountAndBalance accountDestination
-        = accountAndBalanceService.getById(accountAndBalanceId);
-    AccountDestinationForm destinationForm = new AccountDestinationForm();
-    destinationForm.setAccountDestinationId(accountDestinationId);
-    destinationForm.setEntryDate(accountDestination.getEntryDate());
-    destinationForm.setUpdateDate(accountDestination.getUpdateDate());
-    model.addAttribute("accountDestinationForm", destinationForm);
-
-    return "/spec/createGroup";
-  }
+//  @ModelAttribute("accountAndBalance")
+//  AccountSourceForm setUpSourceForm() {
+//    return new AccountSourceForm();
+//  }
+//
+//  @ModelAttribute("accountAndBalance")
+//  AccountDestinationForm setUpDestinationForm() {
+//    return new AccountDestinationForm();
+//  }
+//
+//  @PostMapping("/setAccountSource")
+//  String setAccountSourceToSpecificationGroup(
+//      @Validated AccountAndBalance accountAndBalance,
+//      @ModelAttribute SpecificationGroupForm groupForm,
+//      @ModelAttribute ShopForm shopForm,
+//      Model model) {
+//
+//    var destinationForm = new AccountDestinationForm();
+//    if (accountAndBalance.getAccountSourceId() > 0) {
+//      AccountAndBalance accountDestination
+//          = accountAndBalanceService.getById(
+//          accountAndBalance.getAccountAndBalanceId());
+//      destinationForm.setAccountDestinationId(
+//          accountDestination.getAccountSourceId());
+//      destinationForm.setEntryDate(accountDestination.getEntryDate());
+//      destinationForm.setUpdateDate(accountDestination.getUpdateDate());
+//    }
+//
+//    model.addAttribute("groupForm", groupForm);
+//    model.addAttribute("shopForm", shopForm);
+//    model.addAttribute("accountDestinationForm", destinationForm);
+//
+//    AccountAndBalance accountSource
+//        = accountAndBalanceService.getById(
+//        accountAndBalance.getAccountAndBalanceId());
+//    AccountSourceForm sourceForm = new AccountSourceForm();
+//    sourceForm.setAccountSourceId(
+//        accountSource.getAccountSourceId());
+//    sourceForm.setEntryDate(accountSource.getEntryDate());
+//    sourceForm.setUpdateDate(accountSource.getUpdateDate());
+//
+//    model.addAttribute("accountSourceForm", sourceForm);
+//
+//    return "/spec/createGroup";
+//  }
+//
+//  @PostMapping("/setAccountDestination/{accountSourceId}/{accountDestinationId}")
+//  String setAccountDestinationToSpecificationGroup(
+//      @PathVariable("accountSourceId") Long accountSourceId,
+//      @PathVariable("accountDestinationId") Long accountDestinationId,
+//      @Validated Long accountAndBalanceId,
+//      @ModelAttribute SpecificationGroupForm groupForm,
+//      @ModelAttribute ShopForm shopForm,
+//      Model model) {
+//
+//    var sourceForm = new AccountSourceForm();
+//    if (accountSourceId > 0) {
+//      AccountAndBalance accountSource
+//          = accountAndBalanceService.getById(accountAndBalanceId);
+//      sourceForm.setAccountSourceId(accountSourceId);
+//      sourceForm.setEntryDate(accountSource.getEntryDate());
+//      sourceForm.setUpdateDate(accountSource.getUpdateDate());
+//    }
+//
+//    model.addAttribute("groupForm", groupForm);
+//    model.addAttribute("shopForm", shopForm);
+//    model.addAttribute("accountSourceForm", sourceForm);
+//
+//    AccountAndBalance accountDestination
+//        = accountAndBalanceService.getById(accountAndBalanceId);
+//    AccountDestinationForm destinationForm = new AccountDestinationForm();
+//    destinationForm.setAccountDestinationId(accountDestinationId);
+//    destinationForm.setEntryDate(accountDestination.getEntryDate());
+//    destinationForm.setUpdateDate(accountDestination.getUpdateDate());
+//    model.addAttribute("accountDestinationForm", destinationForm);
+//
+//    return "/spec/createGroup";
+//  }
 }

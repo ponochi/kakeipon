@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AccountDestinationRepository
@@ -14,7 +15,7 @@ public interface AccountDestinationRepository
   AccountDestination saveAndFlush(AccountDestination accountSource);
 
   @SuppressWarnings("NullableProblems")
-  AccountDestination getById(Long accountId);
+  Optional<AccountDestination> findById(Long accountId);
 
   @SuppressWarnings("NullableProblems")
   @Override
