@@ -17,7 +17,7 @@
             <td></td>
             <td th:object="${specificationGroupForm.userForm}">
                 <input id="userId" name="userId"
-                       th:value="*{userId}" type="text" readonly>
+                       th:value="*{userId}" type="hidden" readonly>
             </td>
         </tr>
         <tr>
@@ -81,6 +81,7 @@
                     <input id="accountSourceId" name="accountSourceId"
                            th:value="*{accountSourceId}"
                            type="hidden" readonly>
+                    <label for="accountSourceName"></label>
                     <input id="accountSourceName" name="accountSourceName"
                            th:value="*{accountName}"
                            type="text" readonly>
@@ -104,6 +105,7 @@
                     <input id="accountDestinationId" name="accountDestinationId"
                            readonly
                            th:value="${accountDestination.accountDestinationId}" type="hidden">
+                    <label for="accountDestinationName"></label>
                     <input id="accountDestinationName" name="accountDestinationName"
                            th:value="${accountDestination.accountName}"
                            type="text" readonly>
@@ -135,16 +137,13 @@
        type="hidden">
 
 <form id="searchShop"
-      th:action="@{'/searchShop'}"
-      th:object="${shopForm}" method="get">
+      th:action="@{'/searchShop'}" method="get">
 </form>
 <form id="searchAccountSource"
-      th:action="@{'/searchAccountSource'}"
-      th:object="${shopAccountSource}" method="get">
+      th:action="@{'/searchAccountSource'}" method="get">
 </form>
 <form id="searchAccountDestination"
-      th:action="@{'/searchAccountDestination'}"
-      th:object="${shopAccountDestination}" method="get">
+      th:action="@{'/searchAccountDestination'}" method="get">
 </form>
 
 <form id="dummy"></form>
