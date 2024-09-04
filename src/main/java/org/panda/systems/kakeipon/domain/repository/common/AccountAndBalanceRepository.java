@@ -9,7 +9,8 @@ import java.util.List;
 public interface AccountAndBalanceRepository
     extends JpaRepository<AccountAndBalance, Long> {
 
-  @Query("SELECT MAX(accountAndBalanceId) accountAndBalanceId FROM AccountAndBalance")
+  @Query("SELECT MAX(accountAndBalanceId) accountAndBalanceId" +
+      " FROM AccountAndBalance")
   Long getMaxAccountAndBalanceId();
 
   @Override

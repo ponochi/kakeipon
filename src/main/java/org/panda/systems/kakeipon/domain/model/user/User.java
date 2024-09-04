@@ -25,7 +25,6 @@ public class User implements Serializable {
   @Column(name = "user_id")
   private Long userId;
 
-  //@NotEmpty
   @Column(name = "nick_name")
   private String nickName;
 
@@ -35,29 +34,20 @@ public class User implements Serializable {
   @Column(name = "last_name")
   private String lastName;
 
-  //@NotEmpty
   @Column
   private String password;
 
-  //@NotEmpty
   @Column
   private String email;
 
   @Column(name = "birth_day")
   private LocalDateTime birthDay;
 
-  //@NotEmpty
   @Column(name = "phone_number")
   private String phoneNumber;
 
   @Column(name = "role_id")
   private Long roleId;
-
-//  @OneToOne
-//  @JoinColumn(name = "role_id", table = "tbl_role",
-//      insertable = false, updatable = false)
-//  @PrimaryKeyJoinColumn
-//  private Role role;
 
   @PastOrPresent
   @Column(name = "entry_date")
@@ -65,8 +55,4 @@ public class User implements Serializable {
 
   @Column(name = "update_date")
   private LocalDateTime updateDate;
-
-  // Default constructor
-  public User() {
-  }
 }

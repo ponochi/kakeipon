@@ -12,7 +12,6 @@ import java.util.List;
 public class MainController {
   @GetMapping( "top")
   String top( Model model ) {
-    // model.addAttribute( "sers", users );
     return "/top";
   }
 }

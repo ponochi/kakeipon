@@ -20,9 +20,4 @@ public class ShopController {
   ShopService shopService;
   @Autowired
   AccountAndBalanceService accountAndBalanceService;
-
-//  @RequestMapping(value = "/searchshop", method = RequestMethod.GET)
-//  public String searchShop() {
-//    return "shop/showList";
-//  }
 }

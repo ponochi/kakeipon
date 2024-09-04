@@ -66,13 +66,6 @@ public class SpecificationForm implements Serializable {
   @Column(name = "user_id")
   private Long userId;
 
-//  @ManyToOne
-//  @JoinColumn(name = "user_id", table = "tbl_user",
-//      insertable = false, updatable = false)
-//  @PrimaryKeyJoinColumn
-//  @Column(name = "user_id")
-//  UserForm userForm;
-
   private String name;
   private BigDecimal price;
 
@@ -121,20 +114,6 @@ public class SpecificationForm implements Serializable {
     form.specificationId = specification.getSpecificationId();
 
     form.userId = specification.getUserId();
-//    User user = userService.findById(specification.getUserId());
-//    form.userForm = setUserToForm(
-//        user.getUserId(),
-//        user.getNickName(),
-//        user.getLastName(),
-//        user.getFirstName(),
-//        user.getBirthDay(),
-//        user.getPassword(),
-//        user.getPhoneNumber(),
-//        user.getEmail(),
-//        user.getRoleId(),
-//        roleService.findByRoleId(user.getRoleId()).getRoleName(),
-//        user.getEntryDate(),
-//        user.getUpdateDate());
 
     form.name = specification.getName();
     form.price = specification.getPrice();
@@ -176,37 +155,6 @@ public class SpecificationForm implements Serializable {
   }
 
   // Setter for User
-//  public UserForm setUserToForm(Long userId,
-//                                String nickName,
-//                                String lastName,
-//                                String firstName,
-//                                LocalDateTime birthDay,
-//                                String password,
-//                                String phoneNumber,
-//                                String email,
-//                                Long roleId,
-//                                String roleName,
-//                                LocalDateTime entryDate,
-//                                LocalDateTime updateDate) {
-//    this.userForm = new UserForm();
-//
-//    this.userForm.setUserId(userId);
-//    this.userForm.setNickName(nickName);
-//    this.userForm.setLastName(lastName);
-//    this.userForm.setFirstName(firstName);
-//    this.userForm.setBirthDay(birthDay);
-//    this.userForm.setPassword(password);
-//    this.userForm.setPhoneNumber(phoneNumber);
-//    this.userForm.setEmail(email);
-//    this.userForm.setRoleForm(new RoleForm());
-//    this.userForm.getRoleForm().setRoleId(roleId);
-//    this.userForm.getRoleForm().setRoleName(roleName);
-//    this.userForm.setEntryDate(entryDate);
-//    this.userForm.setUpdateDate(updateDate);
-//
-//    return this.userForm;
-//  }
-
   public CurrencyForm setCurrencyToForm(Currency currency) {
     this.currencyForm = new CurrencyForm();
 

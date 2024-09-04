@@ -35,18 +35,8 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "user_id")
   private Long userId;
 
-//  @ManyToOne
-//  @JoinColumn(name = "user_id")
-////  @MapsId("userId")
-//  private User user;
-
   @Column(name = "shop_id")
   private Long shopId;
-
-//  @ManyToOne
-//  @JoinColumn(name = "shop_id", referencedColumnName = "shop_id",
-//      insertable = false, updatable = false)
-//  private Shop shop;
 
   @PastOrPresent
   @Column
@@ -58,25 +48,8 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "balance_type_id")
   private Long balanceTypeId;
 
-//  @OneToOne
-//  @JoinColumns({
-//      @JoinColumn(name = "balance_type_id", table = "tbl_balance_type",
-//          referencedColumnName = "balance_type_id",
-//          insertable = false, updatable = false),
-//  })
-//  private BalanceType balanceType;
-
   @Column(name = "account_and_balance_id")
   private Long accountAndBalanceId;
-
-//  @OneToOne
-//  @JoinColumns({
-//      @JoinColumn(name = "account_and_balance_id",
-//          table = "tbl_account_and_balance",
-//          referencedColumnName = "account_and_balance_id",
-//          insertable = false, updatable = false),
-//  })
-//  private AccountAndBalance accountAndBalance;
 
   @Column
   private String memo;

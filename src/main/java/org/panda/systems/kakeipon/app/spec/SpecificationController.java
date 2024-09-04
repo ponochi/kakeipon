@@ -157,9 +157,6 @@ public class SpecificationController {
         accountDestination.getAccountDestinationId());
     groupForm.setEntryDate(LocalDateTime.now());
 
-//    specificationGroupService.saveAndFlush(
-//        groupForm.toEntity(groupForm));
-
     SpecificationForm specificationForm = new SpecificationForm();
     specificationForm.setSpecificationGroupId(groupForm.getSpecificationGroupId());
     specificationForm.setUserId(groupForm.getUserId());
