@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>通貨検索</title>
+    <link href="/css/common.css" rel="stylesheet">
+</head>
+<body>
+通貨一覧
+
+<table>
+    <tr th:each="currency : ${currencies}">
+        <td>
+            <form id="edit"
+                  th:action="@{'/currency/__${currency.currencyId}__/edit'}"
+                  method="get">
+
+                <input id="currencyId" class="currency-id"
+                       th:value="${currency.currencyId}"
+                       type="hidden" />
+                <label for="currencyName"></label>
+                <input id="currencyName" class="currency-name"
+                       th:value="${currency.currencyName}"
+                       type="text"/>
+                <input type="submit" value="編　集"/>
+            </form>
+        </td>
+    </tr>
+</table>
+<form id="add" th:action="@{'/currency/add'}"
+      th:object="${currency}" method="get">
+</form>
+<div>
+    <button onclick="location.href='/top'">トップ画面</button>
+    <button form="add" type="submit">追　加</button>
+</div>
+
+</body>
+</html>

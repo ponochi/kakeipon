@@ -1,6 +1,6 @@
-package org.panda.systems.kakeipon.domain.repository.common;
+package org.panda.systems.kakeipon.domain.repository.account;
 
-import org.panda.systems.kakeipon.domain.model.common.AccountSource;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

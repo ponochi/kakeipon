@@ -9,3 +9,27 @@
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+.account-source-button {
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.account-destination-button {
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.currency-id {
+    width: 32px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.currency-name {
+    width: 64px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

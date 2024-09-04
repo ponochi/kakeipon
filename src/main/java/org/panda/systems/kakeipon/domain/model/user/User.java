@@ -3,9 +3,9 @@ package org.panda.systems.kakeipon.domain.model.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.common.Role;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "role_id"))
 @Data
 public class User implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
@@ -47,11 +50,14 @@ public class User implements Serializable {
   @Column(name = "phone_number")
   private String phoneNumber;
 
-  @OneToOne
-  @JoinColumn(name = "role_id", table = "tbl_role",
-      insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn
-  private Role role;
+  @Column(name = "role_id")
+  private Long roleId;
+
+//  @OneToOne
+//  @JoinColumn(name = "role_id", table = "tbl_role",
+//      insertable = false, updatable = false)
+//  @PrimaryKeyJoinColumn
+//  private Role role;
 
   @PastOrPresent
   @Column(name = "entry_date")

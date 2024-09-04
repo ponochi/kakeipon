@@ -3,12 +3,17 @@ package org.panda.systems.kakeipon.domain.model.common;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_account_and_balance")
 @Data
-public class AccountAndBalance {
+public class AccountAndBalance implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_account_and_balance_seq", allocationSize = 1)

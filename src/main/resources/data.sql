@@ -660,3 +660,15 @@ INSERT INTO tbl_balance_type(balance_type_name)
 VALUES ('収入');
 INSERT INTO tbl_balance_type(balance_type_name)
 VALUES ('振替');
+
+INSERT INTO tbl_tax_type(tax_type_name, tax_rate) VALUES ('外税', 0.08);
+INSERT INTO tbl_tax_type(tax_type_name, tax_rate) VALUES ('内税', 0.08);
+INSERT INTO tbl_tax_type(tax_type_name, tax_rate) VALUES ('非課税', 0.00);
+
+INSERT INTO tbl_currency(currency_name) VALUES ('YEN');
+INSERT INTO tbl_currency(currency_name) VALUES ('USD');
+INSERT INTO tbl_currency(currency_name) VALUES ('EUR');
+
+INSERT INTO tbl_unit(unit_name) VALUES ('個');
+INSERT INTO tbl_unit(unit_name) VALUES ('本');
+INSERT INTO tbl_unit(unit_name) VALUES ('枚');

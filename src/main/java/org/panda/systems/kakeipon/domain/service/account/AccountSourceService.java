@@ -1,7 +1,7 @@
-package org.panda.systems.kakeipon.domain.service.common;
+package org.panda.systems.kakeipon.domain.service.account;
 
-import org.panda.systems.kakeipon.domain.model.common.AccountSource;
-import org.panda.systems.kakeipon.domain.repository.common.AccountSourceRepository;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
+import org.panda.systems.kakeipon.domain.repository.account.AccountSourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

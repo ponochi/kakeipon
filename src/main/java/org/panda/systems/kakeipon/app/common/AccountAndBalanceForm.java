@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.common.AccountDestination;
-import org.panda.systems.kakeipon.domain.model.common.AccountSource;
+import org.panda.systems.kakeipon.app.account.AccountDestinationForm;
+import org.panda.systems.kakeipon.app.account.AccountSourceForm;
+import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 
 import java.io.Serial;
 import java.io.Serializable;

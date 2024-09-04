@@ -1,7 +1,7 @@
-package org.panda.systems.kakeipon.domain.service.common;
+package org.panda.systems.kakeipon.domain.service.user;
 
-import org.panda.systems.kakeipon.domain.model.common.Role;
-import org.panda.systems.kakeipon.domain.repository.common.RoleRepository;
+import org.panda.systems.kakeipon.domain.model.user.Role;
+import org.panda.systems.kakeipon.domain.repository.user.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

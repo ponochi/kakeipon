@@ -4,10 +4,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "tbl_balance_type")
 @Data
-public class BalanceType {
+public class BalanceType implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_balance_type_seq", allocationSize = 1)

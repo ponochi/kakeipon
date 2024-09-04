@@ -3,6 +3,7 @@ package org.panda.systems.kakeipon.domain.model.common;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 // Income and Expenditure
@@ -11,6 +12,8 @@ import java.io.Serializable;
 @Table( name = "tbl_first_class" )
 @Data
 public class FirstClassification implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue( strategy = GenerationType.IDENTITY )

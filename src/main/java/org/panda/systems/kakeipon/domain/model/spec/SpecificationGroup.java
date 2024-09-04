@@ -8,6 +8,7 @@ import org.panda.systems.kakeipon.domain.model.common.BalanceType;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +24,9 @@ import java.time.LocalTime;
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
 @Data
 public class SpecificationGroup implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)

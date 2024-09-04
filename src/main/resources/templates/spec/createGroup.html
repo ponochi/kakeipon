@@ -5,7 +5,7 @@
     <title>入出金登録</title>
 </head>
 <body>
-<form th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="post">
+<form id="specification" th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="post">
     <div th:object="${specificationGroupForm.accountAndBalanceForm}">
         <input id="accountAndBalanceId" name="accountAndBalanceId"
                th:value="*{accountAndBalanceId}"
@@ -129,8 +129,50 @@
             </td>
         </tr>
     </table>
-    <input type="submit" value="登　録">
 </form>
+<!--
+<table id="specificationTable">
+    <tr>
+        <th>明細</th>
+        <th>金額</th>
+        <th>消費税</th>
+        <th>合計</th>
+        <th>削除</th>
+    </tr>
+    <tr th:each="specification, stat : *{specifications}">
+        <td>
+            <input id="specificationId" name="specifications[__${stat.index}__].specificationId"
+                   th:value="${specification.specificationId}"
+                   type="hidden">
+            <input id="specificationName" name="specifications[__${stat.index}__].specificationName"
+                   th:value="${specification.specificationName}"
+                   type="text">
+        </td>
+        <td>
+            <input id="amount" name="specifications[__${stat.index}__].amount"
+                   th:value="${specification.amount}"
+                   type="number">
+        </td>
+        <td>
+            <input id="tax" name="specifications[__${stat.index}__].tax"
+                   th:value="${specification.tax}"
+                   type="number">
+        </td>
+        <td>
+            <input id="total" name="specifications[__${stat.index}__].total"
+                   th:value="${specification.total}"
+                   type="number">
+        </td>
+        <td>
+            <input id="delete" name="delete" type="button" value="削除"
+                   onclick="deleteRow(this)">
+        </td>
+    </tr>
+</table>
+-->
+
+<input type="submit" value="明細追加">
+<input form="specification" type="submit" value="登　録">
 
 <input id="balanceTypeId" name="balanceTypeId"
        th:value="${specificationGroupForm.balanceTypeId}"

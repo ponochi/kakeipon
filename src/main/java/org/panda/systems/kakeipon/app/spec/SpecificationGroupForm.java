@@ -2,15 +2,14 @@ package org.panda.systems.kakeipon.app.spec;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
 import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
-import org.panda.systems.kakeipon.app.common.ShopForm;
+import org.panda.systems.kakeipon.app.shop.ShopForm;
+import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
-import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -74,6 +73,7 @@ public class SpecificationGroupForm implements Serializable {
 
   @JoinColumn(name = "balance_type_id", table = "tbl_balance_type",
       insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
   @Column(name = "balance_type_id")
   BalanceTypeForm balanceTypeForm;
 
@@ -96,40 +96,55 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "update_date")
   LocalDateTime updateDate;
 
-  public static SpecificationGroup toEntity(SpecificationGroupForm specificationGroupForm) {
+  public static SpecificationGroup toEntity(SpecificationGroupForm groupForm) {
     SpecificationGroup specificationGroup = new SpecificationGroup();
 
-    specificationGroup.setSpecificationGroupId(specificationGroupForm.getSpecificationGroupId());
-    specificationGroup.setUserId(specificationGroupForm.getUserId());
-    specificationGroup.setShopId(specificationGroupForm.getShopId());
-    specificationGroup.setReceivingAndPaymentDate(specificationGroupForm.getReceivingAndPaymentDate());
-    specificationGroup.setReceivingAndPaymentTime(specificationGroupForm.getReceivingAndPaymentTime());
-    specificationGroup.setBalanceTypeId(specificationGroupForm.getBalanceTypeId());
-    specificationGroup.setAccountAndBalanceId(specificationGroupForm.getAccountAndBalanceId());
-    specificationGroup.setMemo(specificationGroupForm.getMemo());
+    specificationGroup.setSpecificationGroupId(
+        groupForm.getSpecificationGroupId());
+    specificationGroup.setUserId(groupForm.getUserId());
+    specificationGroup.setShopId(groupForm.getShopId());
+    specificationGroup.setReceivingAndPaymentDate(
+        groupForm.getReceivingAndPaymentDate());
+    specificationGroup.setReceivingAndPaymentTime(
+        groupForm.getReceivingAndPaymentTime());
+    specificationGroup.setBalanceTypeId(groupForm.getBalanceTypeId());
+    specificationGroup.setAccountAndBalanceId(
+        groupForm.getAccountAndBalanceId());
+    specificationGroup.setMemo(groupForm.getMemo());
     specificationGroup.setEntryDate(LocalDateTime.now());
-    specificationGroup.setUpdateDate(specificationGroupForm.getUpdateDate());
+    specificationGroup.setUpdateDate(groupForm.getUpdateDate());
 
     return specificationGroup;
   }
 
   // Setter for User
-  public UserForm setUserToForm(User user) {
+  public UserForm setUserToForm(Long userId,
+                                String nickName,
+                                String lastName,
+                                String firstName,
+                                LocalDateTime birthDay,
+                                String password,
+                                String phoneNumber,
+                                String email,
+                                Long roleId,
+                                String roleName,
+                                LocalDateTime entryDate,
+                                LocalDateTime updateDate) {
     this.userForm = new UserForm();
 
-    this.userForm.setUserId(user.getUserId());
-    this.userForm.setNickName(user.getNickName());
-    this.userForm.setLastName(user.getLastName());
-    this.userForm.setFirstName(user.getFirstName());
-    this.userForm.setBirthDay(user.getBirthDay());
-    this.userForm.setPassword(user.getPassword());
-    this.userForm.setPhoneNumber(user.getPhoneNumber());
-    this.userForm.setEmail(user.getEmail());
-    this.userForm.setRole(new Role());
-    this.userForm.getRole().setRoleId(user.getRole().getRoleId());
-    this.userForm.getRole().setRoleName(user.getRole().getRoleName());
-    this.userForm.setEntryDate(user.getEntryDate());
-    this.userForm.setUpdateDate(user.getUpdateDate());
+    this.userForm.setUserId(userId);
+    this.userForm.setNickName(nickName);
+    this.userForm.setLastName(lastName);
+    this.userForm.setFirstName(firstName);
+    this.userForm.setBirthDay(birthDay);
+    this.userForm.setPassword(password);
+    this.userForm.setPhoneNumber(phoneNumber);
+    this.userForm.setEmail(email);
+    this.userForm.setRoleForm(new RoleForm());
+    this.userForm.getRoleForm().setRoleId(roleId);
+    this.userForm.getRoleForm().setRoleName(roleName);
+    this.userForm.setEntryDate(entryDate);
+    this.userForm.setUpdateDate(updateDate);
 
     return this.userForm;
   }
@@ -154,6 +169,7 @@ public class SpecificationGroupForm implements Serializable {
 
   public BalanceTypeForm setBalanceTypeToForm(BalanceType balanceType) {
     this.balanceTypeForm = new BalanceTypeForm();
+
     this.balanceTypeForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     this.balanceTypeForm.setBalanceTypeName(balanceType.getBalanceTypeName());
 

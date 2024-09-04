@@ -8,8 +8,7 @@ import java.io.Serializable;
 
 @Embeddable
 @Data
-public class ThirdClassificationEntityPkey
-    implements Serializable {
+public class ThirdClassificationEntityPkey implements Serializable {
 
   @Column
   private Long thirdClassId;

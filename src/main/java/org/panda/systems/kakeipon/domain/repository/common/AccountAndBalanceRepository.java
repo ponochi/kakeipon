@@ -2,19 +2,21 @@ package org.panda.systems.kakeipon.domain.repository.common;
 
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AccountAndBalancePkeyRepository
+public interface AccountAndBalanceRepository
     extends JpaRepository<AccountAndBalance, Long> {
-  @SuppressWarnings({"unchecked", "NullableProblems"})
-  @Override
-  AccountAndBalance saveAndFlush(AccountAndBalance entity);
 
-  @SuppressWarnings("NullableProblems")
-  AccountAndBalance getById(Long accountId);
+  @Query("SELECT MAX(accountAndBalanceId) accountAndBalanceId FROM AccountAndBalance")
+  Long getMaxAccountAndBalanceId();
 
-  @SuppressWarnings("NullableProblems")
   @Override
   List<AccountAndBalance> findAll();
+
+  AccountAndBalance getById(Long accountId);
+
+  @Override
+  AccountAndBalance saveAndFlush(AccountAndBalance entity);
 }

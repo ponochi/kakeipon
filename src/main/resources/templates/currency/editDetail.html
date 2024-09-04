@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="jp"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="通貨編集"></title>
+  <script src="/js/common.js"></script>
+</head>
+<body>
+<h3>通貨編集</h3>
+<form id="confirm" th:object="${currency}"
+      th:action="@{'/currency/__${currency.currencyId}__/confirm'}" method="post">
+  <table>
+    <tbody>
+      <tr>
+        <th><label for="currencyName">通貨名</label></th>
+        <td class="require">*</td>
+        <td>
+          <input id="currencyId" name="currencyId"
+                 th:value="${currency.currencyId}" type="hidden" />
+          <input id="currencyName" name="currencyName"
+                 th:value="${currency.currencyName}" type="text" />
+          <!-- <span th:if="${#fields.hasErrors('currencyName')}"
+                th:errors="${currencyForm.currencyName}"
+                style="color:red">通貨名は必須です。</span> -->
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+<form id="list" th:action="@{'/currency'}" method="get">
+</form>
+<div>
+  <button onclick="location.href='/top'">トップ画面</button>
+  <button form="list"> 通貨一覧画面</button>
+  <button form="confirm" type="submit">登　録</button>
+</div>
+
+</body>
+</html>

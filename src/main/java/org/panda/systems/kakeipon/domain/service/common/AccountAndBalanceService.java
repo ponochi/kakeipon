@@ -1,7 +1,7 @@
 package org.panda.systems.kakeipon.domain.service.common;
 
 import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.repository.common.AccountAndBalancePkeyRepository;
+import org.panda.systems.kakeipon.domain.repository.common.AccountAndBalanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,17 +15,21 @@ public class AccountAndBalanceService implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Autowired
-  AccountAndBalancePkeyRepository accountRepository;
+  AccountAndBalanceRepository accountRepository;
 
-  public AccountAndBalance saveAndFlush(AccountAndBalance entity) {
-    return accountRepository.saveAndFlush(entity);
+  public Long getMaxAccountAndBalanceId() {
+    return accountRepository.getMaxAccountAndBalanceId();
+  }
+
+  public List<AccountAndBalance> findAll() {
+    return accountRepository.findAll();
   }
 
   public AccountAndBalance getById(Long accountAndBalanceId) {
     return accountRepository.getById(accountAndBalanceId);
   }
 
-  public List<AccountAndBalance> findAll() {
-    return accountRepository.findAll();
+  public AccountAndBalance saveAndFlush(AccountAndBalance entity) {
+    return accountRepository.saveAndFlush(entity);
   }
 }

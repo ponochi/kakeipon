@@ -1,4 +1,4 @@
-package org.panda.systems.kakeipon.app.common;
+package org.panda.systems.kakeipon.app.shop;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;

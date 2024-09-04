@@ -10,73 +10,73 @@
 <body>
 <h3>ユーザ詳細</h3>
 <form id="userInfo" method="post"
-      th:action="@{'/user/__${user.userId}__/edit'}" th:object="${user}">
+      th:action="@{'/user/__${userForm.userId}__/edit'}" th:object="${userForm}">
   <table>
     <tbody>
     <tr>
       <th>ID</th>
       <td>
-        <div id="userId" th:text="${user.userId}"></div>
+        <div id="userId" th:text="${userForm.userId}"></div>
       </td>
     </tr>
     <tr>
       <th>ニックネーム</th>
       <td>
-        <div id="nickName" th:text="${user.nickName}"></div>
+        <div id="nickName" th:text="${userForm.nickName}"></div>
       </td>
     </tr>
     <tr>
       <th>姓</th>
       <td>
-        <div id="lastName" th:text="${user.lastName}"></div>
+        <div id="lastName" th:text="${userForm.lastName}"></div>
       </td>
     </tr>
     <tr>
       <th>名</th>
       <td>
-        <div id="firstName" th:text="${user.firstName}"></div>
+        <div id="firstName" th:text="${userForm.firstName}"></div>
       </td>
     </tr>
     <tr>
       <th>パスワード</th>
       <td>
-        <div id="password" th:text="${user.password}"></div>
+        <div id="password" th:text="${userForm.password}"></div>
       </td>
     </tr>
     <tr>
       <th>e-mail</th>
       <td>
-        <div id="email" th:text="${user.email}"></div>
+        <div id="email" th:text="${userForm.email}"></div>
       </td>
     </tr>
     <tr>
       <th>生年月日</th>
       <td>
-        <div id="birthDay" th:text="${user.birthDay}"></div>
+        <div id="birthDay" th:text="${userForm.birthDay}"></div>
       </td>
     </tr>
     <tr>
       <th>電話番号</th>
       <td>
-        <div id="phoneNumber" th:text="${user.phoneNumber}"></div>
+        <div id="phoneNumber" th:text="${userForm.phoneNumber}"></div>
       </td>
     </tr>
     <tr>
       <th>権限</th>
       <td>
-        <div id="roleName" th:text="${user.role.getRoleName()}"></div>
+        <div id="roleName" th:text="${userForm.getRoleForm().getRoleName()}"></div>
       </td>
     </tr>
     <tr>
       <th>登録日</th>
       <td>
-        <div id="entryDate" th:text="${user.entryDate}"></div>
+        <div id="entryDate" th:text="${userForm.entryDate}"></div>
       </td>
     </tr>
     <tr>
       <th>変更日</th>
       <td>
-        <div id="updateDate" th:text="${user.updateDate}"></div>
+        <div id="updateDate" th:text="${userForm.updateDate}"></div>
       </td>
     </tr>
     </tbody>

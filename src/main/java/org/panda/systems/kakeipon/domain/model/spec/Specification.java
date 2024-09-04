@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.user.User;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ import java.time.LocalDateTime;
 @Table(name = "tbl_specification")
 @Data
 public class Specification implements Serializable {
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @NotEmpty
   @Column
   private Long specificationGroupId;
@@ -25,26 +29,30 @@ public class Specification implements Serializable {
   @Column
   private Long specificationId;
 
-  @OneToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "user_id",
-      insertable = false, updatable = false)
-  private User user;
+  @NotEmpty
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column
-  private String itemName;
+  private String name;
 
   @Column
-  private BigDecimal itemsJpyPrice;
+  private BigDecimal price;
+
+  @Column(name = "currency_id")
+  private Long currencyId;
+
+  @Column(name = "unit_id")
+  private Long unitId;
 
   @Column
-  @Size(max = 3, min = 3, message = "通貨の種類は3文字で入力してください (ex. JPY, USD, ...)")
-  private String currencyName;
+  private Long quantity;
+
+  @Column(name = "tax_type_id")
+  private Long taxTypeId;
 
   @Column
-  private BigDecimal itemsPrice;
-
-  @Column
-  private Integer itemCount;
+  private BigDecimal tax;
 
   @Column
   @Size(max = 1000, message = "メモは1000文字以内で入力してください")

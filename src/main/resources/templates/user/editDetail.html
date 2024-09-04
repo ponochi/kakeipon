@@ -151,10 +151,10 @@
       <th><label for="roleId">権限</label></th>
       <td class="require">*</td>
       <td>
-        <select id="roleId" name="roleId" th:value="${user.role.roleId}">
+        <select id="roleId" name="roleId" th:value="${user.roleId}">
           <option th:each="item : ${roles}" th:value="${item.getRoleId()}"
                   th:text="${item.getRoleName()}"
-                  th:selected="${item.getRoleId()} == ${user.role.roleId}"></option>
+                  th:selected="${item.getRoleId()} == ${user.roleId}"></option>
         </select>
       </td>
     </tr>

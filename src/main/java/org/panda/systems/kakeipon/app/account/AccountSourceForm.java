@@ -1,27 +1,27 @@
-package org.panda.systems.kakeipon.app.common;
+package org.panda.systems.kakeipon.app.account;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.common.AccountDestination;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+@Table(name = "tbl_account_info")
 @Data
-public class AccountDestinationForm implements Serializable {
+public class AccountSourceForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tblAccountSeq", allocationSize = 1)
+  @SequenceGenerator(name = "tbl_account_info_seq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "account_id")
-  private Long accountDestinationId;
+  private Long accountSourceId;
 
   @NotEmpty
   @Column(name = "account_name")

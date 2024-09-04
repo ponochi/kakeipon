@@ -43,4 +43,20 @@ module org.panda.systems.kakeipon {
   opens org.panda.systems.kakeipon.domain.service.common;
   opens org.panda.systems.kakeipon.domain.service.spec;
   opens org.panda.systems.kakeipon.domain.service.user;
+  exports org.panda.systems.kakeipon.app.currency;
+  opens org.panda.systems.kakeipon.app.currency;
+  exports org.panda.systems.kakeipon.app.shop;
+  opens org.panda.systems.kakeipon.app.shop;
+  exports org.panda.systems.kakeipon.app.account;
+  opens org.panda.systems.kakeipon.app.account;
+  exports org.panda.systems.kakeipon.domain.model.account;
+  opens org.panda.systems.kakeipon.domain.model.account;
+  exports org.panda.systems.kakeipon.domain.model.currency;
+  opens org.panda.systems.kakeipon.domain.model.currency;
+  opens org.panda.systems.kakeipon.domain.repository.account;
+  opens org.panda.systems.kakeipon.domain.repository.currency;
+  exports org.panda.systems.kakeipon.domain.service.account;
+  opens org.panda.systems.kakeipon.domain.service.account;
+  exports org.panda.systems.kakeipon.domain.service.currency;
+  opens org.panda.systems.kakeipon.domain.service.currency;
 }

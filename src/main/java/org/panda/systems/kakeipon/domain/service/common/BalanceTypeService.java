@@ -1,15 +1,18 @@
 package org.panda.systems.kakeipon.domain.service.common;
 
+import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.panda.systems.kakeipon.domain.model.common.BalanceType;
 import org.panda.systems.kakeipon.domain.repository.common.BalanceTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 @Service
 public class BalanceTypeService implements Serializable {
+  @Serial
   private static final long serialVersionUID = 1L;
 
   @Autowired
