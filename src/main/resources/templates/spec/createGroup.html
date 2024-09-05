@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>入出金登録</title>
+    <link href="/css/common.css" rel="stylesheet">
 </head>
 <body>
 <form id="specification" th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="post">
@@ -135,72 +136,116 @@
         </tr>
     </table>
 </form>
-<table id="specificationTable">
-    <tr>
-        <th>商品名</th>
-        <th>単価</th>
-        <th>単位</th>
-        <th>数量</th>
-        <th>税区分</th>
-        <th>税率</th>
-        <th>消費税</th>
-        <th>備考</th>
-        <th>削除</th>
-    </tr>
-    <tr th:each="specification, stat : ${specifications}">
-        <td>
+<div id="specificationTable">
+    <div id="header" class="grid">
+        <div class="brand-name"><input class="spec-header brand-name" th:value="商品名" readonly/></div>
+        <div class="price"><input class="spec-header price" th:value="単価" readonly/></div>
+        <div class="currency-name"><input class="spec-header currency-name-header" th:value="通貨" readonly/></div>
+        <div class="quantity"><input class="spec-header quantity" th:value="数量" readonly/></div>
+        <div class="unit-name"><input class="spec-header unit-name-header" th:value="単位" readonly/></div>
+        <div class="tax-type-name"><input class="spec-header tax-type-name" th:value="税区分" readonly/></div>
+        <div class="tax-rate"><input class="spec-header tax-rate" th:value="税率" readonly/></div>
+        <div class="tax"><input class="spec-header tax-header" th:value="消費税" readonly/></div>
+        <div class="spec-memo"><input class="spec-header spec-memo" th:value="備考" readonly/></div>
+    </div>
+    <div th:each="specification, stat : ${specifications}"
+         class="grid">
+        <div>
             <input id="specificationGroupId" name="specifications[__${stat.index}__].specificationGroupId"
                    th:value="${specification.specificationGroupId}"
                    type="hidden">
             <input id="specificationId" name="specifications[__${stat.index}__].specificationId"
                    th:value="${specification.specificationId}"
                    type="hidden">
+        </div>
+        <div class="brand-name">
             <input id="name" name="specifications[__${stat.index}__].name"
+                   class="brand-name"
                    th:value="${specification.name}"
                    type="text">
-        </td>
-        <td>
-            <input id="price" name="specifications[__${stat.index}__].price"
+        </div>
+        <div class="price">
+            <input id="price"
+                   name="specifications[__${stat.index}__].price"
+                   class="price"
                    th:value="${specification.price}"
                    type="number">
-        </td>
-        <td>
-            <input id="unitId" name="specifications[__${stat.index}__].unitId"
-                   th:value="${specification.unitId}"
-                   type="hidden">
-            <input id="unitName" name="unit.unitName"
-                   th:value="${unit.unitName}"
-                   type="text">
-        </td>
-        <td>
-            <input id="quantity" name="specifications[__${stat.index}__].quantity"
+        </div>
+        <div class="currency-name">
+            <label for="currencyId"></label>
+            <select id="currencyId"
+                    name="currencyId"
+                    class="currency-name"
+                    th:field="${specification.currencyId}">
+                <option th:each="currency : ${currencies}"
+                        th:value="${currency.currencyId}"
+                        th:text="${currency.currencyName}">
+                </option>
+            </select>
+        </div>
+        <div class="quantity">
+            <label for="quantity"></label>
+            <input id="quantity"
+                   name="specifications[__${stat.index}__].quantity"
+                   class="quantity"
                    th:value="${specification.quantity}"
                    type="number">
-        </td>
-        <td>
-            <input id="taxTypeId" name="specifications[__${stat.index}__].taxTypeId"
+        </div>
+        <div class="unit-name">
+            <label for="unitId"></label>
+            <select id="unitId"
+                    name="unitId"
+                    class="unit-name"
+                    th:field="${specification.unitId}">
+                <option th:each="unit : ${units}"
+                        th:value="${unit.unitId}"
+                        th:text="${unit.unitName}">
+                </option>
+            </select>
+        </div>
+        <div>
+            <input id="taxTypeId"
+                   name="specifications[__${stat.index}__].taxTypeId"
                    th:value="${specification.taxTypeId}"
                    type="hidden">
+        </div>
+        <div class="tax-type-name">
+            <label for="taxTypeName"></label>
             <input id="taxTypeName" name="taxType.taxTypeName"
+                   class="tax-type-name"
                    th:value="${taxType.taxTypeName}"
                    type="text">
-        </td>
-        <td>
+        </div>
+        <div class="tax-rate">
+            <label for="taxRate"></label>
             <input id="taxRate" name="taxType.taxRate"
+                   class="tax-rate"
+                   th:value="${taxType.taxRate}"
+                   type="number">
+        </div>
+        <div class="tax">
+            <label for="tax"></label>
+            <input id="tax" name="taxType.tax"
+                   class="tax"
                    th:value="__${specification.price}__ * __${specification.quantity}__ * __${taxType.taxRate}__"
                    type="number">
-        </td>
-        <td>
-            <input id="spec-memo" name="specifications[__${stat.index}__].memo"
+        </div>
+        <div class="spec-memo">
+            <label for="spec-memo"></label>
+            <input id="spec-memo"
+                   class="spec-memo"
+                   name="specifications[__${stat.index}__].memo"
                    th:value="${specification.memo}"
                    type="text">
-        </td>
-        <td>
-            <input id="delete" name="delete" type="button" value="削除"
+        </div>
+        <div class="delete">
+            <input id="delete"
+                   name="delete" type="button" value="削　除"
+                   class="delete"
                    onclick="deleteRow(this)">
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 
 <input type="submit" value="明細追加">
 <input form="specification" type="submit" value="登　録">

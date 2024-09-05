@@ -671,4 +671,7 @@ INSERT INTO tbl_currency(currency_name) VALUES ('EUR');
 
 INSERT INTO tbl_unit(unit_name) VALUES ('個');
 INSERT INTO tbl_unit(unit_name) VALUES ('本');
+INSERT INTO tbl_unit(unit_name) VALUES ('袋');
 INSERT INTO tbl_unit(unit_name) VALUES ('枚');
+INSERT INTO tbl_unit(unit_name) VALUES ('g');
+INSERT INTO tbl_unit(unit_name) VALUES ('kg');

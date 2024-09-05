@@ -5,6 +5,7 @@ import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.currency.Currency;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.model.user.Role;
@@ -180,8 +181,10 @@ public class SpecificationController {
     specification.setUserId(user.getUserId());
     specification.setName(specification.getName());
     specification.setPrice(BigDecimal.ZERO);
+    specification.setCurrencyId(Long.parseLong("1"));
+    List<Currency> currencies = currencyService.findAll();
     specification.setUnitId(Long.parseLong("1"));
-    Unit unit = unitService.findById(specification.getUnitId());
+    List<Unit> units = unitService.findAll();
     specification.setQuantity(Long.parseLong("1"));
     specification.setTaxTypeId(Long.parseLong("1"));
     TaxType taxType = taxTypeService.findById(specification.getTaxTypeId());
@@ -198,7 +201,8 @@ public class SpecificationController {
 
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specifications", specifications);
-    model.addAttribute("unit", unit);
+    model.addAttribute("currencies", currencies);
+    model.addAttribute("units", units);
     model.addAttribute("taxType", taxType);
     model.addAttribute(
         "accountAndBalanceId",

@@ -247,8 +247,8 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
     name                   VARCHAR(255)   ,                         -- 商品名
     price                  DECIMAL(10, 2) NOT NULL,                 -- 価格
     currency_id            BIGINT,                                  -- 通貨名 (任意 : USD, EUR, ...)
-    unit_id                BIGINT         NOT NULL DEFAULT 1,       -- 単位
     quantity               BIGINT         NOT NULL,                 -- 数量
+    unit_id                BIGINT         NOT NULL DEFAULT 1,       -- 単位
     tax_type_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税種別ID
     tax                    DECIMAL(10, 2),                          -- 消費税額 (任意)
     memo                   TEXT,                                    -- 1000文字まで                -- メモ (任意)
