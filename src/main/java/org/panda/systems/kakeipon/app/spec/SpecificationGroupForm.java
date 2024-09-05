@@ -96,7 +96,7 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "update_date")
   LocalDateTime updateDate;
 
-  public static SpecificationGroup toEntity(SpecificationGroupForm groupForm) {
+  public SpecificationGroup toEntity(SpecificationGroupForm groupForm) {
     SpecificationGroup specificationGroup = new SpecificationGroup();
 
     specificationGroup.setSpecificationGroupId(

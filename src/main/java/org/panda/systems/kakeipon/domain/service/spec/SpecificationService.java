@@ -19,16 +19,20 @@ public class SpecificationService implements Serializable {
   @Autowired
   private SpecificationRepository specificationRepository;
 
+  public Long getMaxSpecificationId(Long specificationGroupId) {
+    return specificationRepository.getMaxId(specificationGroupId);
+  }
+
   public List<Specification> findAll() {
     return specificationRepository.findAll();
   }
 
-  public Optional<Specification> findById(Long specificationId) {
-    return specificationRepository.findById(specificationId);
+  public List<Specification> findBySpecificationGroupId(Long specificationGroupId) {
+    return specificationRepository.findBySpecificationGroupId(specificationGroupId);
   }
 
   @Transactional
-  public List<Specification> saveAndFlush(List<Specification> entities) {
-    return specificationRepository.saveAndFlush(entities);
+  public Specification saveAndFlush(Specification entity) {
+    return specificationRepository.saveAndFlush(entity);
   }
 }

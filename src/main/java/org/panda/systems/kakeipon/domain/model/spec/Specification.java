@@ -14,12 +14,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_specification")
+@SecondaryTable(name = "tbl_user",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+@SecondaryTable(name = "tbl_currency",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_id"))
+@SecondaryTable(name = "tbl_unit",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
+@SecondaryTable(name = "tbl_tax_type",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_type_id"))
 @Data
 public class Specification implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @NotEmpty
   @Column
   private Long specificationGroupId;
 
@@ -29,7 +36,6 @@ public class Specification implements Serializable {
   @Column
   private Long specificationId;
 
-  @NotEmpty
   @Column(name = "user_id")
   private Long userId;
 

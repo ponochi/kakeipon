@@ -5,6 +5,7 @@ import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.model.user.Role;
 import org.panda.systems.kakeipon.domain.model.user.User;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -62,7 +64,8 @@ public class SpecificationController {
   @ModelAttribute("specificationGroupForm")
   SpecificationGroupForm setUpSpecificationGroupForm() {
     SpecificationGroupForm form = new SpecificationGroupForm();
-
+    form.setSpecificationGroupId(
+        specificationGroupService.getMaxGroupId());
     User user = userService.findById(Long.parseLong("2"));
     Role role = roleService.findByRoleId(user.getRoleId());
     form.setUserId(user.getUserId());
@@ -96,6 +99,7 @@ public class SpecificationController {
   @GetMapping("/spec")
   String addSpecificationGroup(
       @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute Specification specification,
       Model model) {
 
     AccountAndBalance accountAndBalance = new AccountAndBalance();
@@ -150,6 +154,8 @@ public class SpecificationController {
         = balanceTypeService.findAll();
     groupForm.setBalanceTypeToForm(balanceTypes.get(0));
 
+    groupForm.setAccountAndBalanceId(
+        accountAndBalance.getAccountAndBalanceId());
     groupForm.setAccountAndBalanceToForm(accountAndBalance);
     groupForm.getAccountAndBalanceForm().setAccountSourceId(
         accountSource.getAccountSourceId());
@@ -157,12 +163,43 @@ public class SpecificationController {
         accountDestination.getAccountDestinationId());
     groupForm.setEntryDate(LocalDateTime.now());
 
-    SpecificationForm specificationForm = new SpecificationForm();
-    specificationForm.setSpecificationGroupId(groupForm.getSpecificationGroupId());
-    specificationForm.setUserId(groupForm.getUserId());
+    // ToDo: Fix this
+    SpecificationGroup specificationGroup
+        = groupForm.toEntity(groupForm);
+    specificationGroupService.saveAndFlush(specificationGroup);
+
+//    Specification specification = new Specification();
+//    specification.setSpecificationGroupId(specificationGroup.getSpecificationGroupId());
+////    specification.setSpecificationId(
+//        specificationService.getMaxSpecificationId(
+//            specificationGroup.getSpecificationGroupId()));
+//    specification.setUserId(specificationGroup.getUserId());
+
+    specification.setSpecificationGroupId(
+        specificationGroupService.getMaxGroupId());
+    specification.setUserId(user.getUserId());
+    specification.setName(specification.getName());
+    specification.setPrice(BigDecimal.ZERO);
+    specification.setUnitId(Long.parseLong("1"));
+    Unit unit = unitService.findById(specification.getUnitId());
+    specification.setQuantity(Long.parseLong("1"));
+    specification.setTaxTypeId(Long.parseLong("1"));
+    TaxType taxType = taxTypeService.findById(specification.getTaxTypeId());
+    specification.setTax(
+        (specification.getPrice()
+            .multiply(new BigDecimal(specification.getQuantity()))
+            .multiply(taxType.getTaxRate())));
+    specification.setEntryDate(LocalDateTime.now());
+    specificationService.saveAndFlush(specification);
+
+    List<Specification> specifications
+        = specificationService.findBySpecificationGroupId(
+            specificationGroup.getSpecificationGroupId());
 
     model.addAttribute("specificationGroupForm", groupForm);
-    model.addAttribute("specificationForm", specificationForm);
+    model.addAttribute("specifications", specifications);
+    model.addAttribute("unit", unit);
+    model.addAttribute("taxType", taxType);
     model.addAttribute(
         "accountAndBalanceId",
         accountAndBalance.getAccountAndBalanceId());
@@ -178,11 +215,23 @@ public class SpecificationController {
   @PostMapping("/spec")
   String commitSpecificationGroup(
       @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute Specification specification,
       Model model) {
 
-    SpecificationGroup specificationGroup
-        = SpecificationGroupForm.toEntity(groupForm);
-    specificationGroupService.saveAndFlush(specificationGroup);
+    specification.setSpecificationGroupId(
+        groupForm.getSpecificationGroupId());
+    specification.setName(specification.getName());
+//    specification.setPrice(BigDecimal.ZERO);
+//    specification.setUnitId(Long.parseLong("1"));
+//    specification.setQuantity(Long.parseLong("1"));
+//    specification.setTaxTypeId(Long.parseLong("1"));
+    TaxType taxType = taxTypeService.findById(specification.getTaxTypeId());
+    specification.setTax(
+        (specification.getPrice()
+            .multiply(new BigDecimal(specification.getQuantity()))
+            .multiply(taxType.getTaxRate())));
+    specification.setEntryDate(LocalDateTime.now());
+    specificationService.saveAndFlush(specification);
 
     return "redirect:/spec";
   }
@@ -287,6 +336,7 @@ public class SpecificationController {
 
     groupForm.setAccountAndBalanceId(
         groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
+System.out.println("accountAndBalanceId: " + accountAndBalanceId);
     AccountAndBalance accountAndBalance
         = accountAndBalanceService.getById(accountAndBalanceId);
     groupForm.setAccountAndBalanceToForm(accountAndBalance);

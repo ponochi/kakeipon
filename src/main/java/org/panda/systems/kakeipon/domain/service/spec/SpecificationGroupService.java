@@ -21,6 +21,10 @@ public class SpecificationGroupService implements Serializable {
   @Autowired
   private SpecificationGroupRepository specificationGroupRepository;
 
+  public Long getMaxGroupId() {
+    return specificationGroupRepository.getMaxGroupId();
+  }
+
   @SuppressWarnings("rawtypes")
   public List<SpecificationGroup> findAll() {
     return specificationGroupRepository.findAll();

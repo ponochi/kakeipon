@@ -244,7 +244,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
     specification_id       BIGINT
         DEFAULT nextval('kp.tbl_specification_seq'),                -- 明細ID
     user_id                BIGINT         NOT NULL,                 -- ユーザID
-    name                   VARCHAR(255)   NOT NULL,                 -- 商品名
+    name                   VARCHAR(255)   ,                         -- 商品名
     price                  DECIMAL(10, 2) NOT NULL,                 -- 価格
     currency_id            BIGINT,                                  -- 通貨名 (任意 : USD, EUR, ...)
     unit_id                BIGINT         NOT NULL DEFAULT 1,       -- 単位
