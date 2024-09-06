@@ -60,6 +60,8 @@ public class SpecificationController {
   @Autowired
   TaxTypeService taxTypeService;
   @Autowired
+  TaxRateService taxRateService;
+  @Autowired
   User user;
 
   @ModelAttribute("specificationGroupForm")
@@ -180,18 +182,16 @@ public class SpecificationController {
         specificationGroupService.getMaxGroupId());
     specification.setUserId(user.getUserId());
     specification.setName(specification.getName());
-    specification.setPrice(BigDecimal.ZERO);
+    specification.setPrice(Long.parseLong("0"));
     specification.setCurrencyId(Long.parseLong("1"));
     List<Currency> currencies = currencyService.findAll();
     specification.setUnitId(Long.parseLong("1"));
     List<Unit> units = unitService.findAll();
     specification.setQuantity(Long.parseLong("1"));
     specification.setTaxTypeId(Long.parseLong("1"));
-    TaxType taxType = taxTypeService.findById(specification.getTaxTypeId());
-    specification.setTax(
-        (specification.getPrice()
-            .multiply(new BigDecimal(specification.getQuantity()))
-            .multiply(taxType.getTaxRate())));
+    List<TaxType> taxTypes = taxTypeService.findAll();
+    specification.setTaxRateId(Long.parseLong("1"));
+    List<TaxRate> taxRates = taxRateService.findAll();
     specification.setEntryDate(LocalDateTime.now());
     specificationService.saveAndFlush(specification);
 
@@ -203,7 +203,8 @@ public class SpecificationController {
     model.addAttribute("specifications", specifications);
     model.addAttribute("currencies", currencies);
     model.addAttribute("units", units);
-    model.addAttribute("taxType", taxType);
+    model.addAttribute("taxTypes", taxTypes);
+    model.addAttribute("taxRates", taxRates);
     model.addAttribute(
         "accountAndBalanceId",
         accountAndBalance.getAccountAndBalanceId());
@@ -224,17 +225,7 @@ public class SpecificationController {
 
     specification.setSpecificationGroupId(
         groupForm.getSpecificationGroupId());
-    specification.setName(specification.getName());
-//    specification.setPrice(BigDecimal.ZERO);
-//    specification.setUnitId(Long.parseLong("1"));
-//    specification.setQuantity(Long.parseLong("1"));
-//    specification.setTaxTypeId(Long.parseLong("1"));
-    TaxType taxType = taxTypeService.findById(specification.getTaxTypeId());
-    specification.setTax(
-        (specification.getPrice()
-            .multiply(new BigDecimal(specification.getQuantity()))
-            .multiply(taxType.getTaxRate())));
-    specification.setEntryDate(LocalDateTime.now());
+    specification.setUpdateDate(LocalDateTime.now());
     specificationService.saveAndFlush(specification);
 
     return "redirect:/spec";

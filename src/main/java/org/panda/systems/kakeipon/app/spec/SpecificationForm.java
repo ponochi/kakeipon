@@ -2,15 +2,18 @@ package org.panda.systems.kakeipon.app.spec;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.panda.systems.kakeipon.app.common.TaxRateForm;
 import org.panda.systems.kakeipon.app.currency.CurrencyForm;
 import org.panda.systems.kakeipon.app.common.TaxTypeForm;
 import org.panda.systems.kakeipon.app.common.UnitForm;
 import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
+import org.panda.systems.kakeipon.domain.model.common.TaxRate;
 import org.panda.systems.kakeipon.domain.model.currency.Currency;
 import org.panda.systems.kakeipon.domain.model.common.TaxType;
 import org.panda.systems.kakeipon.domain.model.common.Unit;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
+import org.panda.systems.kakeipon.domain.service.common.TaxRateService;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyService;
 import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
 import org.panda.systems.kakeipon.domain.model.user.User;
@@ -36,6 +39,8 @@ import java.time.LocalDateTime;
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
 @SecondaryTable(name = "tbl_tax_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_type_id"))
+@SecondaryTable(name = "tbl_tax_rate",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_rate_id"))
 @Data
 public class SpecificationForm implements Serializable {
   @Serial
@@ -51,6 +56,8 @@ public class SpecificationForm implements Serializable {
   UnitService unitService;
   @Autowired
   TaxTypeService taxTypeService;
+  @Autowired
+  TaxRateService taxRateService;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
@@ -67,7 +74,7 @@ public class SpecificationForm implements Serializable {
   private Long userId;
 
   private String name;
-  private BigDecimal price;
+  private Long price;
 
   private Long currencyId;
 
@@ -90,15 +97,22 @@ public class SpecificationForm implements Serializable {
   private Long quantity;
   private Long taxTypeId;
 
-  @ManyToOne
+  @OneToOne
   @JoinColumn(name = "tax_type_id", table = "tbl_tax_type",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_type_id")
   TaxTypeForm taxTypeForm;
 
+  @OneToOne
+  @JoinColumn(name = "tax_rate_id", table = "tbl_tax_rate",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
+  @Column(name = "tax_rate_id")
+  TaxRateForm taxRateForm;
+
   private String taxRate;
-  private BigDecimal tax;
+  private Long tax;
   private String memo;
   private LocalDateTime entryDate;
   private LocalDateTime updateDate;
@@ -176,7 +190,14 @@ public class SpecificationForm implements Serializable {
 
     this.taxTypeForm.setTaxTypeId(taxType.getTaxTypeId());
     this.taxTypeForm.setTaxTypeName(taxType.getTaxTypeName());
-    this.taxTypeForm.setTaxRate(taxType.getTaxRate());
     return this.taxTypeForm;
+  }
+
+  public TaxRateForm setTaxRateToForm(TaxRate taxRate) {
+    this.taxRateForm = new TaxRateForm();
+
+    this.taxRateForm.setTaxRateId(taxRate.getTaxRateId());
+    this.taxRateForm.setTaxRate(taxRate.getTaxRate());
+    return this.taxRateForm;
   }
 }

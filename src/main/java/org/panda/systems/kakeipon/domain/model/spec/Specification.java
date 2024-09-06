@@ -43,7 +43,7 @@ public class Specification implements Serializable {
   private String name;
 
   @Column
-  private BigDecimal price;
+  private Long price;
 
   @Column(name = "currency_id")
   private Long currencyId;
@@ -57,8 +57,11 @@ public class Specification implements Serializable {
   @Column(name = "tax_type_id")
   private Long taxTypeId;
 
+  @Column(name = "tax_rate_id")
+  private Long taxRateId;
+
   @Column
-  private BigDecimal tax;
+  private Long tax;
 
   @Column
   @Size(max = 1000, message = "メモは1000文字以内で入力してください")

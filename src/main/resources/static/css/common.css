@@ -36,7 +36,8 @@
 
 .spec-header {
     text-align: center;
-    border: 1px solid #eeeeee;
+    border: 1px solid #aaaaaa;
+    background-color: #d0d0ff;
     margin-top: 1px;
 }
 
@@ -103,7 +104,7 @@
     margin-bottom: 0px;
 }
 
-.tax-type-name {
+.tax-type {
     grid-area: tax-type-name;
     width: 56px;
     margin-top: 0px;
@@ -123,7 +124,7 @@
 
 .tax-header {
     grid-area: tax;
-    width: 112px;
+    width: 113px;
     margin-top: 0px;
     margin-left: 0px;
     margin-right: 0px;

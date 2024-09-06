@@ -125,7 +125,6 @@ function changedBalanceType() {
   balanceTypeIdControl.value = balanceTypeControl.value;
 
   //==== Set action of search shop form ====//
-  console.log("shop.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
   searchShop.action = "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchShop.action += "/" + shopIdControl.value;
@@ -145,7 +144,6 @@ function changedBalanceType() {
   searchShop.action += "/searchShop";
 
   //==== Set action of search account source form ====//
-  console.log("accountSource.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
   searchAccountSource.action = "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountSource.action += "/" + shopIdControl.value;
@@ -165,7 +163,6 @@ function changedBalanceType() {
   searchAccountSource.action += "/searchAccountSource";
 
   //==== Set action of search account destination form ====//
-  console.log("accountDestination.accountAndBalanceIdControl.value : " + accountAndBalanceIdControl.value);
   searchAccountDestination.action = "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountDestination.action += "/" + shopIdControl.value;
@@ -194,6 +191,31 @@ function getDate(now) {
 function getTime(now) {
   return ("0" + now.getHours()).slice(-2) + ":"
     + ("0" + now.getMinutes()).slice(-2);
+}
+
+function calculateTax() {
+  let taxTypeControl = document.getElementById("taxType");
+  let taxRateControl = document.getElementById("taxRate");
+
+  let price = document.getElementById("price");
+  let quantity = document.getElementById("quantity");
+  let taxRate = document.getElementById("taxRate");
+  let tax = document.getElementById("tax");
+
+  if (taxTypeControl.value === "1") {
+    let str = taxRate.options[taxRateControl.selectedIndex].innerText;
+    tax.value = Math.round(price.value * quantity.value * Number(str.substring(0, str.length - 1)) / 100);
+  } else if (taxTypeControl.value === "2") {
+    let str = taxRate.options[taxRateControl.selectedIndex].innerText;
+    let rate = Number(str.substring(0, str.length - 1));
+    tax.value
+      = Math.round(
+        price.value
+            * quantity.value
+            / ((rate + 100) / 100) * (rate / 100));
+  } else {
+    tax.value = 0;
+  }
 }
 
 //=========================================================

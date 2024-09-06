@@ -129,14 +129,9 @@
                 <textarea id="memo" name="memo" th:field="*{memo}"></textarea>
             </td>
         </tr>
-        <tr id="specifications">
-            <td></td>
-            <td>
-            </td>
-        </tr>
     </table>
 </form>
-<div id="specificationTable">
+<div>
     <div id="header" class="grid">
         <div class="brand-name"><input class="spec-header brand-name" th:value="商品名" readonly/></div>
         <div class="price"><input class="spec-header price" th:value="単価" readonly/></div>
@@ -168,13 +163,14 @@
             <input id="price"
                    name="specifications[__${stat.index}__].price"
                    class="price"
+                   onchange="calculateTax()"
                    th:value="${specification.price}"
                    type="number">
         </div>
         <div class="currency-name">
-            <label for="currencyId"></label>
-            <select id="currencyId"
-                    name="currencyId"
+            <label for="currency"></label>
+            <select id="currency"
+                    name="currency"
                     class="currency-name"
                     th:field="${specification.currencyId}">
                 <option th:each="currency : ${currencies}"
@@ -192,9 +188,9 @@
                    type="number">
         </div>
         <div class="unit-name">
-            <label for="unitId"></label>
-            <select id="unitId"
-                    name="unitId"
+            <label for="unit"></label>
+            <select id="unit"
+                    name="unit"
                     class="unit-name"
                     th:field="${specification.unitId}">
                 <option th:each="unit : ${units}"
@@ -209,25 +205,42 @@
                    th:value="${specification.taxTypeId}"
                    type="hidden">
         </div>
-        <div class="tax-type-name">
-            <label for="taxTypeName"></label>
-            <input id="taxTypeName" name="taxType.taxTypeName"
-                   class="tax-type-name"
-                   th:value="${taxType.taxTypeName}"
-                   type="text">
+        <div class="tax-type">
+            <label for="taxType"></label>
+            <select id="taxType"
+                    name="taxType"
+                    class="tax-type"
+                    th:field="${specification.taxTypeId}"
+                    onchange="calculateTax()">
+                <option th:each="taxType : ${taxTypes}"
+                        th:value="${taxType.taxTypeId}"
+                        th:text="${taxType.taxTypeName}">
+                </option>
+            </select>
+        </div>
+        <div>
+            <input id="taxRateId"
+                   name="specifications[__${stat.index}__].taxRateId"
+                   th:value="${specification.taxRateId}"
+                   type="hidden">
         </div>
         <div class="tax-rate">
             <label for="taxRate"></label>
-            <input id="taxRate" name="taxType.taxRate"
-                   class="tax-rate"
-                   th:value="${taxType.taxRate}"
-                   type="number">
+            <select id="taxRate"
+                    name="taxRate"
+                    class="tax-rate"
+                    th:field="${specification.taxRateId}"
+                    onchange="calculateTax()">
+                <option th:each="taxRate : ${taxRates}"
+                        th:value="${taxRate.taxRateId}"
+                        th:text="'__${taxRate.taxRate}__' + '%'">
+                </option>
+            </select>
         </div>
         <div class="tax">
             <label for="tax"></label>
             <input id="tax" name="taxType.tax"
                    class="tax"
-                   th:value="__${specification.price}__ * __${specification.quantity}__ * __${taxType.taxRate}__"
                    type="number">
         </div>
         <div class="spec-memo">

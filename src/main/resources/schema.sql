@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS kp.tbl_specification CASCADE;
 DROP TABLE IF EXISTS kp.tbl_unit CASCADE;
 DROP TABLE IF EXISTS kp.tbl_currency CASCADE;
+DROP TABLE IF EXISTS kp.tbl_tax_rate CASCADE;
 DROP TABLE IF EXISTS kp.tbl_tax_type CASCADE;
 DROP TABLE IF EXISTS kp.tbl_specification_group CASCADE;
 DROP TABLE IF EXISTS kp.tbl_balance_type CASCADE;
@@ -19,6 +20,7 @@ DROP TABLE IF EXISTS SPRING_SESSION;
 DROP SEQUENCE IF EXISTS kp.tbl_specification_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_unit_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_currency_seq CASCADE;
+DROP SEQUENCE IF EXISTS kp.tbl_tax_rate_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_tax_type_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_specification_group_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.tbl_balance_type_seq CASCADE;
@@ -215,8 +217,16 @@ CREATE TABLE IF NOT EXISTS kp.tbl_tax_type -- 消費税種別テーブル
     tax_type_id     BIGINT DEFAULT
                           nextval('kp.tbl_tax_type_seq'),   -- 消費税種別ID
     tax_type_name   VARCHAR(128) NOT NULL,                  -- 消費税種別
-    tax_rate        DECIMAL(3, 2) NOT NULL,                 -- 消費税率
     PRIMARY KEY (tax_type_id)
+);
+
+CREATE SEQUENCE IF NOT EXISTS kp.tbl_tax_rate_seq START 1 INCREMENT 1;
+CREATE TABLE IF NOT EXISTS kp.tbl_tax_rate -- 消費税率テーブル
+(
+    tax_rate_id     BIGINT DEFAULT
+                          nextval('kp.tbl_tax_rate_seq'),   -- 消費税率ID
+    tax_rate        BIGINT NOT NULL,                        -- 消費税率
+    PRIMARY KEY (tax_rate_id)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.tbl_currency_seq START 1 INCREMENT 1;
@@ -245,12 +255,13 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
         DEFAULT nextval('kp.tbl_specification_seq'),                -- 明細ID
     user_id                BIGINT         NOT NULL,                 -- ユーザID
     name                   VARCHAR(255)   ,                         -- 商品名
-    price                  DECIMAL(10, 2) NOT NULL,                 -- 価格
+    price                  BIGINT NOT NULL,                         -- 価格
     currency_id            BIGINT,                                  -- 通貨名 (任意 : USD, EUR, ...)
     quantity               BIGINT         NOT NULL,                 -- 数量
     unit_id                BIGINT         NOT NULL DEFAULT 1,       -- 単位
     tax_type_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税種別ID
-    tax                    DECIMAL(10, 2),                          -- 消費税額 (任意)
+    tax_rate_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税率ID
+    tax                    BIGINT,                                  -- 消費税額 (任意)
     memo                   TEXT,                                    -- 1000文字まで                -- メモ (任意)
     entry_date             TIMESTAMPTZ    NOT NULL,                 -- 登録日時
     update_date            TIMESTAMPTZ,                             -- 更新日時
@@ -258,6 +269,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
     FOREIGN KEY (specification_group_id, user_id)
         REFERENCES kp.tbl_specification_group (specification_group_id, user_id),
     FOREIGN KEY (tax_type_id) REFERENCES kp.tbl_tax_type (tax_type_id),
+    FOREIGN KEY (tax_rate_id) REFERENCES kp.tbl_tax_rate (tax_rate_id),
     FOREIGN KEY (currency_id) REFERENCES kp.tbl_currency (currency_id),
     FOREIGN KEY (unit_id) REFERENCES kp.tbl_unit (unit_id)
 );

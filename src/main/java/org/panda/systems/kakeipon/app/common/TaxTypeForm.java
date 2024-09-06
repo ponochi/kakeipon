@@ -21,7 +21,4 @@ public class TaxTypeForm implements Serializable {
 
   @Column(name = "tax_type_name")
   private String taxTypeName;
-
-  @Column(name = "tax_rate")
-  private BigDecimal taxRate;
 }
