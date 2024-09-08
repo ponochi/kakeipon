@@ -5,10 +5,8 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.repository.user.RoleRepository;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.panda.systems.kakeipon.domain.service.user.UserService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -77,6 +75,32 @@ public class UserForm implements Serializable {
   // Default constructor
   public UserForm() {
     this.setUserId(Long.parseLong("1"));
+  }
+
+  public UserForm(UserService service,
+                  RoleService roleService,
+                  Long userId,
+                  Long roleId) {
+    if (userId == null) {
+      this.setUserId(Long.parseLong("1"));
+    } else {
+      this.setUserId(userId);
+    }
+    User user = service.findById(this.getUserId());
+
+    this.setNickName(user.getNickName());
+    this.setLastName(user.getLastName());
+    this.setFirstName(user.getFirstName());
+    this.setPassword(user.getPassword());
+    this.setEmail(user.getEmail());
+    this.setBirthDay(user.getBirthDay());
+    this.setPhoneNumber(user.getPhoneNumber());
+    this.setRoleId(Long.parseLong("2"));
+    this.setRoleForm(new RoleForm());
+    this.getRoleForm().setRoleId(user.getRoleId());
+    this.getRoleForm().setRoleName(
+        (new RoleForm(roleService, roleId).getRoleName()));
+
   }
 
   public UserForm setUserToForm(Long userId,

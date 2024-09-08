@@ -10,12 +10,14 @@ import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
+import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 
 @Table(name = "tbl_specification_group")
 @SecondaryTable(name = "tbl_user",
@@ -95,6 +97,43 @@ public class SpecificationGroupForm implements Serializable {
 
   @Column(name = "update_date")
   LocalDateTime updateDate;
+
+  // Default Constructor
+  public SpecificationGroupForm() {
+
+  }
+
+  public SpecificationGroupForm(SpecificationGroupService service,
+                                Long specificationGroupId) {
+    if (specificationGroupId == null) {
+      this.setSpecificationGroupId(Long.parseLong("0"));
+    } else {
+      this.setSpecificationGroupId(specificationGroupId);
+    }
+    Optional<SpecificationGroup> spec = service.findById(this.getSpecificationGroupId());
+    if (spec.isEmpty()) {
+      this.setUserId(Long.parseLong("2"));
+      this.setShopId(Long.parseLong("1"));
+      this.setReceivingAndPaymentDate(LocalDate.now());
+      this.setReceivingAndPaymentTime(LocalTime.now());
+      this.setBalanceTypeId(Long.parseLong("1"));
+      this.setAccountAndBalanceId(Long.parseLong("1"));
+      this.setMemo("");
+      this.setEntryDate(LocalDateTime.now());
+      this.setUpdateDate(LocalDateTime.now());
+    } else {
+      SpecificationGroup specificationGroup = spec.get();
+      this.setUserId(specificationGroup.getUserId());
+      this.setShopId(specificationGroup.getShopId());
+      this.setReceivingAndPaymentDate(specificationGroup.getReceivingAndPaymentDate());
+      this.setReceivingAndPaymentTime(specificationGroup.getReceivingAndPaymentTime());
+      this.setBalanceTypeId(specificationGroup.getBalanceTypeId());
+      this.setAccountAndBalanceId(specificationGroup.getAccountAndBalanceId());
+      this.setMemo(specificationGroup.getMemo());
+      this.setEntryDate(specificationGroup.getEntryDate());
+      this.setUpdateDate(specificationGroup.getUpdateDate());
+    }
+  }
 
   public SpecificationGroup toEntity() {
     SpecificationGroup specificationGroup = new SpecificationGroup();

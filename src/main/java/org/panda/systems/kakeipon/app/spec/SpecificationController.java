@@ -5,6 +5,7 @@ import org.panda.systems.kakeipon.app.account.AccountSourceForm;
 import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
 import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.app.shop.ShopForm;
+import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("")
@@ -83,22 +85,29 @@ public class SpecificationController {
         new AccountDestinationForm(
             accountDestinationService,
             Long.parseLong("1")));
-    User user = userService.findById(Long.parseLong("2"));
-    Role role = roleService.findByRoleId(Long.parseLong("1"));
-    form.setUserId(user.getUserId());
+    UserForm userForm = new UserForm(
+        userService,
+        roleService,
+        Long.parseLong("2"),
+        Long.parseLong("2"));
+    RoleForm roleForm = new RoleForm(
+        roleService,
+        Long.parseLong("1"));
+    form.setUserId(userForm.getUserId());
+    form.setUserForm(userForm);
     form.setUserToForm(
-        user.getUserId(),
-        user.getNickName(),
-        user.getLastName(),
-        user.getFirstName(),
-        user.getBirthDay(),
-        user.getPassword(),
-        user.getPhoneNumber(),
-        user.getEmail(),
-        role.getRoleId(),
-        role.getRoleName(),
-        user.getEntryDate(),
-        user.getUpdateDate());
+        userForm.getUserId(),
+        userForm.getNickName(),
+        userForm.getLastName(),
+        userForm.getFirstName(),
+        userForm.getBirthDay(),
+        userForm.getPassword(),
+        userForm.getPhoneNumber(),
+        userForm.getEmail(),
+        roleForm.getRoleId(),
+        roleForm.getRoleName(),
+        userForm.getEntryDate(),
+        userForm.getUpdateDate());
 
     form.getUserForm().setRoleId(
         form.getUserForm().getRoleForm().getRoleId());
@@ -159,24 +168,56 @@ public class SpecificationController {
     // ToDo: Fix this
     specificationGroupService.saveAndFlush(form.toEntity());
 
-//    form.setSpecificationGroupId(
-//        specificationGroupService.getMaxGroupId());
-//    form.setUserId(user.getUserId());
-//    form.setName(form.getName());
-//    form.setPrice(Long.parseLong("0"));
-//    form.setCurrencyId(Long.parseLong("1"));
-//    List<CurrencyList> currencyLists = currencyService.findAll();
-//    form.setUnitId(Long.parseLong("1"));
-//    List<Unit> units = unitService.findAll();
-//    form.setQuantity(Long.parseLong("1"));
-//    form.setTaxTypeId(Long.parseLong("1"));
-//    List<TaxType> taxTypes = taxTypeService.findAll();
-//    form.setTaxRateId(Long.parseLong("1"));
-//    List<TaxRate> taxRates = taxRateService.findAll();
-//    form.setEntryDate(LocalDateTime.now());
-//    Specification specification
-//        = form.toEntity();
-//    specificationService.saveAndFlush(specification);
+    SpecificationForm specForm = new SpecificationForm();
+
+    List<Specification> specifications
+        = specificationService.findBySpecificationGroupId(
+        specificationGroupService.getMaxGroupId());
+    if (specifications.size() == 0) {
+      specForm.setSpecificationGroupId(
+          specificationGroupService.getMaxGroupId());
+      specForm.setSpecificationId(Long.parseLong("1"));
+      specForm.setUserId(form.getUserId());
+      specForm.setName("");
+      specForm.setPrice(Long.parseLong("0"));
+      specForm.setCurrencyId(Long.parseLong("1"));
+      specForm.setQuantity(Long.parseLong("1"));
+      specForm.setUnitId(Long.parseLong("1"));
+      specForm.setTaxTypeId(Long.parseLong("1"));
+      specForm.setTaxRateId(Long.parseLong("1"));
+      specForm.setTax(Long.parseLong("0"));
+      specForm.setMemo("");
+      specForm.setEntryDate(LocalDateTime.now());
+    } else {
+      Long count = 0L;
+      for (Specification specification : specifications) {
+        count++;
+        specForm.setSpecificationGroupId(
+            specificationGroupService.getMaxGroupId());
+        System.out.println("1>>>> form.getSpecificationGroupId(): " + form.getSpecificationGroupId());
+        System.out.println("2>>>> specForm.getSpecificationGroupId(): " + specForm.getSpecificationGroupId());
+        specForm.setSpecificationId(count);
+        specForm.setUserId(form.getUserId());
+        specForm.setName("");
+        specForm.setPrice(Long.parseLong("0"));
+        specForm.setCurrencyId(Long.parseLong("1"));
+        specForm.setQuantity(Long.parseLong("1"));
+        specForm.setUnitId(Long.parseLong("1"));
+        specForm.setTaxTypeId(Long.parseLong("1"));
+        specForm.setTaxRateId(Long.parseLong("1"));
+        specForm.setTax(Long.parseLong("0"));
+        specForm.setMemo("");
+        specForm.setEntryDate(LocalDateTime.now());
+      }
+    }
+
+    List<CurrencyList> currencyLists = currencyService.findAll();
+    List<Unit> units = unitService.findAll();
+    List<TaxType> taxTypes = taxTypeService.findAll();
+    List<TaxRate> taxRates = taxRateService.findAll();
+    Specification specification
+        = specForm.toEntity();
+    specificationService.saveAndFlush(specification);
 
     return form;
   }
@@ -186,8 +227,6 @@ public class SpecificationController {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm form,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-//      @ModelAttribute AccountSourceForm accountSourceForm,
-//      @ModelAttribute AccountDestinationForm accountDestinationForm,
       @ModelAttribute UserForm userForm,
       @ModelAttribute ShopForm shopForm,
       Model model) {
@@ -217,15 +256,19 @@ public class SpecificationController {
         accountAndBalance.getAccountAndBalanceId());
 
     groupForm.setUserId(userForm.getUserId());
+
     shopForm = new ShopForm(shopService,
         Long.parseLong("1"));
     groupForm.setShopId(shopForm.getShopId());
+
     List<BalanceType> balanceTypes
         = balanceTypeService.findAll();
 
     // ToDo: Fix this
-    SpecificationGroup specificationGroup
-        = groupForm.toEntity();
+    groupForm = new SpecificationGroupForm(
+            specificationGroupService,
+            specificationGroupService.getMaxGroupId());
+System.out.println("1>>>> groupForm.getSpecificationGroupId(): " + groupForm.getSpecificationGroupId());
     List<CurrencyList> currencyLists = currencyService.findAll();
     List<Unit> units = unitService.findAll();
     List<TaxType> taxTypes = taxTypeService.findAll();
@@ -234,8 +277,9 @@ public class SpecificationController {
 
     List<SpecificationForm> specificationForms
         = specificationService.findBySpecificationGroupIdToForm(
-        specificationGroup.getSpecificationGroupId());
+        groupForm.getSpecificationGroupId());
 
+    System.out.println(">>>> specificationForms.size(): " + specificationForms.size());
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specificationForms", specificationForms);
     model.addAttribute("currencyLists", currencyLists);
@@ -538,14 +582,14 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountSourceId(accountSourceId);
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-            accountSourceService,
+        accountSourceService,
         accountSourceId);
     groupForm.getAccountAndBalanceForm().setAccountSourceForm(accountSourceForm);
 
     groupForm.getAccountAndBalanceForm().setAccountDestinationId(accountDestinationId);
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-            accountDestinationService,
+        accountDestinationService,
         accountDestinationId);
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
