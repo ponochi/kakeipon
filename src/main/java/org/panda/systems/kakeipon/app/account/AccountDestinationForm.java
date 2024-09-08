@@ -5,6 +5,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
+import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
+import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -35,4 +40,24 @@ public class AccountDestinationForm implements Serializable {
 
   @Column(name = "update_date")
   private LocalDateTime updateDate;
+
+  // Default constructor
+  public AccountDestinationForm() {
+
+  }
+
+  public AccountDestinationForm (AccountDestinationService service,
+                                 Long accountDestinationId) {
+    if (accountDestinationId == null) {
+      this.setAccountDestinationId(Long.parseLong("1"));
+    } else {
+      this.setAccountDestinationId(accountDestinationId);
+    }
+    AccountDestination destination
+        = service.findById(this.getAccountDestinationId());
+    this.setAccountName(destination.getAccountName());
+    this.setBranchName(destination.getBranchName());
+    this.setEntryDate(destination.getEntryDate());
+    this.setUpdateDate(destination.getUpdateDate());
+  }
 }

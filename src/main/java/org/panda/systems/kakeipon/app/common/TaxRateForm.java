@@ -21,4 +21,9 @@ public class TaxRateForm implements Serializable {
 
   @Column(name = "tax_rate")
   private Long taxRate;
+
+  // Default constructor
+  public TaxRateForm() {
+    this.setTaxRateId(Long.parseLong("1"));
+  }
 }

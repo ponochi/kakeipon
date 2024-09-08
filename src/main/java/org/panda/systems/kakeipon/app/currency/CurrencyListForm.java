@@ -1,20 +1,21 @@
-package org.panda.systems.kakeipon.domain.model.currency;
+package org.panda.systems.kakeipon.app.currency;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
 
-@Entity
+@Component
 @Table(name = "tbl_currency")
 @Data
-public class Currency implements Serializable {
+public class CurrencyListForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_currency_seq", allocationSize = 1)
   @Column(name = "currency_id")
   private Long currencyId;

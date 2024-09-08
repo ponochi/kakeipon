@@ -52,7 +52,8 @@ function changedAccountSource() {
 }
 
 function changedAccountDestination() {
-  let shop = document.getElementById("shopId");
+  let shop
+    = document.getElementById("shopId");
   let accountSource
     = document.getElementById("accountSourceId");
   let accountDestination
@@ -216,6 +217,11 @@ function calculateTax() {
   } else {
     tax.value = 0;
   }
+}
+
+function savedetail() {
+  window.location.method = "POST";
+  window.location.href = "/spec/save";
 }
 
 //=========================================================

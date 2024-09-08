@@ -21,4 +21,9 @@ public class TaxTypeForm implements Serializable {
 
   @Column(name = "tax_type_name")
   private String taxTypeName;
+
+  // Default constructor
+  public TaxTypeForm() {
+    this.setTaxTypeId(Long.parseLong("1"));
+  }
 }

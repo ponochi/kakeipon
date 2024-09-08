@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.Shop;
+import org.panda.systems.kakeipon.domain.service.common.ShopService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -54,4 +57,29 @@ public class ShopForm implements Serializable {
 
   @Column
   private LocalDateTime updateDate;
+
+  // Default constructor
+  public ShopForm() {
+
+  }
+
+  public ShopForm(ShopService service, Long shopId) {
+    if (shopId == null) {
+      shopId = Long.parseLong("1");
+    } else {
+      this.setShopId(shopId);
+    }
+    Shop shop = service.findById(this.getShopId());
+    this.setShopName(shop.getShopName());
+    this.setBranchName(shop.getBranchName());
+    this.setShopUrl(shop.getShopUrl());
+    this.setPhoneNumber(shop.getPhoneNumber());
+    this.setEmail(shop.getEmail());
+    this.setOpenShopDate(shop.getOpenShopDate());
+    this.setCloseShopDate(shop.getCloseShopDate());
+    this.setShopMemo(shop.getShopMemo());
+    this.setEntryDate(shop.getEntryDate());
+    this.setUpdateDate(shop.getUpdateDate());
+  }
+
 }

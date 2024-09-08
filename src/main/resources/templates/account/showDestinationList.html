@@ -11,8 +11,8 @@
 <table>
     <tr th:each="accountDestination : ${accountDestinations}">
         <td>
-            <th:block th:if="${shop} ne null">
-                <th:block th:if="${accountSourceId} ne null">
+            <th:block th:if="${shopForm} ne null">
+                <th:block th:if="${accountSourceForm} ne null">
                     <th:block th:if="${accountDestination.accountDestinationId} eq null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
@@ -26,12 +26,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -50,12 +50,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -66,7 +66,7 @@
                     <th:block th:if="${accountDestination.accountDestinationId} ne null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
-                            '/__${shop.shopId}__' +
+                            '/__${shopForm.shopId}__' +
                             '/1' +
                             '/__${accountDestination.accountDestinationId}__' +
                             '/setAccountDestination'}"
@@ -76,12 +76,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -90,7 +90,7 @@
                     <th:block th:unless="${accountDestination.accountDestinationId} ne null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
-                            '/__${shop.shopId}__' +
+                            '/__${shopForm.shopId}__' +
                             '/1' +
                             '/1' +
                             '/setAccountDestination'}"
@@ -100,12 +100,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -113,8 +113,8 @@
                     </th:block>
                 </th:block>
             </th:block>
-            <th:block th:unless="${shop} ne null">
-                <th:block th:if="${accountSourceId} ne null">
+            <th:block th:unless="${shopForm} ne null">
+                <th:block th:if="${accountSourceForm} ne null">
                     <th:block th:if="${accountDestination.accountDestinationId} eq null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
@@ -128,12 +128,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -152,12 +152,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -178,12 +178,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>
@@ -202,12 +202,12 @@
                                    th:value="${accountDestination.accountDestinationId}"
                                    type="hidden">
                             <th:block th:if="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__ (__${accountDestination.branchName}__)'"
                                        type="submit"/>
                             </th:block>
                             <th:block th:unless="${#strings.length('__${accountDestination.branchName}__')} > 0">
-                                <input class="accountDestination-button"
+                                <input class="account-destination-button"
                                        th:value="'__${accountDestination.accountName}__'"
                                        type="submit"/>
                             </th:block>

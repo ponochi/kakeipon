@@ -25,4 +25,9 @@ public class BalanceTypeForm implements Serializable {
   @NotEmpty
   @Column(name = "balance_type_name")
   private String balanceTypeName;
+
+  // Default constructor
+  public BalanceTypeForm() {
+    this.setBalanceTypeId(Long.parseLong("1"));
+  }
 }

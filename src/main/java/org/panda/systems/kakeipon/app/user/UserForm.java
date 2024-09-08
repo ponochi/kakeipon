@@ -8,6 +8,7 @@ import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.repository.user.RoleRepository;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -73,7 +74,9 @@ public class UserForm implements Serializable {
   @Column(name = "update_date")
   private LocalDateTime updateDate;
 
+  // Default constructor
   public UserForm() {
+    this.setUserId(Long.parseLong("1"));
   }
 
   public UserForm setUserToForm(Long userId,

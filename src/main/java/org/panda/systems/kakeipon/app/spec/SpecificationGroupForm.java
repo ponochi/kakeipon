@@ -96,23 +96,23 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "update_date")
   LocalDateTime updateDate;
 
-  public SpecificationGroup toEntity(SpecificationGroupForm groupForm) {
+  public SpecificationGroup toEntity() {
     SpecificationGroup specificationGroup = new SpecificationGroup();
 
     specificationGroup.setSpecificationGroupId(
-        groupForm.getSpecificationGroupId());
-    specificationGroup.setUserId(groupForm.getUserId());
-    specificationGroup.setShopId(groupForm.getShopId());
+        this.getSpecificationGroupId());
+    specificationGroup.setUserId(this.getUserId());
+    specificationGroup.setShopId(this.getShopId());
     specificationGroup.setReceivingAndPaymentDate(
-        groupForm.getReceivingAndPaymentDate());
+        this.getReceivingAndPaymentDate());
     specificationGroup.setReceivingAndPaymentTime(
-        groupForm.getReceivingAndPaymentTime());
-    specificationGroup.setBalanceTypeId(groupForm.getBalanceTypeId());
+        this.getReceivingAndPaymentTime());
+    specificationGroup.setBalanceTypeId(this.getBalanceTypeId());
     specificationGroup.setAccountAndBalanceId(
-        groupForm.getAccountAndBalanceId());
-    specificationGroup.setMemo(groupForm.getMemo());
+        this.getAccountAndBalanceId());
+    specificationGroup.setMemo(this.getMemo());
     specificationGroup.setEntryDate(LocalDateTime.now());
-    specificationGroup.setUpdateDate(groupForm.getUpdateDate());
+    specificationGroup.setUpdateDate(this.getUpdateDate());
 
     return specificationGroup;
   }

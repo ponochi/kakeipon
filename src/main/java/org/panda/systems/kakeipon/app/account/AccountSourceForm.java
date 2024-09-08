@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
+import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -36,4 +39,24 @@ public class AccountSourceForm implements Serializable {
 
   @Column(name = "update_date")
   private LocalDateTime updateDate;
+
+  // Default constructor
+  public AccountSourceForm() {
+
+  }
+
+  public AccountSourceForm (AccountSourceService service,
+                            Long accountSourceId) {
+    if (accountSourceId == null) {
+      this.setAccountSourceId(Long.parseLong("1"));
+    } else {
+      this.setAccountSourceId(accountSourceId);
+    }
+    AccountSource source
+        = service.findById(this.getAccountSourceId());
+    this.setAccountName(source.getAccountName());
+    this.setBranchName(source.getBranchName());
+    this.setEntryDate(source.getEntryDate());
+    this.setUpdateDate(source.getUpdateDate());
+  }
 }

@@ -20,4 +20,9 @@ public class UnitForm implements Serializable {
 
   @Column(name = "unit_name")
   private String unitName;
+
+  // Default constructor
+  public UnitForm() {
+    this.setUnitId(Long.parseLong("1"));
+  }
 }

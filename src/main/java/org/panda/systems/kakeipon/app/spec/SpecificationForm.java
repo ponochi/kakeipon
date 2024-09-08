@@ -3,28 +3,24 @@ package org.panda.systems.kakeipon.app.spec;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.panda.systems.kakeipon.app.common.TaxRateForm;
-import org.panda.systems.kakeipon.app.currency.CurrencyForm;
+import org.panda.systems.kakeipon.app.currency.CurrencyListForm;
 import org.panda.systems.kakeipon.app.common.TaxTypeForm;
 import org.panda.systems.kakeipon.app.common.UnitForm;
-import org.panda.systems.kakeipon.app.user.RoleForm;
-import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.common.TaxRate;
-import org.panda.systems.kakeipon.domain.model.currency.Currency;
+import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
 import org.panda.systems.kakeipon.domain.model.common.TaxType;
 import org.panda.systems.kakeipon.domain.model.common.Unit;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.service.common.TaxRateService;
-import org.panda.systems.kakeipon.domain.service.currency.CurrencyService;
 import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
-import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.service.common.UnitService;
+import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
@@ -51,7 +47,7 @@ public class SpecificationForm implements Serializable {
   @Autowired
   RoleService roleService;
   @Autowired
-  CurrencyService currencyService;
+  CurrencyListService currencyListService;
   @Autowired
   UnitService unitService;
   @Autowired
@@ -73,9 +69,12 @@ public class SpecificationForm implements Serializable {
   @Column(name = "user_id")
   private Long userId;
 
+  @Column
   private String name;
+  @Column
   private Long price;
 
+  @Column(name = "currency_id")
   private Long currencyId;
 
   @ManyToOne
@@ -83,7 +82,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "currency_id")
-  CurrencyForm currencyForm;
+  CurrencyListForm currencyForm;
 
   private Long unitId;
 
@@ -94,33 +93,41 @@ public class SpecificationForm implements Serializable {
   @Column(name = "unit_id")
   UnitForm unitForm;
 
+  @Column
   private Long quantity;
+  @Column(name = "tax_type_id")
   private Long taxTypeId;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "tax_type_id", table = "tbl_tax_type",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_type_id")
   TaxTypeForm taxTypeForm;
 
-  @OneToOne
+  @Column(name = "tax_rate_id")
+  private Long taxRateId;
+
+  @ManyToOne
   @JoinColumn(name = "tax_rate_id", table = "tbl_tax_rate",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_rate_id")
   TaxRateForm taxRateForm;
 
-  private String taxRate;
+  @Column
   private Long tax;
+  @Column
   private String memo;
+  @Column(name = "entry_date")
   private LocalDateTime entryDate;
+  @Column(name = "update_date")
   private LocalDateTime updateDate;
 
   public SpecificationForm() {
   }
 
-  public SpecificationForm setSpecificationToForm(Specification specification) {
+  public SpecificationForm setSpecificationToForm(org.panda.systems.kakeipon.domain.model.spec.Specification specification) {
     SpecificationForm form = new SpecificationForm();
 
     form.specificationGroupId
@@ -132,16 +139,18 @@ public class SpecificationForm implements Serializable {
     form.name = specification.getName();
     form.price = specification.getPrice();
     form.currencyId = specification.getCurrencyId();
-    Currency currency = currencyService.findById(specification.getCurrencyId());
-    form.currencyForm = setCurrencyToForm(currency);
+//    CurrencyList currencyList = currencyListService.findById(
+//        specification.getCurrencyId());
+//    form.currencyForm = setCurrencyToForm(currencyList);
     form.unitId = specification.getUnitId();
-    Unit unit = unitService.findById(specification.getUnitId());
-    form.unitForm = setUnitToForm(unit);
+//    Unit unit = unitService.findById(specification.getUnitId());
+//    form.unitForm = setUnitToForm(unit);
     form.quantity = specification.getQuantity();
     form.taxTypeId = specification.getTaxTypeId();
-    TaxType taxType
-        = taxTypeService.findById(specification.getTaxTypeId());
-    form.taxTypeForm = setTaxTypeToForm(taxType);
+//    TaxType taxType
+//        = taxTypeService.findById(specification.getTaxTypeId());
+//    form.taxTypeForm = setTaxTypeToForm(taxType);
+    form.taxRateId = specification.getTaxRateId();
     form.tax = specification.getTax();
     form.memo = memo;
     form.entryDate = entryDate;
@@ -150,27 +159,28 @@ public class SpecificationForm implements Serializable {
     return form;
   }
 
-  public Specification toEntity(SpecificationForm specificationForm) {
+  public Specification toEntity() {
     Specification specification = new Specification();
-    specification.setSpecificationGroupId(specificationForm.getSpecificationGroupId());
-    specification.setSpecificationId(specificationForm.getSpecificationId());
-    specification.setUserId(specificationForm.getUserId());
-    specification.setName(specificationForm.getName());
-    specification.setPrice(specificationForm.getPrice());
-    specification.setCurrencyId(specificationForm.getCurrencyId());
-    specification.setUnitId(specificationForm.getUnitId());
-    specification.setQuantity(specificationForm.getQuantity());
-    specification.setTaxTypeId(specificationForm.getTaxTypeId());
-    specification.setTaxTypeId(specificationForm.getTaxTypeId());
-    specification.setMemo(specificationForm.getMemo());
-    specification.setEntryDate(specificationForm.getEntryDate());
-    specification.setUpdateDate(specificationForm.getUpdateDate());
+
+    specification.setSpecificationGroupId(this.getSpecificationGroupId());
+    specification.setSpecificationId(this.getSpecificationId());
+    specification.setUserId(this.getUserId());
+    specification.setName(this.getName());
+    specification.setPrice(this.getPrice());
+    specification.setCurrencyId(this.getCurrencyId());
+    specification.setUnitId(this.getUnitId());
+    specification.setQuantity(this.getQuantity());
+    specification.setTaxTypeId(this.getTaxTypeId());
+    specification.setTaxRateId(this.getTaxRateId());
+    specification.setMemo(this.getMemo());
+    specification.setEntryDate(this.getEntryDate());
+    specification.setUpdateDate(this.getUpdateDate());
     return specification;
   }
 
   // Setter for User
-  public CurrencyForm setCurrencyToForm(Currency currency) {
-    this.currencyForm = new CurrencyForm();
+  public CurrencyListForm setCurrencyToForm(CurrencyList currency) {
+    this.currencyForm = new CurrencyListForm();
 
     this.currencyForm.setCurrencyId(currency.getCurrencyId());
     this.currencyForm.setCurrencyName(currency.getCurrencyName());

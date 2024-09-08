@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SpecificationService implements Serializable {
@@ -29,6 +29,18 @@ public class SpecificationService implements Serializable {
 
   public List<Specification> findBySpecificationGroupId(Long specificationGroupId) {
     return specificationRepository.findBySpecificationGroupId(specificationGroupId);
+  }
+
+  public List<org.panda.systems.kakeipon.app.spec.SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId) {
+    List<Specification> specifications = specificationRepository.findBySpecificationGroupId(specificationGroupId);
+    org.panda.systems.kakeipon.app.spec.SpecificationForm specificationForm = new org.panda.systems.kakeipon.app.spec.SpecificationForm();
+
+    List<org.panda.systems.kakeipon.app.spec.SpecificationForm> forms = new ArrayList<>();
+    for (Specification specification : specifications) {
+      forms.add(
+          specificationForm.setSpecificationToForm(specification));
+    }
+    return forms;
   }
 
   @Transactional

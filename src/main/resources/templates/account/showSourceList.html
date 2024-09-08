@@ -11,7 +11,7 @@
 <table>
     <tr th:each="accountSource : ${accountSources}">
         <td>
-            <th:block th:if="${shop} ne null">
+            <th:block th:if="${shopForm} ne null">
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
@@ -37,7 +37,7 @@
                             </th:block>
                         </form>
                     </th:block>
-                    <th:block th:unless="${accountDestination} eq null">
+                    <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/__${shopId}__' +
@@ -63,10 +63,10 @@
                     </th:block>
                 </th:block>
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
-                    <th:block th:if="${accountDestination} ne null">
+                    <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
-                            '/__${shop.shopId}__' +
+                            '/__${shopForm.shopId}__' +
                             '/1' +
                             '/__${accountDestinationId}__' +
                             '/setAccountSource'}"
@@ -90,7 +90,7 @@
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
-                            '/__${shop.shopId}__' +
+                            '/__${shopForm.shopId}__' +
                             '/1' +
                             '/1' +
                             '/setAccountSource'}"
@@ -113,7 +113,7 @@
                     </th:block>
                 </th:block>
             </th:block>
-            <th:block th:unless="${shop} ne null">
+            <th:block th:unless="${shopForm} ne null">
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
@@ -139,7 +139,7 @@
                             </th:block>
                         </form>
                     </th:block>
-                    <th:block th:unless="${accountDestination} eq null">
+                    <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/1' +
@@ -165,7 +165,7 @@
                     </th:block>
                 </th:block>
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
-                    <th:block th:if="${accountDestination} ne null">
+                    <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
                             '/__${accountAndBalanceId}__' +
                             '/1' +

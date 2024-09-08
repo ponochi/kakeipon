@@ -1,10 +1,7 @@
 package org.panda.systems.kakeipon.app.currency;
 
-import org.panda.systems.kakeipon.app.user.UserForm;
-import org.panda.systems.kakeipon.domain.model.currency.Currency;
-import org.panda.systems.kakeipon.domain.model.user.Role;
-import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.service.currency.CurrencyService;
+import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
+import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +15,11 @@ import java.util.List;
 @RequestMapping("currency")
 public class CurrencyController {
   @Autowired
-  CurrencyService currencyService;
+  CurrencyListService currencyService;
 
   @GetMapping("")
   String list(Model model) {
-    List<Currency> currencies = currencyService.findAll();
+    List<CurrencyList> currencies = currencyService.findAll();
 
     model.addAttribute("currencies", currencies);
 
@@ -30,9 +27,9 @@ public class CurrencyController {
   }
 
   @GetMapping("add")
-  String add(CurrencyForm form, Model model) {
-    List<Currency> currencies = currencyService.findAll();
-    CurrencyForm currencyForm = new CurrencyForm();
+  String add(CurrencyListForm form, Model model) {
+    List<CurrencyList> currencies = currencyService.findAll();
+    CurrencyListForm currencyForm = new CurrencyListForm();
 
     model.addAttribute("form", form);
     model.addAttribute("currencies", currencies);
@@ -41,13 +38,13 @@ public class CurrencyController {
   }
 
   @PostMapping("list")
-  String confirm(CurrencyForm form, Model model) {
-    Currency currency = new Currency();
+  String confirm(CurrencyListForm form, Model model) {
+    CurrencyList currency = new CurrencyList();
     currency.setCurrencyName(form.getCurrencyName());
 
     currency = currencyService.saveAndFlush(currency);
 
-    List<Currency> currencies = currencyService.findAll();
+    List<CurrencyList> currencies = currencyService.findAll();
 
     model.addAttribute("form", form);
     model.addAttribute("currencies", currencies);
@@ -58,9 +55,9 @@ public class CurrencyController {
   @RequestMapping(value = "{currencyId}/edit", method = RequestMethod.GET)
   String edit(
       @PathVariable("currencyId") Long currencyId,
-      @ModelAttribute CurrencyForm form, Model model) {
+      @ModelAttribute CurrencyListForm form, Model model) {
 
-    Currency currency = currencyService.findById(currencyId);
+    CurrencyList currency = currencyService.findById(currencyId);
     form.setCurrencyId(currency.getCurrencyId());
     form.setCurrencyName(currency.getCurrencyName());
 
@@ -72,7 +69,7 @@ public class CurrencyController {
   @RequestMapping(value = "{currencyId}/edit", method = RequestMethod.POST)
   String editForm(@PathVariable("currencyId") Long currencyId,
                   Model model) {
-    Currency currency = currencyService.findById(currencyId);
+    CurrencyList currency = currencyService.findById(currencyId);
 
     model.addAttribute("currency", currency);
 
@@ -80,18 +77,18 @@ public class CurrencyController {
   }
 
   @RequestMapping(value = "{currencyId}/confirm", method = RequestMethod.POST)
-  String confirm(@Validated CurrencyForm form, BindingResult bindingResult,
+  String confirm(@Validated CurrencyListForm form, BindingResult bindingResult,
                  @PathVariable("currencyId") Long currencyId,
                  Model model) {
     if (bindingResult.hasErrors()) {
       return editForm(currencyId, model);
     }
-    Currency currency = new Currency();
+    CurrencyList currency = new CurrencyList();
     currency.setCurrencyId(form.getCurrencyId());
     currency.setCurrencyName(form.getCurrencyName());
     currencyService.saveAndFlush(currency);
 
-    List<Currency> currencies = currencyService.findAll();
+    List<CurrencyList> currencies = currencyService.findAll();
 
     model.addAttribute("currencies", currencies);
 
