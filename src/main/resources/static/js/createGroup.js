@@ -220,8 +220,11 @@ function calculateTax() {
 }
 
 function savedetail() {
-  window.location.method = "POST";
-  window.location.href = "/spec/save";
+  var form = document.querySelector("saveOfSpecification");
+  var action = form.setAttribute("action", "/spec/save");
+  document.querySelector("#saveOfSpecification").submit();
+  // window.location.method = "GET";
+  // window.location.href = "/spec/save";
 }
 
 //=========================================================

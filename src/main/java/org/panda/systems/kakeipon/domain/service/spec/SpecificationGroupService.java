@@ -1,5 +1,8 @@
 package org.panda.systems.kakeipon.domain.service.spec;
 
+import org.panda.systems.kakeipon.app.spec.SpecificationForm;
+import org.panda.systems.kakeipon.app.spec.SpecificationGroupForm;
+import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +35,22 @@ public class SpecificationGroupService implements Serializable {
   }
 
   @SuppressWarnings("rawtypes")
-  public Optional<SpecificationGroup> findById(Long specificationGroupId) {
-    return specificationGroupRepository.findById(specificationGroupId);
+  public SpecificationGroup findById(Long specificationGroupId) {
+    return specificationGroupRepository.findById(specificationGroupId).orElse(null);
+  }
+
+  public List<SpecificationGroupForm> findAllToForm() {
+    List<SpecificationGroup> specificationGroups
+        = specificationGroupRepository.findAll();
+    SpecificationGroupForm specificationGroupForm
+        = new SpecificationGroupForm();
+
+    List<SpecificationGroupForm> groupForms = new ArrayList<>();
+    for (SpecificationGroup specificationGroup : specificationGroups) {
+      groupForms.add(
+          specificationGroupForm.setSpecificationGroupToForm(specificationGroup));
+    }
+    return groupForms;
   }
 
   @Transactional

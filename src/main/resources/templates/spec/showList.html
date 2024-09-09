@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>入出金登録</title>
+    <link href="/css/common.css" rel="stylesheet">
+</head>
+<body>
+<table>
+    <tr>
+        <th></th>
+        <th>入出金日時</th>
+        <th>店舗</th>
+        <th>入出金種別</th>
+        <th>出金元</th>
+        <th>入金先</th>
+        <th>メモ</th>
+    </tr>
+    <tr th:each="specificationGroupForm : ${specificationGroupForms}">
+        <form id="specGroup"
+              th:action="@{'/spec/__${specificationGroupForm.specificationGroupId}__'}"
+              th:object="${specificationGroupForm}" method="GET">
+            <td>
+                <input id="accountAndBalanceId" name="accountAndBalanceId"
+                       th:value="${specificationGroupForm.accountAndBalanceId}"
+                       type="hidden">
+                <input id="userId" name="userId"
+                       th:value="${specificationGroupForm.userId}" type="hidden" readonly>
+            </td>
+            <td>
+                <label for="receivingAndPaymentDate"></label>
+                <input id="receivingAndPaymentDate" name="receivingAndPaymentDate"
+                       th:value="${specificationGroupForm.receivingAndPaymentDate}"
+                       onchange="changedReceivingAndPaymentDate()"
+                       type="date" readonly>
+                <label for="receivingAndPaymentTime"></label>
+                <input id="receivingAndPaymentTime" name="receivingAndPaymentTime"
+                       th:value="${specificationGroupForm.receivingAndPaymentTime}"
+                       onchange="changedReceivingAndPaymentTime()"
+                       type="time" readonly>
+            </td>
+            <td>
+                <label for="shop"></label>
+                <input id="shop" name="shop"
+                       th:value="${specificationGroupForm.getShopForm().getShopName()}"
+                       type="text" readonly>
+            </td>
+            <td>
+                <label for="balanceType"></label>
+                <input id="balanceType" name="balanceType"
+                       th:value="${specificationGroupForm.getBalanceTypeForm().getBalanceTypeName()}"
+                       type="text" readonly>
+            </td>
+            <td>
+                <label for="accountSource"></label>
+                <input id="accountSource" name="accountSource"
+                       th:value="${specificationGroupForm.getAccountAndBalanceForm().getAccountSourceForm().accountName}"
+                       type="text" readonly>
+            </td>
+            <td>
+                <label for="accountDestination"></label>
+                <input id="accountDestination" name="accountDestination"
+                       th:value="${specificationGroupForm.getAccountAndBalanceForm().getAccountDestinationForm().getAccountName()}"
+                       type="text" readonly>
+            </td>
+            <td>
+                <label for="memo"></label>
+                <textarea id="memo" name="memo"
+                          th:field="${specificationGroupForm.memo}" readonly></textarea>
+            </td>
+            <td>
+                <input id="edit" name="edit"
+                       form="specGroup" type="submit" value="編　集">
+            </td>
+        </form>
+    </tr>
+</table>
+</body>
+</html>

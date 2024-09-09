@@ -6,8 +6,8 @@
     <link href="/css/common.css" rel="stylesheet">
 </head>
 <body>
-<form id="specification" th:action="@{'/spec'}"
-      th:object="${specificationGroupForm}" method="post">
+<form id="specGroup" th:action="@{'/spec'}"
+      th:object="${specificationGroupForm}" method="POST">
     <div th:object="${specificationGroupForm}">
         <input id="accountAndBalanceId" name="accountAndBalanceId"
                th:value="*{accountAndBalanceId}"
@@ -145,8 +145,9 @@
         <div class="spec-memo"><input class="spec-header spec-memo" th:value="備考" readonly/></div>
     </div>
     <div th:each="specificationForm, stat : ${specificationForms}">
-        <form id="saveOfSpecification" th:action="@{'/spec/save'}"
-              th:object="${specificationForm}" method="post">
+        <form id="specDetail"
+              th:action="@{'/spec/save/__${specificationForm.specificationGroupId}__/__${specificationForm.specificationId}__'}"
+              th:object="${specificationForm}" method="POST">
             <div class="grid">
                 <div>
                     <input id="specificationGroupId" name="specifications[__${stat.index}__].specificationGroupId"
@@ -256,14 +257,16 @@
                            type="text">
                 </div>
                 <div class="save">
-                    <input id="save" name="save"
+                    <!-- <input id="save" name="save"
                            form="saveOfSpecification"
                            onclick="savedetail()"
-                           class="save" type="submit" value="保　存">
+                           class="save" type="submit" value="保　存"> -->
+                    <button form="specDetail">保　存</button>
                 </div>
                 <div class="delete">
                     <input id="delete"
                            name="delete" type="button" value="削　除"
+                           form="specDetail"
                            class="delete"
                            onclick="deleteRow(this)">
                 </div>
@@ -274,7 +277,7 @@
 
 <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
 <input onclick="location.href='/spec'" type="submit" value="明細追加">
-<input form="specification" type="submit" value="登　録">
+<input form="specGroup" type="submit" value="登　録">
 
 <input id="balanceTypeId" name="balanceTypeId"
        th:value="${specificationGroupForm.balanceTypeId}"

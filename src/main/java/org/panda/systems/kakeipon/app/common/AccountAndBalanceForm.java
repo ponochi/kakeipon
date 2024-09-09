@@ -66,39 +66,45 @@ public class AccountAndBalanceForm implements Serializable {
   public AccountAndBalanceForm(AccountAndBalanceService accountAndBalanceService,
                                AccountSourceService accountSourceService,
                                AccountDestinationService accountDestinationService,
-                               AccountAndBalanceForm form,
-                               AccountSourceForm accountSourceForm,
-                               AccountDestinationForm accountDestinationForm) {
-    AccountAndBalance accountAndBalance
-        = new AccountAndBalance();
-    accountSourceForm
+                               Long accountAndBalanceId,
+                               Long accountSourceId,
+                               Long accountDestinationId) {
+
+    AccountAndBalance accountAndBalance = new AccountAndBalance();
+
+    this.setAccountAndBalanceId(accountAndBalanceId);
+
+    if (accountSourceId == null) {
+      this.setAccountSourceId(Long.parseLong("1"));
+    } else {
+      this.setAccountSourceId(accountSourceId);
+    }
+    AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-            accountSourceService, accountSourceForm.getAccountSourceId());
-    accountDestinationForm
+            accountSourceService,
+            this.getAccountSourceId());
+    this.setAccountSourceForm(accountSourceForm);
+
+    if (accountDestinationId == null) {
+      this.setAccountDestinationId(Long.parseLong("1"));
+    } else {
+      this.setAccountDestinationId(accountDestinationId);
+    }
+    AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-            accountDestinationService, accountDestinationForm.getAccountDestinationId());
-    accountAndBalance.setAccountSourceId(
-        accountSourceForm.getAccountSourceId());
-    accountAndBalance.setAccountDestinationId(
-        accountDestinationForm.getAccountDestinationId());
-    accountAndBalance.setEntryDate(LocalDateTime.now());
+            accountDestinationService,
+            this.getAccountDestinationId());
+    this.setAccountDestinationForm(accountDestinationForm);
+
+    this.setEntryDate(LocalDateTime.now());
+
+    accountAndBalanceService.saveAndFlush(this.toEntity());
+
     accountAndBalance
-        = accountAndBalanceService.saveAndFlush(
-        accountAndBalance);
+        = accountAndBalanceService.getById(
+            accountAndBalanceService.getMaxAccountAndBalanceId());
 
-    form.setAccountAndBalanceId(
-        accountAndBalanceService.getMaxAccountAndBalanceId());
-    form.setAccountSourceId(
-        accountAndBalance.getAccountSourceId());
-    form.setAccountSourceForm(
-        accountSourceForm);
-    form.setAccountDestinationId(
-        accountAndBalance.getAccountDestinationId());
-    form.setAccountDestinationForm(
-        accountDestinationForm);
-    form.setEntryDate(LocalDateTime.now());
-
-    accountAndBalanceService.saveAndFlush(form.toEntity());
+    this.setAccountAndBalanceToForm(accountAndBalance);
   }
 
   public AccountAndBalance toEntity() {

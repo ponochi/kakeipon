@@ -12,12 +12,9 @@ import java.util.Optional;
 public interface SpecificationGroupRepository extends JpaRepository<SpecificationGroup, Long> {
   @Query(nativeQuery = true,
       value = "SELECT" +
-      " CASE" +
-      "   WHEN MAX(tsg.specification_group_id) IS NULL THEN 0" +
-      "   ELSE MAX(tsg.specification_group_id)" +
-      " END" +
-      " FROM" +
-      "   tbl_specification_group tsg")
+          "  MAX(specification_group_id)" +
+          "FROM" +
+          "  tbl_specification_group")
   Long getMaxGroupId();
 
   @Override

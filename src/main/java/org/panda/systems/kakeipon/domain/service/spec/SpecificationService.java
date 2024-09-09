@@ -1,5 +1,6 @@
 package org.panda.systems.kakeipon.domain.service.spec;
 
+import org.panda.systems.kakeipon.app.spec.SpecificationForm;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ public class SpecificationService implements Serializable {
   @Autowired
   private SpecificationRepository specificationRepository;
 
+  public Specification findBySpecificationGroupIdAndSpecificationIdAndUserId(
+      Long specificationGroupId, Long specificationId, Long userId) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserId(
+        specificationGroupId, specificationId, userId);
+  }
+
   public Long getMaxSpecificationId(Long specificationGroupId) {
     return specificationRepository.getMaxId(specificationGroupId);
   }
@@ -31,11 +38,11 @@ public class SpecificationService implements Serializable {
     return specificationRepository.findBySpecificationGroupId(specificationGroupId);
   }
 
-  public List<org.panda.systems.kakeipon.app.spec.SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId) {
+  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId) {
     List<Specification> specifications = specificationRepository.findBySpecificationGroupId(specificationGroupId);
-    org.panda.systems.kakeipon.app.spec.SpecificationForm specificationForm = new org.panda.systems.kakeipon.app.spec.SpecificationForm();
+    SpecificationForm specificationForm = new SpecificationForm();
 
-    List<org.panda.systems.kakeipon.app.spec.SpecificationForm> forms = new ArrayList<>();
+    List<SpecificationForm> forms = new ArrayList<>();
     for (Specification specification : specifications) {
       forms.add(
           specificationForm.setSpecificationToForm(specification));

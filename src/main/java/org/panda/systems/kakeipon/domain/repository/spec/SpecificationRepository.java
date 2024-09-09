@@ -11,16 +11,40 @@ import java.util.List;
 public interface SpecificationRepository extends JpaRepository<Specification, Long> {
 
   @Query(nativeQuery = true,
-      value = "SELECT MAX(ts.specification_id) = " +
-      " CASE" +
-      "   WHEN MAX(ts.specification_id) IS NULL THEN 1" +
-      "   ELSE MAX(ts.specification_id) + 1" +
-      " END" +
-      " FROM" +
-      "   tbl_specification ts" +
-      " WHERE" +
-      "   ts.specification_group_id = ?1")
+      value = "SELECT" +
+          " MAX(ts.specification_id) + 1" +
+          " FROM" +
+          "   tbl_specification ts" +
+          " WHERE" +
+          "   ts.specification_group_id = ?1")
   Long getMaxId(Long specificationGroupId);
+
+  @Query(nativeQuery = true,
+      value = "SELECT" +
+          " ts.specification_id," +
+          " ts.specification_group_id," +
+          " ts.user_id," +
+          " ts.name," +
+          " ts.price," +
+          " ts.currency_id," +
+          " ts.quantity," +
+          " ts.unit_id," +
+          " ts.tax_type_id," +
+          " ts.tax_rate_id," +
+          " ts.tax," +
+          " ts.memo," +
+          " ts.entry_date," +
+          " ts.update_date" +
+          " FROM" +
+          "   tbl_specification ts" +
+          " WHERE" +
+          "   ts.specification_group_id = ?1" +
+          " AND" +
+          "   ts.specification_id = ?2" +
+          " AND" +
+          "   ts.user_id = ?3")
+  Specification findBySpecificationGroupIdAndSpecificationIdAndUserId(
+      Long specificationGroupId, Long specificationId, Long userId);
 
   @Override
   List<Specification> findAll();

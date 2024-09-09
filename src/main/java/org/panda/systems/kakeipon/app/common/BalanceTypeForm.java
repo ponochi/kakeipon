@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.BalanceType;
+import org.panda.systems.kakeipon.domain.service.common.BalanceTypeService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -29,5 +31,17 @@ public class BalanceTypeForm implements Serializable {
   // Default constructor
   public BalanceTypeForm() {
     this.setBalanceTypeId(Long.parseLong("1"));
+  }
+
+  public BalanceTypeForm(BalanceTypeService service,
+                         Long balanceTypeId) {
+    if (balanceTypeId == null) {
+      this.setBalanceTypeId(Long.parseLong("1"));
+    } else {
+      this.setBalanceTypeId(balanceTypeId);
+    }
+    BalanceType balanceType
+        = service.findById(this.getBalanceTypeId());
+    this.setBalanceTypeName(balanceType.getBalanceTypeName());
   }
 }

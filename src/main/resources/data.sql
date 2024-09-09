@@ -678,3 +678,14 @@ INSERT INTO tbl_unit(unit_name) VALUES ('袋');
 INSERT INTO tbl_unit(unit_name) VALUES ('枚');
 INSERT INTO tbl_unit(unit_name) VALUES ('g');
 INSERT INTO tbl_unit(unit_name) VALUES ('kg');
+
+INSERT INTO tbl_account_and_balance(account_source_id, account_destination_id, entry_date, update_date) VALUES (1, 1, '2024-09-09T00:00:00', null);
+INSERT INTO tbl_account_and_balance(account_source_id, account_destination_id, entry_date, update_date) VALUES (1, 1, '2024-09-09T00:00:00', null);
+
+INSERT INTO tbl_specification_group(user_id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, memo, entry_date, update_date) VALUES (2, 2, '2024-09-09', '00:00:00', 1, 1, 'めもめも１', '2024-09-09T00:00:00', null);
+INSERT INTO tbl_specification_group(user_id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, memo, entry_date, update_date) VALUES (2, 3, '2024-09-09', '00:00:00', 1, 2, 'めもめも２', '2024-09-09T00:00:00', null);
+
+INSERT INTO tbl_specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, memo, entry_date, update_date) VALUES (1, 2, '広島DXつけ麺', 299, 1, 1, 1, 1, 1, 0, '', '2024-09-09T00:00:00', null);
+INSERT INTO tbl_specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, memo, entry_date, update_date) VALUES (1, 2, '濃厚もっちり絹厚揚', 89, 1, 1, 1, 1, 1, 0, '', '2024-09-09T12:00:00', null);
+INSERT INTO tbl_specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, memo, entry_date, update_date) VALUES (2, 2, 'チキンカツ', 280, 1, 1, 1, 1, 1, 0, '', '2024-09-09T00:00:00', null);
+INSERT INTO tbl_specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, memo, entry_date, update_date) VALUES (2, 2, 'ナポリタン', 220, 1, 1, 1, 1, 1, 0, '', '2024-09-09T12:00:00', null);

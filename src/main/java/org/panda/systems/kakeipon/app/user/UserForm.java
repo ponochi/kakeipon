@@ -95,8 +95,8 @@ public class UserForm implements Serializable {
     this.setEmail(user.getEmail());
     this.setBirthDay(user.getBirthDay());
     this.setPhoneNumber(user.getPhoneNumber());
-    this.setRoleId(Long.parseLong("2"));
-    this.setRoleForm(new RoleForm());
+    this.setRoleId(roleId);
+    this.setRoleForm(new RoleForm(roleService, roleId));
     this.getRoleForm().setRoleId(user.getRoleId());
     this.getRoleForm().setRoleName(
         (new RoleForm(roleService, roleId).getRoleName()));

@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification_group -- 明細グループテ�
     receiving_and_payment_date DATE        NOT NULL,                                 -- 受取支払日
     receiving_and_payment_time TIME        NOT NULL,                                 -- 受取支払時間
     balance_type_id            BIGINT      NOT NULL,                                 -- 受取支払種別ID (支出 / 収入 / 振替)
-    account_and_balance_id     BIGINT,                                               -- 口座ID (任意) (支出 / 振替: 送金元)
+    account_and_balance_id     BIGINT                UNIQUE,                         -- 口座ID (任意) (支出 / 振替: 送金元)
     memo                       TEXT,                                                 -- メモ (任意) 1000文字まで
     entry_date                 TIMESTAMPTZ NOT NULL,                                 -- 登録日時
     update_date                TIMESTAMPTZ,                                          -- 更新日時

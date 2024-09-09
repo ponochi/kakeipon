@@ -9,8 +9,10 @@ import org.panda.systems.kakeipon.app.shop.ShopForm;
 import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
+import org.panda.systems.kakeipon.domain.service.user.RoleService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -110,29 +112,42 @@ public class SpecificationGroupForm implements Serializable {
     } else {
       this.setSpecificationGroupId(specificationGroupId);
     }
-    Optional<SpecificationGroup> spec = service.findById(this.getSpecificationGroupId());
-    if (spec.isEmpty()) {
-      this.setUserId(Long.parseLong("2"));
-      this.setShopId(Long.parseLong("1"));
-      this.setReceivingAndPaymentDate(LocalDate.now());
-      this.setReceivingAndPaymentTime(LocalTime.now());
-      this.setBalanceTypeId(Long.parseLong("1"));
-      this.setAccountAndBalanceId(Long.parseLong("1"));
-      this.setMemo("");
-      this.setEntryDate(LocalDateTime.now());
-      this.setUpdateDate(LocalDateTime.now());
-    } else {
-      SpecificationGroup specificationGroup = spec.get();
-      this.setUserId(specificationGroup.getUserId());
-      this.setShopId(specificationGroup.getShopId());
-      this.setReceivingAndPaymentDate(specificationGroup.getReceivingAndPaymentDate());
-      this.setReceivingAndPaymentTime(specificationGroup.getReceivingAndPaymentTime());
-      this.setBalanceTypeId(specificationGroup.getBalanceTypeId());
-      this.setAccountAndBalanceId(specificationGroup.getAccountAndBalanceId());
-      this.setMemo(specificationGroup.getMemo());
-      this.setEntryDate(specificationGroup.getEntryDate());
-      this.setUpdateDate(specificationGroup.getUpdateDate());
-    }
+
+    SpecificationGroup group = service.findById(this.getSpecificationGroupId());
+    this.setUserId(group.getUserId());
+    this.setShopId(group.getShopId());
+    this.setReceivingAndPaymentDate(group.getReceivingAndPaymentDate());
+    this.setReceivingAndPaymentTime(group.getReceivingAndPaymentTime());
+    this.setBalanceTypeId(group.getBalanceTypeId());
+    this.setAccountAndBalanceId(group.getAccountAndBalanceId());
+    this.setMemo(group.getMemo());
+    this.setEntryDate(group.getEntryDate());
+    this.setUpdateDate(group.getUpdateDate());
+  }
+
+  public SpecificationGroupForm setSpecificationGroupToForm(
+      SpecificationGroup specificationGroup) {
+
+    SpecificationGroupForm form = new SpecificationGroupForm();
+
+    form.setSpecificationGroupId(
+        specificationGroup.getSpecificationGroupId());
+
+    form.setUserId(specificationGroup.getUserId());
+
+    form.setShopId(specificationGroup.getShopId());
+    form.setReceivingAndPaymentDate(
+        specificationGroup.getReceivingAndPaymentDate());
+    form.setReceivingAndPaymentTime(
+        specificationGroup.getReceivingAndPaymentTime());
+    form.setBalanceTypeId(specificationGroup.getBalanceTypeId());
+    form.setAccountAndBalanceId(
+        specificationGroup.getAccountAndBalanceId());
+    form.setMemo(specificationGroup.getMemo());
+    form.setEntryDate(specificationGroup.getEntryDate());
+    form.setUpdateDate(specificationGroup.getUpdateDate());
+
+    return form;
   }
 
   public SpecificationGroup toEntity() {
@@ -157,7 +172,8 @@ public class SpecificationGroupForm implements Serializable {
   }
 
   // Setter for User
-  public UserForm setUserToForm(Long userId,
+  public UserForm setUserToForm(RoleService service,
+                                Long userId,
                                 String nickName,
                                 String lastName,
                                 String firstName,
@@ -166,7 +182,7 @@ public class SpecificationGroupForm implements Serializable {
                                 String phoneNumber,
                                 String email,
                                 Long roleId,
-                                String roleName,
+//                                String roleName,
                                 LocalDateTime entryDate,
                                 LocalDateTime updateDate) {
     this.userForm = new UserForm();
@@ -179,9 +195,9 @@ public class SpecificationGroupForm implements Serializable {
     this.userForm.setPassword(password);
     this.userForm.setPhoneNumber(phoneNumber);
     this.userForm.setEmail(email);
-    this.userForm.setRoleForm(new RoleForm());
+    this.userForm.setRoleForm(new RoleForm(service, roleId));
     this.userForm.getRoleForm().setRoleId(roleId);
-    this.userForm.getRoleForm().setRoleName(roleName);
+//    this.userForm.getRoleForm().setRoleName(roleName);
     this.userForm.setEntryDate(entryDate);
     this.userForm.setUpdateDate(updateDate);
 

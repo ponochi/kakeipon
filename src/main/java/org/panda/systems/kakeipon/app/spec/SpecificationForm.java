@@ -15,6 +15,7 @@ import org.panda.systems.kakeipon.domain.service.common.TaxRateService;
 import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
 import org.panda.systems.kakeipon.domain.service.common.UnitService;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
+import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Table(name = "tbl_specification")
@@ -127,34 +129,53 @@ public class SpecificationForm implements Serializable {
   public SpecificationForm() {
   }
 
-  public SpecificationForm setSpecificationToForm(org.panda.systems.kakeipon.domain.model.spec.Specification specification) {
+  public SpecificationForm(SpecificationService service,
+                           Long specificationGroupId) {
+    if (specificationGroupId == null) {
+      this.setSpecificationGroupId(Long.parseLong("1"));
+    } else {
+      this.setSpecificationGroupId(specificationGroupId);
+    }
+    List<Specification> specifications = service.findBySpecificationGroupId(specificationGroupId);
+
+    for (Specification specification : specifications) {
+      this.setSpecificationGroupId(specification.getSpecificationGroupId());
+      this.setSpecificationId(specification.getSpecificationId());
+      this.setUserId(specification.getUserId());
+      this.setName(specification.getName());
+      this.setPrice(specification.getPrice());
+      this.setCurrencyId(specification.getCurrencyId());
+      this.setUnitId(specification.getUnitId());
+      this.setQuantity(specification.getQuantity());
+      this.setTaxTypeId(specification.getTaxTypeId());
+      this.setTaxRateId(specification.getTaxRateId());
+      this.setTax(specification.getTax());
+      this.setMemo(specification.getMemo());
+      this.setEntryDate(specification.getEntryDate());
+      this.setUpdateDate(specification.getUpdateDate());
+    }
+  }
+
+  public SpecificationForm setSpecificationToForm(Specification specification) {
     SpecificationForm form = new SpecificationForm();
 
-    form.specificationGroupId
-        = specification.getSpecificationGroupId();
-    form.specificationId = specification.getSpecificationId();
+    form.setSpecificationGroupId(
+        specification.getSpecificationGroupId());
+    form.setSpecificationId(specification.getSpecificationId());
 
-    form.userId = specification.getUserId();
+    form.setUserId(specification.getUserId());
 
-    form.name = specification.getName();
-    form.price = specification.getPrice();
-    form.currencyId = specification.getCurrencyId();
-//    CurrencyList currencyList = currencyListService.findById(
-//        specification.getCurrencyId());
-//    form.currencyForm = setCurrencyToForm(currencyList);
-    form.unitId = specification.getUnitId();
-//    Unit unit = unitService.findById(specification.getUnitId());
-//    form.unitForm = setUnitToForm(unit);
-    form.quantity = specification.getQuantity();
-    form.taxTypeId = specification.getTaxTypeId();
-//    TaxType taxType
-//        = taxTypeService.findById(specification.getTaxTypeId());
-//    form.taxTypeForm = setTaxTypeToForm(taxType);
-    form.taxRateId = specification.getTaxRateId();
-    form.tax = specification.getTax();
-    form.memo = memo;
-    form.entryDate = entryDate;
-    form.updateDate = updateDate;
+    form.setName(specification.getName());
+    form.setPrice(specification.getPrice());
+    form.setCurrencyId(specification.getCurrencyId());
+    form.setUnitId(specification.getUnitId());
+    form.setQuantity(specification.getQuantity());
+    form.setTaxTypeId(specification.getTaxTypeId());
+    form.setTaxRateId(specification.getTaxRateId());
+    form.setTax(specification.getTax());
+    form.setMemo(specification.getMemo());
+    form.setEntryDate(specification.getEntryDate());
+    form.setUpdateDate(specification.getUpdateDate());
 
     return form;
   }
