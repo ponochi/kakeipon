@@ -66,7 +66,7 @@
             <td>
                 <label for="memo"></label>
                 <textarea id="memo" name="memo"
-                          th:field="${specificationGroupForm.memo}" readonly></textarea>
+                          th:value="${specificationGroupForm.memo}" readonly></textarea>
             </td>
             <td>
                 <input id="edit" name="edit"
@@ -75,5 +75,16 @@
         </form>
     </tr>
 </table>
+
+<form id="list" th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="get">
+</form>
+<form id="create" th:action="@{'/spec/group'}" th:object="${specificationGroupForm}" method="get">
+</form>
+
+<div>
+  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+  <input form="list" type="submit" value="お買いもの・一覧画面"/>
+  <button form="create" type="submit">登　録</button>
+</div>
 </body>
 </html>

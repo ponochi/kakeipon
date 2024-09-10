@@ -79,8 +79,7 @@ public class UserForm implements Serializable {
 
   public UserForm(UserService service,
                   RoleService roleService,
-                  Long userId,
-                  Long roleId) {
+                  Long userId) {
     if (userId == null) {
       this.setUserId(Long.parseLong("1"));
     } else {
@@ -95,6 +94,11 @@ public class UserForm implements Serializable {
     this.setEmail(user.getEmail());
     this.setBirthDay(user.getBirthDay());
     this.setPhoneNumber(user.getPhoneNumber());
+    if (user.getRoleId() == null) {
+      roleId = Long.parseLong("1");
+    } else {
+      roleId = user.getRoleId();
+    }
     this.setRoleId(roleId);
     this.setRoleForm(new RoleForm(roleService, roleId));
     this.getRoleForm().setRoleId(user.getRoleId());

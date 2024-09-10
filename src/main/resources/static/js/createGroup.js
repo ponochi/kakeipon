@@ -20,6 +20,8 @@ function changedReceivingAndPaymentTime() {
 }
 
 function changedShop() {
+  let user
+    = document.getElementById("userId");
   let shop
     = document.getElementById("shopId");
   let accountSource
@@ -36,6 +38,8 @@ function changedShop() {
 }
 
 function changedAccountSource() {
+  let user
+    = document.getElementById("userId");
   let shop
     = document.getElementById("shopId");
   let accountSource
@@ -52,6 +56,8 @@ function changedAccountSource() {
 }
 
 function changedAccountDestination() {
+  let user
+    = document.getElementById("userId");
   let shop
     = document.getElementById("shopId");
   let accountSource
@@ -85,6 +91,8 @@ function changedBalanceType() {
   let searchAccountDestination
     = document.getElementById("searchAccountDestination");
 
+  let userIdControl
+    = document.getElementById("userId");
   let shopIdControl
     = document.getElementById("shopId");
   let accountSourceIdControl
@@ -126,7 +134,8 @@ function changedBalanceType() {
   balanceTypeIdControl.value = balanceTypeControl.value;
 
   //==== Set action of search shop form ====//
-  searchShop.action = "/" + accountAndBalanceIdControl.value;
+  searchShop.action = "/" + userIdControl.value;
+  searchShop.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchShop.action += "/" + shopIdControl.value;
   } else {
@@ -145,7 +154,8 @@ function changedBalanceType() {
   searchShop.action += "/searchShop";
 
   //==== Set action of search account source form ====//
-  searchAccountSource.action = "/" + accountAndBalanceIdControl.value;
+  searchAccountSource.action = "/" + userIdControl.value;
+  searchAccountSource.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountSource.action += "/" + shopIdControl.value;
   } else {
@@ -164,7 +174,8 @@ function changedBalanceType() {
   searchAccountSource.action += "/searchAccountSource";
 
   //==== Set action of search account destination form ====//
-  searchAccountDestination.action = "/" + accountAndBalanceIdControl.value;
+  searchAccountDestination.action = "/" + userIdControl.value;
+  searchAccountDestination.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountDestination.action += "/" + shopIdControl.value;
   } else {

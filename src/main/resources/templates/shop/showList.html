@@ -15,6 +15,7 @@
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
@@ -39,6 +40,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
@@ -65,6 +67,7 @@
                 <th:block th:unless="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
@@ -89,6 +92,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
@@ -117,6 +121,7 @@
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSourceId}__' +
@@ -141,6 +146,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSourceId}__' +
@@ -167,6 +173,7 @@
                 <th:block th:unless="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/1' +
@@ -191,11 +198,13 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/1' +
                             '/1' +
-                            '/setShop'}" th:object="${shop}" method="get">
+                            '/setShop'}"
+                              th:object="${shop}" method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"

@@ -8,17 +8,29 @@ import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.app.shop.ShopForm;
 import org.panda.systems.kakeipon.app.user.RoleForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
+import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
+import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
+import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
+import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
+import org.panda.systems.kakeipon.domain.service.common.*;
+import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
+import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
+import org.panda.systems.kakeipon.domain.service.user.UserService;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 @Table(name = "tbl_specification_group")
@@ -105,6 +117,137 @@ public class SpecificationGroupForm implements Serializable {
 
   }
 
+  public SpecificationGroupForm(SpecificationGroupService specificationGroupService,
+                                SpecificationService specificationService,
+                                AccountAndBalanceService accountAndBalanceService,
+                                AccountSourceService accountSourceService,
+                                AccountDestinationService accountDestinationService,
+                                UserService userService,
+                                RoleService roleService,
+                                ShopService shopService,
+                                BalanceTypeService balanceTypeService,
+                                CurrencyListService currencyListService,
+                                UnitService unitService,
+                                TaxTypeService taxTypeService,
+                                TaxRateService taxRateService) {
+//    SpecificationGroupForm form = new SpecificationGroupForm();
+
+    AccountAndBalanceForm accountAndBalanceForm
+        = new AccountAndBalanceForm(
+        accountAndBalanceService,
+        accountSourceService,
+        accountDestinationService,
+        null,
+        Long.parseLong("1"),
+        Long.parseLong("1"));
+    UserForm userForm = new UserForm(
+        userService,
+        roleService,
+        Long.parseLong("2"));
+    this.setUserId(userForm.getUserId());
+    this.setUserForm(userForm);
+    this.setUserToForm(
+        roleService,
+        userForm.getUserId(),
+        userForm.getNickName(),
+        userForm.getLastName(),
+        userForm.getFirstName(),
+        userForm.getBirthDay(),
+        userForm.getPassword(),
+        userForm.getPhoneNumber(),
+        userForm.getEmail(),
+        userForm.getRoleForm().getRoleId(),
+        userForm.getEntryDate(),
+        userForm.getUpdateDate());
+
+    this.getUserForm().setRoleId(
+        this.getUserForm().getRoleForm().getRoleId());
+
+    this.setShopId(Long.parseLong("1"));
+    ShopForm shopForm = new ShopForm(shopService,
+        this.getShopId());
+
+    this.setReceivingAndPaymentDate(LocalDate.now());
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
+
+    LocalTime localTime = LocalTime.now();
+    String nowHour = formatter.format(localTime);
+
+    if (nowHour.length() == 1) {
+      nowHour = "0" + nowHour + ":00";
+    } else {
+      nowHour = nowHour + ":00";
+    }
+    this.setReceivingAndPaymentTime(LocalTime.parse(nowHour));
+
+    this.setBalanceTypeId(Long.parseLong("1"));
+    List<BalanceType> balanceTypes
+        = balanceTypeService.findAll();
+    this.setBalanceTypeToForm(balanceTypes.get(0));
+
+    BalanceTypeForm balanceTypeForm = new BalanceTypeForm();
+    balanceTypeForm.setBalanceTypeId(Long.parseLong("1"));
+    this.setBalanceTypeForm(balanceTypeForm);
+
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(
+        accountAndBalanceService.getMaxAccountAndBalanceId());
+    this.setAccountAndBalanceId(
+        accountAndBalance.getAccountAndBalanceId()
+    );
+    this.setAccountAndBalanceForm(
+        accountAndBalanceForm.setAccountAndBalanceToForm(
+            accountAndBalance));
+
+    AccountSource accountSource
+        = accountSourceService.findById(
+        accountAndBalance.getAccountSourceId());
+    this.getAccountAndBalanceForm().setAccountSourceForm(
+        accountAndBalanceForm.setAccountSourceToForm(
+            accountSource));
+
+    AccountDestination accountDestination
+        = accountDestinationService.findById(
+        accountAndBalance.getAccountDestinationId());
+    this.getAccountAndBalanceForm().setAccountDestinationForm(
+        accountAndBalanceForm.setAccountDestinationToForm(
+            accountDestination));
+
+    accountAndBalanceService.saveAndFlush(
+        this.getAccountAndBalanceForm().toEntity());
+
+    // ToDo: Fix this
+    specificationGroupService.saveAndFlush(this.toEntity());
+
+    SpecificationForm specForm = new SpecificationForm();
+
+    List<Specification> specifications
+        = specificationService.findBySpecificationGroupId(
+        specificationGroupService.getMaxGroupId());
+    if (specifications.size() > 0) {
+      Long count = 1L;
+      for (Specification specification : specifications) {
+        specForm.setSpecificationGroupId(
+            specificationGroupService.getMaxGroupId());
+        specForm.setSpecificationId(count);
+        specForm.setUserId(this.getUserId());
+        specForm.setName("");
+        specForm.setPrice(Long.parseLong("0"));
+        specForm.setCurrencyId(Long.parseLong("1"));
+        specForm.setQuantity(Long.parseLong("1"));
+        specForm.setUnitId(Long.parseLong("1"));
+        specForm.setTaxTypeId(Long.parseLong("1"));
+        specForm.setTaxRateId(Long.parseLong("1"));
+        specForm.setTax(Long.parseLong("0"));
+        specForm.setMemo("");
+        specForm.setEntryDate(LocalDateTime.now());
+
+        specificationService.saveAndFlush(specForm.toEntity());
+        count++;
+      }
+    }
+  }
+
   public SpecificationGroupForm(SpecificationGroupService service,
                                 Long specificationGroupId) {
     if (specificationGroupId == null) {
@@ -121,8 +264,13 @@ public class SpecificationGroupForm implements Serializable {
     this.setBalanceTypeId(group.getBalanceTypeId());
     this.setAccountAndBalanceId(group.getAccountAndBalanceId());
     this.setMemo(group.getMemo());
-    this.setEntryDate(group.getEntryDate());
-    this.setUpdateDate(group.getUpdateDate());
+    if (group.getEntryDate() == null) {
+      this.setEntryDate(LocalDateTime.now());
+      this.setUpdateDate(group.getUpdateDate());
+    } else {
+      this.setEntryDate(group.getEntryDate());
+      this.setUpdateDate(LocalDateTime.now());
+    }
   }
 
   public SpecificationGroupForm setSpecificationGroupToForm(
@@ -144,8 +292,13 @@ public class SpecificationGroupForm implements Serializable {
     form.setAccountAndBalanceId(
         specificationGroup.getAccountAndBalanceId());
     form.setMemo(specificationGroup.getMemo());
-    form.setEntryDate(specificationGroup.getEntryDate());
-    form.setUpdateDate(specificationGroup.getUpdateDate());
+    if (specificationGroup.getEntryDate() == null) {
+      form.setEntryDate(LocalDateTime.now());
+      form.setUpdateDate(specificationGroup.getUpdateDate());
+    } else {
+      form.setEntryDate(specificationGroup.getEntryDate());
+      form.setUpdateDate(LocalDateTime.now());
+    }
 
     return form;
   }
@@ -165,8 +318,13 @@ public class SpecificationGroupForm implements Serializable {
     specificationGroup.setAccountAndBalanceId(
         this.getAccountAndBalanceId());
     specificationGroup.setMemo(this.getMemo());
-    specificationGroup.setEntryDate(LocalDateTime.now());
-    specificationGroup.setUpdateDate(this.getUpdateDate());
+    if (this.getEntryDate() == null) {
+      specificationGroup.setEntryDate(LocalDateTime.now());
+      specificationGroup.setUpdateDate(this.getUpdateDate());
+    } else {
+      specificationGroup.setEntryDate(this.getEntryDate());
+      specificationGroup.setUpdateDate(LocalDateTime.now());
+    }
 
     return specificationGroup;
   }
@@ -198,8 +356,13 @@ public class SpecificationGroupForm implements Serializable {
     this.userForm.setRoleForm(new RoleForm(service, roleId));
     this.userForm.getRoleForm().setRoleId(roleId);
 //    this.userForm.getRoleForm().setRoleName(roleName);
-    this.userForm.setEntryDate(entryDate);
-    this.userForm.setUpdateDate(updateDate);
+    if (entryDate == null) {
+      this.userForm.setEntryDate(LocalDateTime.now());
+      this.userForm.setUpdateDate(updateDate);
+    } else {
+      this.userForm.setEntryDate(entryDate);
+      this.userForm.setUpdateDate(LocalDateTime.now());
+    }
 
     return this.userForm;
   }
@@ -216,8 +379,13 @@ public class SpecificationGroupForm implements Serializable {
     this.shopForm.setOpenShopDate(shop.getOpenShopDate());
     this.shopForm.setCloseShopDate(shop.getCloseShopDate());
     this.shopForm.setShopMemo(shop.getShopMemo());
-    this.shopForm.setEntryDate(shop.getEntryDate());
-    this.shopForm.setUpdateDate(shop.getUpdateDate());
+    if (shop.getEntryDate() == null) {
+      this.shopForm.setEntryDate(LocalDateTime.now());
+      this.shopForm.setUpdateDate(shop.getUpdateDate());
+    } else {
+      this.shopForm.setEntryDate(shop.getEntryDate());
+      this.shopForm.setUpdateDate(LocalDateTime.now());
+    }
 
     return this.shopForm;
   }
@@ -238,8 +406,13 @@ public class SpecificationGroupForm implements Serializable {
     this.accountAndBalanceForm.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
     this.accountAndBalanceForm.setAccountSourceId(accountAndBalance.getAccountSourceId());
     this.accountAndBalanceForm.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
-    this.accountAndBalanceForm.setEntryDate(accountAndBalance.getEntryDate());
-    this.accountAndBalanceForm.setUpdateDate(accountAndBalance.getUpdateDate());
+    if (accountAndBalance.getEntryDate() == null) {
+      this.accountAndBalanceForm.setEntryDate(LocalDateTime.now());
+      this.accountAndBalanceForm.setUpdateDate(accountAndBalance.getUpdateDate());
+    } else {
+      this.accountAndBalanceForm.setEntryDate(accountAndBalance.getEntryDate());
+      this.accountAndBalanceForm.setUpdateDate(LocalDateTime.now());
+    }
 
     return this.accountAndBalanceForm;
   }

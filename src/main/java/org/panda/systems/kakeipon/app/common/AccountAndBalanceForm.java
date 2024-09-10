@@ -96,7 +96,13 @@ public class AccountAndBalanceForm implements Serializable {
             this.getAccountDestinationId());
     this.setAccountDestinationForm(accountDestinationForm);
 
-    this.setEntryDate(LocalDateTime.now());
+    if (accountAndBalance.getEntryDate() == null) {
+      this.setEntryDate(LocalDateTime.now());
+      this.setUpdateDate(accountAndBalance.getUpdateDate());
+    } else {
+      this.setEntryDate(accountAndBalance.getEntryDate());
+      this.setUpdateDate(LocalDateTime.now());
+    }
 
     accountAndBalanceService.saveAndFlush(this.toEntity());
 
@@ -113,8 +119,13 @@ public class AccountAndBalanceForm implements Serializable {
     entity.setAccountAndBalanceId(this.getAccountAndBalanceId());
     entity.setAccountSourceId(this.getAccountSourceId());
     entity.setAccountDestinationId(this.getAccountDestinationId());
-    entity.setEntryDate(this.getEntryDate());
-    entity.setUpdateDate(this.getUpdateDate());
+    if (this.getEntryDate() == null) {
+      entity.setEntryDate(LocalDateTime.now());
+      entity.setUpdateDate(this.getUpdateDate());
+    } else {
+      entity.setEntryDate(this.getEntryDate());
+      entity.setUpdateDate(LocalDateTime.now());
+    }
 
     return entity;
   }
@@ -125,8 +136,13 @@ public class AccountAndBalanceForm implements Serializable {
     form.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
     form.setAccountSourceId(accountAndBalance.getAccountSourceId());
     form.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
-    form.setEntryDate(accountAndBalance.getEntryDate());
-    form.setUpdateDate(accountAndBalance.getUpdateDate());
+    if (accountAndBalance.getEntryDate() == null) {
+      form.setEntryDate(LocalDateTime.now());
+      form.setUpdateDate(accountAndBalance.getUpdateDate());
+    } else {
+      form.setEntryDate(accountAndBalance.getEntryDate());
+      form.setUpdateDate(LocalDateTime.now());
+    }
 
     return form;
   }
@@ -141,8 +157,13 @@ public class AccountAndBalanceForm implements Serializable {
     form.setAccountSourceForm(accountSourceForm);
     form.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
     form.setAccountDestinationForm(accountDestinationForm);
-    form.setEntryDate(accountAndBalance.getEntryDate());
-    form.setUpdateDate(accountAndBalance.getUpdateDate());
+    if (accountAndBalance.getEntryDate() == null) {
+      form.setEntryDate(LocalDateTime.now());
+      form.setUpdateDate(accountAndBalance.getUpdateDate());
+    } else {
+      form.setEntryDate(accountAndBalance.getEntryDate());
+      form.setUpdateDate(LocalDateTime.now());
+    }
 
     return form;
   }
@@ -154,6 +175,13 @@ public class AccountAndBalanceForm implements Serializable {
     form.setAccountName(accountSource.getAccountName());
     form.setBranchName(accountSource.getBranchName());
     form.setEntryDate(accountSource.getEntryDate());
+    if (accountSource.getEntryDate() == null) {
+      form.setEntryDate(LocalDateTime.now());
+      form.setUpdateDate(accountSource.getUpdateDate());
+    } else {
+      form.setEntryDate(accountSource.getEntryDate());
+      form.setUpdateDate(LocalDateTime.now());
+    }
 
     return form;
   }
@@ -165,8 +193,13 @@ public class AccountAndBalanceForm implements Serializable {
     form.setAccountDestinationId(accountDestination.getAccountDestinationId());
     form.setAccountName(accountDestination.getAccountName());
     form.setBranchName(accountDestination.getBranchName());
-    form.setEntryDate(accountDestination.getEntryDate());
-    form.setUpdateDate(accountDestination.getUpdateDate());
+    if (accountDestination.getEntryDate() == null) {
+      form.setEntryDate(LocalDateTime.now());
+      form.setUpdateDate(accountDestination.getUpdateDate());
+    } else {
+      form.setEntryDate(accountDestination.getEntryDate());
+      form.setUpdateDate(LocalDateTime.now());
+    }
 
     return form;
   }
