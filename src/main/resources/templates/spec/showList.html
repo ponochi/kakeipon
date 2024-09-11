@@ -16,9 +16,9 @@
         <th>入金先</th>
         <th>メモ</th>
     </tr>
-    <tr th:each="specificationGroupForm : ${specificationGroupForms}">
-        <form id="specGroup"
-              th:action="@{'/spec/__${specificationGroupForm.specificationGroupId}__'}"
+    <tr th:each="specificationGroupForm, stat : ${specificationGroupForms}">
+        <form th:id="'specGroup' + '__${stat.index}__'"
+              th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__'}"
               th:object="${specificationGroupForm}" method="GET">
             <td>
                 <input id="accountAndBalanceId" name="accountAndBalanceId"
@@ -65,12 +65,12 @@
             </td>
             <td>
                 <label for="memo"></label>
-                <textarea id="memo" name="memo"
-                          th:value="${specificationGroupForm.memo}" readonly></textarea>
+                <textarea id="memo" name="memo" th:inline="text"
+                          readonly>[[${specificationGroupForm.memo}]]</textarea>
             </td>
             <td>
                 <input id="edit" name="edit"
-                       form="specGroup" type="submit" value="編　集">
+                       th:form="'specGroup' + '__${stat.index}__'" type="submit" value="編　集">
             </td>
         </form>
     </tr>
@@ -78,7 +78,7 @@
 
 <form id="list" th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="get">
 </form>
-<form id="create" th:action="@{'/spec/group'}" th:object="${specificationGroupForm}" method="get">
+<form id="create" th:action="@{'/spec/create/group'}" th:object="${specificationGroupForm}" method="get">
 </form>
 
 <div>

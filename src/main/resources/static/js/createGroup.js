@@ -230,6 +230,15 @@ function calculateTax() {
   }
 }
 
+function addSpecificationDetail() {
+  let createSpecDetail
+    = document.getElementById(
+      "createSpecDetail");
+  createSpecDetail.action = "/spec/create/detail/"
+    + groupId;
+  createSpecDetail.submit();
+}
+
 function savedetail() {
   var form = document.querySelector("saveOfSpecification");
   var action = form.setAttribute("action", "/spec/save");

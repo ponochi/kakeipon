@@ -6,22 +6,14 @@
     <link href="/css/common.css" rel="stylesheet">
 </head>
 <body>
-<script th:inline="javascript">
-        const groupId = /*[[${specificationGroupForm.specificationGroupId}]]*/"form";
-        console.log(form);
-</script>
-<form id="specGroup" th:action="@{'/spec/save/group'}"
+<form id="specGroup" th:action="@{'/spec/save'}"
       th:object="${specificationGroupForm}" method="POST">
     <div>
-        <input id="specificationGroupId" name="specificationGroupId"
-               th:value="${specificationGroupForm.specificationGroupId}"
-               type="hidden">
-        <input id="userId" name="userId"
-               th:value="${specificationGroupForm.userId}"
-               type="hidden">
         <input id="accountAndBalanceId" name="accountAndBalanceId"
                th:value="${specificationGroupForm.accountAndBalanceId}"
                type="hidden">
+        <input id="userId" name="userId"
+               th:value="${specificationGroupForm.userId}" type="hidden">
     </div>
 
     <table>
@@ -153,7 +145,7 @@
               th:object="${specificationForm}" method="GET">
             <div class="grid">
                 <div>
-                    <input id="specifications[__${stat.index}__].specificationGroupId"
+                    <input id="specificationGroupId"
                            name="specifications[__${stat.index}__].specificationGroupId"
                            th:value="${specificationForm.specificationGroupId}"
                            type="hidden">
@@ -240,7 +232,7 @@
                     <input id="edit" name="edit"
                            form="specDetail"
                            onclick="savedetail()"
-                           class="edit" type="submit" value="編　集">
+                           class="edit" type="submit" value="編　集"> -->
                 </div>
                 <div class="delete">
                     <input id="delete"
@@ -255,7 +247,7 @@
 </div>
 
 <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
-<input id="inputAddSpecificationDetail" form="createSpecDetail" onclick="addSpecificationDetail()" type="submit" value="明細追加">
+<input onclick="location.href='/spec'" type="submit" value="明細追加">
 <input form="specGroup" type="submit" value="登　録">
 
 <input id="balanceTypeId" name="balanceTypeId"
@@ -270,8 +262,6 @@
 </form>
 <form id="searchAccountDestination"
       th:action="@{'/searchAccountDestination'}" method="get">
-</form>
-<form id="createSpecDetail" method="get">
 </form>
 
 <form id="dummy"></form>

@@ -130,42 +130,45 @@ public class AccountAndBalanceForm implements Serializable {
     return entity;
   }
 
-  public AccountAndBalanceForm setAccountAndBalanceToForm(AccountAndBalance accountAndBalance) {
-    AccountAndBalanceForm form = new AccountAndBalanceForm();
+  public AccountAndBalanceForm setAccountAndBalanceToForm(
+      AccountAndBalance accountAndBalance) {
+//    AccountAndBalanceForm form = new AccountAndBalanceForm();
 
-    form.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
-    form.setAccountSourceId(accountAndBalance.getAccountSourceId());
-    form.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
+    this.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
+    this.setAccountSourceId(accountAndBalance.getAccountSourceId());
+    this.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
     if (accountAndBalance.getEntryDate() == null) {
-      form.setEntryDate(LocalDateTime.now());
-      form.setUpdateDate(accountAndBalance.getUpdateDate());
+      this.setEntryDate(LocalDateTime.now());
+      this.setUpdateDate(accountAndBalance.getUpdateDate());
     } else {
-      form.setEntryDate(accountAndBalance.getEntryDate());
-      form.setUpdateDate(LocalDateTime.now());
+      this.setEntryDate(accountAndBalance.getEntryDate());
+      this.setUpdateDate(LocalDateTime.now());
     }
 
-    return form;
+    return this;
   }
 
-  public AccountAndBalanceForm setAccountAndBalanceToForm(AccountAndBalance accountAndBalance,
-                                                         AccountSourceForm accountSourceForm,
-                                                         AccountDestinationForm accountDestinationForm) {
-    AccountAndBalanceForm form = new AccountAndBalanceForm();
+  public AccountAndBalanceForm setAccountAndBalanceToForm(
+      AccountAndBalance accountAndBalance,
+      AccountSourceForm accountSourceForm,
+      AccountDestinationForm accountDestinationForm) {
 
-    form.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
-    form.setAccountSourceId(accountAndBalance.getAccountSourceId());
-    form.setAccountSourceForm(accountSourceForm);
-    form.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
-    form.setAccountDestinationForm(accountDestinationForm);
+//    AccountAndBalanceForm form = new AccountAndBalanceForm();
+
+    this.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
+    this.setAccountSourceId(accountAndBalance.getAccountSourceId());
+    this.setAccountSourceForm(accountSourceForm);
+    this.setAccountDestinationId(accountAndBalance.getAccountDestinationId());
+    this.setAccountDestinationForm(accountDestinationForm);
     if (accountAndBalance.getEntryDate() == null) {
-      form.setEntryDate(LocalDateTime.now());
-      form.setUpdateDate(accountAndBalance.getUpdateDate());
+      this.setEntryDate(LocalDateTime.now());
+      this.setUpdateDate(accountAndBalance.getUpdateDate());
     } else {
-      form.setEntryDate(accountAndBalance.getEntryDate());
-      form.setUpdateDate(LocalDateTime.now());
+      this.setEntryDate(accountAndBalance.getEntryDate());
+      this.setUpdateDate(LocalDateTime.now());
     }
 
-    return form;
+    return this;
   }
 
   public AccountSourceForm setAccountSourceToForm(AccountSource accountSource) {

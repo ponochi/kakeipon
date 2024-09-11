@@ -163,9 +163,10 @@ public class SpecificationGroupForm implements Serializable {
     this.getUserForm().setRoleId(
         this.getUserForm().getRoleForm().getRoleId());
 
-    this.setShopId(Long.parseLong("1"));
     ShopForm shopForm = new ShopForm(shopService,
-        this.getShopId());
+        Long.parseLong("1"));
+    this.setShopId(shopForm.getShopId());
+    this.setShopForm(shopForm);
 
     this.setReceivingAndPaymentDate(LocalDate.now());
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH");
@@ -274,6 +275,9 @@ public class SpecificationGroupForm implements Serializable {
   }
 
   public SpecificationGroupForm setSpecificationGroupToForm(
+      AccountAndBalanceService accountAndBalanceService,
+      AccountSourceService accountSourceService,
+      AccountDestinationService accountDestinationService,
       SpecificationGroup specificationGroup) {
 
     SpecificationGroupForm form = new SpecificationGroupForm();
@@ -291,6 +295,11 @@ public class SpecificationGroupForm implements Serializable {
     form.setBalanceTypeId(specificationGroup.getBalanceTypeId());
     form.setAccountAndBalanceId(
         specificationGroup.getAccountAndBalanceId());
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(
+        specificationGroup.getAccountAndBalanceId());
+    accountAndBalanceForm = form.setAccountAndBalanceToForm(accountAndBalance);
+    form.setAccountAndBalanceForm(accountAndBalanceForm);
     form.setMemo(specificationGroup.getMemo());
     if (specificationGroup.getEntryDate() == null) {
       form.setEntryDate(LocalDateTime.now());

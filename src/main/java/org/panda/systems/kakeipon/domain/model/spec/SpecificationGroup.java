@@ -51,7 +51,7 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "account_and_balance_id")
   private Long accountAndBalanceId;
 
-  @Column
+  @Column(name = "memo")
   private String memo;
 
   @PastOrPresent
