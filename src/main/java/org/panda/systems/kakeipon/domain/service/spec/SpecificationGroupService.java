@@ -9,6 +9,7 @@ import org.panda.systems.kakeipon.domain.service.account.AccountDestinationServi
 import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,8 @@ public class SpecificationGroupService implements Serializable {
 
   @SuppressWarnings("rawtypes")
   public List<SpecificationGroup> findAll() {
-    return specificationGroupRepository.findAll();
+    return specificationGroupRepository.findAll(
+        Sort.by(Sort.Direction.DESC, "specificationGroupId"));
   }
 
   @SuppressWarnings("rawtypes")
@@ -54,7 +56,10 @@ public class SpecificationGroupService implements Serializable {
 
   public List<SpecificationGroupForm> findAllToForm() {
     List<SpecificationGroup> specificationGroups
-        = specificationGroupRepository.findAll();
+        = specificationGroupRepository.findAll(
+            Sort.by(
+                Sort.Direction.DESC,
+                "specificationGroupId"));
     SpecificationGroupForm specificationGroupForm
         = new SpecificationGroupForm();
 

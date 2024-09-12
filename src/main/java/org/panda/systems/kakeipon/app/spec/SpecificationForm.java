@@ -84,7 +84,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "currency_id")
-  CurrencyListForm currencyForm;
+  CurrencyListForm currencyListForm;
 
   private Long unitId;
 
@@ -200,12 +200,12 @@ public class SpecificationForm implements Serializable {
   }
 
   // Setter for User
-  public CurrencyListForm setCurrencyToForm(CurrencyList currency) {
-    this.currencyForm = new CurrencyListForm();
+  public CurrencyListForm setCurrencyToForm(CurrencyList currencyList) {
+    this.currencyListForm = new CurrencyListForm();
 
-    this.currencyForm.setCurrencyId(currency.getCurrencyId());
-    this.currencyForm.setCurrencyName(currency.getCurrencyName());
-    return this.currencyForm;
+    this.currencyListForm.setCurrencyId(currencyList.getCurrencyId());
+    this.currencyListForm.setCurrencyName(currencyList.getCurrencyName());
+    return this.currencyListForm;
   }
 
   public UnitForm setUnitToForm(Unit unit) {

@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <title>入出金登録</title>
     <link href="/css/common.css" rel="stylesheet">
+    <script src="/js/common.js"></script>
 </head>
 <body>
-<form id="specGroup" th:action="@{'/spec/save'}"
+<form id="specGroup" th:action="@{'/spec/update/group/__${specificationGroupForm.specificationGroupId}__'}"
       th:object="${specificationGroupForm}" method="POST">
     <div>
+        <input id="specificationGroupId" name="specificationGroupId"
+               th:value="${specificationGroupForm.specificationGroupId}"
+               type="hidden">
         <input id="accountAndBalanceId" name="accountAndBalanceId"
                th:value="${specificationGroupForm.accountAndBalanceId}"
                type="hidden">
@@ -59,9 +63,9 @@
         <tr>
             <td>入出金区分</td>
             <td>
-                <label for="balanceType"></label>
-                <select id="balanceType"
-                        name="balanceType"
+                <label for="balanceTypes"></label>
+                <select id="balanceTypes"
+                        name="balanceTypes"
                         onchange="changedBalanceType()"
                         th:field="*{balanceTypeId}">
                     <option th:each="balanceType : ${balanceTypes}"
@@ -139,111 +143,6 @@
         <div class="tax"><input class="spec-header tax-header" th:value="消費税" readonly/></div>
         <div class="spec-memo"><input class="spec-header spec-memo" th:value="備考" readonly/></div>
     </div>
-    <div th:each="specificationForm, stat : ${specificationForms}">
-        <form id="specDetail"
-              th:action="@{'/spec/save/__${specificationForm.specificationGroupId}__/__${specificationForm.specificationId}__'}"
-              th:object="${specificationForm}" method="GET">
-            <div class="grid">
-                <div>
-                    <input id="specificationGroupId"
-                           name="specifications[__${stat.index}__].specificationGroupId"
-                           th:value="${specificationForm.specificationGroupId}"
-                           type="hidden">
-                    <input id="specificationId"
-                           name="specifications[__${stat.index}__].specificationId"
-                           th:value="${specificationForm.specificationId}"
-                           type="hidden">
-                </div>
-                <div class="brand-name">
-                    <input id="name"
-                           name="specifications[__${stat.index}__].name"
-                           class="brand-name"
-                           th:value="${specificationForm.name}"
-                           type="text" readonly>
-                </div>
-                <div class="price">
-                    <input id="price"
-                           name="specifications[__${stat.index}__].price"
-                           class="price"
-                           onchange="calculateTax()"
-                           th:value="${specificationForm.price}"
-                           type="number" readonly>
-                </div>
-                <div class="currency-name">
-                    <label for="currency"></label>
-                    <input id="currency" name="currency"
-                           class="currency-name"
-                           th:field="${specificationForm.currencyName}" readonly>
-                </div>
-                <div class="quantity">
-                    <label for="quantity"></label>
-                    <input id="quantity"
-                           name="specifications[__${stat.index}__].quantity"
-                           class="quantity"
-                           onchange="calculateTax()"
-                           th:value="${specificationForm.quantity}"
-                           type="number" readonly>
-                </div>
-                <div class="unit-name">
-                    <label for="unit"></label>
-                    <input id="unit" name="unit" class="unit-name"
-                           th:value="${specificationForm.unitName}" readonly>
-                </div>
-                <div>
-                    <input id="taxTypeId"
-                           name="specifications[__${stat.index}__].taxTypeId"
-                           th:value="${specificationForm.taxTypeId}"
-                           type="text" readonly>
-                </div>
-                <div class="tax-type">
-                    <label for="taxType"></label>
-                    <input id="taxType" name="taxType" class="tax-type"
-                           onchange="calculateTax()"
-                           th:value="${specificationForm.taxTypeName}"
-                           readonly>
-                </div>
-                <div>
-                    <input id="taxRateId"
-                           name="specifications[__${stat.index}__].taxRateId"
-                           th:value="${specificationForm.taxRateId}"
-                           type="hidden">
-                </div>
-                <div class="tax-rate">
-                    <label for="taxRate"></label>
-                    <input id="taxRate" name="taxRate" class="tax-rate"
-                           onchange="calculateTax()"
-                           th:value="${specificationForm.taxRateName}"
-                           readonly>
-                </div>
-                <div class="tax">
-                    <label for="tax"></label>
-                    <input id="tax" name="taxType.tax" class="tax"
-                           type="number" readonly>
-                </div>
-                <div class="spec-memo">
-                    <label for="spec-memo"></label>
-                    <input id="spec-memo"
-                           name="specifications[__${stat.index}__].memo"
-                           class="spec-memo"
-                           th:value="${specificationForm.memo}"
-                           type="text" readonly>
-                </div>
-                <div class="edit">
-                    <input id="edit" name="edit"
-                           form="specDetail"
-                           onclick="savedetail()"
-                           class="edit" type="submit" value="編　集"> -->
-                </div>
-                <div class="delete">
-                    <input id="delete"
-                           name="delete" type="button" value="削　除"
-                           form="specDetail"
-                           class="delete"
-                           onclick="deleteRow(this)">
-                </div>
-            </div>
-        </form>
-    </div>
 </div>
 
 <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
@@ -266,5 +165,8 @@
 
 <form id="dummy"></form>
 <script src="/js/createGroup.js"></script>
+<script>
+    setEditGroupUrl();
+</script>
 </body>
 </html>

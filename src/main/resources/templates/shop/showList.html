@@ -14,14 +14,16 @@
             <th:block th:if="${shop.shopId} ne null">
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
                             '/1' +
                             '/setShop'}"
-                            th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -39,14 +41,16 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${accountSourceId}__' +
                             '/__${accountDestinationId}__' +
                             '/setShop'}"
-                            th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -66,14 +70,16 @@
                 </th:block>
                 <th:block th:unless="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} ne null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
                             '/__${accountDestinationId}__' +
                             '/setShop'}"
-                              th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -91,14 +97,16 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/1' +
                             '/1' +
                             '/setShop'}"
-                              th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -120,14 +128,16 @@
             <th:block th:unless="${shop.shopId} ne null">
                 <th:block th:if="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSourceId}__' +
                             '/1' +
                             '/setShop'}"
-                            th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -145,14 +155,16 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} eq null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${accountSourceId}__' +
                             '/__${accountDestinationId}__' +
                             '/setShop'}"
-                            th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -172,14 +184,16 @@
                 </th:block>
                 <th:block th:unless="${accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} ne null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/1' +
                             '/__${accountDestinationId}__' +
                             '/setShop'}"
-                              th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -197,14 +211,16 @@
                         </form>
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
-                        <form th:action="@{
+                        <form th:object="${specificationGroupForm}"
+                              th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/1' +
                             '/1' +
                             '/setShop'}"
-                              th:object="${shop}" method="get">
+                              method="get">
                             <label for="shopId"></label>
                             <input id="shopId"
                                    th:value="${shop.shopId}"
@@ -226,9 +242,9 @@
         </td>
     </tr>
 </table>
-<form id="selectShop" method="get"
+<!-- <form id="selectShop" method="get"
       th:action="@{'setShop'}" th:object="${shop}">
-</form>
+</form> -->
 
 </body>
 </html>

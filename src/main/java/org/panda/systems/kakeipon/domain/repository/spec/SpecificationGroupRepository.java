@@ -22,7 +22,6 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  tbl_specification_group")
   Long getMaxGroupId();
 
-  @Override
   List<SpecificationGroup> findAll();
 
   @SuppressWarnings("NullableProblems")

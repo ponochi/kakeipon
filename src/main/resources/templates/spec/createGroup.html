@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>入出金登録</title>
     <link href="/css/common.css" rel="stylesheet">
+    <script src="/js/common.js"></script>
 </head>
 <body>
 <script th:inline="javascript">
         const groupId = /*[[${specificationGroupForm.specificationGroupId}]]*/"form";
-        console.log(form);
 </script>
 <form id="specGroup" th:action="@{'/spec/save/group'}"
       th:object="${specificationGroupForm}" method="POST">
@@ -130,7 +130,8 @@
             <td>備考</td>
             <td>
                 <label for="memo"></label>
-                <textarea id="memo" name="memo" th:field="*{memo}"></textarea>
+                <textarea id="memo" name="memo"
+                          th:inline="text">[[*{memo}]]</textarea>
             </td>
         </tr>
     </table>
@@ -230,11 +231,10 @@
                 </div>
                 <div class="spec-memo">
                     <label for="spec-memo"></label>
-                    <input id="spec-memo"
+                    <textarea id="spec-memo"
                            name="specifications[__${stat.index}__].memo"
                            class="spec-memo"
-                           th:value="${specificationForm.memo}"
-                           type="text" readonly>
+                           th:inline="text" readonly>[[*{memo}]]</textarea>
                 </div>
                 <div class="edit">
                     <input id="edit" name="edit"
@@ -276,5 +276,8 @@
 
 <form id="dummy"></form>
 <script src="/js/createGroup.js"></script>
+<script>
+    setCreateGroupUrl();
+</script>
 </body>
 </html>

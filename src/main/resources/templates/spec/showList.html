@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>入出金登録</title>
     <link href="/css/common.css" rel="stylesheet">
+    <script src="/js/common.js"></script>
 </head>
 <body>
 <table>
@@ -17,9 +18,9 @@
         <th>メモ</th>
     </tr>
     <tr th:each="specificationGroupForm, stat : ${specificationGroupForms}">
-        <form th:id="'specGroup' + '__${stat.index}__'"
+        <form th:id="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'"
               th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__'}"
-              th:object="${specificationGroupForm}" method="GET">
+              th:object="${specificationGroupForm}" method="POST">
             <td>
                 <input id="accountAndBalanceId" name="accountAndBalanceId"
                        th:value="${specificationGroupForm.accountAndBalanceId}"
@@ -70,7 +71,8 @@
             </td>
             <td>
                 <input id="edit" name="edit"
-                       th:form="'specGroup' + '__${stat.index}__'" type="submit" value="編　集">
+                       th:form="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'" type="submit"
+                       value="編　集">
             </td>
         </form>
     </tr>
@@ -82,9 +84,12 @@
 </form>
 
 <div>
-  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
-  <input form="list" type="submit" value="お買いもの・一覧画面"/>
-  <button form="create" type="submit">登　録</button>
+    <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+    <input form="list" type="submit" value="お買いもの・一覧画面"/>
+    <button form="create" type="submit">登　録</button>
 </div>
+<script>
+  setShowListUrl();
+</script>
 </body>
 </html>

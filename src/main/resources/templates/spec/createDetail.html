@@ -136,11 +136,8 @@
             </th>
             <td>
                 <label for="spec-memo"></label>
-                <input id="spec-memo"
-                       name="memo"
-                       class="spec-memo"
-                       th:value="${specificationForm.memo}"
-                       type="text" />
+                <textarea id="spec-memo" name="memo"
+                       class="spec-memo" th:inline="text">[[*{memo}]]</textarea>
             </td>
         </tr>
     </table>

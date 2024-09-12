@@ -1,5 +1,6 @@
 package org.panda.systems.kakeipon.app.spec;
 
+import jakarta.servlet.http.HttpSession;
 import org.panda.systems.kakeipon.app.account.AccountDestinationForm;
 import org.panda.systems.kakeipon.app.account.AccountSourceForm;
 import org.panda.systems.kakeipon.app.common.*;
@@ -177,10 +178,10 @@ public class SpecificationController {
     return "/spec/createGroup";
   }
 
-  @GetMapping(value = "/spec/edit/group/{specificationGroupId}")
+  @PostMapping(value = "/spec/edit/group/{specificationGroupId}")
   String editSpecificationGroup(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute SpecificationGroupForm specificationGroupForm,
       @ModelAttribute SpecificationForm specificationForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
       @ModelAttribute UserForm userForm,
@@ -190,12 +191,11 @@ public class SpecificationController {
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       Model model) {
 
-    System.out.println("1>>>> specificationGroupId: "
-        + specificationGroupId);
     SpecificationGroup group
         = specificationGroupService.findById(
             specificationGroupId);
-    groupForm = groupForm.setSpecificationGroupToForm(
+    specificationGroupForm
+        = specificationGroupForm.setSpecificationGroupToForm(
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
@@ -205,26 +205,21 @@ public class SpecificationController {
         userService,
         roleService,
         Long.parseLong("2"));
-    groupForm.setUserId(userForm.getUserId());
-    groupForm.setUserForm(userForm);
+    specificationGroupForm.setUserId(userForm.getUserId());
+    specificationGroupForm.setUserForm(userForm);
 
-    System.out.println("1>>>> shopId: " + groupForm.getShopId());
-    shopForm = new ShopForm(shopService, groupForm.getShopId());
-    System.out.println("2>>>> shopForm: " + shopForm.toString());
-    groupForm.setShopId(shopForm.getShopId());
-    groupForm.setShopForm(shopForm);
+    shopForm = new ShopForm(shopService, specificationGroupForm.getShopId());
+    specificationGroupForm.setShopId(shopForm.getShopId());
+    specificationGroupForm.setShopForm(shopForm);
 
-    specificationGroupService.saveAndFlush(groupForm.toEntity());
+    balanceTypeForm
+        = new BalanceTypeForm(
+            balanceTypeService,
+        group.getBalanceTypeId());
+    specificationGroupForm.setBalanceTypeId(group.getBalanceTypeId());
+    specificationGroupForm.setBalanceTypeForm(balanceTypeForm);
 
-    SpecificationGroup specificationGroup = specificationGroupService.findById(
-        specificationGroupService.getMaxGroupId());
-    groupForm = groupForm.setSpecificationGroupToForm(
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        specificationGroup);
-
-    model.addAttribute("specificationGroupForm", groupForm);
+    model.addAttribute("specificationGroupForm", specificationGroupForm);
     model.addAttribute("specificationForm", specificationForm);
     model.addAttribute("currencyLists", currencyListService.findAll());
     model.addAttribute("units", unitService.findAll());
@@ -232,22 +227,23 @@ public class SpecificationController {
     model.addAttribute("taxRates", taxRateService.findAll());
     model.addAttribute(
         "accountAndBalanceId",
-        groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
+        specificationGroupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
     model.addAttribute("shopForm", shopForm);
     model.addAttribute(
         "accountSourceForm",
         new AccountSourceForm(
             accountSourceService,
-            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+            specificationGroupForm.getAccountAndBalanceForm().getAccountSourceId()));
     model.addAttribute(
         "accountDestinationForm",
         new AccountDestinationForm(
             accountDestinationService,
-            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+            specificationGroupForm.getAccountAndBalanceForm().getAccountDestinationId()));
     model.addAttribute("userForm", userForm);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
+    model.addAttribute("selectedBalanceTypeId", specificationGroupForm.getBalanceTypeId());
 
-    return "/spec/createGroup";
+    return "/spec/editGroup";
   }
 
   @GetMapping(value = "/spec/create/detail/{specificationGroupId}")
@@ -289,6 +285,156 @@ public class SpecificationController {
     return "/spec/createDetail";
   }
 
+  @PostMapping(value = "/spec/save/group")
+  String saveGroup(
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute SpecificationForm specificationForm,
+      @ModelAttribute Specification specification,
+      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
+      @ModelAttribute UserForm userForm,
+      @ModelAttribute ShopForm shopForm,
+      Model model) {
+
+    Long balanceTypeId = groupForm.getBalanceTypeId();
+    String memo = groupForm.getMemo();
+
+    SpecificationGroup group
+        = specificationGroupService.findById(
+        specificationGroupService.getMaxGroupId());
+    groupForm = groupForm.setSpecificationGroupToForm(
+        accountAndBalanceService,
+        accountSourceService,
+        accountDestinationService,
+        group);
+    groupForm.setBalanceTypeId(balanceTypeId);
+    groupForm.setMemo(memo);
+
+    groupForm.setAccountAndBalanceId(
+        accountAndBalanceForm.getAccountAndBalanceId());
+    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+
+    accountAndBalanceForm.setAccountSourceId(
+        groupForm.getAccountAndBalanceForm().getAccountSourceId());
+    accountAndBalanceForm.setAccountDestinationId(
+        groupForm.getAccountAndBalanceForm().getAccountDestinationId());
+    accountAndBalanceService.saveAndFlush(
+        accountAndBalanceForm.toEntity());
+
+    groupForm.setUserId(userForm.getUserId());
+    groupForm.setUserForm(userForm);
+
+    groupForm.setShopId(shopForm.getShopId());
+    groupForm.setShopForm(shopForm);
+
+    SpecificationGroup specGroup = groupForm.toEntity();
+    specificationGroupService.update(specGroup);
+
+    List<SpecificationForm> specificationForms
+        = specificationService.findBySpecificationGroupIdToForm(
+        groupForm.getSpecificationGroupId());
+
+    model.addAttribute("specificationGroupForm", groupForm);
+    model.addAttribute("specificationForms", specificationForms);
+    model.addAttribute("currencyLists", currencyListService.findAll());
+    model.addAttribute("units", unitService.findAll());
+    model.addAttribute("taxTypes", taxTypeService.findAll());
+    model.addAttribute("taxRates", taxRateService.findAll());
+    model.addAttribute(
+        "accountAndBalanceId",
+        groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
+    model.addAttribute("shopForm", shopService.findById(groupForm.getShopId()));
+    model.addAttribute(
+        "accountSourceForm",
+        new AccountSourceForm(
+            accountSourceService,
+            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+    model.addAttribute(
+        "accountDestinationForm",
+        new AccountDestinationForm(
+            accountDestinationService,
+            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+    model.addAttribute("user", user);
+    model.addAttribute("balanceTypes", balanceTypeService.findAll());
+
+    return "/spec/editGroup";
+  }
+
+  @PostMapping(value = "/spec/update/group/{specificationGroupId}")
+  String updateGroup(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute SpecificationForm specificationForm,
+      @ModelAttribute Specification specification,
+      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
+      @ModelAttribute UserForm userForm,
+      @ModelAttribute ShopForm shopForm,
+      Model model) {
+
+    Long balanceTypeId = groupForm.getBalanceTypeId();
+    String memo = groupForm.getMemo();
+
+    SpecificationGroup group
+        = specificationGroupService.findById(
+        specificationGroupId);
+    groupForm = groupForm.setSpecificationGroupToForm(
+        accountAndBalanceService,
+        accountSourceService,
+        accountDestinationService,
+        group);
+
+    groupForm.setBalanceTypeId(balanceTypeId);
+    groupForm.setMemo(memo);
+
+    groupForm.setAccountAndBalanceId(
+        accountAndBalanceForm.getAccountAndBalanceId());
+    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+
+    accountAndBalanceForm.setAccountSourceId(
+        groupForm.getAccountAndBalanceForm().getAccountSourceId());
+    accountAndBalanceForm.setAccountDestinationId(
+        groupForm.getAccountAndBalanceForm().getAccountDestinationId());
+    accountAndBalanceService.saveAndFlush(
+        accountAndBalanceForm.toEntity());
+
+    groupForm.setUserId(userForm.getUserId());
+    groupForm.setUserForm(userForm);
+
+    groupForm.setShopId(shopForm.getShopId());
+    groupForm.setShopForm(shopForm);
+
+    SpecificationGroup specGroup = groupForm.toEntity();
+    specificationGroupService.update(specGroup);
+
+    List<SpecificationForm> specificationForms
+        = specificationService.findBySpecificationGroupIdToForm(
+        groupForm.getSpecificationGroupId());
+
+    model.addAttribute("specificationGroupForm", groupForm);
+    model.addAttribute("specificationForms", specificationForms);
+    model.addAttribute("currencyLists", currencyListService.findAll());
+    model.addAttribute("units", unitService.findAll());
+    model.addAttribute("taxTypes", taxTypeService.findAll());
+    model.addAttribute("taxRates", taxRateService.findAll());
+    model.addAttribute(
+        "accountAndBalanceId",
+        groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
+    model.addAttribute("shopForm", shopService.findById(groupForm.getShopId()));
+    model.addAttribute(
+        "accountSourceForm",
+        new AccountSourceForm(
+            accountSourceService,
+            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+    model.addAttribute(
+        "accountDestinationForm",
+        new AccountDestinationForm(
+            accountDestinationService,
+            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+    model.addAttribute("user", user);
+    model.addAttribute("balanceTypes", balanceTypeService.findAll());
+
+    return "/spec/editGroup";
+  }
+
   @PostMapping(value = "/spec/save/detail/{specificationGroupId}")
   String saveDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
@@ -326,137 +472,142 @@ public class SpecificationController {
     return "redirect:/spec";
   }
 
-  @PostMapping(value = "/spec/save/group")
-  String saveGroup(
-      @ModelAttribute SpecificationGroupForm groupForm,
-      @ModelAttribute SpecificationForm specificationForm,
-      @ModelAttribute Specification specification,
-      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @ModelAttribute UserForm userForm,
-      @ModelAttribute ShopForm shopForm,
-      Model model) {
-
-    String memo = groupForm.getMemo();
-    SpecificationGroup group
-        = specificationGroupService.findById(
-        specificationGroupService.getMaxGroupId());
-    groupForm = groupForm.setSpecificationGroupToForm(
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
-    groupForm.setMemo(memo);
-
-    groupForm.setAccountAndBalanceId(
-        accountAndBalanceForm.getAccountAndBalanceId());
-    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
-
-    groupForm.setUserId(userForm.getUserId());
-    groupForm.setUserForm(userForm);
-
-    groupForm.setShopId(shopForm.getShopId());
-    groupForm.setShopForm(shopForm);
-
-    SpecificationGroup specGroup = groupForm.toEntity();
-    System.out.println("specGroup: " + specGroup.getMemo());
-    specificationGroupService.update(specGroup);
-
-    accountAndBalanceForm.setAccountSourceId(
-        groupForm.getAccountAndBalanceForm().getAccountSourceId());
-    accountAndBalanceForm.setAccountDestinationId(
-        groupForm.getAccountAndBalanceForm().getAccountDestinationId());
-    accountAndBalanceService.saveAndFlush(
-        accountAndBalanceForm.toEntity());
-
-    List<SpecificationForm> specificationForms
-        = specificationService.findBySpecificationGroupIdToForm(
-        groupForm.getSpecificationGroupId());
-
-    model.addAttribute("specificationGroupForm", groupForm);
-    model.addAttribute("specificationForms", specificationForms);
-    model.addAttribute("currencyLists", currencyListService.findAll());
-    model.addAttribute("units", unitService.findAll());
-    model.addAttribute("taxTypes", taxTypeService.findAll());
-    model.addAttribute("taxRates", taxRateService.findAll());
-    model.addAttribute(
-        "accountAndBalanceId",
-        groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
-    model.addAttribute("shopForm", shopService.findById(groupForm.getShopId()));
-    model.addAttribute(
-        "accountSourceForm",
-        new AccountSourceForm(
-            accountSourceService,
-            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
-    model.addAttribute(
-        "accountDestinationForm",
-        new AccountDestinationForm(
-            accountDestinationService,
-            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
-    model.addAttribute("user", user);
-    model.addAttribute("balanceTypes", balanceTypeService.findAll());
-
-    return "/spec/createGroup";
-  }
-
-//  @PostMapping(value = "/spec/save")
-//  String saveSpecificationDetail(
-//      @ModelAttribute("specificationGroupForm") SpecificationGroupForm groupForm,
-//      @ModelAttribute("specificationForm") SpecificationForm form,
-//      Model model) {
-//
-////    for (SpecificationForm form : specificationForms) {
-//      form.setSpecificationGroupId(groupForm.getSpecificationGroupId());
-//      form.setSpecificationId(
-//          specificationService.getMaxSpecificationId(
-//              groupForm.getSpecificationGroupId()));
-//      form.setUserId(groupForm.getUserId());
-//      form.setUpdateDate(LocalDateTime.now());
-//
-//      specificationService.saveAndFlush(form.toEntity());
-////    }
-//
-////    List<SpecificationForm> specificationForms
-////        = specificationService.findBySpecificationGroupIdToForm(
-////        groupForm.getSpecificationGroupId());
-//
-//    model.addAttribute("specificationGroupForm", groupForm);
-////    model.addAttribute("specificationForms", specificationForms);
-//    model.addAttribute("specificationForm", form);
-//    model.addAttribute("currencyLists", currencyService.findAll());
-//    model.addAttribute("units", unitService.findAll());
-//    model.addAttribute("taxTypes", taxTypeService.findAll());
-//    model.addAttribute("taxRates", taxRateService.findAll());
-//    model.addAttribute(
-//        "accountAndBalanceId",
-//        groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
-//    model.addAttribute("shopForm", shopService.findById(groupForm.getShopId()));
-//    model.addAttribute(
-//        "accountSourceForm",
-//        new AccountSourceForm(
-//            accountSourceService,
-//            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
-//    model.addAttribute(
-//        "accountDestinationForm",
-//        new AccountDestinationForm(
-//            accountDestinationService,
-//            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
-//    model.addAttribute("user", user);
-//    model.addAttribute("balanceTypes", balanceTypeService.findAll());
-//
-//    return "redirect:/spec/createGroup";
-//  }
-
-  @RequestMapping(value = "/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setShop",
-      method = RequestMethod.GET)
-  String setShopToSpecificationGroup(
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchShop")
+  String searchShop(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("accountSourceId") Long accountSourceId,
       @PathVariable("accountDestinationId") Long accountDestinationId,
-      @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute UserForm userForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
       Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
+
+    groupForm.setUserId(userId);
+
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(accountAndBalanceId);
+    List<Shop> shops = shopService.findAll();
+    AccountSource accountSource
+        = accountSourceService.findById(accountSourceId);
+    AccountDestination accountDestination
+        = accountDestinationService.findById(accountDestinationId);
+
+    groupForm.setMemo(groupMemo);
+
+    model.addAttribute("specificationGroupForm", groupForm);
+    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
+    model.addAttribute("shops", shops);
+    model.addAttribute("accountSource", accountSource);
+    model.addAttribute("accountDestination", accountDestination);
+    model.addAttribute("userForm", userForm);
+
+    return "/shop/showList";
+  }
+
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchAccountSource")
+  String searchAccountSource(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
+      @PathVariable("userId") Long userId,
+      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
+      @PathVariable("shopId") Long shopId,
+      @PathVariable("accountSourceId") Long accountSourceId,
+      @PathVariable("accountDestinationId") Long accountDestinationId,
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute UserForm userForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
+      Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
+
+    groupForm.setUserId(userId);
+
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(accountAndBalanceId);
+    ShopForm shopForm = new ShopForm(shopService, shopId);
+    groupForm.setShopId(shopForm.getShopId());
+    List<AccountSource> accountSources = accountSourceService.findAll();
+    AccountDestinationForm accountDestinationForm
+        = new AccountDestinationForm(
+        accountDestinationService,
+        accountDestinationId);
+
+    groupForm.setMemo(groupMemo);
+
+    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
+    model.addAttribute("shopForm", shopForm);
+    model.addAttribute("accountSources", accountSources);
+    model.addAttribute("accountDestinationForm", accountDestinationForm);
+    model.addAttribute("userForm", userForm);
+
+    return "/account/showSourceList";
+  }
+
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchAccountDestination")
+  String searchAccountDestination(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
+      @PathVariable("userId") Long userId,
+      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
+      @PathVariable("shopId") Long shopId,
+      @PathVariable("accountSourceId") Long accountSourceId,
+      @PathVariable("accountDestinationId") Long accountDestinationId,
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute UserForm userForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
+      Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
+
+    groupForm.setUserId(userId);
+
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(accountAndBalanceId);
+    ShopForm shopForm = new ShopForm(shopService, shopId);
+    groupForm.setShopId(shopForm.getShopId());
+    AccountSourceForm accountSourceForm
+        = new AccountSourceForm(
+        accountSourceService,
+        accountSourceId);
+    List<AccountDestination> accountDestinations
+        = accountDestinationService.findAll();
+
+    groupForm.setMemo(groupMemo);
+
+    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
+    model.addAttribute("shopForm", shopForm);
+    model.addAttribute("accountSourceForm", accountSourceForm);
+    model.addAttribute("accountDestinations", accountDestinations);
+    model.addAttribute("userForm", userForm);
+
+    return "/account/showDestinationList";
+  }
+
+  @RequestMapping(value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setShop",
+      method = RequestMethod.GET)
+  String setShopToSpecificationGroup(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
+      @PathVariable("userId") Long userId,
+      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
+      @PathVariable("shopId") Long shopId,
+      @PathVariable("accountSourceId") Long accountSourceId,
+      @PathVariable("accountDestinationId") Long accountDestinationId,
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
+      Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
 
     groupForm.setUserId(userId);
     UserForm userForm = new UserForm(
@@ -499,6 +650,8 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
 
+    groupForm.setMemo(groupMemo);
+
     model.addAttribute("groupForm", groupForm);
     model.addAttribute(
         "accountAndBalanceId", accountAndBalanceId);
@@ -512,50 +665,30 @@ public class SpecificationController {
     model.addAttribute("user", user);
     model.addAttribute("balanceTypes", balanceTypes);
 
-    return "/spec/createGroup";
+    if (specificationGroupId == null) {
+      return "/spec/createGroup";
+    } else {
+      return "/spec/editGroup";
+    }
   }
-
-  @GetMapping("/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchShop")
-  String searchShop(
-      @PathVariable("userId") Long userId,
-      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
-      @PathVariable("shopId") Long shopId,
-      @PathVariable("accountSourceId") Long accountSourceId,
-      @PathVariable("accountDestinationId") Long accountDestinationId,
-      @ModelAttribute UserForm userForm,
-      @ModelAttribute BalanceTypeForm balanceTypeForm,
-      @ModelAttribute SpecificationGroupForm specificationGroupForm,
-      Model model) {
-
-    List<Shop> shops = shopService.findAll();
-    AccountSource accountSource
-        = accountSourceService.findById(accountSourceId);
-    AccountDestination accountDestination
-        = accountDestinationService.findById(accountDestinationId);
-
-    model.addAttribute("specificationGroupForm", specificationGroupForm);
-    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
-    model.addAttribute("shops", shops);
-    model.addAttribute("accountSource", accountSource);
-    model.addAttribute("accountDestination", accountDestination);
-    model.addAttribute("userForm", userForm);
-
-    return "/shop/showList";
-  }
-
 
   @RequestMapping(
-      value = "/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setAccountSource",
+      value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setAccountSource",
       method = RequestMethod.GET)
   String setAccountSourceToAccountAndBalance(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("accountSourceId") Long accountSourceId,
       @PathVariable("accountDestinationId") Long accountDestinationId,
-      @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
       Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
 
     groupForm.setUserId(userId);
     UserForm userForm = new UserForm(
@@ -600,6 +733,8 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
 
+    groupForm.setMemo(groupMemo);
+
     model.addAttribute("groupForm", groupForm);
     model.addAttribute(
         "accountAndBalanceId", accountAndBalanceId);
@@ -613,13 +748,19 @@ public class SpecificationController {
     model.addAttribute("user", user);
     model.addAttribute("balanceTypes", balanceTypes);
 
-    return "/spec/createGroup";
+
+    if (specificationGroupId == null) {
+      return "/spec/createGroup";
+    } else {
+      return "/spec/editGroup";
+    }
   }
 
   @RequestMapping(
-      value = "/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setAccountDestination",
+      value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/setAccountDestination",
       method = RequestMethod.GET)
   String setAccountDestinationToAccountAndBalance(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
@@ -628,6 +769,10 @@ public class SpecificationController {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       Model model) {
+
+    SpecificationGroup group
+        = specificationGroupService.findById(specificationGroupId);
+    String groupMemo = group.getMemo();
 
     groupForm.setUserId(userId);
     UserForm userForm = new UserForm(
@@ -672,6 +817,8 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
 
+    groupForm.setMemo(groupMemo);
+
     model.addAttribute("groupForm", groupForm);
     model.addAttribute(
         "accountAndBalanceId", accountAndBalanceId);
@@ -682,77 +829,11 @@ public class SpecificationController {
     model.addAttribute("user", user);
     model.addAttribute("balanceTypes", balanceTypes);
 
-    return "/spec/createGroup";
-  }
 
-  @GetMapping("/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchAccountSource")
-  String searchAccountSource(
-      @PathVariable("userId") Long userId,
-      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
-      @PathVariable("shopId") Long shopId,
-      @PathVariable("accountSourceId") Long accountSourceId,
-      @PathVariable("accountDestinationId") Long accountDestinationId,
-      @ModelAttribute SpecificationGroupForm groupForm,
-      Model model) {
-
-    groupForm.setUserId(userId);
-    UserForm userForm = new UserForm(
-        userService,
-        roleService,
-        userId);
-    groupForm.setUserForm(userForm);
-
-    AccountAndBalance accountAndBalance
-        = accountAndBalanceService.getById(accountAndBalanceId);
-    ShopForm shopForm = new ShopForm(shopService, shopId);
-    groupForm.setShopId(shopForm.getShopId());
-    List<AccountSource> accountSources = accountSourceService.findAll();
-    AccountDestinationForm accountDestinationForm
-        = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
-
-    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
-    model.addAttribute("shopForm", shopForm);
-    model.addAttribute("accountSources", accountSources);
-    model.addAttribute("accountDestinationForm", accountDestinationForm);
-
-    return "/account/showSourceList";
-  }
-
-  @GetMapping("/{userId}/{accountAndBalanceId}/{shopId}/{accountSourceId}/{accountDestinationId}/searchAccountDestination")
-  String searchAccountDestination(
-      @PathVariable("userId") Long userId,
-      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
-      @PathVariable("shopId") Long shopId,
-      @PathVariable("accountSourceId") Long accountSourceId,
-      @PathVariable("accountDestinationId") Long accountDestinationId,
-      @ModelAttribute SpecificationGroupForm groupForm,
-      Model model) {
-
-    groupForm.setUserId(userId);
-    UserForm userForm = new UserForm(
-        userService,
-        roleService,
-        userId);
-    groupForm.setUserForm(userForm);
-
-    AccountAndBalance accountAndBalance
-        = accountAndBalanceService.getById(accountAndBalanceId);
-    ShopForm shopForm = new ShopForm(shopService, shopId);
-    groupForm.setShopId(shopForm.getShopId());
-    AccountSourceForm accountSourceForm
-        = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
-    List<AccountDestination> accountDestinations
-        = accountDestinationService.findAll();
-
-    model.addAttribute("accountAndBalanceId", accountAndBalanceId);
-    model.addAttribute("shopForm", shopForm);
-    model.addAttribute("accountSourceForm", accountSourceForm);
-    model.addAttribute("accountDestinations", accountDestinations);
-
-    return "/account/showDestinationList";
+    if (specificationGroupId == null) {
+      return "/spec/createGroup";
+    } else {
+      return "/spec/editGroup";
+    }
   }
 }

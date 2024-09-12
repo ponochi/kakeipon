@@ -15,6 +15,7 @@
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopId}__' +
@@ -40,6 +41,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopId}__' +
@@ -67,6 +69,7 @@
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopForm.shopId}__' +
@@ -92,6 +95,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopForm.shopId}__' +
@@ -121,6 +125,7 @@
                 <th:block th:if="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
@@ -146,6 +151,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
@@ -173,6 +179,7 @@
                 <th:block th:unless="${accountSource.accountSourceId} ne null">
                     <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
@@ -198,6 +205,7 @@
                     </th:block>
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
+                            '/__${specificationGroupId}__' +
                             '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +

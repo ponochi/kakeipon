@@ -20,6 +20,8 @@ function changedReceivingAndPaymentTime() {
 }
 
 function changedShop() {
+  let specificationGroupIdControl
+    = document.getElementById("specificationGroupId");
   let user
     = document.getElementById("userId");
   let shop
@@ -28,7 +30,7 @@ function changedShop() {
     = document.getElementById("accountSourceId");
   let accountDestination
     = document.getElementById("accountDestinationId");
-  let receivingAndPaymentType
+  let balanceType
     = document.getElementById("balanceType");
   if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
     balanceType = 1;
@@ -38,6 +40,8 @@ function changedShop() {
 }
 
 function changedAccountSource() {
+  let specificationGroupIdControl
+    = document.getElementById("specificationGroupId");
   let user
     = document.getElementById("userId");
   let shop
@@ -56,6 +60,8 @@ function changedAccountSource() {
 }
 
 function changedAccountDestination() {
+  let specificationGroupIdControl
+    = document.getElementById("specificationGroupId");
   let user
     = document.getElementById("userId");
   let shop
@@ -91,6 +97,8 @@ function changedBalanceType() {
   let searchAccountDestination
     = document.getElementById("searchAccountDestination");
 
+  let specificationGroupIdControl
+    = document.getElementById("specificationGroupId");
   let userIdControl
     = document.getElementById("userId");
   let shopIdControl
@@ -103,7 +111,7 @@ function changedBalanceType() {
     = document.getElementById("accountAndBalanceId");
 
   window.sessionStorage.setItem(
-    "balanceType", balanceTypeControl.value);
+    "balanceType", balanceTypeControl.selected);
 
   let accountSourceName
     = document.getElementById("accountSourceName");
@@ -131,10 +139,11 @@ function changedBalanceType() {
     accountDestinationButton.disabled = false;
   }
 
-  balanceTypeIdControl.value = balanceTypeControl.value;
+  balanceTypeIdControl.value = balanceType.value;
 
   //==== Set action of search shop form ====//
-  searchShop.action = "/" + userIdControl.value;
+  searchShop.action = "/" + specificationGroupIdControl.value;
+  searchShop.action += "/" + userIdControl.value;
   searchShop.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchShop.action += "/" + shopIdControl.value;
@@ -154,7 +163,8 @@ function changedBalanceType() {
   searchShop.action += "/searchShop";
 
   //==== Set action of search account source form ====//
-  searchAccountSource.action = "/" + userIdControl.value;
+  searchAccountSource.action = "/" + specificationGroupIdControl.value;
+  searchAccountSource.action += "/" + userIdControl.value;
   searchAccountSource.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountSource.action += "/" + shopIdControl.value;
@@ -174,7 +184,8 @@ function changedBalanceType() {
   searchAccountSource.action += "/searchAccountSource";
 
   //==== Set action of search account destination form ====//
-  searchAccountDestination.action = "/" + userIdControl.value;
+  searchAccountDestination.action = "/" + specificationGroupIdControl.value;
+  searchAccountDestination.action += "/" + userIdControl.value;
   searchAccountDestination.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountDestination.action += "/" + shopIdControl.value;
@@ -266,12 +277,6 @@ function windowLoad() {
     = document.getElementById("receivingAndPaymentDate");
   let receivingAndPaymentTimeControl
     = document.getElementById("receivingAndPaymentTime");
-  let shopIdControl
-    = document.getElementById("shopId");
-  let accountSourceIdControl
-    = document.getElementById("accountSourceId");
-  let accountDestinationIdControl
-    = document.getElementById("accountDestinationId");
 
   let now = new Date();
   let nowDate = getDate(now);
@@ -300,20 +305,6 @@ function windowLoad() {
       receivingAndPaymentTimeControl.value = receivingAndPaymentTime;
     }
   }
-
-  if (Number(shopIdControl.value) === 1
-    && Number(accountSourceIdControl.value) === 1
-    && Number(accountDestinationIdControl.value) === 1) {
-    balanceType = 1;
-  }
-
-  if (balanceType == null) {
-    balanceTypeControl.value = 1;
-    window.sessionStorage.setItem("balanceType", 1);
-  } else {
-    balanceTypeControl.value = balanceType;
-  }
-  changedBalanceType();
 }
 
 window.addEventListener("load", windowLoad, false);
