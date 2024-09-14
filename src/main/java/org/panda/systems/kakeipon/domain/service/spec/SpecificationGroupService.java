@@ -91,7 +91,7 @@ public class SpecificationGroupService implements Serializable {
         specificationGroup.getReceivingAndPaymentTime(),
         specificationGroup.getBalanceTypeId(),
         specificationGroup.getAccountAndBalanceId(),
-        specificationGroup.getMemo(),
+        specificationGroup.getGroupMemo(),
         specificationGroup.getEntryDate(),
         specificationGroup.getUpdateDate());
   }

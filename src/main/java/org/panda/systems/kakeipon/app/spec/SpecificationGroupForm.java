@@ -102,8 +102,8 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "account_and_balance_id")
   AccountAndBalanceForm accountAndBalanceForm;
 
-  @Column
-  String memo;
+  @Column(name = "group_memo")
+  String groupMemo;
 
   @PastOrPresent
   @Column(name = "entry_date")
@@ -240,7 +240,7 @@ public class SpecificationGroupForm implements Serializable {
         specForm.setTaxTypeId(Long.parseLong("1"));
         specForm.setTaxRateId(Long.parseLong("1"));
         specForm.setTax(Long.parseLong("0"));
-        specForm.setMemo("");
+        specForm.setSpecMemo("");
         specForm.setEntryDate(LocalDateTime.now());
 
         specificationService.saveAndFlush(specForm.toEntity());
@@ -264,7 +264,7 @@ public class SpecificationGroupForm implements Serializable {
     this.setReceivingAndPaymentTime(group.getReceivingAndPaymentTime());
     this.setBalanceTypeId(group.getBalanceTypeId());
     this.setAccountAndBalanceId(group.getAccountAndBalanceId());
-    this.setMemo(group.getMemo());
+    this.setGroupMemo(group.getGroupMemo());
     if (group.getEntryDate() == null) {
       this.setEntryDate(LocalDateTime.now());
       this.setUpdateDate(group.getUpdateDate());
@@ -300,7 +300,7 @@ public class SpecificationGroupForm implements Serializable {
         specificationGroup.getAccountAndBalanceId());
     accountAndBalanceForm = form.setAccountAndBalanceToForm(accountAndBalance);
     form.setAccountAndBalanceForm(accountAndBalanceForm);
-    form.setMemo(specificationGroup.getMemo());
+    form.setGroupMemo(specificationGroup.getGroupMemo());
     if (specificationGroup.getEntryDate() == null) {
       form.setEntryDate(LocalDateTime.now());
       form.setUpdateDate(specificationGroup.getUpdateDate());
@@ -326,7 +326,7 @@ public class SpecificationGroupForm implements Serializable {
     specificationGroup.setBalanceTypeId(this.getBalanceTypeId());
     specificationGroup.setAccountAndBalanceId(
         this.getAccountAndBalanceId());
-    specificationGroup.setMemo(this.getMemo());
+    specificationGroup.setGroupMemo(this.getGroupMemo());
     if (this.getEntryDate() == null) {
       specificationGroup.setEntryDate(LocalDateTime.now());
       specificationGroup.setUpdateDate(this.getUpdateDate());

@@ -151,7 +151,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_shop -- 店舗情報テーブル
     email           VARCHAR(255),                          -- メールアドレス (任意)
     open_shop_date  DATE,                                  -- 開店日 (任意)
     close_shop_date DATE,                                  -- 閉店日 (任意)
-    shop_memo       TEXT,                                  -- 1000文字まで   -- メモ (任意)
+    shop_memo       TEXT,                                  -- メモ (任意) 1000文字まで
     entry_date      TIMESTAMPTZ  NOT NULL,                 -- 登録日時
     update_date     TIMESTAMPTZ,                           -- 更新日時
     PRIMARY KEY (shop_id)
@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification_group -- 明細グループテ�
     receiving_and_payment_time TIME        NOT NULL,                                 -- 受取支払時間
     balance_type_id            BIGINT      NOT NULL,                                 -- 受取支払種別ID (支出 / 収入 / 振替)
     account_and_balance_id     BIGINT,                                               -- 口座ID (任意) (支出 / 振替: 送金元)
-    memo                       TEXT,                                                 -- メモ (任意) 1000文字まで
+    group_memo                 TEXT,                                                 -- メモ (任意) 1000文字まで
     entry_date                 TIMESTAMPTZ NOT NULL,                                 -- 登録日時
     update_date                TIMESTAMPTZ,                                          -- 更新日時
     PRIMARY KEY (specification_group_id, user_id),
@@ -261,8 +261,8 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
     unit_id                BIGINT         NOT NULL DEFAULT 1,       -- 単位
     tax_type_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税種別ID
     tax_rate_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税率ID
-    tax                    BIGINT,                                  -- 消費税額 (任意)
-    memo                   TEXT,                                    -- 1000文字まで                -- メモ (任意)
+    tax                    BIGINT         DEFAULT 0,                -- 消費税額 (任意)
+    spec_memo              TEXT,                                    -- メモ (任意) 1000文字まで
     entry_date             TIMESTAMPTZ    NOT NULL,                 -- 登録日時
     update_date            TIMESTAMPTZ,                             -- 更新日時
     PRIMARY KEY (specification_group_id, specification_id, user_id),

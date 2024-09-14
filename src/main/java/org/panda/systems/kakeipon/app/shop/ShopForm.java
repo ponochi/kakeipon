@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+import org.panda.systems.kakeipon.app.spec.SpecificationForm;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
+import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
@@ -82,4 +84,21 @@ public class ShopForm implements Serializable {
     this.setUpdateDate(shop.getUpdateDate());
   }
 
+  public ShopForm setShopToForm(Shop shop) {
+    ShopForm form = new ShopForm();
+
+    form.setShopId(shop.getShopId());
+    form.setShopName(shop.getShopName());
+    form.setBranchName(shop.getBranchName());
+    form.setShopUrl(shop.getShopUrl());
+    form.setPhoneNumber(shop.getPhoneNumber());
+    form.setEmail(shop.getEmail());
+    form.setOpenShopDate(shop.getOpenShopDate());
+    form.setCloseShopDate(shop.getCloseShopDate());
+    form.setShopMemo(shop.getShopMemo());
+    form.setEntryDate(shop.getEntryDate());
+    form.setUpdateDate(shop.getUpdateDate());
+
+    return form;
+  }
 }

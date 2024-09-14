@@ -1,3 +1,10 @@
+let shopIdControl
+  = document.getElementById("shopId");
+let accountSourceIdControl
+  = document.getElementById("accountSourceId");
+let accountDestinationIdControl
+  = document.getElementById("accountDestinationId");
+
 //=========================================================
 // Change event of Receiving and Payment Date
 // @param none
@@ -20,63 +27,63 @@ function changedReceivingAndPaymentTime() {
 }
 
 function changedShop() {
-  let specificationGroupIdControl
+  let specificationGroupId
     = document.getElementById("specificationGroupId");
-  let user
+  let userId
     = document.getElementById("userId");
-  let shop
+  let shopId
     = document.getElementById("shopId");
-  let accountSource
+  let accountSourceId
     = document.getElementById("accountSourceId");
-  let accountDestination
+  let accountDestinationId
     = document.getElementById("accountDestinationId");
-  let balanceType
+  let balanceTypeId
     = document.getElementById("balanceType");
-  if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
+  if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceeType", balanceType);
+  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
 }
 
 function changedAccountSource() {
-  let specificationGroupIdControl
+  let specificationGroupId
     = document.getElementById("specificationGroupId");
-  let user
+  let userId
     = document.getElementById("userId");
-  let shop
+  let shopId
     = document.getElementById("shopId");
-  let accountSource
+  let accountSourceId
     = document.getElementById("accountSourceId");
-  let accountDestination
+  let accountDestinationId
     = document.getElementById("accountDestinationId");
-  let balanceType
+  let balanceTypeId
     = document.getElementById("balanceType");
-  if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
+  if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceType", balanceType);
+  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
 }
 
 function changedAccountDestination() {
-  let specificationGroupIdControl
+  let specificationGroupId
     = document.getElementById("specificationGroupId");
-  let user
+  let userId
     = document.getElementById("userId");
-  let shop
+  let shopId
     = document.getElementById("shopId");
-  let accountSource
+  let accountSourceId
     = document.getElementById("accountSourceId");
-  let accountDestination
+  let accountDestinationId
     = document.getElementById("accountDestinationId");
-  let balanceType
+  let balanceTypeId
     = document.getElementById("balanceType");
-  if (shop.value === 1 && accountSource.value === 1 && accountDestination.value === 1) {
+  if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceType", balanceType);
+  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
 }
 
 //=========================================================
@@ -111,7 +118,7 @@ function changedBalanceType() {
     = document.getElementById("accountAndBalanceId");
 
   window.sessionStorage.setItem(
-    "balanceType", balanceTypeControl.selected);
+    "balanceType", balanceTypeControl.value);
 
   let accountSourceName
     = document.getElementById("accountSourceName");
@@ -139,7 +146,7 @@ function changedBalanceType() {
     accountDestinationButton.disabled = false;
   }
 
-  balanceTypeIdControl.value = balanceType.value;
+  balanceTypeIdControl.value = balanceTypeControl.value;
 
   //==== Set action of search shop form ====//
   searchShop.action = "/" + specificationGroupIdControl.value;
@@ -225,12 +232,15 @@ function calculateTax() {
   let taxRate = document.getElementById("taxRate");
   let tax = document.getElementById("tax");
 
+  let str = taxRate.options[taxRateControl.selectedIndex].innerText;
+  let rate = Number(str.substring(0, str.length - 1));
   if (taxTypeControl.value === "1") {
-    let str = taxRate.options[taxRateControl.selectedIndex].innerText;
-    tax.value = Math.round(price.value * quantity.value * Number(str.substring(0, str.length - 1)) / 100);
+    tax.value
+      = Math.round(
+        price.value
+            * quantity.value
+            * rate / 100);
   } else if (taxTypeControl.value === "2") {
-    let str = taxRate.options[taxRateControl.selectedIndex].innerText;
-    let rate = Number(str.substring(0, str.length - 1));
     tax.value
       = Math.round(
         price.value
@@ -241,12 +251,33 @@ function calculateTax() {
   }
 }
 
-function addSpecificationDetail() {
+function addSpecDetail() {
   let createSpecDetail
     = document.getElementById(
       "createSpecDetail");
-  createSpecDetail.action = "/spec/create/detail/"
-    + groupId;
+  let specificationGroupId
+    = document.getElementById("specificationGroupId");
+  let shopIdControl
+    = document.getElementById("shopId");
+  let balanceTypeControl
+    = document.getElementById("balanceType");
+  let accountSourceIdControl
+    = document.getElementById("accountSourceId");
+  let accountDestinationIdControl
+    = document.getElementById("accountDestinationId");
+
+  createSpecDetail.action = "/spec/create/detail";
+  createSpecDetail.action += "/";
+  createSpecDetail.action += specificationGroupId.value;
+  createSpecDetail.action += "/";
+  createSpecDetail.action += shopIdControl.value;
+  createSpecDetail.action += "/";
+  createSpecDetail.action += balanceTypeControl.value;
+  createSpecDetail.action += "/";
+  createSpecDetail.action += accountSourceIdControl.value;
+  createSpecDetail.action += "/";
+  createSpecDetail.action += accountDestinationIdControl.value;
+
   createSpecDetail.submit();
 }
 
@@ -256,6 +287,10 @@ function savedetail() {
   document.querySelector("#saveOfSpecification").submit();
   // window.location.method = "GET";
   // window.location.href = "/spec/save";
+}
+
+function sessionClear() {
+  window.sessionStorage.clear();
 }
 
 //=========================================================
@@ -277,6 +312,12 @@ function windowLoad() {
     = document.getElementById("receivingAndPaymentDate");
   let receivingAndPaymentTimeControl
     = document.getElementById("receivingAndPaymentTime");
+  let shopIdControl
+    = document.getElementById("shopId");
+  let accountSourceIdControl
+    = document.getElementById("accountSourceId");
+  let accountDestinationIdControl
+    = document.getElementById("accountDestinationId");
 
   let now = new Date();
   let nowDate = getDate(now);
@@ -305,9 +346,23 @@ function windowLoad() {
       receivingAndPaymentTimeControl.value = receivingAndPaymentTime;
     }
   }
+
+  if (Number(shopIdControl.value) === 1
+    && Number(accountSourceIdControl.value) === 1
+    && Number(accountDestinationIdControl.value) === 1) {
+    balanceType = 1;
+  }
+
+  if (balanceType == null) {
+    balanceTypeControl.value = 1;
+    window.sessionStorage.setItem("balanceType", 1);
+  } else {
+    balanceTypeControl.value = balanceType;
+  }
+  changedBalanceType();
 }
 
 window.addEventListener("load", windowLoad, false);
-shop.addEventListener("change", changedShop, false);
-accountSource.addEventListener("change", changedAccountSource, false);
-accountDestination.addEventListener("change", changedAccountDestination, false);
+shopIdControl.addEventListener("change", changedShop, false);
+accountSourceIdControl.addEventListener("change", changedAccountSource, false);
+accountDestinationIdControl.addEventListener("change", changedAccountDestination, false);

@@ -2,6 +2,8 @@ package org.panda.systems.kakeipon.app.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.TaxRate;
+import org.panda.systems.kakeipon.domain.service.common.TaxRateService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,6 +26,13 @@ public class TaxRateForm implements Serializable {
 
   // Default constructor
   public TaxRateForm() {
-    this.setTaxRateId(Long.parseLong("1"));
+
+  }
+  public TaxRateForm(TaxRateService service,
+                     Long taxRateId) {
+    TaxRate taxRate = service.findById(taxRateId);
+
+    this.setTaxRateId(taxRate.getTaxRateId());
+    this.setTaxRate(taxRate.getTaxRate());
   }
 }

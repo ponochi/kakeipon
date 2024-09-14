@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tbl_specification")
+@SecondaryTable(name = "tbl_specification_group",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "specification_group_id"))
 @SecondaryTable(name = "tbl_user",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @SecondaryTable(name = "tbl_currency",
@@ -19,27 +21,29 @@ import java.time.LocalDateTime;
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
 @SecondaryTable(name = "tbl_tax_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_type_id"))
+@SecondaryTable(name = "tbl_tax_rate",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_rate_id"))
 @Data
 public class Specification implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @Column
+  @Column(name = "specification_group_id")
   private Long specificationGroupId;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_specification_seq", allocationSize = 1)
-  @Column
+  @Column(name = "specification_id")
   private Long specificationId;
 
   @Column(name = "user_id")
   private Long userId;
 
-  @Column
+  @Column(name = "name")
   private String name;
 
-  @Column
+  @Column(name = "price")
   private Long price;
 
   @Column(name = "currency_id")
@@ -48,7 +52,7 @@ public class Specification implements Serializable {
   @Column(name = "unit_id")
   private Long unitId;
 
-  @Column
+  @Column(name = "quantity")
   private Long quantity;
 
   @Column(name = "tax_type_id")
@@ -57,17 +61,17 @@ public class Specification implements Serializable {
   @Column(name = "tax_rate_id")
   private Long taxRateId;
 
-  @Column
+  @Column(name = "tax")
   private Long tax;
 
-  @Column
+  @Column(name = "spec_memo")
   @Size(max = 1000, message = "メモは1000文字以内で入力してください")
-  private String memo;
+  private String specMemo;
 
   @PastOrPresent
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
-  @Column
+  @Column(name = "update_date")
   private LocalDateTime updateDate;
 }

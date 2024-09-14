@@ -2,6 +2,8 @@ package org.panda.systems.kakeipon.app.common;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.panda.systems.kakeipon.domain.model.common.Unit;
+import org.panda.systems.kakeipon.domain.service.common.UnitService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,6 +25,14 @@ public class UnitForm implements Serializable {
 
   // Default constructor
   public UnitForm() {
-    this.setUnitId(Long.parseLong("1"));
+
+  }
+
+  public UnitForm(UnitService service,
+                  Long unitId) {
+    Unit unit = service.findById(unitId);
+
+    this.unitId = unit.getUnitId();
+    this.unitName = unit.getUnitName();
   }
 }

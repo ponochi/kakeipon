@@ -43,7 +43,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  receiving_and_payment_time = :receivingAndPaymentTime," +
           "  balance_type_id = :balanceTypeId," +
           "  account_and_balance_id = :accountAndBalanceId," +
-          "  memo = :memo," +
+          "  group_memo = :groupMemo," +
           "  entry_date = :entryDate," +
           "  update_date = :updateDate" +
           " WHERE" +
@@ -56,7 +56,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
       @Param("receivingAndPaymentTime") LocalTime receivingAndPaymentTime,
       @Param("balanceTypeId") Long balanceTypeId,
       @Param("accountAndBalanceId") Long accountAndBalanceId,
-      @Param("memo") String memo,
+      @Param("groupMemo") String groupMemo,
       @Param("entryDate") LocalDateTime entryDate,
       @Param("updateDate") LocalDateTime updateDate);
 }

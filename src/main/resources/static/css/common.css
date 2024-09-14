@@ -43,42 +43,51 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr 1.2fr 1fr 1.2fr 1.2fr 2fr 1fr 1fr;
+    grid-template-columns: 1.2fr 1.1fr 1.2fr 1.1fr 1.2fr 1.2fr 2fr 1.1fr 1.1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas:
             "brand-name brand-name brand-name brand-name brand-name brand-name brand-name save delete"
             "price currency-name quantity unit-name tax-type-name tax-rate tax save delete"
             "spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo save delete";
-    width: 400px;
+    width: 500px;
     height: 76px;
 }
 
 .brand-name {
     grid-area: brand-name;
-    width: 500px;
+    width: 494px;
     margin-top: 0px;
+    margin-left: 2px;
+    margin-right: 2px;
     margin-bottom: 0px;
+
 }
 
 .price {
     grid-area: price;
     width: 56px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 2px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
 .currency-name-header {
-    width: 46px;
+    grid-area: currency-name-header;
+    width: 54px;
+    /* width: 46px; */
+    margin-top: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 0px;
 }
 
 .currency-name {
     grid-area: currency-name;
     width: 54px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
@@ -86,21 +95,27 @@
     grid-area: quantity;
     width: 56px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
 .unit-name-header {
-    width: 45px;
+    grid-area: unit-name-header;
+    width: 53px;
+    /* width: 45px; */
+    margin-top: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 0px;
 }
 
 .unit-name {
     grid-area: unit-name;
     width: 53px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
@@ -108,8 +123,8 @@
     grid-area: tax-type-name;
     width: 56px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
@@ -117,8 +132,8 @@
     grid-area: tax-rate;
     width: 56px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
@@ -126,8 +141,8 @@
     grid-area: tax;
     width: 113px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
     margin-bottom: 0px;
 }
 
@@ -135,17 +150,17 @@
     grid-area: tax;
     width: 114px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 4px;
+    margin-right: 2px;
     margin-bottom: 0px;
 }
 
 .spec-memo {
     grid-area: spec-memo;
-    width: 500px;
+    width: 494px;
     margin-top: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 2px;
+    margin-right: 2px;
     margin-bottom: 0px;
 }
 
@@ -164,9 +179,20 @@
     grid-area: delete;
     writing-mode: vertical-rl;
     width: 36px;
-    height: 72px;
-    margin-top: 2px;
+    height: 60px;
+    margin-top: 30px;
+    margin-left: 6px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+.edit {
+    grid-area: delete;
+    writing-mode: vertical-rl;
+    width: 36px;
+    height: 60px;
+    margin-top: 30px;
     margin-left: 0px;
     margin-right: 2px;
-    margin-bottom: 2px;
+    margin-bottom: 0px;
 }

@@ -30,6 +30,7 @@ public class SpecificationGroup implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
+  @Column(name = "specification_group_id")
   private Long specificationGroupId;
 
   @Column(name = "user_id")
@@ -51,8 +52,8 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "account_and_balance_id")
   private Long accountAndBalanceId;
 
-  @Column(name = "memo")
-  private String memo;
+  @Column(name = "group_memo")
+  private String groupMemo;
 
   @PastOrPresent
   @Column(name = "entry_date")

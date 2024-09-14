@@ -117,10 +117,10 @@ public class SpecificationForm implements Serializable {
   @Column(name = "tax_rate_id")
   TaxRateForm taxRateForm;
 
-  @Column
+  @Column(name = "tax")
   private Long tax;
-  @Column
-  private String memo;
+  @Column(name = "spec_memo")
+  private String specMemo;
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
   @Column(name = "update_date")
@@ -136,24 +136,27 @@ public class SpecificationForm implements Serializable {
     } else {
       this.setSpecificationGroupId(specificationGroupId);
     }
-    List<Specification> specifications = service.findBySpecificationGroupId(specificationGroupId);
 
-    for (Specification specification : specifications) {
-      this.setSpecificationGroupId(specification.getSpecificationGroupId());
-      this.setSpecificationId(specification.getSpecificationId());
-      this.setUserId(specification.getUserId());
-      this.setName(specification.getName());
-      this.setPrice(specification.getPrice());
-      this.setCurrencyId(specification.getCurrencyId());
-      this.setUnitId(specification.getUnitId());
-      this.setQuantity(specification.getQuantity());
-      this.setTaxTypeId(specification.getTaxTypeId());
-      this.setTaxRateId(specification.getTaxRateId());
-      this.setTax(specification.getTax());
-      this.setMemo(specification.getMemo());
-      this.setEntryDate(specification.getEntryDate());
-      this.setUpdateDate(specification.getUpdateDate());
-    }
+    Specification specification
+        = service.findBySpecificationGroupIdAndSpecificationIdAndUserId(
+            this.getSpecificationGroupId(),
+            null,
+            this.getUserId());
+
+    this.setSpecificationGroupId(specification.getSpecificationGroupId());
+    this.setSpecificationId(specification.getSpecificationId());
+    this.setUserId(specification.getUserId());
+    this.setName(specification.getName());
+    this.setPrice(specification.getPrice());
+    this.setCurrencyId(specification.getCurrencyId());
+    this.setUnitId(specification.getUnitId());
+    this.setQuantity(specification.getQuantity());
+    this.setTaxTypeId(specification.getTaxTypeId());
+    this.setTaxRateId(specification.getTaxRateId());
+    this.setTax(Long.parseLong("0"));
+    this.setSpecMemo(specification.getSpecMemo());
+    this.setEntryDate(specification.getEntryDate());
+    this.setUpdateDate(specification.getUpdateDate());
   }
 
   public SpecificationForm setSpecificationToForm(Specification specification) {
@@ -173,7 +176,7 @@ public class SpecificationForm implements Serializable {
     form.setTaxTypeId(specification.getTaxTypeId());
     form.setTaxRateId(specification.getTaxRateId());
     form.setTax(specification.getTax());
-    form.setMemo(specification.getMemo());
+    form.setSpecMemo(specification.getSpecMemo());
     form.setEntryDate(specification.getEntryDate());
     form.setUpdateDate(specification.getUpdateDate());
 
@@ -193,7 +196,8 @@ public class SpecificationForm implements Serializable {
     specification.setQuantity(this.getQuantity());
     specification.setTaxTypeId(this.getTaxTypeId());
     specification.setTaxRateId(this.getTaxRateId());
-    specification.setMemo(this.getMemo());
+    specification.setTax(this.getTax());
+    specification.setSpecMemo(this.getSpecMemo());
     specification.setEntryDate(this.getEntryDate());
     specification.setUpdateDate(this.getUpdateDate());
     return specification;

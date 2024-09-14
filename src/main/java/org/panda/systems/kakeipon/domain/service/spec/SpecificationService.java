@@ -50,6 +50,10 @@ public class SpecificationService implements Serializable {
     return forms;
   }
 
+  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationId(specificationGroupId, specificationId);
+  }
+
   @Transactional
   public Specification saveAndFlush(Specification entity) {
     return specificationRepository.saveAndFlush(entity);

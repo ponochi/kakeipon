@@ -32,7 +32,7 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
           " ts.tax_type_id," +
           " ts.tax_rate_id," +
           " ts.tax," +
-          " ts.memo," +
+          " ts.spec_memo," +
           " ts.entry_date," +
           " ts.update_date" +
           " FROM" +
@@ -50,6 +50,8 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
   List<Specification> findAll();
 
   List<Specification> findBySpecificationGroupId(Long specificationGroupId);
+
+  Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId);
 
   Specification saveAndFlush(Specification entity);
 }
