@@ -18,6 +18,7 @@ module org.panda.systems.kakeipon {
   requires jakarta.persistence;
   requires static lombok;
   requires spring.webmvc;
+  requires org.hibernate.orm.core;
   exports org.panda.systems.kakeipon;
   exports org.panda.systems.kakeipon.app.common;
   exports org.panda.systems.kakeipon.app.spec;

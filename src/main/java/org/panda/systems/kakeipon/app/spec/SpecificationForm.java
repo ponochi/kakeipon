@@ -121,10 +121,14 @@ public class SpecificationForm implements Serializable {
   private Long tax;
   @Column(name = "spec_memo")
   private String specMemo;
+  @Column(name = "deleted")
+  private Boolean deleted;
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
   @Column(name = "update_date")
   private LocalDateTime updateDate;
+  @Column
+  private Long version;
 
   public SpecificationForm() {
   }
@@ -141,7 +145,8 @@ public class SpecificationForm implements Serializable {
         = service.findBySpecificationGroupIdAndSpecificationIdAndUserId(
             this.getSpecificationGroupId(),
             null,
-            this.getUserId());
+            this.getUserId(),
+            false);
 
     this.setSpecificationGroupId(specification.getSpecificationGroupId());
     this.setSpecificationId(specification.getSpecificationId());
@@ -155,8 +160,10 @@ public class SpecificationForm implements Serializable {
     this.setTaxRateId(specification.getTaxRateId());
     this.setTax(Long.parseLong("0"));
     this.setSpecMemo(specification.getSpecMemo());
+    this.setDeleted(specification.getDeleted());
     this.setEntryDate(specification.getEntryDate());
     this.setUpdateDate(specification.getUpdateDate());
+    this.setVersion(Long.parseLong("0"));
   }
 
   public SpecificationForm setSpecificationToForm(Specification specification) {
@@ -177,8 +184,10 @@ public class SpecificationForm implements Serializable {
     form.setTaxRateId(specification.getTaxRateId());
     form.setTax(specification.getTax());
     form.setSpecMemo(specification.getSpecMemo());
+    form.setDeleted(specification.getDeleted());
     form.setEntryDate(specification.getEntryDate());
     form.setUpdateDate(specification.getUpdateDate());
+    form.setVersion(specification.getVersion());
 
     return form;
   }
@@ -198,8 +207,11 @@ public class SpecificationForm implements Serializable {
     specification.setTaxRateId(this.getTaxRateId());
     specification.setTax(this.getTax());
     specification.setSpecMemo(this.getSpecMemo());
+    specification.setDeleted(this.getDeleted());
     specification.setEntryDate(this.getEntryDate());
     specification.setUpdateDate(this.getUpdateDate());
+    specification.setVersion(this.getVersion());
+
     return specification;
   }
 

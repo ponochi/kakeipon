@@ -218,6 +218,11 @@
                            th:value="${specificationForm.specMemo}"
                            readonly />
                 </div>
+                <div class="deleted">
+                    <input class="deleted"
+                           th:value="${specificationForm.deleted}"
+                           type="hidden" readonly />
+                </div>
                 <hr>
             </div>
         </td>
@@ -227,11 +232,19 @@
                   method="post">
                 <input id="delete" name="delete"
                        class="delete"
+                       th:form="'deleteDetail' + '__${specificationForm.specificationId}__'"
                        type="submit" value="削　除">
                 <input id="edit" name="edit"
                        class="edit"
                        th:form="'specDetail' + '__${specificationForm.specificationId}__'"
                        type="submit" value="編　集">
+            </form>
+            <form th:id="'deleteDetail' + '__${specificationForm.specificationId}__'"
+                  th:action="@{'/spec/delete/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+                  method="post">
+                <input id="specificationId" name="specificationId"
+                       th:value="${specificationForm.specificationId}"
+                       type="hidden">
             </form>
         </td>
     </tr>

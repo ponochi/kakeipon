@@ -193,16 +193,18 @@ CREATE SEQUENCE IF NOT EXISTS kp.tbl_specification_group_seq START 1 INCREMENT 1
 CREATE TABLE IF NOT EXISTS kp.tbl_specification_group -- 明細グループテーブル
 (
     specification_group_id     BIGINT DEFAULT
-                                          nextval('kp.tbl_specification_group_seq'), -- 明細グループID
-    user_id                    BIGINT      NOT NULL,                                 -- ユーザID
-    shop_id                    BIGINT      NOT NULL,                                 -- 店舗ID
-    receiving_and_payment_date DATE        NOT NULL,                                 -- 受取支払日
-    receiving_and_payment_time TIME        NOT NULL,                                 -- 受取支払時間
-    balance_type_id            BIGINT      NOT NULL,                                 -- 受取支払種別ID (支出 / 収入 / 振替)
-    account_and_balance_id     BIGINT,                                               -- 口座ID (任意) (支出 / 振替: 送金元)
-    group_memo                 TEXT,                                                 -- メモ (任意) 1000文字まで
-    entry_date                 TIMESTAMPTZ NOT NULL,                                 -- 登録日時
-    update_date                TIMESTAMPTZ,                                          -- 更新日時
+                                          nextval('kp.tbl_specification_group_seq'),    -- 明細グループID
+    user_id                    BIGINT       NOT NULL,                                   -- ユーザID
+    shop_id                    BIGINT       NOT NULL,                                   -- 店舗ID
+    receiving_and_payment_date DATE         NOT NULL,                                   -- 受取支払日
+    receiving_and_payment_time TIME         NOT NULL,                                   -- 受取支払時間
+    balance_type_id            BIGINT       NOT NULL,                                   -- 受取支払種別ID (支出 / 収入 / 振替)
+    account_and_balance_id     BIGINT,                                                  -- 口座ID (任意) (支出 / 振替: 送金元)
+    group_memo                 TEXT,                                                    -- メモ (任意) 1000文字まで
+    deleted                    BOOLEAN      DEFAULT FALSE NOT NULL,                     -- 削除フラグ (true: 削除, false: 有効)
+    entry_date                 TIMESTAMPTZ  NOT NULL,                                   -- 登録日時
+    update_date                TIMESTAMPTZ,                                             -- 更新日時
+    version                    BIGINT       DEFAULT 0,                                  -- バージョン
     PRIMARY KEY (specification_group_id, user_id),
     FOREIGN KEY (user_id) REFERENCES kp.tbl_user (user_id),
     FOREIGN KEY (shop_id) REFERENCES kp.tbl_shop (shop_id),
@@ -263,8 +265,10 @@ CREATE TABLE IF NOT EXISTS kp.tbl_specification -- 明細テーブル
     tax_rate_id            BIGINT         NOT NULL DEFAULT 1,       -- 消費税率ID
     tax                    BIGINT         DEFAULT 0,                -- 消費税額 (任意)
     spec_memo              TEXT,                                    -- メモ (任意) 1000文字まで
+    deleted                BOOLEAN        DEFAULT FALSE NOT NULL,   -- 削除フラグ (true: 削除, false: 有効)
     entry_date             TIMESTAMPTZ    NOT NULL,                 -- 登録日時
     update_date            TIMESTAMPTZ,                             -- 更新日時
+    version                BIGINT         DEFAULT 0,                -- バージョン
     PRIMARY KEY (specification_group_id, specification_id, user_id),
     FOREIGN KEY (specification_group_id, user_id)
         REFERENCES kp.tbl_specification_group (specification_group_id, user_id),

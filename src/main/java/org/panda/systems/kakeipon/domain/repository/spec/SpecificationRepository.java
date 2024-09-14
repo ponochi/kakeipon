@@ -2,6 +2,7 @@ package org.panda.systems.kakeipon.domain.repository.spec;
 
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -42,16 +43,27 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
           " AND" +
           "   ts.specification_id = ?2" +
           " AND" +
-          "   ts.user_id = ?3")
-  Specification findBySpecificationGroupIdAndSpecificationIdAndUserId(
-      Long specificationGroupId, Long specificationId, Long userId);
+          "   ts.user_id = ?3" +
+          " AND" +
+          "   ts.deleted = ?4")
+  Specification findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
+      Long specificationGroupId, Long specificationId, Long userId, Boolean deleted);
 
-  @Override
-  List<Specification> findAll();
+  List<Specification> findAllByDeleted(Boolean deleted);
 
-  List<Specification> findBySpecificationGroupId(Long specificationGroupId);
+  List<Specification> findBySpecificationGroupIdAndDeleted(Long specificationGroupId, Boolean deleted);
 
-  Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId);
+  Specification findBySpecificationGroupIdAndSpecificationIdAndDeleted(Long specificationGroupId, Long specificationId, Boolean deleted);
 
   Specification saveAndFlush(Specification entity);
+
+  @Modifying
+  @Query(nativeQuery = true,
+      value = "UPDATE" +
+          "   tbl_specification" +
+          " SET" +
+          "   deleted = true" +
+          " WHERE" +
+          "   specification_group_id = ?1")
+  void saveAll(Long specificationGroupId);
 }

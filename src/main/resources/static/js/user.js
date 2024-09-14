@@ -5,7 +5,6 @@
 //=========================================================================
 function transitToEditDetail() {
   let form = document.getElementById("showDetailForm");
-  // window.sessionStorage.setItem("user", user);
   form.action = "/user/edit";
   form.submit();
 }

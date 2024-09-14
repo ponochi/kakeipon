@@ -71,11 +71,25 @@
                               readonly>[[${specificationGroupForm.groupMemo}]]</textarea>
                 </span>
                 <span>
+                    <input id="delete" name="delete"
+                           th:form="'deleteGroup' + '__${specificationGroupForm.specificationGroupId}__'" type="submit"
+                           value="削　除">
                     <input id="edit" name="edit"
                            th:form="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'" type="submit"
                            value="編　集">
                 </span>
             </form>
+            <form th:id="'deleteGroup' + '__${specificationGroupForm.specificationGroupId}__'"
+                  th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__'}"
+                  th:object="${specificationGroupForm}"
+                  method="POST">
+                <input id="specificationGroupId" name="specificationGroupId"
+                       th:value="${specificationGroupForm.specificationGroupId}"
+                       type="hidden">
+                <input id="userId" name="userId"
+                       th:value="${specificationGroupForm.userId}"
+                       type="hidden">
+
         </td>
     </tr>
 </table>
@@ -88,11 +102,7 @@
 <div>
     <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
     <input form="list" type="submit" value="お買いもの・一覧画面"/>
-    <button form="create" type="submit">登　録</button>
+    <button form="create" type="submit">追　加</button>
 </div>
-<script>
-  window.sessionStorage.clear();
-  window.sessionStorage.setItem("url", "/spec/showList");
-</script>
 </body>
 </html>

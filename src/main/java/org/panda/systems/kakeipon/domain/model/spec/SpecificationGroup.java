@@ -55,10 +55,17 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "group_memo")
   private String groupMemo;
 
+  @Column(name = "deleted")
+  private Boolean deleted;
+
   @PastOrPresent
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
   @Column
   private LocalDateTime updateDate;
+
+  @Version
+  @Column(name = "version")
+  private Long version;
 }

@@ -1,6 +1,7 @@
 package org.panda.systems.kakeipon.domain.repository.spec;
 
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,11 +23,11 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  tbl_specification_group")
   Long getMaxGroupId();
 
-  List<SpecificationGroup> findAll();
+  List<SpecificationGroup> findAllByDeleted(Boolean deleted, Sort sort);
 
   @SuppressWarnings("NullableProblems")
-  @Override
-  Optional<SpecificationGroup> findById(Long specificationGroupId);
+  Optional<SpecificationGroup> findBySpecificationGroupIdAndDeleted(
+      Long specificationGroupId, Boolean deleted);
 
   @SuppressWarnings({"NullableProblems", "unchecked"})
   @Override
@@ -44,6 +45,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  balance_type_id = :balanceTypeId," +
           "  account_and_balance_id = :accountAndBalanceId," +
           "  group_memo = :groupMemo," +
+          "  deleted = :deleted," +
           "  entry_date = :entryDate," +
           "  update_date = :updateDate" +
           " WHERE" +
@@ -57,6 +59,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
       @Param("balanceTypeId") Long balanceTypeId,
       @Param("accountAndBalanceId") Long accountAndBalanceId,
       @Param("groupMemo") String groupMemo,
+      @Param("deleted") Boolean deleted,
       @Param("entryDate") LocalDateTime entryDate,
       @Param("updateDate") LocalDateTime updateDate);
 }

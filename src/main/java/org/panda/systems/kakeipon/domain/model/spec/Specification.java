@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -58,6 +60,7 @@ public class Specification implements Serializable {
   @Column(name = "tax_type_id")
   private Long taxTypeId;
 
+  // @OnDelete(action = OnDeleteAction.CASCADE)
   @Column(name = "tax_rate_id")
   private Long taxRateId;
 
@@ -68,10 +71,17 @@ public class Specification implements Serializable {
   @Size(max = 1000, message = "メモは1000文字以内で入力してください")
   private String specMemo;
 
+  @Column(name = "deleted")
+  private Boolean deleted;
+
   @PastOrPresent
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
 
   @Column(name = "update_date")
   private LocalDateTime updateDate;
+
+  @Version
+  @Column(name = "version")
+  private Long version;
 }

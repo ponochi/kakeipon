@@ -105,12 +105,19 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "group_memo")
   String groupMemo;
 
+  @Column(name = "deleted")
+  Boolean deleted;
+
   @PastOrPresent
   @Column(name = "entry_date")
   LocalDateTime entryDate;
 
   @Column(name = "update_date")
   LocalDateTime updateDate;
+
+  @Version
+  @Column(name = "version")
+  Long version;
 
   // Default Constructor
   public SpecificationGroupForm() {
@@ -130,7 +137,6 @@ public class SpecificationGroupForm implements Serializable {
                                 UnitService unitService,
                                 TaxTypeService taxTypeService,
                                 TaxRateService taxRateService) {
-//    SpecificationGroupForm form = new SpecificationGroupForm();
 
     AccountAndBalanceForm accountAndBalanceForm
         = new AccountAndBalanceForm(
@@ -217,6 +223,9 @@ public class SpecificationGroupForm implements Serializable {
     accountAndBalanceService.saveAndFlush(
         this.getAccountAndBalanceForm().toEntity());
 
+    this.setGroupMemo("");
+    this.setDeleted(false);
+
     // ToDo: Fix this
     specificationGroupService.saveAndFlush(this.toEntity());
 
@@ -224,9 +233,9 @@ public class SpecificationGroupForm implements Serializable {
 
     List<Specification> specifications
         = specificationService.findBySpecificationGroupId(
-        specificationGroupService.getMaxGroupId());
+        specificationGroupService.getMaxGroupId(), false);
     if (specifications.size() > 0) {
-      Long count = 1L;
+      Long count = Long.parseLong("1");
       for (Specification specification : specifications) {
         specForm.setSpecificationGroupId(
             specificationGroupService.getMaxGroupId());
@@ -241,23 +250,28 @@ public class SpecificationGroupForm implements Serializable {
         specForm.setTaxRateId(Long.parseLong("1"));
         specForm.setTax(Long.parseLong("0"));
         specForm.setSpecMemo("");
+        specForm.setDeleted(false);
         specForm.setEntryDate(LocalDateTime.now());
+        specForm.setVersion(Long.parseLong("0"));
 
         specificationService.saveAndFlush(specForm.toEntity());
+
         count++;
       }
     }
   }
 
   public SpecificationGroupForm(SpecificationGroupService service,
-                                Long specificationGroupId) {
+                                Long specificationGroupId,
+                                Boolean deleted) {
     if (specificationGroupId == null) {
       this.setSpecificationGroupId(Long.parseLong("0"));
     } else {
       this.setSpecificationGroupId(specificationGroupId);
     }
 
-    SpecificationGroup group = service.findById(this.getSpecificationGroupId());
+    SpecificationGroup group = service.findById(
+        this.getSpecificationGroupId(), deleted);
     this.setUserId(group.getUserId());
     this.setShopId(group.getShopId());
     this.setReceivingAndPaymentDate(group.getReceivingAndPaymentDate());
@@ -265,6 +279,7 @@ public class SpecificationGroupForm implements Serializable {
     this.setBalanceTypeId(group.getBalanceTypeId());
     this.setAccountAndBalanceId(group.getAccountAndBalanceId());
     this.setGroupMemo(group.getGroupMemo());
+    this.setDeleted(group.getDeleted());
     if (group.getEntryDate() == null) {
       this.setEntryDate(LocalDateTime.now());
       this.setUpdateDate(group.getUpdateDate());
@@ -272,6 +287,7 @@ public class SpecificationGroupForm implements Serializable {
       this.setEntryDate(group.getEntryDate());
       this.setUpdateDate(LocalDateTime.now());
     }
+    this.setVersion(group.getVersion());
   }
 
   public SpecificationGroupForm setSpecificationGroupToForm(
@@ -301,6 +317,7 @@ public class SpecificationGroupForm implements Serializable {
     accountAndBalanceForm = form.setAccountAndBalanceToForm(accountAndBalance);
     form.setAccountAndBalanceForm(accountAndBalanceForm);
     form.setGroupMemo(specificationGroup.getGroupMemo());
+    form.setDeleted(specificationGroup.getDeleted());
     if (specificationGroup.getEntryDate() == null) {
       form.setEntryDate(LocalDateTime.now());
       form.setUpdateDate(specificationGroup.getUpdateDate());
@@ -308,6 +325,7 @@ public class SpecificationGroupForm implements Serializable {
       form.setEntryDate(specificationGroup.getEntryDate());
       form.setUpdateDate(LocalDateTime.now());
     }
+    form.setVersion(specificationGroup.getVersion());
 
     return form;
   }
@@ -327,6 +345,7 @@ public class SpecificationGroupForm implements Serializable {
     specificationGroup.setAccountAndBalanceId(
         this.getAccountAndBalanceId());
     specificationGroup.setGroupMemo(this.getGroupMemo());
+    specificationGroup.setDeleted(this.getDeleted());
     if (this.getEntryDate() == null) {
       specificationGroup.setEntryDate(LocalDateTime.now());
       specificationGroup.setUpdateDate(this.getUpdateDate());
@@ -334,6 +353,7 @@ public class SpecificationGroupForm implements Serializable {
       specificationGroup.setEntryDate(this.getEntryDate());
       specificationGroup.setUpdateDate(LocalDateTime.now());
     }
+    specificationGroup.setVersion(this.getVersion());
 
     return specificationGroup;
   }

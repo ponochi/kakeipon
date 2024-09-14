@@ -21,9 +21,9 @@ public class SpecificationService implements Serializable {
   private SpecificationRepository specificationRepository;
 
   public Specification findBySpecificationGroupIdAndSpecificationIdAndUserId(
-      Long specificationGroupId, Long specificationId, Long userId) {
-    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserId(
-        specificationGroupId, specificationId, userId);
+      Long specificationGroupId, Long specificationId, Long userId, Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
+        specificationGroupId, specificationId, userId, deleted);
   }
 
   public Long getMaxSpecificationId(Long specificationGroupId) {
@@ -34,12 +34,12 @@ public class SpecificationService implements Serializable {
     return specificationRepository.findAll();
   }
 
-  public List<Specification> findBySpecificationGroupId(Long specificationGroupId) {
-    return specificationRepository.findBySpecificationGroupId(specificationGroupId);
+  public List<Specification> findBySpecificationGroupId(Long specificationGroupId, Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndDeleted(specificationGroupId, deleted);
   }
 
-  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId) {
-    List<Specification> specifications = specificationRepository.findBySpecificationGroupId(specificationGroupId);
+  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId, Boolean deleted) {
+    List<Specification> specifications = specificationRepository.findBySpecificationGroupIdAndDeleted(specificationGroupId, deleted);
     SpecificationForm specificationForm = new SpecificationForm();
 
     List<SpecificationForm> forms = new ArrayList<>();
@@ -50,12 +50,17 @@ public class SpecificationService implements Serializable {
     return forms;
   }
 
-  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId) {
-    return specificationRepository.findBySpecificationGroupIdAndSpecificationId(specificationGroupId, specificationId);
+  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId, Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndDeleted(specificationGroupId, specificationId, deleted);
   }
 
   @Transactional
   public Specification saveAndFlush(Specification entity) {
     return specificationRepository.saveAndFlush(entity);
+  }
+
+  @Transactional
+  public void saveAll(Long specificationGroupId) {
+    specificationRepository.saveAll(specificationGroupId);
   }
 }
