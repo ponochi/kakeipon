@@ -7,9 +7,6 @@
     <script src="/js/common.js"></script>
 </head>
 <body>
-<script th:inline="javascript">
-    const groupId = /*[[${specificationGroupForm.specificationGroupId}]]*/"form";
-</script>
 <form id="specGroup" th:action="@{'/spec/save/group'}"
       th:object="${specificationGroupForm}" method="POST">
     <div>
@@ -135,11 +132,11 @@
             </td>
         </tr>
     </table>
-    <hr>
 </form>
 <table>
     <tr>
         <th>
+            <hr>
             <div id="header" class="grid">
                 <div class="brand-name"><input class="spec-header brand-name" th:value="商品名" readonly/></div>
                 <div class="price"><input class="spec-header price" th:value="単価" readonly/></div>
@@ -240,18 +237,24 @@
        type="hidden">
 
 <form id="createSpecDetail"
-        th:action="@{'/spec/create/detail/__${specificationGroupForm.specificationGroupId}__'}" method="get">
+      th:action="@{'/spec/create/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+      method="post">
+</form>
 <form id="searchShop"
-      th:action="@{'/searchShop'}" method="get">
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchShop'}" method="get">
 </form>
 <form id="searchAccountSource"
-      th:action="@{'/searchAccountSource'}" method="get">
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountSource'}" method="get">
 </form>
 <form id="searchAccountDestination"
-      th:action="@{'/searchAccountDestination'}" method="get">
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountDestination'}" method="get">
 </form>
 
 <form id="dummy"></form>
 <script src="/js/createGroup.js"></script>
+<script th:inline="javascript">
+    const groupId = /*[[${specificationGroupForm.specificationGroupId}]]*/"form";
+    const balanceType = /*[[${specificationGroupForm.balanceTypeId}]]*/"form";
+</script>
 </body>
 </html>

@@ -34,8 +34,10 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
           " ts.tax_rate_id," +
           " ts.tax," +
           " ts.spec_memo," +
+          " ts.deleted," +
           " ts.entry_date," +
-          " ts.update_date" +
+          " ts.update_date," +
+          " ts.version" +
           " FROM" +
           "   tbl_specification ts" +
           " WHERE" +
@@ -51,9 +53,7 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
 
   List<Specification> findAllByDeleted(Boolean deleted);
 
-  List<Specification> findBySpecificationGroupIdAndDeleted(Long specificationGroupId, Boolean deleted);
-
-  Specification findBySpecificationGroupIdAndSpecificationIdAndDeleted(Long specificationGroupId, Long specificationId, Boolean deleted);
+  List<Specification> findBySpecificationGroupIdAndUserIdAndDeleted(Long specificationGroupId, Long userId, Boolean deleted);
 
   Specification saveAndFlush(Specification entity);
 

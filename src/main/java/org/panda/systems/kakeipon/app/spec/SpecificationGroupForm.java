@@ -11,7 +11,6 @@ import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
-import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
@@ -22,7 +21,6 @@ import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
 import org.panda.systems.kakeipon.domain.service.user.RoleService;
 import org.panda.systems.kakeipon.domain.service.user.UserService;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -31,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Table(name = "tbl_specification_group")
 @SecondaryTable(name = "tbl_user",
@@ -227,13 +224,13 @@ public class SpecificationGroupForm implements Serializable {
     this.setDeleted(false);
 
     // ToDo: Fix this
-    specificationGroupService.saveAndFlush(this.toEntity());
+    specificationGroupService.saveAndFlushSpecificationGroup(this.toEntity());
 
     SpecificationForm specForm = new SpecificationForm();
 
     List<Specification> specifications
-        = specificationService.findBySpecificationGroupId(
-        specificationGroupService.getMaxGroupId(), false);
+        = specificationService.findBySpecificationGroupIdAndUserIdAndDeleted(
+        specificationGroupService.getMaxGroupId(), userId, false);
     if (specifications.size() > 0) {
       Long count = Long.parseLong("1");
       for (Specification specification : specifications) {
@@ -254,7 +251,7 @@ public class SpecificationGroupForm implements Serializable {
         specForm.setEntryDate(LocalDateTime.now());
         specForm.setVersion(Long.parseLong("0"));
 
-        specificationService.saveAndFlush(specForm.toEntity());
+        specificationService.saveAndFlushSpecification(specForm.toEntity());
 
         count++;
       }

@@ -1,9 +1,12 @@
 package org.panda.systems.kakeipon.domain.service.spec;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import org.panda.systems.kakeipon.app.spec.SpecificationForm;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +22,12 @@ public class SpecificationService implements Serializable {
 
   @Autowired
   private SpecificationRepository specificationRepository;
+  @Autowired
+  private EntityManager entityManager;
 
-  public Specification findBySpecificationGroupIdAndSpecificationIdAndUserId(
+  public Specification findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
       Long specificationGroupId, Long specificationId, Long userId, Boolean deleted) {
+
     return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
         specificationGroupId, specificationId, userId, deleted);
   }
@@ -34,33 +40,78 @@ public class SpecificationService implements Serializable {
     return specificationRepository.findAll();
   }
 
-  public List<Specification> findBySpecificationGroupId(Long specificationGroupId, Boolean deleted) {
-    return specificationRepository.findBySpecificationGroupIdAndDeleted(specificationGroupId, deleted);
+  public List<Specification> findBySpecificationGroupIdAndUserIdAndDeleted(Long specificationGroupId, Long userId, Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndUserIdAndDeleted(specificationGroupId, userId, deleted);
   }
 
-  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId, Boolean deleted) {
-    List<Specification> specifications = specificationRepository.findBySpecificationGroupIdAndDeleted(specificationGroupId, deleted);
-    SpecificationForm specificationForm = new SpecificationForm();
+  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId, Long userId, Boolean deleted) {
+    List<Specification> specs = specificationRepository.findBySpecificationGroupIdAndUserIdAndDeleted(specificationGroupId, userId, deleted);
+    SpecificationForm specForm = new SpecificationForm();
 
     List<SpecificationForm> forms = new ArrayList<>();
-    for (Specification specification : specifications) {
+    for (Specification specification : specs) {
       forms.add(
-          specificationForm.setSpecificationToForm(specification));
+          specForm.setSpecificationToForm(specification));
     }
     return forms;
   }
 
-  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId, Boolean deleted) {
-    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndDeleted(specificationGroupId, specificationId, deleted);
+  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId, Long userId, Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(specificationGroupId, specificationId, userId, deleted);
   }
 
+  @Lock(LockModeType.OPTIMISTIC)
   @Transactional
-  public Specification saveAndFlush(Specification entity) {
-    return specificationRepository.saveAndFlush(entity);
+  public void saveAndFlushSpecification(Specification entity) {
+    if (entity.getSpecificationId() == null) {
+      entity.setDeleted(false);
+      specificationRepository.saveAndFlush(entity);
+    } else {
+      Specification saveAndFlushSpecification
+          = entityManager.find(
+          Specification.class, entity.getSpecificationId());
+      entityManager.lock(
+          saveAndFlushSpecification, LockModeType.OPTIMISTIC);
+      saveAndFlushSpecification.setSpecificationGroupId(
+          entity.getSpecificationGroupId());
+      saveAndFlushSpecification.setUserId(
+          entity.getUserId());
+      saveAndFlushSpecification.setName(
+          entity.getName());
+      saveAndFlushSpecification.setPrice(
+          entity.getPrice());
+      saveAndFlushSpecification.setCurrencyId(
+          entity.getCurrencyId());
+      saveAndFlushSpecification.setQuantity(
+          entity.getQuantity());
+      saveAndFlushSpecification.setUnitId(
+          entity.getUnitId());
+      saveAndFlushSpecification.setTaxTypeId(
+          entity.getTaxTypeId());
+      saveAndFlushSpecification.setTaxRateId(
+          entity.getTaxRateId());
+      saveAndFlushSpecification.setTax(
+          entity.getTax());
+      saveAndFlushSpecification.setSpecMemo(
+          entity.getSpecMemo());
+      saveAndFlushSpecification.setDeleted(
+          entity.getDeleted());
+      saveAndFlushSpecification.setEntryDate(
+          entity.getEntryDate());
+      saveAndFlushSpecification.setUpdateDate(
+          entity.getUpdateDate());
+      saveAndFlushSpecification.setVersion(
+          entity.getVersion());
+
+      entityManager.merge(saveAndFlushSpecification);
+    }
   }
 
+  @Lock(LockModeType.OPTIMISTIC)
   @Transactional
-  public void saveAll(Long specificationGroupId) {
-    specificationRepository.saveAll(specificationGroupId);
+  public void saveAllSpecifications(List<Specification> entity) {
+    for (Specification specification : entity) {
+      this.saveAndFlushSpecification(specification);
+    }
   }
 }

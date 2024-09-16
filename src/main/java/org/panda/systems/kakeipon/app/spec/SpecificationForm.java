@@ -119,14 +119,19 @@ public class SpecificationForm implements Serializable {
 
   @Column(name = "tax")
   private Long tax;
+
   @Column(name = "spec_memo")
   private String specMemo;
+
   @Column(name = "deleted")
   private Boolean deleted;
+
   @Column(name = "entry_date")
   private LocalDateTime entryDate;
+
   @Column(name = "update_date")
   private LocalDateTime updateDate;
+
   @Column
   private Long version;
 
@@ -142,20 +147,15 @@ public class SpecificationForm implements Serializable {
     }
 
     Specification specification
-        = service.findBySpecificationGroupIdAndSpecificationIdAndUserId(
-            this.getSpecificationGroupId(),
-            null,
-            this.getUserId(),
-            false);
+        = new Specification();
 
-    this.setSpecificationGroupId(specification.getSpecificationGroupId());
     this.setSpecificationId(specification.getSpecificationId());
     this.setUserId(specification.getUserId());
     this.setName(specification.getName());
-    this.setPrice(specification.getPrice());
+    this.setPrice(Long.parseLong("0"));
     this.setCurrencyId(specification.getCurrencyId());
     this.setUnitId(specification.getUnitId());
-    this.setQuantity(specification.getQuantity());
+    this.setQuantity(Long.parseLong("1"));
     this.setTaxTypeId(specification.getTaxTypeId());
     this.setTaxRateId(specification.getTaxRateId());
     this.setTax(Long.parseLong("0"));

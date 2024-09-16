@@ -1,3 +1,7 @@
+let balanceType
+  = window.sessionStorage.getItem("balanceType");
+
+
 let shopIdControl
   = document.getElementById("shopId");
 let accountSourceIdControl
@@ -92,10 +96,6 @@ function changedAccountDestination() {
 // @return none
 //=========================================================
 function changedBalanceType() {
-  let balanceTypeControl
-    = document.getElementById("balanceType");
-  let balanceTypeIdControl
-    = document.getElementById("balanceTypeId");
 
   let searchShop
     = document.getElementById("searchShop");
@@ -106,19 +106,23 @@ function changedBalanceType() {
 
   let specificationGroupIdControl
     = document.getElementById("specificationGroupId");
+  let accountAndBalanceIdControl
+    = document.getElementById("accountAndBalanceId");
   let userIdControl
     = document.getElementById("userId");
   let shopIdControl
     = document.getElementById("shopId");
+  let balanceTypeControl
+    = document.getElementById("balanceType");
+  // let balanceTypeIdControl
+  //   = document.getElementById("balanceTypeId");
   let accountSourceIdControl
     = document.getElementById("accountSourceId");
   let accountDestinationIdControl
     = document.getElementById("accountDestinationId");
-  let accountAndBalanceIdControl
-    = document.getElementById("accountAndBalanceId");
 
   window.sessionStorage.setItem(
-    "balanceType", balanceTypeControl.value);
+    "balanceType", balanceTypeControl.selected);
 
   let accountSourceName
     = document.getElementById("accountSourceName");
@@ -129,12 +133,12 @@ function changedBalanceType() {
   let accountDestinationButton
     = document.getElementById("accountDestinationButton");
 
-  if (balanceTypeControl.value == 1) {
+  if (balanceTypeControl.selected == 1) {
     accountSourceName.disabled = false;
     accountSourceButton.disabled = false;
     accountDestinationName.disabled = true;
     accountDestinationButton.disabled = true;
-  } else if (balanceTypeControl.value == 2) {
+  } else if (balanceTypeControl.selected == 2) {
     accountSourceName.disabled = true;
     accountSourceButton.disabled = true;
     accountDestinationName.disabled = false;
@@ -146,7 +150,7 @@ function changedBalanceType() {
     accountDestinationButton.disabled = false;
   }
 
-  balanceTypeIdControl.value = balanceTypeControl.value;
+  // balanceTypeIdControl.selected = balanceTypeControl.selected;
 
   //==== Set action of search shop form ====//
   searchShop.action = "/" + specificationGroupIdControl.value;
@@ -154,6 +158,11 @@ function changedBalanceType() {
   searchShop.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchShop.action += "/" + shopIdControl.value;
+  } else {
+    searchShop.action += "/1";
+  }
+  if (balanceTypeControl.selected) {
+    searchShop.action += "/" + balanceTypeControl.selected;
   } else {
     searchShop.action += "/1";
   }
@@ -178,6 +187,11 @@ function changedBalanceType() {
   } else {
     searchAccountSource.action += "/1";
   }
+  if (balanceTypeControl.selected) {
+    searchAccountSource.action += "/" + balanceTypeControl.selected;
+  } else {
+    searchAccountSource.action += "/1";
+  }
   if (accountSourceIdControl.value) {
     searchAccountSource.action += "/" + accountSourceIdControl.value;
   } else {
@@ -196,6 +210,11 @@ function changedBalanceType() {
   searchAccountDestination.action += "/" + accountAndBalanceIdControl.value;
   if (shopIdControl.value) {
     searchAccountDestination.action += "/" + shopIdControl.value;
+  } else {
+    searchAccountDestination.action += "/1";
+  }
+  if (balanceTypeControl.selected) {
+    searchAccountDestination.action += "/" + balanceTypeControl.selected;
   } else {
     searchAccountDestination.action += "/1";
   }
@@ -353,11 +372,13 @@ function windowLoad() {
     balanceType = 1;
   }
 
-  if (balanceType == null) {
-    balanceTypeControl.value = 1;
+  balanceTypeControl.selected = 3;
+console.log("balanceType: " + balanceType);
+  if (!balanceType) {
+    balanceTypeControl.selected = 1;
     window.sessionStorage.setItem("balanceType", 1);
   } else {
-    balanceTypeControl.value = balanceType;
+    balanceTypeControl.selected = balanceType;
   }
   changedBalanceType();
 }

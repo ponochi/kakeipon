@@ -21,7 +21,7 @@
     <tr th:each="specificationGroupForm, stat : ${specificationGroupForms}">
         <td>
             <form th:id="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'"
-                  th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${specificationGroupForm.accountAndBalanceForm.accountSourceId}__/__${specificationGroupForm.accountAndBalanceForm.accountDestinationId}__'}"
+                  th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${specificationGroupForm.accountAndBalanceForm.accountSourceId}__/__${specificationGroupForm.accountAndBalanceForm.accountDestinationId}__'}"
                   th:object="${specificationGroupForm}" method="POST">
                 <input id="accountAndBalanceId" name="accountAndBalanceId"
                        th:value="${specificationGroupForm.accountAndBalanceId}"
@@ -80,7 +80,7 @@
                 </span>
             </form>
             <form th:id="'deleteGroup' + '__${specificationGroupForm.specificationGroupId}__'"
-                  th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__'}"
+                  th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__'}"
                   th:object="${specificationGroupForm}"
                   method="POST">
                 <input id="specificationGroupId" name="specificationGroupId"
@@ -89,7 +89,7 @@
                 <input id="userId" name="userId"
                        th:value="${specificationGroupForm.userId}"
                        type="hidden">
-
+            </form>
         </td>
     </tr>
 </table>
