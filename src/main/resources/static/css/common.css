@@ -43,29 +43,29 @@
 
 .grid {
     display: grid;
-    grid-template-columns: 1.2fr 1.1fr 1.2fr 1.1fr 1.2fr 1.2fr 2fr 1.1fr 1.1fr;
+    grid-template-columns: 1fr 0.7fr 1fr 0.7fr repeat(2, 0.7fr) 1fr 1.2fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-areas:
-            "brand-name brand-name brand-name brand-name brand-name brand-name brand-name save delete"
-            "price currency-name quantity unit-name tax-type-name tax-rate tax save delete"
-            "spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo save delete";
-    width: 500px;
+            "brand-name brand-name brand-name brand-name brand-name brand-name brand-name brand-name save delete"
+            "price currency-name quantity unit-name tax-type-name tax-rate tax subtotal save delete"
+            "spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo spec-memo save delete";
+    width: 620px;
     height: 76px;
 }
 
 .brand-name {
     grid-area: brand-name;
-    width: 494px;
+    width: 617px;
     margin-top: 0px;
     margin-left: 2px;
-    margin-right: 2px;
+    margin-right: 4px;
     margin-bottom: 0px;
 
 }
 
 .price {
     grid-area: price;
-    width: 56px;
+    width: 90px;
     margin-top: 0px;
     margin-left: 2px;
     margin-right: 4px;
@@ -75,7 +75,6 @@
 .currency-name-header {
     grid-area: currency-name-header;
     width: 54px;
-    /* width: 46px; */
     margin-top: 0px;
     margin-left: 4px;
     margin-right: 4px;
@@ -103,7 +102,6 @@
 .unit-name-header {
     grid-area: unit-name-header;
     width: 53px;
-    /* width: 45px; */
     margin-top: 0px;
     margin-left: 4px;
     margin-right: 4px;
@@ -139,7 +137,7 @@
 
 .tax-header {
     grid-area: tax;
-    width: 113px;
+    width: 79px;
     margin-top: 0px;
     margin-left: 4px;
     margin-right: 4px;
@@ -148,6 +146,15 @@
 
 .tax {
     grid-area: tax;
+    width: 80px;
+    margin-top: 0px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 0px;
+}
+
+.subtotal {
+    grid-area: subtotal;
     width: 114px;
     margin-top: 0px;
     margin-left: 4px;
@@ -157,7 +164,7 @@
 
 .spec-memo {
     grid-area: spec-memo;
-    width: 494px;
+    width: 617px;
     margin-top: 0px;
     margin-left: 2px;
     margin-right: 2px;
@@ -187,7 +194,7 @@
 }
 
 .edit {
-    grid-area: delete;
+    grid-area: edit;
     writing-mode: vertical-rl;
     width: 36px;
     height: 60px;

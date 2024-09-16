@@ -124,6 +124,13 @@
             </td>
         </tr>
         <tr>
+            <td>合計</td>
+            <td>
+                <label for="totalAmount"></label>
+                <input id="totalAmount" name="totalAmount"
+                       th:value="${totalAmount}" readonly>
+            </td>
+        <tr>
             <td>備考</td>
             <td>
                 <label for="groupMemo"></label>
@@ -146,6 +153,7 @@
                 <div class="tax-type"><input class="spec-header tax-type" th:value="税区分" readonly/></div>
                 <div class="tax-rate"><input class="spec-header tax-rate" th:value="税率" readonly/></div>
                 <div class="tax"><input class="spec-header tax-header" th:value="消費税" readonly/></div>
+                <div class="subtotal"><input class="spec-header subtotal" th:value="小計" readonly/></div>
                 <div class="spec-memo"><input class="spec-header spec-memo" th:value="備考" readonly/></div>
             </div>
         </th>
@@ -209,9 +217,33 @@
                            type="text" readonly>
                 </div>
                 <div class="tax">
-                    <input class="tax-header"
+                    <input class="tax"
                            th:value="${specificationForm.tax}"
                            readonly/>
+                </div>
+                <div class="subtotal">
+                    <th:block th:if="${specificationForm.taxTypeId} eq 1">
+                        <input class="subtotal"
+                               th:value="${specificationForm.price}
+                                * ${specificationForm.quantity}
+                                + ${specificationForm.tax}"
+                               type="text"
+                               th:with="total=${total}
+                                + ${specificationForm.price}
+                                * ${specificationForm.quantity}
+                                + ${specificationForm.tax}"
+                               readonly />
+                    </th:block>
+                    <th:block th:unless="${specificationForm.taxTypeId} eq 1">
+                        <input class="subtotal"
+                               th:value="${specificationForm.price}
+                                * ${specificationForm.quantity}"
+                               type="text"
+                               th:with="total=${total}
+                                + ${specificationForm.price}
+                                * ${specificationForm.quantity}"
+                               readonly />
+                    </th:block>
                 </div>
                 <div class="spec-memo">
                     <input class="spec-memo"

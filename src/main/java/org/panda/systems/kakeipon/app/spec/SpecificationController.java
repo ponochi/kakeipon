@@ -198,6 +198,8 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
+    Double totalAmount = Double.parseDouble("0.0");
+
     SpecificationGroup group
         = specificationGroupService.findById(
         specificationGroupId, false);
@@ -279,6 +281,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute("specificationGroupForm", specificationGroupForm);
@@ -304,6 +319,7 @@ public class SpecificationController {
     model.addAttribute("userForm", userForm);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
     model.addAttribute("selectedBalanceTypeId", specificationGroupForm.getBalanceTypeId());
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -528,6 +544,8 @@ public class SpecificationController {
       @ModelAttribute ShopForm shopForm,
       Model model) {
 
+    Double totalAmount = Double.parseDouble("0.0");
+
     Long balanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
 
@@ -568,6 +586,21 @@ public class SpecificationController {
         userForm.getUserId(),
         false);
 
+    for (var specForm : specificationForms) {
+      if (specForm.getTaxTypeForm().getTaxTypeId() == 1) {
+        if (specForm.getCurrencyListForm().getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)specForm.getTaxRateForm().getTaxRate() / 100)));
+        }
+      } else {
+        if (specForm.getCurrencyListForm().getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
+    }
+
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specificationForms", specificationForms);
     model.addAttribute("currencyLists", currencyListService.findAll());
@@ -590,6 +623,7 @@ public class SpecificationController {
             groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
     model.addAttribute("user", user);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -609,6 +643,8 @@ public class SpecificationController {
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     Long balanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
@@ -680,14 +716,23 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specificationForms", specificationForms);
-//    model.addAttribute("currencyLists", currencyListService.findAll());
-//    model.addAttribute("units", unitService.findAll());
-//    model.addAttribute("taxTypes", taxTypeService.findAll());
-//    model.addAttribute("taxRates", taxRateService.findAll());
     model.addAttribute("currencyListForm", currencyListForm);
     model.addAttribute("unitForm", unitForm);
     model.addAttribute("taxTypeForm", taxTypeForm);
@@ -708,6 +753,7 @@ public class SpecificationController {
             groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
     model.addAttribute("user", user);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -734,6 +780,8 @@ public class SpecificationController {
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     specificationForm.setSpecificationGroupId(
         specificationGroupId);
@@ -830,6 +878,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute(
@@ -853,6 +914,7 @@ public class SpecificationController {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -876,6 +938,8 @@ public class SpecificationController {
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     specificationGroupForm.setAccountAndBalanceId(
         accountAndBalanceForm.getAccountAndBalanceId());
@@ -938,12 +1002,7 @@ public class SpecificationController {
     }
 
     specificationForm.setDeleted(false);
-//    if (specificationForm.getVersion() == null) {
-//      specificationForm.setVersion(Long.parseLong("0"));
-//    } else {
-//      System.out.println("0>>>>" + specificationForm.getVersion());
-//      specificationForm.setVersion(specificationForm.getVersion() + 1);
-//    }
+
     specificationService.saveAndFlushSpecification(specificationForm.toEntity());
 
     List<SpecificationForm> specificationForms
@@ -977,6 +1036,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute(
@@ -1000,6 +1072,7 @@ public class SpecificationController {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -1170,6 +1243,8 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
+    Double totalAmount = Double.parseDouble("0.0");
+
     SpecificationGroup group
         = specificationGroupService.findById(
         specificationGroupId, false);
@@ -1250,6 +1325,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute("groupForm", groupForm);
@@ -1273,6 +1361,7 @@ public class SpecificationController {
         "taxTypeForm", taxTypeForm);
     model.addAttribute(
         "taxRateForm", taxRateForm);
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -1298,6 +1387,8 @@ public class SpecificationController {
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
   Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService.findById(
@@ -1381,6 +1472,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute("groupForm", groupForm);
@@ -1403,7 +1507,7 @@ public class SpecificationController {
         "taxTypeForm", taxTypeForm);
     model.addAttribute(
         "taxRateForm", taxRateForm);
-
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -1429,6 +1533,8 @@ public class SpecificationController {
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService.findById(
@@ -1518,6 +1624,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
 
     model.addAttribute("groupForm", groupForm);
@@ -1538,6 +1657,7 @@ public class SpecificationController {
         "taxTypeForm", taxTypeForm);
     model.addAttribute(
         "taxRateForm", taxRateForm);
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -1593,6 +1713,8 @@ public class SpecificationController {
       @ModelAttribute AccountSourceForm accountSourceForm,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       Model model) {
+
+    Double totalAmount = Double.parseDouble("0.0");
 
     String groupMemo = specificationGroupForm.getGroupMemo();
 
@@ -1671,6 +1793,19 @@ public class SpecificationController {
           specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double)taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
     }
     specificationGroupForm.setGroupMemo(groupMemo);
 
@@ -1689,6 +1824,7 @@ public class SpecificationController {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
+    model.addAttribute("totalAmount", (long)Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
