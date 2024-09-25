@@ -29,7 +29,11 @@
         </td>
     </tr>
     <tr>
-        <td><button></button></td>
+        <td>
+            <form th:action="@{/logout}" method="POST">
+                <button>ログアウト</button>
+            </form>
+        </td>
     </tr>
 </table>
 </body>

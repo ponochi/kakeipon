@@ -3,10 +3,6 @@ package org.panda.systems.kakeipon.domain.model.spec;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
-import org.panda.systems.kakeipon.domain.model.common.BalanceType;
-import org.panda.systems.kakeipon.domain.model.common.Shop;
-import org.panda.systems.kakeipon.domain.model.user.User;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,12 +11,12 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "tbl_specification_group")
-@SecondaryTable(name = "tbl_user",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
-@SecondaryTable(name = "tbl_balance_type",
+@Table(name = "specification_group")
+@SecondaryTable(name = "users",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "balance_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_type_id"))
-@SecondaryTable(name = "tbl_account_and_balance",
+@SecondaryTable(name = "account_and_balance",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
 @Data
 public class SpecificationGroup implements Serializable {
@@ -29,12 +25,12 @@ public class SpecificationGroup implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
+  @SequenceGenerator(name = "specification_group_seq", allocationSize = 1)
   @Column(name = "specification_group_id")
   private Long specificationGroupId;
 
-  @Column(name = "user_id")
-  private Long userId;
+  @Column(name = "id")
+  private Integer id;
 
   @Column(name = "shop_id")
   private Long shopId;

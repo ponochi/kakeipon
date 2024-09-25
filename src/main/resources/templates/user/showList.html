@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="ユーザ一覧"></title>
-  <script th:src="@{/js/user.js}"></script>
+  <script th:src="@{/js/users.js}"></script>
 </head>
 <body>
 <h3>ユーザ一覧</h3>
@@ -13,7 +13,7 @@
   <thead>
   <tr>
     <th>ID</th>
-    <th>ニックネーム</th>
+    <th>ユーザ名</th>
     <th>権限</th>
     <th>操作</th>
   </tr>
@@ -21,15 +21,15 @@
   <tbody th:each="userForm: ${userForms}">
   <tr>
     <th>
-      <span th:text="${userForm.userId}"></span>
+      <span th:text="${userForm.id}"></span>
     </th>
-    <td><span th:text="${userForm.nickName}"></span></td>
-    <td><span th:text="${userForm.roleForm.getRoleName()}"></span></td>
+    <td><span th:text="${userForm.username}"></span></td>
+    <td><span th:text="${userForm.authoritiesForm.getAuthority()}"></span></td>
     <td>
         <form id="userInfo"
-              th:action="@{'/user/__${userForm.userId}__/show'}"
+              th:action="@{'/users/__${userForm.id}__/show'}"
               method="get">
-          <input id="userId" th:value="${userForm.userId}" type="hidden">
+          <input id="id" th:value="${userForm.id}" type="hidden">
           <input type="submit" value="詳　細"/>
         </form>
     </td>
@@ -37,7 +37,7 @@
   </tbody>
 </table>
 <div>
-  <button onclick="location.href='/top'">トップ画面</button>
+  <button onclick="location.href='/top'">メニュー画面</button>
   <button onclick="location.href='/user/create'">新規ユーザ・登　録</button>
 </div>
 </body>

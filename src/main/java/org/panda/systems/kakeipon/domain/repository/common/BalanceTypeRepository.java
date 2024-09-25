@@ -8,11 +8,9 @@ import java.util.List;
 
 @Repository
 public interface BalanceTypeRepository extends JpaRepository<BalanceType, Long> {
-  @SuppressWarnings({"NullableProblems"})
   @Override
   List<BalanceType> findAll();
 
-  @SuppressWarnings({"NullableProblems"})
   @Override
   BalanceType getById(Long balanceTypeId);
 }

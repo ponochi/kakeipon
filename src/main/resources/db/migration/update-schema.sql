@@ -7,8 +7,8 @@ CREATE TABLE role_data
 
 CREATE TABLE usr
 (
-    user_id      BIGINT NOT NULL,
-    nick_name    VARCHAR(255),
+    id      BIGINT NOT NULL,
+    user_name    VARCHAR(255),
     first_name   VARCHAR(255),
     last_name    VARCHAR(255),
     password     VARCHAR(255),
@@ -18,21 +18,21 @@ CREATE TABLE usr
     role_id      BIGINT,
     entry_date   TIMESTAMP,
     update_date  TIMESTAMP,
-    CONSTRAINT pk_usr PRIMARY KEY (user_id)
+    CONSTRAINT pk_usr PRIMARY KEY (id)
 );
-CREATE SEQUENCE IF NOT EXISTS tbl_user_seq START WITH 1 INCREMENT BY 50;
+CREATE SEQUENCE IF NOT EXISTS users_seq START WITH 1 INCREMENT BY 50;
 
-CREATE TABLE tbl_role
+CREATE TABLE role
 (
     role_id   BIGINT NOT NULL,
     role_name VARCHAR(255),
-    CONSTRAINT pk_tbl_role PRIMARY KEY (role_id)
+    CONSTRAINT pk_role PRIMARY KEY (role_id)
 );
 
-CREATE TABLE tbl_user
+CREATE TABLE user
 (
-    user_id      BIGINT NOT NULL,
-    nick_name    VARCHAR(255),
+    id      BIGINT NOT NULL,
+    user_name    VARCHAR(255),
     first_name   VARCHAR(255),
     last_name    VARCHAR(255),
     password     VARCHAR(255),
@@ -42,5 +42,5 @@ CREATE TABLE tbl_user
     role_id      BIGINT,
     entry_date   TIMESTAMP WITHOUT TIME ZONE,
     update_date  TIMESTAMP WITHOUT TIME ZONE,
-    CONSTRAINT pk_tbl_user PRIMARY KEY (user_id)
+    CONSTRAINT pk_users PRIMARY KEY (id)
 );

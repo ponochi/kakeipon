@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "tbl_tax_type")
+@Table(name = "tax_type")
 @Data
 public class TaxType implements Serializable {
   @Serial
@@ -16,7 +16,7 @@ public class TaxType implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_tax_type_seq", allocationSize = 1)
+  @SequenceGenerator(name = "tax_type_seq", allocationSize = 1)
   @Column(name = "tax_type_id")
   private Long taxTypeId;
   private String taxTypeName;

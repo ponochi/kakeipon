@@ -16,7 +16,7 @@ public interface AccountAndBalanceRepository
       value = "SELECT" +
       "   MAX(taab.account_and_balance_id) account_and_balance_id" +
       " FROM" +
-      "   tbl_account_and_balance taab")
+      "   account_and_balance taab")
   Long getMaxAccountAndBalanceId();
 
   @Override

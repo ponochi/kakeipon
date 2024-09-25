@@ -29,14 +29,7 @@ public class ClassificationsController {
   ClassificationsForm setUpForm( )
   {
     ClassificationsForm form = new ClassificationsForm( );
-//    if (form == null ) {
-//      form.setFirstClassifications(
-//          firstClassificationService.findAll() );
-//      form.setSecondClassifications(
-//          secondClassificationService.findAll() );
-//      form.setThirdClassifications(
-//          thirdClassificationService.findAll() );
-//    }
+
     return form;
   }
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tbl_account_and_balance")
+@Table(name = "account_and_balance")
 @Data
 public class AccountAndBalance implements Serializable {
   @Serial
@@ -16,7 +16,7 @@ public class AccountAndBalance implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_account_and_balance_seq", allocationSize = 1)
+  @SequenceGenerator(name = "account_and_balance_seq", allocationSize = 1)
   @Column(name = "account_and_balance_id")
   private Long accountAndBalanceId;
 

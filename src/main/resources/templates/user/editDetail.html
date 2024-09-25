@@ -5,46 +5,46 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="ユーザ編集"></title>
-  <script src="/js/common.js"></script>
-  <script src="/js/user.js"></script>
+  <script src="/js/common.js" type="text/javascript"></script>
+  <script src="/js/user.js" type="text/javascript"></script>
 </head>
 <body>
 <h3>ユーザ編集</h3>
 <form id="confirm" th:object="${userForm}"
-      th:action="@{/user/__${user.userId}__/confirm}" method="post">
+      th:action="@{/users/__${userForm.id}__/confirm}" method="POST">
   <table>
     <tbody>
     <tr>
-      <th><label for="userId" aria-label="A number of unique user id">ID</label></th>
+      <th><label for="id" aria-label="A number of unique user id">ID</label></th>
       <td></td>
       <td>
-        <input id="userId" name="userId"
-               readonly th:value="${user.userId}"/>
+        <input id="id" name="id"
+               readonly th:value="${userForm.id}"/>
       </td>
     </tr>
     <tr>
-      <th><label for="nickName">ニックネーム</label></th>
+      <th><label for="username">ユーザ名</label></th>
       <td class="require">*</td>
       <td>
-        <input id="nickName" name="nickName"
-               th:value="${user.nickName}" type="text"
+        <input id="username" name="username"
+               th:value="${userForm.username}" type="text"
                autocomplete="username"/>
-        <span th:if="${#fields.hasErrors('nickName')}"
-              th:errors="*{nickName}" style="color:red">ニックネームは必須です。</span>
+        <span th:if="${#fields.hasErrors('username')}"
+              th:errors="*{username}" style="color:red">ユーザ名は必須です。</span>
       </td>
     </tr>
     <tr>
       <th><label for="lastName">姓</label></th>
       <td></td>
       <td><input id="lastName" name="lastName"
-                 th:value="${user.lastName}" type="text"/>
+                 th:value="${userForm.usersExtForm.lastName}" type="text"/>
       </td>
     </tr>
     <tr>
       <th><label for="firstName">名</label></th>
       <td></td>
       <td><input id="firstName" name="firstName"
-                 th:value="${user.firstName}" type="text"/>
+                 th:value="${userForm.usersExtForm.firstName}" type="text"/>
       </td>
     </tr>
     <tr>
@@ -52,7 +52,7 @@
       <td class="require">*</td>
       <td>
         <input id="password" name="password"
-               th:value="${user.password}" type="text"/>
+               th:value="${userForm.password}" type="text"/>
         <span th:if="${#fields.hasErrors('password')}"
               th:errors="*{password}" style="color:red">パスワードは必須です。</span>
       </td>
@@ -62,9 +62,10 @@
       <td class="require">*</td>
       <td>
         <input id="email" name="email"
-               th:value="${user.email}" type="text" autocomplete="email"/>
-        <span th:if="${#fields.hasErrors('email')}"
-              th:errors="*{email}" style="color:red">emailは必須です。</span>
+               th:value="${userForm.usersExtForm.email}" type="text"
+               autocomplete="email"/>
+        <span th:if="${#fields.hasErrors('usersExtForm.email')}"
+              th:errors="*{usersExtForm.email}" style="color:red">Emailは必須です。</span>
       </td>
     </tr>
     <tr>
@@ -132,7 +133,8 @@
           <span>
             <label aria-label="A date of birthDay" for="birthDay"></label>
             <input id="birthDay" name="birthDay"
-                   th:value="${user.birthDay}" type="hidden"/>
+                   th:value="*{usersExtForm.birthDay}"
+                   type="hidden"/>
           </span>
         </div>
       </td>
@@ -142,19 +144,21 @@
       <td class="require">*</td>
       <td>
         <input id="phoneNumber" name="phoneNumber"
-               th:value="${user.phoneNumber}" type="text"/>
-        <span th:if="${#fields.hasErrors('phoneNumber')}"
-              th:errors="*{phoneNumber}" style="color:red">電話番号は必須です。</span>
+               th:value="${userForm.usersExtForm.phoneNumber}" type="text"/>
+        <span th:if="${#fields.hasErrors('usersExtForm.phoneNumber')}"
+              th:errors="*{usersExtForm.phoneNumber}" style="color:red">電話番号は必須です。</span>
       </td>
     </tr>
     <tr>
-      <th><label for="roleId">権限</label></th>
+      <th><label for="authority">権限</label></th>
       <td class="require">*</td>
       <td>
-        <select id="roleId" name="roleId" th:value="${user.roleId}">
-          <option th:each="item : ${roles}" th:value="${item.getRoleId()}"
-                  th:text="${item.getRoleName()}"
-                  th:selected="${item.getRoleId()} == ${user.roleId}"></option>
+        <select id="authority" name="authoritiesForm.authority"
+                th:field="${userForm.authoritiesForm.authority}">
+          <option th:each="item : ${authorityList}"
+                  th:value="${item}"
+                  th:text="${item}"
+                  th:selected="${item} == ${userForm.authoritiesForm.authority}"></option>
         </select>
       </td>
     </tr>
@@ -165,7 +169,8 @@
         <div>
           <label aria-label="A date of update" for="entryDate"></label>
           <input id="entryDate" name="entryDate"
-                 th:value="${user.entryDate}" readonly="readonly"/>
+                 th:value="${userForm.usersExtForm.entryDate}"
+                 readonly />
         </div>
       </td>
     </tr>
@@ -176,27 +181,22 @@
         <div>
           <label for="updateDate" aria-label="A date of update"></label>
           <input id="updateDate" name="updateDate"
-                 th:value="${user.updateDate}" readonly="readonly"/>
+                 th:value="${userForm.usersExtForm.updateDate}"
+                 readonly />
         </div>
-      </td>
-    </tr>
-    <tr>
-      <th></th>
-      <td></td>
-      <td>
       </td>
     </tr>
     </tbody>
   </table>
 
   <script>setToYYYYMMDDField()</script>
-  <script>setToBirthdayField()</script>
+  <script>setToBirthDayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>
-<form id="list" th:action="@{'/user'}" th:object="${userForm}" method="get">
+<form id="list" th:action="@{'/users'}" th:object="${userForm}" method="get">
 </form>
 <div>
-  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+  <input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
   <input form="list" type="submit" value="ユーザ・一覧画面"/>
   <button form="confirm" type="submit">登　録</button>
 </div>

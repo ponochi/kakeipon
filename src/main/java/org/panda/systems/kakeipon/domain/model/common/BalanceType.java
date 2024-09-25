@@ -8,7 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tbl_balance_type")
+@Table(name = "balance_type")
 @Data
 public class BalanceType implements Serializable {
   @Serial
@@ -16,7 +16,7 @@ public class BalanceType implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_balance_type_seq", allocationSize = 1)
+  @SequenceGenerator(name = "balance_type_seq", allocationSize = 1)
   @Column(name = "balance_type_id")
   private Long balanceTypeId;
 

@@ -9,11 +9,9 @@ import java.util.List;
 @Repository
 public interface UnitRepository extends JpaRepository<Unit, Long> {
 
-  @SuppressWarnings({"NullableProblems"})
   @Override
   List<Unit> findAll();
 
-  @SuppressWarnings({"NullableProblems"})
   @Override
   Unit getById(Long unitId);
 

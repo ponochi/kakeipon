@@ -2,140 +2,123 @@ package org.panda.systems.kakeipon.app.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
+import org.panda.systems.kakeipon.app.login.AuthoritiesForm;
+import org.panda.systems.kakeipon.domain.model.user.Authorities;
 import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.service.user.RoleService;
-import org.panda.systems.kakeipon.domain.service.user.UserService;
+import org.panda.systems.kakeipon.domain.service.user.AuthoritiesService;
+import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Table(name = "tbl_user")
-@SecondaryTable(name = "tbl_role",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "role_id"))
+@Table(name = "users")
+@SecondaryTable(name = "users_ext",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "authorities",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @Data
 public class UserForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
+  private AuthoritiesService authoritiesService;
+
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return PasswordEncoderFactories
+        .createDelegatingPasswordEncoder();
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
-  @Column(name = "user_id")
-  private Long userId;
-
-  @NotEmpty(message = "ニックネームは必須です")
-  @Column(name = "nick_name")
-  private String nickName;
-
-  @Column(name = "last_name")
-  private String lastName;
-
-  @Column(name = "first_name")
-  private String firstName;
-
-  @NotEmpty(message = "パスワードは必須です")
-  @Column
-  private String password;
-
-  @NotEmpty(message = "メールアドレスは必須です")
-  @Column
-  private String email;
-
-//  private String yearSelect;
-//  private String monthSelect;
-//  private String dateSelect;
-//  private String birthdayString;
-  @Column(name = "birth_day")
-  private LocalDateTime birthDay;
-
-  @NotEmpty(message = "電話番号は必須です")
-  @Column(name = "phone_number")
-  private String phoneNumber;
-
-  @Column(name = "role_id")
-  private Long roleId;
+  @SequenceGenerator(name = "users_seq", allocationSize = 1)
+  @Column(name = "id")
+  private Integer id;
 
   @OneToOne
-  @JoinColumn(name = "role_id", table = "tbl_role",
+  @JoinColumn(name = "id", table = "users_ext",
+      referencedColumnName = "id",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
-  @Column(name = "role_id")
-  private RoleForm roleForm;
+  @Column(name = "id")
+  private UserExtForm userExtForm;
 
-  @PastOrPresent
-  @Column(name = "entry_date")
-  private LocalDateTime entryDate;
+  @NotEmpty(message = "ユーザ名は必須です")
+  @Column(name = "username")
+  private String username;
 
-  @Column(name = "update_date")
-  private LocalDateTime updateDate;
+  @NotEmpty(message = "パスワードは必須です")
+  @Column(name = "password")
+  private String password;
+
+  @OneToOne
+  @JoinColumn(name = "username", table = "authorities",
+      referencedColumnName = "username",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
+  @Column(name = "username")
+  private AuthoritiesForm authoritiesForm;
+
+  @Column(name = "enabled")
+  private Boolean enabled;
+
+  @Column(name = "accountNonExpired")
+  private Boolean accountNonExpired;
+
+  @Column(name = "accountNonLocked")
+  private Boolean accountNonLocked;
+
+  @Column(name = "credentialsNonExpired")
+  private Boolean credentialsNonExpired;
 
   // Default constructor
   public UserForm() {
-    this.setUserId(Long.parseLong("1"));
+//    this.setId(Integer.parseInt("1"));
   }
 
-  public UserForm(UserService service,
-                  RoleService roleService,
-                  Long userId) {
-    if (userId == null) {
-      this.setUserId(Long.parseLong("1"));
-    } else {
-      this.setUserId(userId);
-    }
-    User user = service.findById(this.getUserId());
+  public UserForm(
+      KakeiPonUsersDetailsService kakeiPonUsersDetailsService,
+      AuthoritiesService authoritiesService) {
 
-    this.setNickName(user.getNickName());
-    this.setLastName(user.getLastName());
-    this.setFirstName(user.getFirstName());
-    this.setPassword(user.getPassword());
-    this.setEmail(user.getEmail());
-    this.setBirthDay(user.getBirthDay());
-    this.setPhoneNumber(user.getPhoneNumber());
-    if (user.getRoleId() == null) {
-      roleId = Long.parseLong("1");
-    } else {
-      roleId = user.getRoleId();
-    }
-    this.setRoleId(roleId);
-    this.setRoleForm(new RoleForm(roleService, roleId));
-    this.getRoleForm().setRoleId(user.getRoleId());
-    this.getRoleForm().setRoleName(
-        (new RoleForm(roleService, roleId).getRoleName()));
-
+    this.kakeiPonUsersDetailsService = kakeiPonUsersDetailsService;
+    this.authoritiesService = authoritiesService;
   }
 
-  public UserForm setUserToForm(Long userId,
-                                String nickName,
-                                String lastName,
-                                String firstName,
-                                LocalDateTime birthDay,
-                                String password,
-                                String phoneNumber,
-                                String email,
-                                Long roleId,
-                                @NotEmpty String roleName,
-                                @PastOrPresent LocalDateTime entryDate,
-                                LocalDateTime updateDate) {
+  public UserForm setUserToForm(
+      KakeiPonUsersDetailsService kakeiPonUsersDetailsService,
+      AuthoritiesService authoritiesService,
+      User user) {
     UserForm userForm = new UserForm();
 
-    userForm.userId = userId;
-    userForm.nickName = nickName;
-    userForm.lastName = lastName;
-    userForm.firstName = firstName;
-    userForm.birthDay = birthDay;
-    userForm.password = password;
-    userForm.phoneNumber = phoneNumber;
-    userForm.email = email;
-    userForm.roleId = roleId;
-    userForm.roleForm = new RoleForm();
-    userForm.getRoleForm().setRoleId(roleId);
-    userForm.getRoleForm().setRoleName(roleName);
-    userForm.entryDate = entryDate;
-    userForm.updateDate = LocalDateTime.now();
+    userForm.setId(user.getId());
+    userForm.setUsername(user.getUsername());
+    userForm.setPassword(user.getPassword());
+
+    Authorities authorities = authoritiesService.findByUsername(
+        user.getUsername());
+    userForm.setAuthoritiesToForm(authorities);
+    userForm.setEnabled(user.getEnabled());
+    userForm.setAccountNonExpired(true);
+    userForm.setAccountNonLocked(true);
+    userForm.setCredentialsNonExpired(true);
 
     return userForm;
+  }
+
+  public AuthoritiesForm setAuthoritiesToForm(
+      Authorities authorities) {
+
+    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
+
+    authoritiesForm.setId(authorities.getId());
+    authoritiesForm.setUsername(authorities.getUsername());
+    authoritiesForm.setAuthority(authorities.getAuthority());
+
+    return authoritiesForm;
   }
 }

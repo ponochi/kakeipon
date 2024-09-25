@@ -17,12 +17,6 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    compileOnly {
-//        extendsFrom annotationProcessor
-    }
-}
-
 dependencies {
     compileOnly("org.projectlombok:lombok:1.18.34")
     annotationProcessor("org.projectlombok:lombok:1.18.34")
@@ -44,6 +38,13 @@ dependencies {
     implementation("org.apache.tomcat:tomcat-jasper:10.1.28")
     implementation("org.apache.tomcat:tomcat-jasper-el:10.1.28")
     implementation("org.apache.tomcat:tomcat-jsp-api:10.1.28")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.3.3")
+    implementation("org.springframework.security:spring-security-core:6.3.3")
+    implementation("org.springframework.security:spring-security-web:6.3.3")
+    implementation("org.springframework.security:spring-security-config:6.3.3")
+    implementation("org.springframework.security:spring-security-taglibs:6.3.3")
+    implementation("org.springframework.security:spring-security-crypto:6.3.3")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.1.2.RELEASE")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
-@Table(name = "tbl_balance_type")
+@Table(name = "balance_type")
 @Data
 public class BalanceTypeForm implements Serializable {
   @Serial
@@ -20,7 +20,7 @@ public class BalanceTypeForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_balance_type_seq", allocationSize = 1)
+  @SequenceGenerator(name = "balance_type_seq", allocationSize = 1)
   @Column(name = "balance_type_id")
   private Long balanceTypeId;
 

@@ -9,7 +9,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-@Table(name = "tbl_tax_type")
+@Table(name = "tax_type")
 @Data
 public class TaxTypeForm implements Serializable {
   @Serial
@@ -17,7 +17,7 @@ public class TaxTypeForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_tax_type_seq", allocationSize = 1)
+  @SequenceGenerator(name = "tax_type_seq", allocationSize = 1)
   @Column(name = "tax_type_id")
   private Long taxTypeId;
 

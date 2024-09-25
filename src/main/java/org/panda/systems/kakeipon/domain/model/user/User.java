@@ -1,19 +1,17 @@
 package org.panda.systems.kakeipon.domain.model.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Component
 @Entity
-@Table(name = "tbl_user")
-@SecondaryTable(name = "tbl_role",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "role_id"))
+@Table(name = "users")
+@SecondaryTable(name = "authorities",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @Data
 public class User implements Serializable {
   @Serial
@@ -21,38 +19,34 @@ public class User implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_user_seq", allocationSize = 1)
-  @Column(name = "user_id")
-  private Long userId;
+  @SequenceGenerator(name = "users_seq", allocationSize = 1)
+  @Column(name = "id")
+  private Integer id;
 
-  @Column(name = "nick_name")
-  private String nickName;
+  @Column(name = "username")
+  private String username;
 
-  @Column(name = "first_name")
-  private String firstName;
+  @OneToOne
+  @JoinColumn(name = "username", table = "authorities",
+      referencedColumnName = "username",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn(name = "username")
+  private Authorities authorities;
 
-  @Column(name = "last_name")
-  private String lastName;
 
-  @Column
+  @Column(name = "password")
   private String password;
 
-  @Column
-  private String email;
+  @Column(name = "enabled")
+  private Boolean enabled;
 
-  @Column(name = "birth_day")
-  private LocalDateTime birthDay;
+  public User() {
+    this.enabled = true;
+  }
 
-  @Column(name = "phone_number")
-  private String phoneNumber;
-
-  @Column(name = "role_id")
-  private Long roleId;
-
-  @PastOrPresent
-  @Column(name = "entry_date")
-  private LocalDateTime entryDate;
-
-  @Column(name = "update_date")
-  private LocalDateTime updateDate;
+  public User(String username, String password, Boolean enabled) {
+    this.username = username;
+    this.password = password;
+    this.enabled = true;
+  }
 }

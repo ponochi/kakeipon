@@ -10,11 +10,9 @@ import java.util.Optional;
 @Repository
 public interface ShopRepository extends JpaRepository<Shop, Long> {
 
-  @SuppressWarnings("NullableProblems")
   @Override
   List<Shop> findAll();
 
-  @SuppressWarnings("NullableProblems")
   @Override
   Optional<Shop> findById(Long id);
 

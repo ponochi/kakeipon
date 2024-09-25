@@ -2,12 +2,26 @@ let balanceType
   = window.sessionStorage.getItem("balanceType");
 
 
-let shopIdControl
+const balanceTypeIdControl
+  = document.getElementById("balanceTypeId");
+const balanceTypeIdInputControl
+  = document.getElementById("balanceTypeIdInput");
+let trackerBalanceTypeIdInputControl
+  = balanceTypeIdInputControl._valueTracker;
+const shopIdControl
   = document.getElementById("shopId");
-let accountSourceIdControl
+const accountSourceIdControl
   = document.getElementById("accountSourceId");
-let accountDestinationIdControl
+const accountDestinationIdControl
   = document.getElementById("accountDestinationId");
+const saveOrUpdateGroupControl
+  = document.getElementById("saveOrUpdateGroup");
+
+// function resetBalanceType() {
+//   balanceTypeIdControl.selectedIndex = 0;
+//   window.sessionStorage.setItem("balanceType", 0);
+//   changedBalanceType();
+// }
 
 //=========================================================
 // Change event of Receiving and Payment Date
@@ -34,7 +48,7 @@ function changedShop() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("userId");
+    = document.getElementById("id");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -42,19 +56,19 @@ function changedShop() {
   let accountDestinationId
     = document.getElementById("accountDestinationId");
   let balanceTypeId
-    = document.getElementById("balanceType");
+    = document.getElementById("balanceTypeId");
   if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
+  window.sessionStorage.setItem("balanceeType", balanceTypeIdControl.value);
 }
 
 function changedAccountSource() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("userId");
+    = document.getElementById("id");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -62,19 +76,19 @@ function changedAccountSource() {
   let accountDestinationId
     = document.getElementById("accountDestinationId");
   let balanceTypeId
-    = document.getElementById("balanceType");
+    = document.getElementById("balanceTypeId");
   if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
+  window.sessionStorage.setItem("balanceeType", balanceTypeIdControl.value);
 }
 
 function changedAccountDestination() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("userId");
+    = document.getElementById("id");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -82,12 +96,12 @@ function changedAccountDestination() {
   let accountDestinationId
     = document.getElementById("accountDestinationId");
   let balanceTypeId
-    = document.getElementById("balanceType");
+    = document.getElementById("balanceTypeId");
   if (shopId.value === 1 && accountSourceId.value === 1 && accountDestinationId.value === 1) {
     balanceType = 1;
     changedBalanceType();
   }
-  window.sessionStorage.setItem("balanceeType", balanceTypeId.value);
+  window.sessionStorage.setItem("balanceeType", balanceTypeIdControl.value);
 }
 
 //=========================================================
@@ -109,20 +123,27 @@ function changedBalanceType() {
   let accountAndBalanceIdControl
     = document.getElementById("accountAndBalanceId");
   let userIdControl
-    = document.getElementById("userId");
+    = document.getElementById("id");
   let shopIdControl
     = document.getElementById("shopId");
-  let balanceTypeControl
-    = document.getElementById("balanceType");
-  // let balanceTypeIdControl
-  //   = document.getElementById("balanceTypeId");
+  let balanceTypeIdControl
+    = document.getElementById("balanceTypeId");
   let accountSourceIdControl
     = document.getElementById("accountSourceId");
   let accountDestinationIdControl
     = document.getElementById("accountDestinationId");
 
-  window.sessionStorage.setItem(
-    "balanceType", balanceTypeControl.selected);
+  var trackerBalanceTypeIdInputControl
+    = balanceTypeIdInputControl._valueTracker;
+
+  if (trackerBalanceTypeIdInputControl) {
+    trackerBalanceTypeIdInputControl.setValue(
+      balanceTypeIdControl.options[
+        balanceTypeIdControl.selectedIndex].value
+    );
+    window.sessionStorage.setItem(
+      "balanceType", balanceTypeIdInputControl.value);
+  }
 
   let accountSourceName
     = document.getElementById("accountSourceName");
@@ -133,24 +154,26 @@ function changedBalanceType() {
   let accountDestinationButton
     = document.getElementById("accountDestinationButton");
 
-  if (balanceTypeControl.selected == 1) {
+  balanceTypeIdInputControl.value
+    = balanceTypeIdControl.options[
+    balanceTypeIdControl.selectedIndex].value;
+
+  if (balanceTypeIdControl.selectedIndex == 1) {
     accountSourceName.disabled = false;
     accountSourceButton.disabled = false;
     accountDestinationName.disabled = true;
     accountDestinationButton.disabled = true;
-  } else if (balanceTypeControl.selected == 2) {
+  } else if (balanceTypeIdControl.selectedIndex == 2) {
     accountSourceName.disabled = true;
     accountSourceButton.disabled = true;
     accountDestinationName.disabled = false;
     accountDestinationButton.disabled = false;
-  } else {
+  } else if (balanceTypeIdControl.selectedIndex == 3) {
     accountSourceName.disabled = false;
     accountSourceButton.disabled = false;
     accountDestinationName.disabled = false;
     accountDestinationButton.disabled = false;
   }
-
-  // balanceTypeIdControl.selected = balanceTypeControl.selected;
 
   //==== Set action of search shop form ====//
   searchShop.action = "/" + specificationGroupIdControl.value;
@@ -161,8 +184,11 @@ function changedBalanceType() {
   } else {
     searchShop.action += "/1";
   }
-  if (balanceTypeControl.selected) {
-    searchShop.action += "/" + balanceTypeControl.selected;
+  if (balanceTypeIdControl.selectedIndex) {
+    searchShop.action += "/";
+    searchShop.action
+      += balanceTypeIdControl.options[
+      balanceTypeIdControl.selectedIndex].value;
   } else {
     searchShop.action += "/1";
   }
@@ -187,8 +213,11 @@ function changedBalanceType() {
   } else {
     searchAccountSource.action += "/1";
   }
-  if (balanceTypeControl.selected) {
-    searchAccountSource.action += "/" + balanceTypeControl.selected;
+  if (balanceTypeIdControl.selectedIndex) {
+    searchAccountSource.action += "/";
+    searchAccountSource.action
+      += balanceTypeIdControl.options[
+      balanceTypeIdControl.selectedIndex].value;
   } else {
     searchAccountSource.action += "/1";
   }
@@ -213,8 +242,11 @@ function changedBalanceType() {
   } else {
     searchAccountDestination.action += "/1";
   }
-  if (balanceTypeControl.selected) {
-    searchAccountDestination.action += "/" + balanceTypeControl.selected;
+  if (balanceTypeIdControl.selectedIndex) {
+    searchAccountDestination.action += "/";
+    searchAccountDestination.action
+      += balanceTypeIdControl.options[
+      balanceTypeIdControl.selectedIndex].value;
   } else {
     searchAccountDestination.action += "/1";
   }
@@ -256,49 +288,50 @@ function calculateTax() {
   if (taxTypeControl.value === "1") {
     tax.value
       = Math.round(
-        price.value
-            * quantity.value
-            * rate / 100);
+      price.value
+      * quantity.value
+      * rate / 100);
   } else if (taxTypeControl.value === "2") {
     tax.value
       = Math.round(
-        price.value
-            * quantity.value
-            / ((rate + 100) / 100) * (rate / 100));
+      price.value
+      * quantity.value
+      / ((rate + 100) / 100) * (rate / 100));
   } else {
     tax.value = 0;
   }
 }
 
-function addSpecDetail() {
-  let createSpecDetail
-    = document.getElementById(
-      "createSpecDetail");
-  let specificationGroupId
-    = document.getElementById("specificationGroupId");
-  let shopIdControl
-    = document.getElementById("shopId");
-  let balanceTypeControl
-    = document.getElementById("balanceType");
-  let accountSourceIdControl
-    = document.getElementById("accountSourceId");
-  let accountDestinationIdControl
-    = document.getElementById("accountDestinationId");
-
-  createSpecDetail.action = "/spec/create/detail";
-  createSpecDetail.action += "/";
-  createSpecDetail.action += specificationGroupId.value;
-  createSpecDetail.action += "/";
-  createSpecDetail.action += shopIdControl.value;
-  createSpecDetail.action += "/";
-  createSpecDetail.action += balanceTypeControl.value;
-  createSpecDetail.action += "/";
-  createSpecDetail.action += accountSourceIdControl.value;
-  createSpecDetail.action += "/";
-  createSpecDetail.action += accountDestinationIdControl.value;
-
-  createSpecDetail.submit();
-}
+//
+// function addSpecDetail() {
+//   let createSpecDetail
+//     = document.getElementById(
+//       "createSpecDetail");
+//   let specificationGroupId
+//     = document.getElementById("specificationGroupId");
+//   let shopIdControl
+//     = document.getElementById("shopId");
+//   let balanceTypeIdControl
+//     = document.getElementById("balanceTypeId");
+//   let accountSourceIdControl
+//     = document.getElementById("accountSourceId");
+//   let accountDestinationIdControl
+//     = document.getElementById("accountDestinationId");
+//
+//   createSpecDetail.action = "/spec/create/detail";
+//   createSpecDetail.action += "/";
+//   createSpecDetail.action += specificationGroupId.value;
+//   createSpecDetail.action += "/";
+//   createSpecDetail.action += shopIdControl.value;
+//   createSpecDetail.action += "/";
+//   createSpecDetail.action += balanceTypeIdControl.selectedIndex;
+//   createSpecDetail.action += "/";
+//   createSpecDetail.action += accountSourceIdControl.value;
+//   createSpecDetail.action += "/";
+//   createSpecDetail.action += accountDestinationIdControl.value;
+//
+//   createSpecDetail.submit();
+// }
 
 function savedetail() {
   var form = document.querySelector("saveOfSpecification");
@@ -312,21 +345,80 @@ function sessionClear() {
   window.sessionStorage.clear();
 }
 
+function test() {
+  window.sessionStorage.setItem(
+    "balanceType",
+    balanceTypeIdInputControl.value);
+  let balanceType
+    = window.sessionStorage.getItem("balanceType")
+
+  console.log("balanceType in test() : "
+    + balanceType);
+
+  resetBalanceType
+    = window.sessionStorage.getItem("resetBalanceType");
+
+  let url
+    = window.location.href.split('/');
+
+  if (!balanceType) {
+    console.log("A");
+    balanceTypeIdControl.selectedIndex = 1;
+    window.sessionStorage.setItem(
+      "balanceType",
+      balanceTypeIdInputControl.value);
+  } else {
+    console.log("B");
+    if (resetBalanceType.toString() == "t") {
+      console.log("B*");
+      if (url.slice(3, 4) == "spec") {
+        if (url.slice(4, 5) == "create") {
+          if (url.slice(5, 6) == "group") {
+            console.log("B**");
+
+          }
+        } else if ((url.slice(4, 5) == "edit")
+          || (url.slice(4, 5) == "update")) {
+          if (url.slice(5, 6) == "group") {
+            console.log("B***");
+            let balanceType
+              = window.sessionStorage.getItem("balanceType")
+
+            console.log("balanceType in test() : "
+              + balanceType);
+            console.log("resetBalanceType in test() : "
+              + resetBalanceType);
+            if (resetBalanceType == "t") {
+              console.log("B****");
+
+            }
+
+          }
+        }
+      }
+    } else if (resetBalanceType == "f") {
+      console.log("C");
+
+    }
+  }
+  changedBalanceType();
+}
+
 //=========================================================
 // Load event of window
 // @param none
 // @return none
 //=========================================================
 function windowLoad() {
-  let balanceType
+  balanceType
     = window.sessionStorage.getItem("balanceType");
   let receivingAndPaymentDate
     = window.sessionStorage.getItem("receivingAndPaymentDate");
   let receivingAndPaymentTime
     = window.sessionStorage.getItem("receivingAndPaymentTime");
 
-  let balanceTypeControl
-    = document.getElementById("balanceType");
+  let balanceTypeIdControl
+    = document.getElementById("balanceTypeId");
   let receivingAndPaymentDateControl
     = document.getElementById("receivingAndPaymentDate");
   let receivingAndPaymentTimeControl
@@ -372,18 +464,59 @@ function windowLoad() {
     balanceType = 1;
   }
 
-  balanceTypeControl.selected = 3;
-console.log("balanceType: " + balanceType);
+  resetBalanceType
+    = window.sessionStorage.getItem("resetBalanceType");
+
+  url
+    = window.location.href.split('/');
+
+  trackerBalanceTypeIdInputControl
+    = balanceTypeIdInputControl._valueTracker;
+
+  balanceType
+    = window.sessionStorage.getItem("balanceType");
+
+  console.log("XX >>>> balanceType in windowLoad() : " + balanceType);
+  console.log("XX >>>> balanceTypeIdInputControl.value : " + balanceTypeIdInputControl.value);
+
   if (!balanceType) {
-    balanceTypeControl.selected = 1;
-    window.sessionStorage.setItem("balanceType", 1);
+    if (!balanceTypeIdInputControl.value) {
+      console.log("AAAAAAAA");
+      balanceTypeIdControl.selectedIndex = 1;
+      window.sessionStorage.setItem("balanceType", 1);
+    } else {
+      console.log("BBBBBBBB");
+      balanceTypeIdControl.selectedIndex
+        = balanceTypeIdInputControl.value;
+      window.sessionStorage.setItem(
+        "balanceType", balanceTypeIdInputControl.value);
+    }
   } else {
-    balanceTypeControl.selected = balanceType;
+    if (resetBalanceType == "f") {
+      console.log("CCCCCCCC");
+      balanceTypeIdControl.selectedIndex
+        = balanceTypeIdInputControl.value;
+      window.sessionStorage.setItem(
+        "balanceType", balanceTypeIdInputControl.value);
+    } else if (resetBalanceType == "t") {
+      console.log("DDDDDDDD");
+      balanceTypeIdControl.selectedIndex
+        = balanceTypeIdInputControl.value;
+      window.sessionStorage.setItem(
+        "balanceType", balanceTypeIdInputControl.value);
+      window.sessionStorage.setItem("resetBalanceType", "f");
+    }
   }
   changedBalanceType();
 }
 
 window.addEventListener("load", windowLoad, false);
+balanceTypeIdControl.addEventListener("change", changedBalanceType, false);
 shopIdControl.addEventListener("change", changedShop, false);
 accountSourceIdControl.addEventListener("change", changedAccountSource, false);
 accountDestinationIdControl.addEventListener("change", changedAccountDestination, false);
+
+saveOrUpdateGroupControl.addEventListener("click", function () {
+  console.log(window.sessionStorage.getItem('balanceType'));
+}, false);
+saveOrUpdateGroupControl.addEventListener("click", test, false);

@@ -18,8 +18,8 @@ public interface SecondClassificationRepository
       " sc.second_class_id," +
       " sc.first_class_id," +
       " sc.second_class_name" +
-      " FROM tbl_second_class sc" +
-      " INNER JOIN kp.tbl_second_class_by_order scbo" +
+      " FROM second_class sc" +
+      " INNER JOIN kp.second_class_by_order scbo" +
       "   ON sc.second_class_id = scbo.second_class_id" +
       "   AND sc.first_class_id = scbo.first_class_id" +
       "   AND scbo.disabled = false" +
@@ -30,8 +30,8 @@ public interface SecondClassificationRepository
       " sc.second_class_id," +
       " sc.first_class_id," +
       " sc.second_class_name" +
-      " FROM tbl_second_class sc" +
-      " INNER JOIN kp.tbl_second_class_by_order scbo" +
+      " FROM second_class sc" +
+      " INNER JOIN kp.second_class_by_order scbo" +
       "   ON sc.second_class_id = scbo.second_class_id" +
       "   AND sc.first_class_id = scbo.first_class_id" +
       "   AND scbo.disabled = false" +

@@ -22,8 +22,8 @@ public interface ThirdClassificationRepository
       " tc.third_class_name," +
       " tcbo.order_number," +
       " tcbo.disabled" +
-      " FROM tbl_third_class tc" +
-      " INNER JOIN kp.tbl_third_class_by_order tcbo" +
+      " FROM third_class tc" +
+      " INNER JOIN kp.third_class_by_order tcbo" +
       "   ON tc.second_class_id = tcbo.second_class_id" +
       "   AND tcbo.disabled = false" +
       " WHERE tc.third_class_id = ?1" +
@@ -37,8 +37,8 @@ public interface ThirdClassificationRepository
       " tc.third_class_name," +
       " tcbo.order_number," +
       " tcbo.disabled" +
-      " FROM tbl_third_class tc" +
-      " INNER JOIN kp.tbl_third_class_by_order tcbo" +
+      " FROM third_class tc" +
+      " INNER JOIN kp.third_class_by_order tcbo" +
       "   ON tc.second_class_id = tcbo.second_class_id" +
       "   AND tcbo.disabled = false" +
       " WHERE tc.second_class_id = ?1" +

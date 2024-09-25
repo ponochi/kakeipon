@@ -13,7 +13,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@Table(name = "tbl_account_info")
+@Table(name = "account_info")
 @Data
 public class AccountSourceForm implements Serializable {
   @Serial
@@ -21,7 +21,7 @@ public class AccountSourceForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_account_info_seq", allocationSize = 1)
+  @SequenceGenerator(name = "account_info_seq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "account_id")
   private Long accountSourceId;

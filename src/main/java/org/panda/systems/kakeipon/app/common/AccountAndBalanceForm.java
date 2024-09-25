@@ -26,7 +26,7 @@ public class AccountAndBalanceForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_account_and_balance_eq", allocationSize = 1)
+  @SequenceGenerator(name = "account_and_balance_eq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "account_and_balance_id")
   private Long accountAndBalanceId;
@@ -35,7 +35,7 @@ public class AccountAndBalanceForm implements Serializable {
   private Long accountSourceId;
 
   @OneToOne
-  @JoinColumn(name = "account_source_id", table = "tbl_account_info",
+  @JoinColumn(name = "account_source_id", table = "account_info",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "account_source_id")
@@ -45,7 +45,7 @@ public class AccountAndBalanceForm implements Serializable {
   private Long accountDestinationId;
 
   @OneToOne
-  @JoinColumn(name = "account_destination_id", table = "tbl_account_info",
+  @JoinColumn(name = "account_destination_id", table = "account_info",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "account_destination_id")
@@ -132,7 +132,6 @@ public class AccountAndBalanceForm implements Serializable {
 
   public AccountAndBalanceForm setAccountAndBalanceToForm(
       AccountAndBalance accountAndBalance) {
-//    AccountAndBalanceForm form = new AccountAndBalanceForm();
 
     this.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
     this.setAccountSourceId(accountAndBalance.getAccountSourceId());
@@ -152,8 +151,6 @@ public class AccountAndBalanceForm implements Serializable {
       AccountAndBalance accountAndBalance,
       AccountSourceForm accountSourceForm,
       AccountDestinationForm accountDestinationForm) {
-
-//    AccountAndBalanceForm form = new AccountAndBalanceForm();
 
     this.setAccountAndBalanceId(accountAndBalance.getAccountAndBalanceId());
     this.setAccountSourceId(accountAndBalance.getAccountSourceId());

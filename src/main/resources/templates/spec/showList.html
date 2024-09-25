@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>入出金登録</title>
     <link href="/css/common.css" rel="stylesheet">
-    <script src="/js/common.js"></script>
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/listSpecGroup.js" type="text/javascript"></script>
 </head>
 <body>
 <table>
@@ -21,13 +22,13 @@
     <tr th:each="specificationGroupForm, stat : ${specificationGroupForms}">
         <td>
             <form th:id="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'"
-                  th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${specificationGroupForm.accountAndBalanceForm.accountSourceId}__/__${specificationGroupForm.accountAndBalanceForm.accountDestinationId}__'}"
+                  th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${specificationGroupForm.accountAndBalanceForm.accountSourceId}__/__${specificationGroupForm.accountAndBalanceForm.accountDestinationId}__'}"
                   th:object="${specificationGroupForm}" method="POST">
                 <input id="accountAndBalanceId" name="accountAndBalanceId"
                        th:value="${specificationGroupForm.accountAndBalanceId}"
                        type="hidden">
-                <input id="userId" name="userId"
-                       th:value="${specificationGroupForm.userId}"
+                <input id="id" name="id"
+                       th:value="${specificationGroupForm.id}"
                        type="hidden" readonly>
                 <span>
                     <label for="receivingAndPaymentDate"></label>
@@ -80,27 +81,30 @@
                 </span>
             </form>
             <form th:id="'deleteGroup' + '__${specificationGroupForm.specificationGroupId}__'"
-                  th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__'}"
+                  th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__'}"
                   th:object="${specificationGroupForm}"
                   method="POST">
                 <input id="specificationGroupId" name="specificationGroupId"
                        th:value="${specificationGroupForm.specificationGroupId}"
                        type="hidden">
-                <input id="userId" name="userId"
-                       th:value="${specificationGroupForm.userId}"
+                <input id="id" name="id"
+                       th:value="${specificationGroupForm.id}"
                        type="hidden">
             </form>
         </td>
     </tr>
 </table>
 
-<form id="list" th:action="@{'/spec'}" th:object="${specificationGroupForm}" method="get">
+<form id="list" th:action="@{'/spec'}"
+      th:object="${specificationGroupForm}" method="GET">
 </form>
-<form id="create" th:action="@{'/spec/create/group'}" th:object="${specificationGroupForm}" method="get">
+<form id="create"
+      th:action="@{'/spec/create/group/' + '__${specificationGroupForms[0].id}__'}"
+      th:object="${specificationGroupForms}" method="GET">
 </form>
 
 <div>
-    <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+    <input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
     <input form="list" type="submit" value="お買いもの・一覧画面"/>
     <button form="create" type="submit">追　加</button>
 </div>

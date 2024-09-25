@@ -5,36 +5,36 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="ユーザ詳細"></title>
-  <script src="/js/user.js"></script>
+  <script src="/js/user.js" type="text/javascript"></script>
 </head>
 <body>
 <h3>ユーザ詳細</h3>
-<form id="userInfo" method="post"
-      th:action="@{'/user/__${userForm.userId}__/edit'}" th:object="${userForm}">
+<form id="userEdit" method="post"
+      th:action="@{'/users/__${userForm.id}__/edit'}" th:object="${userForm}">
   <table>
     <tbody>
     <tr>
       <th>ID</th>
       <td>
-        <div id="userId" th:text="${userForm.userId}"></div>
+        <div id="id" th:text="${userForm.id}"></div>
       </td>
     </tr>
     <tr>
-      <th>ニックネーム</th>
+      <th>ユーザ名</th>
       <td>
-        <div id="nickName" th:text="${userForm.nickName}"></div>
+        <div id="userName" th:text="${userForm.username}"></div>
       </td>
     </tr>
     <tr>
       <th>姓</th>
       <td>
-        <div id="lastName" th:text="${userForm.lastName}"></div>
+        <div id="lastName" th:text="${userForm.usersExtForm.lastName}"></div>
       </td>
     </tr>
     <tr>
       <th>名</th>
       <td>
-        <div id="firstName" th:text="${userForm.firstName}"></div>
+        <div id="firstName" th:text="${userForm.usersExtForm.firstName}"></div>
       </td>
     </tr>
     <tr>
@@ -46,48 +46,48 @@
     <tr>
       <th>e-mail</th>
       <td>
-        <div id="email" th:text="${userForm.email}"></div>
+        <div id="email" th:text="${userForm.usersExtForm.email}"></div>
       </td>
     </tr>
     <tr>
       <th>生年月日</th>
       <td>
-        <div id="birthDay" th:text="${userForm.birthDay}"></div>
+        <div id="birthDay" th:text="${userForm.usersExtForm.birthDay}"></div>
       </td>
     </tr>
     <tr>
       <th>電話番号</th>
       <td>
-        <div id="phoneNumber" th:text="${userForm.phoneNumber}"></div>
+        <div id="phoneNumber" th:text="${userForm.usersExtForm.phoneNumber}"></div>
       </td>
     </tr>
     <tr>
       <th>権限</th>
       <td>
-        <div id="roleName" th:text="${userForm.getRoleForm().getRoleName()}"></div>
+        <div id="roleName" th:text="${userForm.authoritiesForm.authority}"></div>
       </td>
     </tr>
     <tr>
       <th>登録日</th>
       <td>
-        <div id="entryDate" th:text="${userForm.entryDate}"></div>
+        <div id="entryDate" th:text="${userForm.usersExtForm.entryDate}"></div>
       </td>
     </tr>
     <tr>
       <th>変更日</th>
       <td>
-        <div id="updateDate" th:text="${userForm.updateDate}"></div>
+        <div id="updateDate" th:text="${userForm.usersExtForm.updateDate}"></div>
       </td>
     </tr>
     </tbody>
   </table>
 </form>
-<form id="list" method="get" th:action="@{'/user'}">
+<form id="list" method="GET" th:action="@{'/users'}">
 </form>
 <div>
-  <input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+  <input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
   <input form="list" type="submit" value="ユーザ・一覧画面"/>
-  <input form="userInfo" type="submit" value="編　集"/>
+  <input form="userEdit" type="submit" value="編　集"/>
 </div>
 
 </body>

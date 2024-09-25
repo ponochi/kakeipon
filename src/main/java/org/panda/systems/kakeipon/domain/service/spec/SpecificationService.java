@@ -5,6 +5,7 @@ import jakarta.persistence.LockModeType;
 import org.panda.systems.kakeipon.app.spec.SpecificationForm;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationRepository;
+import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
@@ -24,13 +25,8 @@ public class SpecificationService implements Serializable {
   private SpecificationRepository specificationRepository;
   @Autowired
   private EntityManager entityManager;
-
-  public Specification findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
-      Long specificationGroupId, Long specificationId, Long userId, Boolean deleted) {
-
-    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
-        specificationGroupId, specificationId, userId, deleted);
-  }
+  @Autowired
+  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
 
   public Long getMaxSpecificationId(Long specificationGroupId) {
     return specificationRepository.getMaxId(specificationGroupId);
@@ -40,12 +36,23 @@ public class SpecificationService implements Serializable {
     return specificationRepository.findAll();
   }
 
-  public List<Specification> findBySpecificationGroupIdAndUserIdAndDeleted(Long specificationGroupId, Long userId, Boolean deleted) {
-    return specificationRepository.findBySpecificationGroupIdAndUserIdAndDeleted(specificationGroupId, userId, deleted);
+  public List<Specification> findBySpecificationGroupIdAndUsernameAndDeleted(
+      Long specificationGroupId, String username, Boolean deleted) {
+    return specificationRepository
+        .findBySpecificationGroupIdAndIdAndDeleted(
+            specificationGroupId,
+            kakeiPonUsersDetailsService.convertUsernameToId(username),
+            deleted);
   }
 
-  public List<SpecificationForm> findBySpecificationGroupIdToForm(Long specificationGroupId, Long userId, Boolean deleted) {
-    List<Specification> specs = specificationRepository.findBySpecificationGroupIdAndUserIdAndDeleted(specificationGroupId, userId, deleted);
+  public List<SpecificationForm> findBySpecificationGroupIdToForm(
+      Long specificationGroupId, String username, Boolean deleted) {
+    List<Specification> specs
+        = specificationRepository
+        .findBySpecificationGroupIdAndIdAndDeleted(
+            specificationGroupId,
+            kakeiPonUsersDetailsService.convertUsernameToId(username),
+            deleted);
     SpecificationForm specForm = new SpecificationForm();
 
     List<SpecificationForm> forms = new ArrayList<>();
@@ -56,8 +63,12 @@ public class SpecificationService implements Serializable {
     return forms;
   }
 
-  public Specification findBySpecificationGroupIdAndSpecificationId(Long specificationGroupId, Long specificationId, Long userId, Boolean deleted) {
-    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(specificationGroupId, specificationId, userId, deleted);
+  public Specification findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
+      Long specificationGroupId,
+      Long specificationId,
+      Integer id,
+      Boolean deleted) {
+    return specificationRepository.findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(specificationGroupId, specificationId, id, deleted);
   }
 
   @Lock(LockModeType.OPTIMISTIC)
@@ -74,8 +85,8 @@ public class SpecificationService implements Serializable {
           saveAndFlushSpecification, LockModeType.OPTIMISTIC);
       saveAndFlushSpecification.setSpecificationGroupId(
           entity.getSpecificationGroupId());
-      saveAndFlushSpecification.setUserId(
-          entity.getUserId());
+      saveAndFlushSpecification.setId(
+          entity.getId());
       saveAndFlushSpecification.setName(
           entity.getName());
       saveAndFlushSpecification.setPrice(

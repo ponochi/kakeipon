@@ -9,7 +9,7 @@ import java.io.Serializable;
 // Income and Expenditure
 //
 @Entity
-@Table( name = "tbl_third_class" )
+@Table( name = "third_class" )
 @IdClass(ThirdClassificationEntityPkey.class)
 @Data
 public class ThirdClassification implements Serializable {
@@ -18,7 +18,7 @@ public class ThirdClassification implements Serializable {
 
   @Id
   @GeneratedValue( strategy = GenerationType.IDENTITY )
-  @SequenceGenerator(name = "tbl_third_class_seq", allocationSize = 1)
+  @SequenceGenerator(name = "third_class_seq", allocationSize = 1)
   @Column(name = "third_class_id")
   private Long thirdClassId;
 

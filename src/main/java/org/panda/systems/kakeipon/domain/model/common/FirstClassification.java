@@ -9,7 +9,7 @@ import java.io.Serializable;
 // Income and Expenditure
 //
 @Entity
-@Table( name = "tbl_first_class" )
+@Table( name = "first_class" )
 @Data
 public class FirstClassification implements Serializable {
   @Serial
@@ -17,7 +17,7 @@ public class FirstClassification implements Serializable {
 
   @Id
   @GeneratedValue( strategy = GenerationType.IDENTITY )
-  @SequenceGenerator(name = "tbl_first_class_seq", allocationSize = 1)
+  @SequenceGenerator(name = "first_class_seq", allocationSize = 1)
   @Column(name = "first_class_id")
   private Long firstClassId;
 

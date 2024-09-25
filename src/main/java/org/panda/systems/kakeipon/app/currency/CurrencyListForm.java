@@ -10,7 +10,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Component
-@Table(name = "tbl_currency")
+@Table(name = "currency")
 @Data
 public class CurrencyListForm implements Serializable {
   @Serial
@@ -18,7 +18,7 @@ public class CurrencyListForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_currency_seq", allocationSize = 1)
+  @SequenceGenerator(name = "currency_seq", allocationSize = 1)
   @Column(name = "currency_id")
   private Long currencyId;
 

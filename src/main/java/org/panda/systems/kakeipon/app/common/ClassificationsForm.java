@@ -16,7 +16,7 @@ public class ClassificationsForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_first_class_seq", allocationSize = 1)
+  @SequenceGenerator(name = "first_class_seq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "first_class_id")
   private Long firstClassId;
@@ -29,7 +29,7 @@ public class ClassificationsForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_second_class_seq", allocationSize = 1)
+  @SequenceGenerator(name = "second_class_seq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "second_class_id")
   private Long secondClassId;
@@ -42,7 +42,7 @@ public class ClassificationsForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_third_class_seq", allocationSize = 1)
+  @SequenceGenerator(name = "third_class_seq", allocationSize = 1)
   @PositiveOrZero
   @Column(name = "third_class_id")
   private Long thirdClassId;

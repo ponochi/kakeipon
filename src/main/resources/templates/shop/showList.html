@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>お店検索</title>
     <link href="/css/common.css" rel="stylesheet">
-    <script src="/js/createGroup.js"></script>
+    <script src="/js/createGroup.js" type="text/javascript"></script>
 </head>
 <body>
 店名
@@ -18,7 +18,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${balanceType.balanceTypeId}__' +
@@ -46,7 +46,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -76,7 +76,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -104,7 +104,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shop.shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -136,7 +136,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -164,7 +164,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -194,7 +194,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -222,7 +222,7 @@
                         <form th:object="${specificationGroupForm}"
                               th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${userId}__' +
+                            '/__${id}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +

@@ -3,12 +3,16 @@ package org.panda.systems.kakeipon.domain.service.spec;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import org.panda.systems.kakeipon.app.spec.SpecificationGroupForm;
+import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.repository.spec.SpecificationGroupRepository;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
 import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
 import org.panda.systems.kakeipon.domain.service.common.AccountAndBalanceService;
+import org.panda.systems.kakeipon.domain.service.common.BalanceTypeService;
+import org.panda.systems.kakeipon.domain.service.common.ShopService;
+import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Lock;
@@ -26,7 +30,6 @@ public class SpecificationGroupService implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @SuppressWarnings("rawtypes")
   @Autowired
   private SpecificationGroupRepository specificationGroupRepository;
   @Autowired
@@ -38,7 +41,13 @@ public class SpecificationGroupService implements Serializable {
   @Autowired
   private AccountDestinationService accountDestinationService;
   @Autowired
+  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
+  @Autowired
   private EntityManager entityManager;
+  @Autowired
+  private ShopService shopService;
+  @Autowired
+  private BalanceTypeService balanceTypeService;
 
   public Long getMaxGroupId() {
     return specificationGroupRepository.getMaxGroupId();
@@ -50,12 +59,15 @@ public class SpecificationGroupService implements Serializable {
         Sort.by(Sort.Direction.DESC, "specificationGroupId"));
   }
 
-  @SuppressWarnings("rawtypes")
-  public SpecificationGroup findById(
-      Long specificationGroupId, Boolean deleted) {
+  public SpecificationGroup findBySpecificationGroupIdAndUsernameAndDeleted(
+      Long specificationGroupId, String username, Boolean deleted) {
+    System.out.println("username : " + username);
+    System.out.println("id : " + kakeiPonUsersDetailsService.convertUsernameToId(username));
     return specificationGroupRepository
-        .findBySpecificationGroupIdAndDeleted(
-            specificationGroupId, deleted).orElse(null);
+        .findBySpecificationGroupIdAndIdAndDeleted(
+            specificationGroupId,
+            kakeiPonUsersDetailsService.convertUsernameToId(username),
+            deleted).orElse(null);
   }
 
   public List<SpecificationGroupForm> findAllToForm(Boolean deleted) {
@@ -73,6 +85,9 @@ public class SpecificationGroupService implements Serializable {
     for (SpecificationGroup specificationGroup : specificationGroups) {
       groupForms.add(
           specificationGroupForm.setSpecificationGroupToForm(
+              kakeiPonUsersDetailsService,
+              shopService,
+              balanceTypeService,
               accountAndBalanceService,
               accountSourceService,
               accountDestinationService,
@@ -89,41 +104,42 @@ public class SpecificationGroupService implements Serializable {
   @Lock(LockModeType.OPTIMISTIC)
   @Transactional
   public void updateSpecificationGroup(SpecificationGroup entity) {
+    UserForm userForm = kakeiPonUsersDetailsService.findByIdToForm(entity.getId());
     List<Specification> specifications
-        = specificationService.findBySpecificationGroupIdAndUserIdAndDeleted(
-            entity.getSpecificationGroupId(), entity.getUserId(), false);
+        = specificationService.findBySpecificationGroupIdAndUsernameAndDeleted(
+            entity.getSpecificationGroupId(), userForm.getUsername(), false);
     specificationService.saveAllSpecifications(specifications);
 
-    SpecificationGroup saveAndFlushSpecificationGroup
+    SpecificationGroup updateSpecGroup
         = entityManager.find(
             SpecificationGroup.class, entity.getSpecificationGroupId());
     entityManager.lock(
-        saveAndFlushSpecificationGroup, LockModeType.OPTIMISTIC);
-    saveAndFlushSpecificationGroup.setSpecificationGroupId(
+        updateSpecGroup, LockModeType.OPTIMISTIC);
+    updateSpecGroup.setSpecificationGroupId(
         entity.getSpecificationGroupId());
-    saveAndFlushSpecificationGroup.setUserId(
-        entity.getUserId());
-    saveAndFlushSpecificationGroup.setShopId(
+    updateSpecGroup.setId(
+        entity.getId());
+    updateSpecGroup.setShopId(
         entity.getShopId());
-    saveAndFlushSpecificationGroup.setReceivingAndPaymentDate(
+    updateSpecGroup.setReceivingAndPaymentDate(
         entity.getReceivingAndPaymentDate());
-    saveAndFlushSpecificationGroup.setReceivingAndPaymentTime(
+    updateSpecGroup.setReceivingAndPaymentTime(
         entity.getReceivingAndPaymentTime());
-    saveAndFlushSpecificationGroup.setBalanceTypeId(
+    updateSpecGroup.setBalanceTypeId(
         entity.getBalanceTypeId());
-    saveAndFlushSpecificationGroup.setAccountAndBalanceId(
+    updateSpecGroup.setAccountAndBalanceId(
         entity.getAccountAndBalanceId());
-    saveAndFlushSpecificationGroup.setGroupMemo(
+    updateSpecGroup.setGroupMemo(
         entity.getGroupMemo());
-    saveAndFlushSpecificationGroup.setDeleted(
+    updateSpecGroup.setDeleted(
         entity.getDeleted());
-    saveAndFlushSpecificationGroup.setEntryDate(
+    updateSpecGroup.setEntryDate(
         entity.getEntryDate());
-    saveAndFlushSpecificationGroup.setUpdateDate(
+    updateSpecGroup.setUpdateDate(
         entity.getUpdateDate());
-    saveAndFlushSpecificationGroup.setVersion(
+    updateSpecGroup.setVersion(
         entity.getVersion());
 
-    entityManager.merge(saveAndFlushSpecificationGroup);
+    entityManager.merge(updateSpecGroup);
   }
 }

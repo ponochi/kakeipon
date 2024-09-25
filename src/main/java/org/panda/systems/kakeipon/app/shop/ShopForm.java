@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
-@Table(name = "tbl_shop")
+@Table(name = "shop")
 @Data
 public class ShopForm implements Serializable {
   @Serial
@@ -23,7 +23,7 @@ public class ShopForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_shop_seq", allocationSize = 1)
+  @SequenceGenerator(name = "shop_seq", allocationSize = 1)
   @Column(name = "shop_id")
   private Long shopId;
 

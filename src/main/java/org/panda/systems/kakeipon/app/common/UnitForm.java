@@ -8,7 +8,7 @@ import org.panda.systems.kakeipon.domain.service.common.UnitService;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Table(name = "tbl_unit")
+@Table(name = "unit")
 @Data
 public class UnitForm implements Serializable {
   @Serial
@@ -16,7 +16,7 @@ public class UnitForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_unit_seq", allocationSize = 1)
+  @SequenceGenerator(name = "unit_seq", allocationSize = 1)
   @Column(name = "unit_id")
   private Long unitId;
 

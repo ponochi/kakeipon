@@ -12,18 +12,18 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tbl_specification")
-@SecondaryTable(name = "tbl_specification_group",
+@Table(name = "specification")
+@SecondaryTable(name = "specification_group",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "specification_group_id"))
-@SecondaryTable(name = "tbl_user",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
-@SecondaryTable(name = "tbl_currency",
+@SecondaryTable(name = "users",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "currency",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_id"))
-@SecondaryTable(name = "tbl_unit",
+@SecondaryTable(name = "unit",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
-@SecondaryTable(name = "tbl_tax_type",
+@SecondaryTable(name = "tax_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_type_id"))
-@SecondaryTable(name = "tbl_tax_rate",
+@SecondaryTable(name = "tax_rate",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_rate_id"))
 @Data
 public class Specification implements Serializable {
@@ -35,12 +35,12 @@ public class Specification implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_specification_seq", allocationSize = 1)
+  @SequenceGenerator(name = "specification_seq", allocationSize = 1)
   @Column(name = "specification_id")
   private Long specificationId;
 
-  @Column(name = "user_id")
-  private Long userId;
+  @Column(name = "id")
+  private Integer id;
 
   @Column(name = "name")
   private String name;
@@ -60,7 +60,6 @@ public class Specification implements Serializable {
   @Column(name = "tax_type_id")
   private Long taxTypeId;
 
-  // @OnDelete(action = OnDeleteAction.CASCADE)
   @Column(name = "tax_rate_id")
   private Long taxRateId;
 

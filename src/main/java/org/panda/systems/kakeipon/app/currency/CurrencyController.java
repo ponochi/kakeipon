@@ -29,7 +29,7 @@ public class CurrencyController {
   @GetMapping("add")
   String add(CurrencyListForm form, Model model) {
     List<CurrencyList> currencies = currencyService.findAll();
-    CurrencyListForm currencyForm = new CurrencyListForm();
+    CurrencyListForm currencyListForm = new CurrencyListForm();
 
     model.addAttribute("form", form);
     model.addAttribute("currencies", currencies);

@@ -7,14 +7,14 @@
 </head>
 <body>
 <form id="specDetail"
-      th:action="@{'/spec/save/edit/detail/__${specificationForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+      th:action="@{'/spec/save/edit/detail/__${specificationForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
       th:object="${specificationForm}" method="POST">
     <div>
         <input id="specificationGroupId" name="specificationGroupId"
                th:value="${specificationForm.specificationGroupId}"
                type="hidden">
-        <input id="userId" name="userId"
-               th:value="${specificationGroupForm.userId}" type="hidden">
+        <input id="id" name="id"
+               th:value="${specificationGroupForm.id}" type="hidden">
         <input id="specificationId" name="specificationId"
                th:value="${specificationForm.specificationId}"
                type="hidden">
@@ -54,7 +54,7 @@
                         th:field="*{currencyId}">
                     <option th:each="currencyList : ${currencyLists}"
                             th:value="${currencyList.currencyId}"
-                            th:text="${currencyList.currencyName}">
+                            th:label="${currencyList.currencyName}">
                     </option>
                 </select>
             </td>
@@ -82,7 +82,7 @@
                         th:field="*{unitId}">
                     <option th:each="unit : ${units}"
                             th:value="${unit.unitId}"
-                            th:text="${unit.unitName}">
+                            th:label="${unit.unitName}">
                     </option>
                 </select>
             </td>
@@ -99,7 +99,7 @@
                         th:field="*{taxTypeId}">
                     <option th:each="taxType : ${taxTypes}"
                             th:value="${taxType.taxTypeId}"
-                            th:text="${taxType.taxTypeName}">
+                            th:label="${taxType.taxTypeName}">
                     </option>
                 </select>
             </td>
@@ -116,7 +116,7 @@
                         th:field="*{taxRateId}">
                     <option th:each="taxRate : ${taxRates}"
                             th:value="${taxRate.taxRateId}"
-                            th:text="'__${taxRate.taxRate}__' + '%'">
+                            th:label="'__${taxRate.taxRate}__' + '%'">
                     </option>
                 </select>
             </td>
@@ -148,7 +148,7 @@
 <div>
 </div>
 
-<input onclick="location.href='/top'" type="submit" value="トップ画面"/>
+<input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
 <input onclick="location.href='/spec'" type="submit" value="前の画面">
 <input form="specDetail" type="submit" value="登　録">
 

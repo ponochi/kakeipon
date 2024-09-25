@@ -15,7 +15,7 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
       value = "SELECT" +
           " MAX(ts.specification_id) + 1" +
           " FROM" +
-          "   tbl_specification ts" +
+          "   specification ts" +
           " WHERE" +
           "   ts.specification_group_id = ?1")
   Long getMaxId(Long specificationGroupId);
@@ -24,7 +24,7 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
       value = "SELECT" +
           " ts.specification_id," +
           " ts.specification_group_id," +
-          " ts.user_id," +
+          " ts.id," +
           " ts.name," +
           " ts.price," +
           " ts.currency_id," +
@@ -39,28 +39,29 @@ public interface SpecificationRepository extends JpaRepository<Specification, Lo
           " ts.update_date," +
           " ts.version" +
           " FROM" +
-          "   tbl_specification ts" +
+          "   specification ts" +
           " WHERE" +
           "   ts.specification_group_id = ?1" +
           " AND" +
           "   ts.specification_id = ?2" +
           " AND" +
-          "   ts.user_id = ?3" +
+          "   ts.id = ?3" +
           " AND" +
           "   ts.deleted = ?4")
-  Specification findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
-      Long specificationGroupId, Long specificationId, Long userId, Boolean deleted);
+  Specification findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
+      Long specificationGroupId, Long specificationId, Integer id, Boolean deleted);
 
   List<Specification> findAllByDeleted(Boolean deleted);
 
-  List<Specification> findBySpecificationGroupIdAndUserIdAndDeleted(Long specificationGroupId, Long userId, Boolean deleted);
+  List<Specification> findBySpecificationGroupIdAndIdAndDeleted(
+      Long specificationGroupId, Integer id, Boolean deleted);
 
   Specification saveAndFlush(Specification entity);
 
   @Modifying
   @Query(nativeQuery = true,
       value = "UPDATE" +
-          "   tbl_specification" +
+          "   specification" +
           " SET" +
           "   deleted = true" +
           " WHERE" +

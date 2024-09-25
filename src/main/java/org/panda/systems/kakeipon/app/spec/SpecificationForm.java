@@ -16,28 +16,26 @@ import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
 import org.panda.systems.kakeipon.domain.service.common.UnitService;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.RoleService;
-import org.panda.systems.kakeipon.domain.service.user.UserService;
+import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-@Table(name = "tbl_specification")
-@SecondaryTable(name = "tbl_specification_group",
+@Table(name = "specification")
+@SecondaryTable(name = "specification_group",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "specification_group_id"))
-@SecondaryTable(name = "tbl_user",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
-@SecondaryTable(name = "tbl_currency",
+@SecondaryTable(name = "users",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "currency",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_id"))
-@SecondaryTable(name = "tbl_unit",
+@SecondaryTable(name = "unit",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
-@SecondaryTable(name = "tbl_tax_type",
+@SecondaryTable(name = "tax_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_type_id"))
-@SecondaryTable(name = "tbl_tax_rate",
+@SecondaryTable(name = "tax_rate",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "tax_rate_id"))
 @Data
 public class SpecificationForm implements Serializable {
@@ -45,9 +43,7 @@ public class SpecificationForm implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Autowired
-  UserService userService;
-  @Autowired
-  RoleService roleService;
+  KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
   @Autowired
   CurrencyListService currencyListService;
   @Autowired
@@ -58,18 +54,18 @@ public class SpecificationForm implements Serializable {
   TaxRateService taxRateService;
 
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
+  @SequenceGenerator(name = "specification_group_seq", allocationSize = 1)
   @Column(name = "specification_group_id")
   private Long specificationGroupId;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_specification_seq", allocationSize = 1)
+  @SequenceGenerator(name = "specification_seq", allocationSize = 1)
   @Column(name = "specification_id")
   private Long specificationId;
 
-  @Column(name = "user_id")
-  private Long userId;
+  @Column(name = "id")
+  private Integer id;
 
   @Column
   private String name;
@@ -80,7 +76,7 @@ public class SpecificationForm implements Serializable {
   private Long currencyId;
 
   @ManyToOne
-  @JoinColumn(name = "currency_id", table = "tbl_currency",
+  @JoinColumn(name = "currency_id", table = "currency",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "currency_id")
@@ -89,7 +85,7 @@ public class SpecificationForm implements Serializable {
   private Long unitId;
 
   @ManyToOne
-  @JoinColumn(name = "unit_id", table = "tbl_unit",
+  @JoinColumn(name = "unit_id", table = "unit",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "unit_id")
@@ -101,7 +97,7 @@ public class SpecificationForm implements Serializable {
   private Long taxTypeId;
 
   @ManyToOne
-  @JoinColumn(name = "tax_type_id", table = "tbl_tax_type",
+  @JoinColumn(name = "tax_type_id", table = "tax_type",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_type_id")
@@ -111,7 +107,7 @@ public class SpecificationForm implements Serializable {
   private Long taxRateId;
 
   @ManyToOne
-  @JoinColumn(name = "tax_rate_id", table = "tbl_tax_rate",
+  @JoinColumn(name = "tax_rate_id", table = "tax_rate",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_rate_id")
@@ -150,7 +146,7 @@ public class SpecificationForm implements Serializable {
         = new Specification();
 
     this.setSpecificationId(specification.getSpecificationId());
-    this.setUserId(specification.getUserId());
+    this.setId(specification.getId());
     this.setName(specification.getName());
     this.setPrice(Long.parseLong("0"));
     this.setCurrencyId(specification.getCurrencyId());
@@ -173,7 +169,7 @@ public class SpecificationForm implements Serializable {
         specification.getSpecificationGroupId());
     form.setSpecificationId(specification.getSpecificationId());
 
-    form.setUserId(specification.getUserId());
+    form.setId(specification.getId());
 
     form.setName(specification.getName());
     form.setPrice(specification.getPrice());
@@ -197,7 +193,7 @@ public class SpecificationForm implements Serializable {
 
     specification.setSpecificationGroupId(this.getSpecificationGroupId());
     specification.setSpecificationId(this.getSpecificationId());
-    specification.setUserId(this.getUserId());
+    specification.setId(this.getId());
     specification.setName(this.getName());
     specification.setPrice(this.getPrice());
     specification.setCurrencyId(this.getCurrencyId());

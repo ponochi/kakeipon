@@ -6,21 +6,22 @@ import lombok.Data;
 import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
 import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.app.shop.ShopForm;
-import org.panda.systems.kakeipon.app.user.RoleForm;
+import org.panda.systems.kakeipon.app.user.UserExtForm;
 import org.panda.systems.kakeipon.app.user.UserForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
+import org.panda.systems.kakeipon.domain.model.user.User;
+import org.panda.systems.kakeipon.domain.model.user.UserExt;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
 import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
 import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.RoleService;
-import org.panda.systems.kakeipon.domain.service.user.UserService;
+import org.panda.systems.kakeipon.domain.service.user.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -30,18 +31,20 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Table(name = "tbl_specification_group")
-@SecondaryTable(name = "tbl_user",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
-@SecondaryTable(name = "tbl_shop",
+@Table(name = "specification_group")
+@SecondaryTable(name = "users",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "usersExt",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+@SecondaryTable(name = "shop",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "shop_id"))
-@SecondaryTable(name = "tbl_balance_type",
+@SecondaryTable(name = "balance_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_type_id"))
-@SecondaryTable(name = "tbl_account_and_balance",
+@SecondaryTable(name = "account_and_balance",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_and_balance_id"))
-@SecondaryTable(name = "tbl_account_info",
+@SecondaryTable(name = "account_info",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_source_id"))
-@SecondaryTable(name = "tbl_account_info",
+@SecondaryTable(name = "account_info",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "account_destination_id"))
 @Data
 public class SpecificationGroupForm implements Serializable {
@@ -50,25 +53,35 @@ public class SpecificationGroupForm implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_specification_group_seq", allocationSize = 1)
+  @SequenceGenerator(name = "specification_group_seq", allocationSize = 1)
   @Column(name = "specification_group_id")
   Long specificationGroupId;
 
-  @Column(name = "user_id")
-  Long userId;
+  @Column(name = "id")
+  Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "user_id", table = "tbl_user",
+  @JoinColumn(name = "id", table = "users_ext",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
-  @Column(name = "user_id")
-  UserForm userForm;
+  @Column(name = "id")
+  UserExtForm userExtForm;
+
+  @Column(name = "username")
+  String username;
+
+  @OneToOne
+  @JoinColumn(name = "username", table = "users",
+      insertable = false, updatable = false)
+  @PrimaryKeyJoinColumn
+  @Column(name = "username")
+  KakeiPonUsersDetails kakeiPonUsersDetails;
 
   @Column(name = "shop_id")
   Long shopId;
 
   @OneToOne
-  @JoinColumn(name = "shop_id", table = "tbl_shop",
+  @JoinColumn(name = "shop_id", table = "shop",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "shop_id")
@@ -84,7 +97,7 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "balance_type_id")
   Long balanceTypeId;
 
-  @JoinColumn(name = "balance_type_id", table = "tbl_balance_type",
+  @JoinColumn(name = "balance_type_id", table = "balance_type",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "balance_type_id")
@@ -94,7 +107,7 @@ public class SpecificationGroupForm implements Serializable {
   Long accountAndBalanceId;
 
   @OneToOne
-  @JoinColumn(name = "account_and_balance_id", table = "tbl_account_and_balance",
+  @JoinColumn(name = "account_and_balance_id", table = "account_and_balance",
       insertable = false, updatable = false)
   @Column(name = "account_and_balance_id")
   AccountAndBalanceForm accountAndBalanceForm;
@@ -126,14 +139,16 @@ public class SpecificationGroupForm implements Serializable {
                                 AccountAndBalanceService accountAndBalanceService,
                                 AccountSourceService accountSourceService,
                                 AccountDestinationService accountDestinationService,
-                                UserService userService,
-                                RoleService roleService,
+                                KakeiPonUsersDetailsService kakeiPonUsersService,
+                                AuthoritiesService authoritiesService,
+                                UserExtService userExtService,
                                 ShopService shopService,
                                 BalanceTypeService balanceTypeService,
                                 CurrencyListService currencyListService,
                                 UnitService unitService,
                                 TaxTypeService taxTypeService,
-                                TaxRateService taxRateService) {
+                                TaxRateService taxRateService,
+                                Integer id) {
 
     AccountAndBalanceForm accountAndBalanceForm
         = new AccountAndBalanceForm(
@@ -143,28 +158,15 @@ public class SpecificationGroupForm implements Serializable {
         null,
         Long.parseLong("1"),
         Long.parseLong("1"));
-    UserForm userForm = new UserForm(
-        userService,
-        roleService,
-        Long.parseLong("2"));
-    this.setUserId(userForm.getUserId());
-    this.setUserForm(userForm);
-    this.setUserToForm(
-        roleService,
-        userForm.getUserId(),
-        userForm.getNickName(),
-        userForm.getLastName(),
-        userForm.getFirstName(),
-        userForm.getBirthDay(),
-        userForm.getPassword(),
-        userForm.getPhoneNumber(),
-        userForm.getEmail(),
-        userForm.getRoleForm().getRoleId(),
-        userForm.getEntryDate(),
-        userForm.getUpdateDate());
+    User user = kakeiPonUsersService.findById(id);
+    this.setId(id);
+    this.setUsersToForm(
+        kakeiPonUsersService,
+        authoritiesService,
+        user);
 
-    this.getUserForm().setRoleId(
-        this.getUserForm().getRoleForm().getRoleId());
+    UserExt userExt = userExtService.findById(id);
+    this.setUserExtToForm(userExt);
 
     ShopForm shopForm = new ShopForm(shopService,
         Long.parseLong("1"));
@@ -223,21 +225,26 @@ public class SpecificationGroupForm implements Serializable {
     this.setGroupMemo("");
     this.setDeleted(false);
 
-    // ToDo: Fix this
-    specificationGroupService.saveAndFlushSpecificationGroup(this.toEntity());
+    specificationGroupService
+        .saveAndFlushSpecificationGroup(
+            this.toEntity());
 
     SpecificationForm specForm = new SpecificationForm();
 
+    User userTemporary = kakeiPonUsersService.findById(id);
     List<Specification> specifications
-        = specificationService.findBySpecificationGroupIdAndUserIdAndDeleted(
-        specificationGroupService.getMaxGroupId(), userId, false);
+        = specificationService
+        .findBySpecificationGroupIdAndUsernameAndDeleted(
+            specificationGroupService.getMaxGroupId(),
+            userTemporary.getUsername(),
+            false);
     if (specifications.size() > 0) {
       Long count = Long.parseLong("1");
       for (Specification specification : specifications) {
         specForm.setSpecificationGroupId(
             specificationGroupService.getMaxGroupId());
         specForm.setSpecificationId(count);
-        specForm.setUserId(this.getUserId());
+        specForm.setId(this.getId());
         specForm.setName("");
         specForm.setPrice(Long.parseLong("0"));
         specForm.setCurrencyId(Long.parseLong("1"));
@@ -260,34 +267,46 @@ public class SpecificationGroupForm implements Serializable {
 
   public SpecificationGroupForm(SpecificationGroupService service,
                                 Long specificationGroupId,
+                                String username,
+//                                Integer id,
                                 Boolean deleted) {
     if (specificationGroupId == null) {
-      this.setSpecificationGroupId(Long.parseLong("0"));
+      this.setSpecificationGroupId(null);
+      this.setId(id);
+      this.setShopId(Long.parseLong("1"));
+      this.setBalanceTypeId(Long.parseLong("1"));
+      this.setDeleted(false);
+      this.setEntryDate(LocalDateTime.now());
     } else {
       this.setSpecificationGroupId(specificationGroupId);
-    }
 
-    SpecificationGroup group = service.findById(
-        this.getSpecificationGroupId(), deleted);
-    this.setUserId(group.getUserId());
-    this.setShopId(group.getShopId());
-    this.setReceivingAndPaymentDate(group.getReceivingAndPaymentDate());
-    this.setReceivingAndPaymentTime(group.getReceivingAndPaymentTime());
-    this.setBalanceTypeId(group.getBalanceTypeId());
-    this.setAccountAndBalanceId(group.getAccountAndBalanceId());
-    this.setGroupMemo(group.getGroupMemo());
-    this.setDeleted(group.getDeleted());
-    if (group.getEntryDate() == null) {
-      this.setEntryDate(LocalDateTime.now());
-      this.setUpdateDate(group.getUpdateDate());
-    } else {
-      this.setEntryDate(group.getEntryDate());
-      this.setUpdateDate(LocalDateTime.now());
+      SpecificationGroup group
+          = service.findBySpecificationGroupIdAndUsernameAndDeleted(
+              specificationGroupId, username, false);
+
+      this.setId(group.getId());
+      this.setShopId(group.getShopId());
+      this.setReceivingAndPaymentDate(group.getReceivingAndPaymentDate());
+      this.setReceivingAndPaymentTime(group.getReceivingAndPaymentTime());
+      this.setBalanceTypeId(group.getBalanceTypeId());
+      this.setAccountAndBalanceId(group.getAccountAndBalanceId());
+      this.setGroupMemo(group.getGroupMemo());
+      this.setDeleted(group.getDeleted());
+      if (group.getEntryDate() == null) {
+        this.setEntryDate(LocalDateTime.now());
+        this.setUpdateDate(group.getUpdateDate());
+      } else {
+        this.setEntryDate(group.getEntryDate());
+        this.setUpdateDate(LocalDateTime.now());
+      }
+      this.setVersion(group.getVersion());
     }
-    this.setVersion(group.getVersion());
   }
 
   public SpecificationGroupForm setSpecificationGroupToForm(
+      KakeiPonUsersDetailsService kakeiPonUserDetailsService,
+      ShopService shopService,
+      BalanceTypeService balanceTypeService,
       AccountAndBalanceService accountAndBalanceService,
       AccountSourceService accountSourceService,
       AccountDestinationService accountDestinationService,
@@ -298,14 +317,50 @@ public class SpecificationGroupForm implements Serializable {
     form.setSpecificationGroupId(
         specificationGroup.getSpecificationGroupId());
 
-    form.setUserId(specificationGroup.getUserId());
+    form.setId(specificationGroup.getId());
+    User user
+        = kakeiPonUserDetailsService
+        .findById(specificationGroup.getId());
+    KakeiPonUsersDetails kakeiPonUserDetails
+        = new KakeiPonUsersDetails();
+    kakeiPonUserDetails.setId(user.getId());
+    kakeiPonUserDetails.setPassword(user.getPassword());
+    kakeiPonUserDetails.setUsername(user.getUsername());
+    kakeiPonUserDetails.setAccountNonExpired(true);
+    kakeiPonUserDetails.setAccountNonLocked(true);
+    kakeiPonUserDetails.setCredentialsNonExpired(true);
+    kakeiPonUserDetails.setEnabled(true);
+    form.setKakeiPonUsersDetails(kakeiPonUserDetails);
+
+    UserExt userExt = new UserExt();
+    userExt.setId(user.getId());
+    userExt.setLastName(userExt.getLastName());
+    userExt.setFirstName(userExt.getFirstName());
+    userExt.setBirthDay(userExt.getBirthDay());
+    userExt.setPhoneNumber(userExt.getPhoneNumber());
+    userExt.setEmail(userExt.getEmail());
+    userExt.setEntryDate(userExt.getEntryDate());
+    userExt.setUpdateDate(userExt.getUpdateDate());
+    UserExtForm userExtForm = form.setUserExtToForm(userExt);
+    form.setUserExtForm(userExtForm);
 
     form.setShopId(specificationGroup.getShopId());
+    Shop shop = shopService.findById(specificationGroup.getShopId());
+    shopForm = form.setShopToForm(shop);
+    form.setShopForm(shopForm);
+
     form.setReceivingAndPaymentDate(
         specificationGroup.getReceivingAndPaymentDate());
     form.setReceivingAndPaymentTime(
         specificationGroup.getReceivingAndPaymentTime());
+
     form.setBalanceTypeId(specificationGroup.getBalanceTypeId());
+    BalanceType balanceType
+        = balanceTypeService.findById(
+        specificationGroup.getBalanceTypeId());
+    balanceTypeForm = form.setBalanceTypeToForm(balanceType);
+    form.setBalanceTypeForm(balanceTypeForm);
+
     form.setAccountAndBalanceId(
         specificationGroup.getAccountAndBalanceId());
     AccountAndBalance accountAndBalance
@@ -313,8 +368,11 @@ public class SpecificationGroupForm implements Serializable {
         specificationGroup.getAccountAndBalanceId());
     accountAndBalanceForm = form.setAccountAndBalanceToForm(accountAndBalance);
     form.setAccountAndBalanceForm(accountAndBalanceForm);
+
     form.setGroupMemo(specificationGroup.getGroupMemo());
+
     form.setDeleted(specificationGroup.getDeleted());
+
     if (specificationGroup.getEntryDate() == null) {
       form.setEntryDate(LocalDateTime.now());
       form.setUpdateDate(specificationGroup.getUpdateDate());
@@ -332,7 +390,7 @@ public class SpecificationGroupForm implements Serializable {
 
     specificationGroup.setSpecificationGroupId(
         this.getSpecificationGroupId());
-    specificationGroup.setUserId(this.getUserId());
+    specificationGroup.setId(this.getId());
     specificationGroup.setShopId(this.getShopId());
     specificationGroup.setReceivingAndPaymentDate(
         this.getReceivingAndPaymentDate());
@@ -355,42 +413,45 @@ public class SpecificationGroupForm implements Serializable {
     return specificationGroup;
   }
 
-  // Setter for User
-  public UserForm setUserToForm(RoleService service,
-                                Long userId,
-                                String nickName,
-                                String lastName,
-                                String firstName,
-                                LocalDateTime birthDay,
-                                String password,
-                                String phoneNumber,
-                                String email,
-                                Long roleId,
-//                                String roleName,
-                                LocalDateTime entryDate,
-                                LocalDateTime updateDate) {
-    this.userForm = new UserForm();
+  public UserForm setUsersToForm(
+      KakeiPonUsersDetailsService kakeiPonUsersService,
+      AuthoritiesService authoritiesService,
+      User user) {
+    UserForm userForm = new UserForm(
+        kakeiPonUsersService,
+        authoritiesService
+    );
 
-    this.userForm.setUserId(userId);
-    this.userForm.setNickName(nickName);
-    this.userForm.setLastName(lastName);
-    this.userForm.setFirstName(firstName);
-    this.userForm.setBirthDay(birthDay);
-    this.userForm.setPassword(password);
-    this.userForm.setPhoneNumber(phoneNumber);
-    this.userForm.setEmail(email);
-    this.userForm.setRoleForm(new RoleForm(service, roleId));
-    this.userForm.getRoleForm().setRoleId(roleId);
-//    this.userForm.getRoleForm().setRoleName(roleName);
+    userForm.setId(user.getId());
+    userForm.setUsername(user.getUsername());
+    userForm.setPassword(user.getPassword());
+    userForm.setEnabled(true);
+    userForm.setAccountNonExpired(true);
+    userForm.setAccountNonLocked(true);
+    userForm.setCredentialsNonExpired(true);
+
+
+    return userForm;
+  }
+
+  public UserExtForm setUserExtToForm(UserExt userExt) {
+    UserExtForm userExtForm = new UserExtForm();
+
+    userExtForm.setId(userExt.getId());
+    userExtForm.setLastName(userExt.getLastName());
+    userExtForm.setFirstName(userExt.getFirstName());
+    userExtForm.setBirthDay(userExt.getBirthDay());
+    userExtForm.setPhoneNumber(userExt.getPhoneNumber());
+    userExtForm.setEmail(userExt.getEmail());
     if (entryDate == null) {
-      this.userForm.setEntryDate(LocalDateTime.now());
-      this.userForm.setUpdateDate(updateDate);
+      userExtForm.setEntryDate(LocalDateTime.now());
+      userExtForm.setUpdateDate(userExt.getUpdateDate());
     } else {
-      this.userForm.setEntryDate(entryDate);
-      this.userForm.setUpdateDate(LocalDateTime.now());
+      userExtForm.setEntryDate(userExt.getEntryDate());
+      userExtForm.setUpdateDate(LocalDateTime.now());
     }
 
-    return this.userForm;
+    return userExtForm;
   }
 
   public ShopForm setShopToForm(Shop shop) {

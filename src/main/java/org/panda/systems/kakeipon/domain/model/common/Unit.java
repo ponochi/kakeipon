@@ -7,7 +7,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "tbl_unit")
+@Table(name = "unit")
 @Data
 public class Unit implements Serializable {
   @Serial
@@ -15,7 +15,7 @@ public class Unit implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "tbl_unit_seq", allocationSize = 1)
+  @SequenceGenerator(name = "unit_seq", allocationSize = 1)
   @Column(name = "unit_id")
   private Long unitId;
 
