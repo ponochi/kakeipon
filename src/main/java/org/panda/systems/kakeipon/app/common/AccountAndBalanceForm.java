@@ -24,6 +24,10 @@ public class AccountAndBalanceForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final AccountAndBalanceService accountAndBalanceService;
+  private final AccountSourceService accountSourceService;
+  private final AccountDestinationService accountDestinationService;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "account_and_balance_eq", allocationSize = 1)
@@ -61,14 +65,25 @@ public class AccountAndBalanceForm implements Serializable {
   // Default constructor
   public AccountAndBalanceForm() {
 
+    this.accountAndBalanceService = null;
+    this.accountSourceService = null;
+    this.accountDestinationService = null;
   }
 
-  public AccountAndBalanceForm(AccountAndBalanceService accountAndBalanceService,
-                               AccountSourceService accountSourceService,
-                               AccountDestinationService accountDestinationService,
-                               Long accountAndBalanceId,
-                               Long accountSourceId,
-                               Long accountDestinationId) {
+  public AccountAndBalanceForm(
+      AccountAndBalanceService accountAndBalanceService,
+      AccountSourceService accountSourceService,
+      AccountDestinationService accountDestinationService) {
+
+    this.accountAndBalanceService = accountAndBalanceService;
+    this.accountSourceService = accountSourceService;
+    this.accountDestinationService = accountDestinationService;
+  }
+
+  public AccountAndBalanceForm setAccountAndBalanceFormAndAccountSourceFormAndAccountDestinationForm(
+      Long accountAndBalanceId,
+      Long accountSourceId,
+      Long accountDestinationId) {
 
     AccountAndBalance accountAndBalance = new AccountAndBalance();
 
@@ -81,7 +96,8 @@ public class AccountAndBalanceForm implements Serializable {
     }
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-            accountSourceService,
+        accountSourceService)
+        .setAccountSourceFormByDB(
             this.getAccountSourceId());
     this.setAccountSourceForm(accountSourceForm);
 
@@ -92,7 +108,8 @@ public class AccountAndBalanceForm implements Serializable {
     }
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-            accountDestinationService,
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
             this.getAccountDestinationId());
     this.setAccountDestinationForm(accountDestinationForm);
 
@@ -108,9 +125,11 @@ public class AccountAndBalanceForm implements Serializable {
 
     accountAndBalance
         = accountAndBalanceService.getById(
-            accountAndBalanceService.getMaxAccountAndBalanceId());
+        accountAndBalanceService.getMaxAccountAndBalanceId());
 
     this.setAccountAndBalanceToForm(accountAndBalance);
+
+    return this;
   }
 
   public AccountAndBalance toEntity() {
@@ -188,7 +207,8 @@ public class AccountAndBalanceForm implements Serializable {
 
   public AccountDestinationForm setAccountDestinationToForm(
       AccountDestination accountDestination) {
-    AccountDestinationForm form = new AccountDestinationForm();
+    AccountDestinationForm form = new AccountDestinationForm(
+        accountDestinationService);
 
     form.setAccountDestinationId(accountDestination.getAccountDestinationId());
     form.setAccountName(accountDestination.getAccountName());

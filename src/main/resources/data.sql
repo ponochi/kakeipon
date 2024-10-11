@@ -1,33 +1,33 @@
 --[users]========================================================================================
-INSERT INTO users(username, password, enabled)
-VALUES ('juiceA',
+INSERT INTO users(user_id, id, password, role_name, enabled)
+VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceA',
         '{bcrypt}$2a$10$mekheplkOdsT5v5VLdF.heNd60EEXT3JyVU9qpq.DscBxmMkdutOa',
-        true); -- password: test,
+        'ADMIN', true); -- password: test,
 --[users_ext]========================================================================================
-INSERT INTO users_ext(id, last_name, first_name, email, birth_day,
+INSERT INTO users_ext(user_id, last_name, first_name, email, birth_day,
                       phone_number, entry_date, update_date)
-VALUES ((SELECT MAX(id) FROM users), 'Foo1', 'Bar1',
+VALUES ((SELECT MAX(user_id) AS user_id FROM users), 'Foo1', 'Bar1',
         'juiceA@example.com', '1971-12-31 00:00:00',
         '00011112222',
         '2024-07-19 00:00:00', NULL); -- password: test
 
-INSERT INTO users(username, password, enabled)
-VALUES ('juiceB',
+INSERT INTO users(user_id, id, password, role_name, enabled)
+VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceB',
         '{bcrypt}$2a$10$yVqiUjrYj5jPMMZ0/M2xh.J6PZqiONu4QT3oB4ZNuF/z1RQX.qLE2',
-        true); -- password: test,
+        'USER', true); -- password: test,
 --[users_ext]========================================================================================
-INSERT INTO users_ext(id, last_name, first_name, email, birth_day,
+INSERT INTO users_ext(user_id, last_name, first_name, email, birth_day,
                       phone_number, entry_date, update_date)
-VALUES ((SELECT MAX(id) FROM users), 'Foo2', 'Bar2',
+VALUES ((SELECT MAX(user_id) AS user_id FROM users), 'Foo2', 'Bar2',
         'juiceB@example.com', '1970-01-01 00:00:00',
         '00011112222',
         '2024-07-20 00:00:00', NULL); -- password: test
 
 --[authorities]==================================================================================
-INSERT INTO authorities(username, authority)
-VALUES ('juiceA', 'ADMIN');
-INSERT INTO authorities(username, authority)
-VALUES ('juiceB', 'USER');
+-- INSERT INTO authorities(username, authority)
+-- VALUES ('juiceA', 'ADMIN');
+-- INSERT INTO authorities(username, authority)
+-- VALUES ('juiceB', 'USER');
 
 --[first_class]=================================================================================
 --[支出]===========================================================================================
@@ -699,11 +699,11 @@ INSERT INTO unit(unit_name) VALUES ('kg');
 INSERT INTO account_and_balance(account_source_id, account_destination_id, entry_date, update_date) VALUES (1, 1, '2024-09-09T00:00:00', null);
 INSERT INTO account_and_balance(account_source_id, account_destination_id, entry_date, update_date) VALUES (1, 1, '2024-09-09T00:00:00', null);
 
-INSERT INTO specification_group(id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, group_memo, entry_date, update_date) VALUES (2, 2, '2024-09-09', '00:00:00', 1, 1, 'めもめも１', '2024-09-09T00:00:00', null);
-INSERT INTO specification_group(id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, group_memo, entry_date, update_date) VALUES (2, 3, '2024-09-09', '00:00:00', 1, 2, 'めもめも２', '2024-09-09T00:00:00', null);
+INSERT INTO specification_group(user_id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, group_memo, entry_date, update_date) VALUES (2, 2, '2024-09-09', '00:00:00', 1, 1, 'めもめも１', '2024-09-09T00:00:00', null);
+INSERT INTO specification_group(user_id, shop_id, receiving_and_payment_date, receiving_and_payment_time, balance_type_id, account_and_balance_id, group_memo, entry_date, update_date) VALUES (2, 3, '2024-09-09', '00:00:00', 1, 2, 'めもめも２', '2024-09-09T00:00:00', null);
 
-INSERT INTO specification(specification_group_id, id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (1, 2, '広島DXつけ麺', 299, 1, 1, 1, 2, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);
-INSERT INTO specification(specification_group_id, id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (1, 2, '濃厚もっちり絹厚揚', 89, 1, 1, 1, 1, 1, 7, '', false, '2024-09-09T12:00:00', null, 0);
-INSERT INTO specification(specification_group_id, id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'チキンカツ１', 280, 1, 1, 1, 1, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);
-INSERT INTO specification(specification_group_id, id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'ナポリタン', 220, 1, 1, 1, 2, 1, 16, '', false, '2024-09-09T12:00:00', null, 0);
-INSERT INTO specification(specification_group_id, id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'チキンカツ２', 280, 1, 1, 1, 1, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);
+INSERT INTO specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (1, 2, '広島DXつけ麺', 299, 1, 1, 1, 2, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);
+INSERT INTO specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (1, 2, '濃厚もっちり絹厚揚', 89, 1, 1, 1, 1, 1, 7, '', false, '2024-09-09T12:00:00', null, 0);
+INSERT INTO specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'チキンカツ１', 280, 1, 1, 1, 1, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);
+INSERT INTO specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'ナポリタン', 220, 1, 1, 1, 2, 1, 16, '', false, '2024-09-09T12:00:00', null, 0);
+INSERT INTO specification(specification_group_id, user_id, name, price, currency_id, quantity, unit_id, tax_type_id, tax_rate_id, tax, spec_memo, deleted, entry_date, update_date, version) VALUES (2, 2, 'チキンカツ２', 280, 1, 1, 1, 1, 1, 22, '', false, '2024-09-09T00:00:00', null, 0);

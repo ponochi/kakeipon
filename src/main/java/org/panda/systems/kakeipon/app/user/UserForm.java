@@ -3,11 +3,9 @@ package org.panda.systems.kakeipon.app.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.panda.systems.kakeipon.app.login.AuthoritiesForm;
-import org.panda.systems.kakeipon.domain.model.user.Authorities;
+import org.panda.systems.kakeipon.domain.model.user.RoleName;
 import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.service.user.AuthoritiesService;
-import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
+import org.panda.systems.kakeipon.domain.service.user.UsersDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,16 +15,16 @@ import java.io.Serializable;
 
 @Table(name = "users")
 @SecondaryTable(name = "users_ext",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
-@SecondaryTable(name = "authorities",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+//@SecondaryTable(name = "authorities",
+//    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 @Data
 public class UserForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
-  private AuthoritiesService authoritiesService;
+  private final UsersDetailsService usersDetailsService;
+//  private final AuthoritiesService authoritiesService;
 
   @Bean
   PasswordEncoder passwordEncoder() {
@@ -34,35 +32,36 @@ public class UserForm implements Serializable {
         .createDelegatingPasswordEncoder();
   }
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "users_seq", allocationSize = 1)
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @OneToOne
-  @JoinColumn(name = "id", table = "users_ext",
-      referencedColumnName = "id",
+  @JoinColumn(name = "user_id", table = "users_ext",
+      referencedColumnName = "user_id",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
-  @Column(name = "id")
+  @Column(name = "user_id")
   private UserExtForm userExtForm;
 
   @NotEmpty(message = "ユーザ名は必須です")
-  @Column(name = "username")
-  private String username;
+  @Column(name = "id")
+  private String id;
 
   @NotEmpty(message = "パスワードは必須です")
   @Column(name = "password")
   private String password;
 
-  @OneToOne
-  @JoinColumn(name = "username", table = "authorities",
-      referencedColumnName = "username",
-      insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn
-  @Column(name = "username")
-  private AuthoritiesForm authoritiesForm;
+//  @OneToOne
+//  @JoinColumn(name = "username", table = "authorities",
+//      referencedColumnName = "username",
+//      insertable = false, updatable = false)
+//  @PrimaryKeyJoinColumn
+//  @Column(name = "username")
+//  private AuthoritiesForm authoritiesForm;
+
+  @Column(name = "role_name")
+  @Enumerated(EnumType.STRING)
+  private RoleName roleName;
 
   @Column(name = "enabled")
   private Boolean enabled;
@@ -78,30 +77,35 @@ public class UserForm implements Serializable {
 
   // Default constructor
   public UserForm() {
-//    this.setId(Integer.parseInt("1"));
+    this.usersDetailsService = null;
+//    this.authoritiesService = null;
   }
 
   public UserForm(
-      KakeiPonUsersDetailsService kakeiPonUsersDetailsService,
-      AuthoritiesService authoritiesService) {
+      UsersDetailsService usersDetailsService) {
+    //    AuthoritiesService authoritiesService) {
 
-    this.kakeiPonUsersDetailsService = kakeiPonUsersDetailsService;
-    this.authoritiesService = authoritiesService;
+    this.usersDetailsService = usersDetailsService;
+//    this.authoritiesService = authoritiesService;
   }
 
   public UserForm setUserToForm(
-      KakeiPonUsersDetailsService kakeiPonUsersDetailsService,
-      AuthoritiesService authoritiesService,
+      UsersDetailsService usersDetailsService,
+//      AuthoritiesService authoritiesService,
       User user) {
-    UserForm userForm = new UserForm();
 
+    UserForm userForm = new UserForm(
+        usersDetailsService);
+//        authoritiesService);
+
+    userForm.setUserId(user.getUserId());
     userForm.setId(user.getId());
-    userForm.setUsername(user.getUsername());
     userForm.setPassword(user.getPassword());
+    userForm.setRoleName(user.getRoleName());
 
-    Authorities authorities = authoritiesService.findByUsername(
-        user.getUsername());
-    userForm.setAuthoritiesToForm(authorities);
+//    Authorities authorities = authoritiesService.findByUsername(
+//        user.getId());
+//    userForm.setAuthoritiesToForm(authorities);
     userForm.setEnabled(user.getEnabled());
     userForm.setAccountNonExpired(true);
     userForm.setAccountNonLocked(true);
@@ -110,15 +114,15 @@ public class UserForm implements Serializable {
     return userForm;
   }
 
-  public AuthoritiesForm setAuthoritiesToForm(
-      Authorities authorities) {
-
-    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
-
-    authoritiesForm.setId(authorities.getId());
-    authoritiesForm.setUsername(authorities.getUsername());
-    authoritiesForm.setAuthority(authorities.getAuthority());
-
-    return authoritiesForm;
-  }
+//  public AuthoritiesForm setAuthoritiesToForm(
+//      Authorities authorities) {
+//
+//    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
+//
+//    authoritiesForm.setId(authorities.getId());
+//    authoritiesForm.setUsername(authorities.getUsername());
+//    authoritiesForm.setAuthority(authorities.getAuthority());
+//
+//    return authoritiesForm;
+//  }
 }

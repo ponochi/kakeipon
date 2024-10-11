@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("")
 public class AccountController {
-  @Autowired
-  AccountAndBalanceService accountAndBalanceService;
-  @Autowired
-  ShopService shopService;
-  @Autowired
-  SpecificationGroupService specificationGroupService;
-  @Autowired
-  AccountSourceService accountSourceService;
-  @Autowired
-  AccountDestinationService accountDestinationService;
+//  @Autowired
+//  AccountAndBalanceService accountAndBalanceService;
+//  @Autowired
+//  ShopService shopService;
+//  @Autowired
+//  SpecificationGroupService specificationGroupService;
+//  @Autowired
+//  AccountSourceService accountSourceService;
+//  @Autowired
+//  AccountDestinationService accountDestinationService;
 }

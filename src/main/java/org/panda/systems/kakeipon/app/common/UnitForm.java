@@ -14,6 +14,8 @@ public class UnitForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final UnitService unitService;
+
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   @SequenceGenerator(name = "unit_seq", allocationSize = 1)
@@ -26,13 +28,21 @@ public class UnitForm implements Serializable {
   // Default constructor
   public UnitForm() {
 
+    this.unitService = null;
   }
 
-  public UnitForm(UnitService service,
-                  Long unitId) {
-    Unit unit = service.findById(unitId);
+  public UnitForm(UnitService unitService) {
+
+    this.unitService = unitService;
+  }
+
+  public UnitForm setUnitFormByDB(Long unitId) {
+
+    Unit unit = unitService.findById(unitId);
 
     this.unitId = unit.getUnitId();
     this.unitName = unit.getUnitName();
+
+    return this;
   }
 }

@@ -20,8 +20,8 @@ public class UserExt implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column(name = "first_name")
   private String firstName;

@@ -19,6 +19,8 @@ public class AccountSourceForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final AccountSourceService accountSourceService;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "account_info_seq", allocationSize = 1)
@@ -43,20 +45,29 @@ public class AccountSourceForm implements Serializable {
   // Default constructor
   public AccountSourceForm() {
 
+    this.accountSourceService = null;
   }
 
-  public AccountSourceForm (AccountSourceService service,
-                            Long accountSourceId) {
+  public AccountSourceForm(
+      AccountSourceService accountSourceService) {
+
+    this.accountSourceService = accountSourceService;
+  }
+
+  public AccountSourceForm setAccountSourceFormByDB(Long accountSourceId) {
+
     if (accountSourceId == null) {
       this.setAccountSourceId(Long.parseLong("1"));
     } else {
       this.setAccountSourceId(accountSourceId);
     }
     AccountSource source
-        = service.findById(this.getAccountSourceId());
+        = accountSourceService.findById(this.getAccountSourceId());
     this.setAccountName(source.getAccountName());
     this.setBranchName(source.getBranchName());
     this.setEntryDate(source.getEntryDate());
     this.setUpdateDate(source.getUpdateDate());
+
+    return this;
   }
 }

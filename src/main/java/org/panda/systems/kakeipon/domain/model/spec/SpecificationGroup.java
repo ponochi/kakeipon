@@ -29,8 +29,8 @@ public class SpecificationGroup implements Serializable {
   @Column(name = "specification_group_id")
   private Long specificationGroupId;
 
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column(name = "shop_id")
   private Long shopId;

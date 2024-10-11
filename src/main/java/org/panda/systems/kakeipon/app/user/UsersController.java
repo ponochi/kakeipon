@@ -1,7 +1,5 @@
 package org.panda.systems.kakeipon.app.user;
 
-import org.panda.systems.kakeipon.app.login.AuthoritiesForm;
-import org.panda.systems.kakeipon.domain.model.user.Authorities;
 import org.panda.systems.kakeipon.domain.model.user.RoleName;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.model.user.UserExt;
@@ -21,11 +19,11 @@ import java.util.List;
 @RequestMapping("/users")
 public class UsersController {
   @Autowired
-  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
+  private UsersDetailsService usersDetailsService;
   @Autowired
   private UserExtService userExtService;
-  @Autowired
-  private AuthoritiesService authoritiesService;
+//  @Autowired
+//  private AuthoritiesService authoritiesService;
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -36,7 +34,7 @@ public class UsersController {
 
   private void setUsers(UserForm form, User user) {
     user.setId(form.getId());
-    user.setUsername(form.getUsername());
+    user.setUserId(form.getUserId());
     user.setPassword(passwordEncoder.encode(form.getPassword()));
     user.setEnabled(true);
 //    user.setAccountNonExpired(true);
@@ -45,7 +43,7 @@ public class UsersController {
   }
 
   private void setUsersExt(UserExtForm form, UserExt userExt) {
-    userExt.setId(form.getId());
+    userExt.setUserId(form.getUserId());
     userExt.setLastName(form.getLastName());
     userExt.setFirstName(form.getFirstName());
     userExt.setEmail(form.getEmail());
@@ -60,64 +58,64 @@ public class UsersController {
     }
   }
 
-  private void setAuthorities(AuthoritiesForm form, Authorities authorities) {
-    authorities.setId(form.getId());
-    authorities.setUsername(form.getUsername());
-    authorities.setAuthority(form.getAuthority());
-  }
+//  private void setAuthorities(AuthoritiesForm form, Authorities authorities) {
+//    authorities.setId(form.getId());
+//    authorities.setUsername(form.getUsername());
+//    authorities.setAuthority(form.getAuthority());
+//  }
 
 //  @ModelAttribute(name = "userForm")
   @ModelAttribute(name = "usersDetails")
   UserForm setUpUserForm() {
-    UserForm form = new UserForm(
-        kakeiPonUsersDetailsService,
-        authoritiesService);
-    return form;
+    return new UserForm(
+        usersDetailsService);
+//        authoritiesService);
   }
 
   @RequestMapping(value = "", method = RequestMethod.GET)
   String list(Model model) {
-    List<UserForm> userForms = kakeiPonUsersDetailsService.findAllUsersToForm();
-    for (UserForm userForm : userForms) {
-      User user = kakeiPonUsersDetailsService.findById(userForm.getId());
-      userForm.setUserToForm(
-          kakeiPonUsersDetailsService,
-          authoritiesService,
-          user);
-      AuthoritiesForm authoritiesForm = new AuthoritiesForm(
-          authoritiesService,
-          user.getUsername()
-      );
-      userForm.setAuthoritiesForm(authoritiesForm);
+    List<UsersDetails> usersDetails = usersDetailsService.findAllUsersToForm();
+    for (UsersDetails usersDetail : usersDetails) {
+      User user = usersDetailsService.findById(usersDetail.getUsername()).getUser();
+//      usersDetail.setUserToForm(
+//          usersDetailsService,
+//          authoritiesService,
+//          user);
+//      AuthoritiesForm authoritiesForm = new AuthoritiesForm(
+//          authoritiesService)
+//          .setAuthorityById(user.getId());
+//      user.setAuthoritiesForm(authoritiesForm);
     }
-    model.addAttribute("usersForms", userForms);
+    model.addAttribute("usersDetails", usersDetails);
     return "/user/showList";
   }
 
-  @RequestMapping(value = "/{id}/show", method = RequestMethod.GET)
-  String show(@PathVariable Integer id, Model model) {
-    User user = kakeiPonUsersDetailsService.findById(id);
-    UserForm userForm = new UserForm();
+  @RequestMapping(value = "/{userId}/show", method = RequestMethod.GET)
+  String show(@PathVariable Long userId, Model model) {
+    User user = usersDetailsService.findByUserId(userId).getUser();
+    UserForm userForm = new UserForm(
+        usersDetailsService);
+//        authoritiesService);
+    userForm.setUserId(user.getUserId());
     userForm.setId(user.getId());
-    userForm.setUsername(user.getUsername());
     userForm.setPassword(user.getPassword());
     userForm.setEnabled(user.getEnabled());
     userForm.setAccountNonExpired(true);
     userForm.setAccountNonLocked(true);
     userForm.setCredentialsNonExpired(true);
 
-    Authorities authorities
-        = authoritiesService.findByUsername(userForm.getUsername());
-    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
-    authoritiesForm.setId(authorities.getId());
-    authoritiesForm.setUsername(authorities.getUsername());
-    authoritiesForm.setAuthority(authorities.getAuthority());
+//    Authorities authorities
+//        = authoritiesService.findById(userForm.getId());
+//    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
+//    authoritiesForm.setId(authorities.getId());
+//    authoritiesForm.setUsername(authorities.getUsername());
+//    authoritiesForm.setAuthority(authorities.getAuthority());
 
-    userForm.setAuthoritiesForm(authoritiesForm);
+//    userForm.setAuthoritiesForm(authoritiesForm);
 
-    UserExt userExt = userExtService.findById(id);
-    UserExtForm userExtForm = new UserExtForm();
-    userExtForm.setId(userExt.getId());
+    UserExt userExt = userExtService.findByUserId(userId);
+    UserExtForm userExtForm = new UserExtForm(userExtService);
+    userExtForm.setUserId(userExt.getUserId());
     userExtForm.setLastName(userExt.getLastName());
     userExtForm.setFirstName(userExt.getFirstName());
     userExtForm.setEmail(userExt.getEmail());
@@ -132,116 +130,116 @@ public class UsersController {
     return "/user/showDetail";
   }
 
-  // ToDo: Implements create new user function.
   @GetMapping("/create")
   String createForm(
       @ModelAttribute UserForm userForm,
       @ModelAttribute UserExtForm userExtForm,
-      @ModelAttribute AuthoritiesForm authoritiesForm,
+//      @ModelAttribute AuthoritiesForm authoritiesForm,
       Model model) {
 
-    List<RoleName> authorityList = RoleName.getRoleNameList();
+//    List<RoleName> authorityList = RoleName.getRoleNameList();
 
     userForm.setUserExtForm(userExtForm);
-    userForm.setAuthoritiesForm(authoritiesForm);
+//    userForm.setAuthoritiesForm(authoritiesForm);
 
     model.addAttribute("usersForm", userForm);
-    model.addAttribute("authorityList", authorityList);
+//    model.addAttribute("authorityList", authorityList);
     return "/user/createDetail";
   }
 
-  @RequestMapping(value = "/{id}/edit", method = RequestMethod.POST)
-  String editForm(@PathVariable Integer id,
+  @RequestMapping(value = "/{userId}/edit", method = RequestMethod.POST)
+  String editForm(@PathVariable("userId") Long userId,
                   Model model) {
 
-    UserForm userForm = kakeiPonUsersDetailsService.findByIdToForm(id);
-    UserExtForm userExtForm = userExtService.findByIdToForm(id);
-    userForm.setUserExtForm(userExtForm);
-    AuthoritiesForm authoritiesForm = new AuthoritiesForm(
-        authoritiesService,
-        userForm.getUsername()
-    );
-    userForm.setAuthoritiesForm(authoritiesForm);
-    List<RoleName> authorityList = RoleName.getRoleNameList();
+    UsersDetails usersDetails = usersDetailsService.findByUserId(userId);
+    UserExtForm userExtForm = userExtService.findByUserIdToForm(userId);
 
-    model.addAttribute("usersForm", userForm);
-    model.addAttribute("authorityList", authorityList);
+//    usersDetails.setUserExtForm(userExtForm);
+//    AuthoritiesForm authoritiesForm = new AuthoritiesForm(
+//        authoritiesService)
+//        .setAuthorityById(usersDetails.getUser().getId());
+//    usersDetails.setAuthoritiesForm(authoritiesForm);
+
+//    List<RoleName> authorityList = RoleName.getRoleNameList();
+
+    model.addAttribute("usersDetails", usersDetails);
+//    model.addAttribute("authorityList", authorityList);
 
     return "/user/editDetail";
   }
 
-  // ToDo: Implements create new user function.
   @PostMapping("/createConfirm")
   String createConfirm(
       @Validated @ModelAttribute UserForm userForm,
       @Validated @ModelAttribute UserExtForm userExtForm,
-      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
+//      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
       @Validated @RequestParam("authoritiesForm.authority")
       RoleName authority,
       BindingResult result,
       Model model) {
 
-    // ToDo: Implements validator and validation logic.
-    if (kakeiPonUsersDetailsService.existsByUsername(userForm.getUsername())) {
+    if (usersDetailsService.existsById(userForm.getId())) {
       result.rejectValue("username", "error.username", "このユーザ名は既に登録されています");
       return createForm(
-          userForm, userExtForm, authoritiesForm, model);
+//          userForm, userExtForm, authoritiesForm, model);
+          userForm, userExtForm, model);
     }
 
     if (result.hasErrors()) {
       return createForm(
-          userForm, userExtForm, authoritiesForm, model);
+//          userForm, userExtForm, authoritiesForm, model);
+          userForm, userExtForm, model);
     }
 
-    KakeiPonUsersDetails usersDetails = new KakeiPonUsersDetails();
     User user = new User();
+    UsersDetails usersDetails = new UsersDetails(user);
     setUsers(userForm, user);
-    usersDetails.setId(usersDetails.getId());
+    usersDetails.getUser().setId(usersDetails.getUser().getId());
     User resultUser
-        = kakeiPonUsersDetailsService.saveAndFlush(user);
+        = usersDetailsService.saveAndFlush(user);
 
     UserExt userExt = new UserExt();
     setUsersExt(userExtForm, userExt);
-    userExt.setId(resultUser.getId());
+    userExt.setUserId(resultUser.getUserId());
     UserExt resultUserExt
         = userExtService.saveUserExt(userExt);
 
-    Authorities authorities = new Authorities();
-    authoritiesForm.setAuthority(authority);
-    setAuthorities(authoritiesForm, authorities);
-    authorities.setId(authoritiesForm.getId());
-    Authorities resultAuthorities
-        = authoritiesService.saveAuthorities(authorities);
+//    Authorities authorities = new Authorities();
+//    authoritiesForm.setAuthority(authority);
+//    setAuthorities(authoritiesForm, authorities);
+//    authorities.setId(authoritiesForm.getId());
+//    Authorities resultAuthorities
+//        = authoritiesService.saveAuthorities(authorities);
 
     return "redirect:/users";
   }
 
-  @RequestMapping(value = "{id}/confirm", method = RequestMethod.POST)
+  @RequestMapping(value = "{userId}/confirm", method = RequestMethod.POST)
   String confirm(
       @Validated @ModelAttribute UserForm userForm,
       @Validated @ModelAttribute UserExtForm userExtForm,
-      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
-      @Validated @RequestParam("authoritiesForm.authority") RoleName authority,
+//      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
+      @Validated @RequestParam("authority") RoleName authority,
       BindingResult bindingResult,
-      @PathVariable Integer id,
+      @PathVariable("userId") Long userId,
       Model model) {
     if (bindingResult.hasErrors()) {
-      return editForm(id, model);
+      return editForm(userId, model);
     }
-    User user = kakeiPonUsersDetailsService.findById(id);
-    String username = user.getUsername();
+    User user = usersDetailsService.findByUserId(userId).getUser();
+    String username = user.getId();
     setUsers(userForm, user);
-    user = kakeiPonUsersDetailsService.saveAndFlush(user);
+    user = usersDetailsService.saveAndFlush(user);
 
-    UserExt userExt = userExtService.findById(id);
+    UserExt userExt = userExtService.findByUserId(userId);
     setUsersExt(userExtForm, userExt);
     userExtService.saveUserExt(userExt);
 
-    Authorities authorities
-        = authoritiesService.findByUsername(username);
-    authoritiesForm.setAuthority(authority);
-    setAuthorities(authoritiesForm, authorities);
-    authoritiesService.saveAuthorities(authorities);
+//    Authorities authorities
+//        = authoritiesService.findByUsername(username);
+//    authoritiesForm.setAuthority(authority);
+//    setAuthorities(authoritiesForm, authorities);
+//    authoritiesService.saveAuthorities(authorities);
 
 
     return "redirect:/users";

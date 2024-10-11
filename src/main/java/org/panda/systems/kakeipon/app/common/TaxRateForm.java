@@ -15,6 +15,8 @@ public class TaxRateForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final TaxRateService taxRateService;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tax_rate_seq", allocationSize = 1)
@@ -27,12 +29,21 @@ public class TaxRateForm implements Serializable {
   // Default constructor
   public TaxRateForm() {
 
+    this.taxRateService = null;
   }
-  public TaxRateForm(TaxRateService service,
-                     Long taxRateId) {
-    TaxRate taxRate = service.findById(taxRateId);
+
+  public TaxRateForm(TaxRateService taxRateService) {
+
+    this.taxRateService = taxRateService;
+  }
+
+  public TaxRateForm setTaxRateFormByDB(Long taxRateId) {
+
+    TaxRate taxRate = taxRateService.findById(taxRateId);
 
     this.setTaxRateId(taxRate.getTaxRateId());
     this.setTaxRate(taxRate.getTaxRate());
+
+    return this;
   }
 }

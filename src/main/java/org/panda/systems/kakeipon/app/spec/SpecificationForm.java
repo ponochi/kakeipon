@@ -16,7 +16,7 @@ import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
 import org.panda.systems.kakeipon.domain.service.common.UnitService;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetailsService;
+import org.panda.systems.kakeipon.domain.service.user.UsersDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serial;
@@ -43,7 +43,7 @@ public class SpecificationForm implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Autowired
-  KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
+  UsersDetailsService usersDetailsService;
   @Autowired
   CurrencyListService currencyListService;
   @Autowired
@@ -64,8 +64,8 @@ public class SpecificationForm implements Serializable {
   @Column(name = "specification_id")
   private Long specificationId;
 
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column
   private String name;
@@ -146,7 +146,7 @@ public class SpecificationForm implements Serializable {
         = new Specification();
 
     this.setSpecificationId(specification.getSpecificationId());
-    this.setId(specification.getId());
+    this.setUserId(specification.getUserId());
     this.setName(specification.getName());
     this.setPrice(Long.parseLong("0"));
     this.setCurrencyId(specification.getCurrencyId());
@@ -169,7 +169,7 @@ public class SpecificationForm implements Serializable {
         specification.getSpecificationGroupId());
     form.setSpecificationId(specification.getSpecificationId());
 
-    form.setId(specification.getId());
+    form.setUserId(specification.getUserId());
 
     form.setName(specification.getName());
     form.setPrice(specification.getPrice());
@@ -193,7 +193,7 @@ public class SpecificationForm implements Serializable {
 
     specification.setSpecificationGroupId(this.getSpecificationGroupId());
     specification.setSpecificationId(this.getSpecificationId());
-    specification.setId(this.getId());
+    specification.setUserId(this.getUserId());
     specification.setName(this.getName());
     specification.setPrice(this.getPrice());
     specification.setCurrencyId(this.getCurrencyId());

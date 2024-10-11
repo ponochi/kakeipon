@@ -39,8 +39,8 @@ public class Specification implements Serializable {
   @Column(name = "specification_id")
   private Long specificationId;
 
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column(name = "name")
   private String name;

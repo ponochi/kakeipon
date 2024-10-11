@@ -18,6 +18,8 @@ public class BalanceTypeForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final BalanceTypeService balanceTypeService;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "balance_type_seq", allocationSize = 1)
@@ -30,18 +32,27 @@ public class BalanceTypeForm implements Serializable {
 
   // Default constructor
   public BalanceTypeForm() {
+
+    this.balanceTypeService = null;
+  }
+
+  public BalanceTypeForm(BalanceTypeService balanceTypeService) {
+
+    this.balanceTypeService = balanceTypeService;
     this.setBalanceTypeId(Long.parseLong("1"));
   }
 
-  public BalanceTypeForm(BalanceTypeService service,
-                         Long balanceTypeId) {
+  public BalanceTypeForm serBalanceTypeFormByDB(Long balanceTypeId) {
+
     if (balanceTypeId == null) {
       this.setBalanceTypeId(Long.parseLong("1"));
     } else {
       this.setBalanceTypeId(balanceTypeId);
     }
     BalanceType balanceType
-        = service.findById(this.getBalanceTypeId());
+        = balanceTypeService.findById(this.getBalanceTypeId());
     this.setBalanceTypeName(balanceType.getBalanceTypeName());
+
+    return this;
   }
 }

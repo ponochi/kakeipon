@@ -24,11 +24,13 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  specification_group")
   Long getMaxGroupId();
 
+//  List<SpecificationGroup> findAllByDeleted(Boolean deleted);
   List<SpecificationGroup> findAllByDeleted(Boolean deleted, Sort sort);
 
-  Optional<SpecificationGroup> findBySpecificationGroupIdAndIdAndDeleted(
-      Long specificationGroupId, Integer id, Boolean deleted);
+  Optional<SpecificationGroup> findBySpecificationGroupIdAndUserIdAndDeleted(
+      Long specificationGroupId, Long userId, Boolean deleted);
 
+  @SuppressWarnings({"unchecked", "NullableProblems"})
   @Override
   SpecificationGroup saveAndFlush(SpecificationGroup specificationGroup);
 
@@ -38,7 +40,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "UPDATE " +
           "  specification_group " +
           "SET " +
-          "  id = :id, " +
+          "  user_id = :userId, " +
           "  shop_id = :shopId, " +
           "  receiving_and_payment_date = :receivingAndPaymentDate, " +
           "  receiving_and_payment_time = :receivingAndPaymentTime, " +
@@ -52,7 +54,7 @@ public interface SpecificationGroupRepository extends JpaRepository<Specificatio
           "  specification_group_id = :specificationGroupId")
   void update(
       @Param("specificationGroupId") Long specificationGroupId,
-      @Param("id") Integer id,
+      @Param("userId") Integer user_id,
       @Param("shopId") Long shopId,
       @Param("receivingAndPaymentDate") LocalDate receivingAndPaymentDate,
       @Param("receivingAndPaymentTime") LocalTime receivingAndPaymentTime,

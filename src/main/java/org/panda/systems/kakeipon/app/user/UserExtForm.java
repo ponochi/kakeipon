@@ -17,9 +17,11 @@ public class UserExtForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final UserExtService userExtService;
+
   @Id
-  @Column(name = "id")
-  private Integer id;
+  @Column(name = "user_id")
+  private Long userId;
 
   @Column(name = "last_name")
   private String lastName;
@@ -47,33 +49,47 @@ public class UserExtForm implements Serializable {
 
   // Default constructor
   public UserExtForm() {
-//    this.setId(Integer.parseInt("1"));
+
+    this.userExtService = null;
   }
 
-  public UserExtForm(UserExtService service,
-                     Integer id) {
-    if (id == null) {
+  public UserExtForm(UserExtService userExtService) {
+
+    this.userExtService = userExtService;
+  }
+
+  public UserExtForm setUserExtFormByDB(Long userId) {
+
+    if (userId == null) {
 //      this.setId(Integer.parseInt("1"));
     } else {
-      this.setId(id);
+      this.setUserId(userId);
     }
-    UserExt userExt = service.findById(this.getId());
 
-    this.setLastName(userExt.getLastName());
-    this.setFirstName(userExt.getFirstName());
-    this.setEmail(userExt.getEmail());
-    this.setBirthDay(userExt.getBirthDay());
-    this.setPhoneNumber(userExt.getPhoneNumber());
-    this.setEntryDate(userExt.getEntryDate());
-    this.setUpdateDate(userExt.getUpdateDate());
+    UserExt userExt = null;
+    if (userExtService != null) {
+      userExt = userExtService.findByUserId(this.getUserId());
+    }
+
+    if (userExt != null) {
+      this.setLastName(userExt.getLastName());
+      this.setFirstName(userExt.getFirstName());
+      this.setEmail(userExt.getEmail());
+      this.setBirthDay(userExt.getBirthDay());
+      this.setPhoneNumber(userExt.getPhoneNumber());
+      this.setEntryDate(userExt.getEntryDate());
+      this.setUpdateDate(userExt.getUpdateDate());
+    }
+
+    return this;
   }
 
   public UserExtForm setUserExtToForm(
       UserExt userExt) {
 
-    UserExtForm userExtForm = new UserExtForm();
+    UserExtForm userExtForm = new UserExtForm(userExtService);
 
-    userExtForm.setId(userExt.getId());
+    userExtForm.setUserId(userExt.getUserId());
     userExtForm.setLastName(userExt.getLastName());
     userExtForm.setFirstName(userExt.getFirstName());
     userExtForm.setEmail(userExt.getEmail());

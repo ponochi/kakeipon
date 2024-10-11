@@ -20,6 +20,8 @@ public class AccountDestinationForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final AccountDestinationService accountDestinationService;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @SequenceGenerator(name = "tblAccountSeq", allocationSize = 1)
@@ -44,20 +46,30 @@ public class AccountDestinationForm implements Serializable {
   // Default constructor
   public AccountDestinationForm() {
 
+    this.accountDestinationService = null;
   }
 
-  public AccountDestinationForm (AccountDestinationService service,
-                                 Long accountDestinationId) {
+  public AccountDestinationForm(
+      AccountDestinationService accountDestinationService) {
+
+    this.accountDestinationService = accountDestinationService;
+  }
+
+  public AccountDestinationForm setAccountDestinationFormByDB(Long accountDestinationId) {
+
     if (accountDestinationId == null) {
       this.setAccountDestinationId(Long.parseLong("1"));
     } else {
       this.setAccountDestinationId(accountDestinationId);
     }
     AccountDestination destination
-        = service.findById(this.getAccountDestinationId());
+        = accountDestinationService
+        .findById(this.getAccountDestinationId());
     this.setAccountName(destination.getAccountName());
     this.setBranchName(destination.getBranchName());
     this.setEntryDate(destination.getEntryDate());
     this.setUpdateDate(destination.getUpdateDate());
+
+    return this;
   }
 }

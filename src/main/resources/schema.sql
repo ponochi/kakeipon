@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS kp.third_class CASCADE;
 DROP TABLE IF EXISTS kp.second_class_by_order CASCADE;
 DROP TABLE IF EXISTS kp.second_class CASCADE;
 DROP TABLE IF EXISTS kp.first_class CASCADE;
-DROP TABLE IF EXISTS kp.authorities CASCADE;
+-- DROP TABLE IF EXISTS kp.authorities CASCADE;
 DROP TABLE IF EXISTS kp.users_ext CASCADE;
 DROP TABLE IF EXISTS kp.users CASCADE;
 DROP TABLE IF EXISTS SPRING_SESSION_ATTRIBUTES;
@@ -32,8 +32,8 @@ DROP SEQUENCE IF EXISTS kp.third_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.second_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.first_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.users_ext_seq CASCADE;
-DROP SEQUENCE IF EXISTS kp.users_seq CASCADE;
-DROP SEQUENCE IF EXISTS kp.authorities_seq CASCADE;
+-- DROP SEQUENCE IF EXISTS kp.users_seq CASCADE;
+-- DROP SEQUENCE IF EXISTS kp.authorities_seq CASCADE;
 
 CREATE TABLE SPRING_SESSION
 (
@@ -60,13 +60,15 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES
     CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
 );
 
-CREATE SEQUENCE IF NOT EXISTS kp.users_seq START 1 INCREMENT 1;
+--CREATE SEQUENCE IF NOT EXISTS kp.users_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.users -- ユーザテーブル
 (
-    id                      INT DEFAULT
-                                    nextval('kp.users_seq'),        -- ユーザID
-    username                VARCHAR(255)         NOT NULL UNIQUE,   -- ユーザ名
+--    id                      INT DEFAULT
+--                                    nextval('kp.users_seq'),        -- ユーザID
+    user_id                 BIGINT               NOT NULL UNIQUE,   -- ユーザID
+    id                      VARCHAR(255)         NOT NULL UNIQUE,   -- ユーザ名
     password                VARCHAR(255)         NOT NULL,          -- パスワード
+    role_name               VARCHAR(255)         NOT NULL,          -- 権限
     enabled                 BOOLEAN DEFAULT TRUE NOT NULL,          -- 有効フラグ (true: 有効, false: 無効)
     account_non_expired     BOOLEAN DEFAULT TRUE NOT NULL,          -- アカウント期限切れフラグ (true: 有効, false: 無効)
     account_non_locked      BOOLEAN DEFAULT TRUE NOT NULL,          -- アカウントロックフラグ (true: 有効, false: 無効)
@@ -77,7 +79,7 @@ CREATE TABLE IF NOT EXISTS kp.users -- ユーザテーブル
 CREATE SEQUENCE IF NOT EXISTS kp.users_ext_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.users_ext -- ユーザ拡張テーブル
 (
-    id              INT             NOT NULL UNIQUE,    -- ユーザID
+    user_id         BIGINT          NOT NULL UNIQUE,    -- ユーザID
     last_name       VARCHAR(255)    NOT NULL,           -- 苗字 (任意)
     first_name      VARCHAR(255)    NOT NULL,           -- 名前 (任意)
     email           VARCHAR(255)    NOT NULL,           -- メールアドレス
@@ -85,25 +87,26 @@ CREATE TABLE IF NOT EXISTS kp.users_ext -- ユーザ拡張テーブル
     phone_number    VARCHAR(255)    NOT NULL,           -- 電話番号
     entry_date      TIMESTAMPTZ     NOT NULL,           -- 登録日時
     update_date     TIMESTAMPTZ,                        -- 更新日時
-    PRIMARY KEY (id)
+    PRIMARY KEY (user_id)
 );
 
-CREATE SEQUENCE IF NOT EXISTS kp.authorities_seq START 1 INCREMENT 1;
-CREATE TABLE IF NOT EXISTS kp.authorities   -- 権限テーブル
-(
-    id          INT DEFAULT
-                            nextval('kp.authorities_seq'),  -- 権限ID
-    username    VARCHAR(255)    NOT NULL,                       -- ユーザ名
-    authority   TEXT,                                           -- 権限
-    PRIMARY KEY (id)
-);
+-- CREATE SEQUENCE IF NOT EXISTS kp.authorities_seq START 1 INCREMENT 1;
+-- CREATE TABLE IF NOT EXISTS kp.authorities   -- 権限テーブル
+-- (
+--     auth_id     INT DEFAULT
+--                             nextval('kp.authorities_seq'),  -- 権限ID
+-- --    auth_id     BIGINT,                     -- 権限ID
+--     username    VARCHAR(255)    NOT NULL,   -- ユーザ名
+--     authority   TEXT,                       -- 権限
+--     PRIMARY KEY (auth_id)
+-- );
 
 CREATE SEQUENCE IF NOT EXISTS kp.first_class_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.first_class -- 支出入分類テーブル
 (
     first_class_id   BIGINT
-        DEFAULT nextval('kp.first_class_seq'), -- 支出入分類ID
-    first_class_name VARCHAR(128) NOT NULL,        -- 支出入分類名
+        DEFAULT nextval('kp.first_class_seq'),  -- 支出入分類ID
+    first_class_name VARCHAR(128) NOT NULL,     -- 支出入分類名
     PRIMARY KEY (first_class_id)
 );
 
@@ -112,19 +115,19 @@ CREATE TABLE IF NOT EXISTS kp.second_class -- 費目大分類テーブル
 (
     second_class_id   BIGINT
         DEFAULT nextval('kp.second_class_seq'), -- 費目大分類ID
-    first_class_id    BIGINT,                       -- 支出入分類ID (任意)
-    second_class_name VARCHAR(128) NOT NULL,        -- 費目大分類名
+    first_class_id    BIGINT,                   -- 支出入分類ID (任意)
+    second_class_name VARCHAR(128) NOT NULL,    -- 費目大分類名
     PRIMARY KEY (second_class_id),
     FOREIGN KEY (first_class_id)
         REFERENCES kp.first_class(first_class_id)
 );
 CREATE TABLE IF NOT EXISTS kp.second_class_by_order -- 費目大分類ソートテーブル
 (
-    second_class_id BIGINT,                               -- 費目大分類ID (任意)
+    second_class_id BIGINT,                             -- 費目大分類ID (任意)
     first_class_id  BIGINT                NOT NULL
-        REFERENCES kp.second_class (second_class_id), -- 支出入分類ID
-    order_number    BIGINT,                               -- ソート順 (任意)
-    disabled        BOOLEAN DEFAULT FALSE NOT NULL,       -- 無効フラグ (true: 無効, false: 有効)
+        REFERENCES kp.second_class (second_class_id),   -- 支出入分類ID
+    order_number    BIGINT,                             -- ソート順 (任意)
+    disabled        BOOLEAN DEFAULT FALSE NOT NULL,     -- 無効フラグ (true: 無効, false: 有効)
     PRIMARY KEY (second_class_id, first_class_id, order_number)
 
 );
@@ -207,7 +210,7 @@ CREATE TABLE IF NOT EXISTS kp.specification_group -- 明細グループテーブ
 (
     specification_group_id     BIGINT DEFAULT
                                           nextval('kp.specification_group_seq'),        -- 明細グループID
-    id                         INT          NOT NULL,                                   -- ユーザID
+    user_id                    BIGINT       NOT NULL,                                   -- ユーザID
     shop_id                    BIGINT       NOT NULL,                                   -- 店舗ID
     receiving_and_payment_date DATE         NOT NULL,                                   -- 受取支払日
     receiving_and_payment_time TIME         NOT NULL,                                   -- 受取支払時間
@@ -218,8 +221,8 @@ CREATE TABLE IF NOT EXISTS kp.specification_group -- 明細グループテーブ
     entry_date                 TIMESTAMPTZ  NOT NULL,                                   -- 登録日時
     update_date                TIMESTAMPTZ,                                             -- 更新日時
     version                    BIGINT       DEFAULT 0,                                  -- バージョン
-    PRIMARY KEY (specification_group_id, id),
-    FOREIGN KEY (id) REFERENCES kp.users (id),
+    PRIMARY KEY (specification_group_id, user_id),
+    FOREIGN KEY (user_id) REFERENCES kp.users (user_id),
     FOREIGN KEY (shop_id) REFERENCES kp.shop (shop_id),
     FOREIGN KEY (account_and_balance_id)
         REFERENCES kp.account_and_balance (account_and_balance_id),
@@ -268,7 +271,7 @@ CREATE TABLE IF NOT EXISTS kp.specification -- 明細テーブル
     specification_group_id BIGINT               NOT NULL,           -- 明細グループID
     specification_id       BIGINT
         DEFAULT nextval('kp.specification_seq'),                -- 明細ID
-    id                     INT                  NOT NULL,           -- ユーザID
+    user_id                BIGINT               NOT NULL,           -- ユーザID
     name                   VARCHAR(255)   ,                         -- 商品名
     price                  BIGINT               NOT NULL,           -- 価格
     currency_id            BIGINT,                                  -- 通貨名 (任意 : USD, EUR, ...)
@@ -282,9 +285,9 @@ CREATE TABLE IF NOT EXISTS kp.specification -- 明細テーブル
     entry_date             TIMESTAMPTZ           NOT NULL,          -- 登録日時
     update_date            TIMESTAMPTZ,                             -- 更新日時
     version                BIGINT DEFAULT 0,                        -- バージョン
-    PRIMARY KEY (specification_group_id, specification_id, id),
-    FOREIGN KEY (specification_group_id, id)
-        REFERENCES kp.specification_group (specification_group_id, id),
+    PRIMARY KEY (specification_group_id, specification_id, user_id),
+    FOREIGN KEY (specification_group_id, user_id)
+        REFERENCES kp.specification_group (specification_group_id, user_id),
     FOREIGN KEY (tax_type_id) REFERENCES kp.tax_type (tax_type_id),
     FOREIGN KEY (tax_rate_id) REFERENCES kp.tax_rate (tax_rate_id),
     FOREIGN KEY (currency_id) REFERENCES kp.currency (currency_id),

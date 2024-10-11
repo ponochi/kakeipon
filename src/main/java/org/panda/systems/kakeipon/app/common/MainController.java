@@ -1,6 +1,5 @@
 package org.panda.systems.kakeipon.app.common;
 
-import org.panda.systems.kakeipon.domain.service.user.KakeiPonUsersDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;

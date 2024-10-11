@@ -11,8 +11,6 @@ import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
-import org.panda.systems.kakeipon.domain.model.user.Authorities;
-import org.panda.systems.kakeipon.domain.model.user.RoleName;
 import org.panda.systems.kakeipon.domain.model.user.User;
 import org.panda.systems.kakeipon.domain.model.user.UserExt;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
@@ -29,87 +27,103 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.function.Function;
 
 @Controller
 @RequestMapping("")
-public class SpecificationController {
-  @Autowired
-  SpecificationGroupService specificationGroupService;
-  @Autowired
-  SpecificationService specificationService;
-  @Autowired
-  KakeiPonUsersDetailsService userDetailsService;
-  @Autowired
-  AuthoritiesService authoritiesService;
-  @Autowired
-  UserExtService userExtService;
-  @Autowired
-  ShopService shopService;
-  @Autowired
-  BalanceTypeService balanceTypeService;
-  @Autowired
-  AccountAndBalanceService accountAndBalanceService;
-  @Autowired
-  AccountSourceService accountSourceService;
-  @Autowired
-  AccountDestinationService accountDestinationService;
-  @Autowired
-  CurrencyListService currencyListService;
-  @Autowired
-  UnitService unitService;
-  @Autowired
-  TaxTypeService taxTypeService;
-  @Autowired
-  TaxRateService taxRateService;
-  @Autowired
-  KakeiPonUsersDetails kakeiPonUsersDetails;
-  @Autowired
-  private KakeiPonUsersDetailsService kakeiPonUsersDetailsService;
+public class SpecificationController implements Serializable {
 
-  public KakeiPonUsersDetails convertUserDetailsToKakeiPonUsersDetails(
-      UserDetails userDetails) {
+  @Autowired
+  private SpecificationGroupService specificationGroupService;
+  @Autowired
+  private SpecificationService specificationService;
+  @Autowired
+  private UsersDetailsService usersDetailsService;
+//  @Autowired
+//  private AuthoritiesService authoritiesService;
+  @Autowired
+  private UserExtService userExtService;
+  @Autowired
+  private ShopService shopService;
+  @Autowired
+  private BalanceTypeService balanceTypeService;
+  @Autowired
+  private AccountAndBalanceService accountAndBalanceService;
+  @Autowired
+  private AccountSourceService accountSourceService;
+  @Autowired
+  private AccountDestinationService accountDestinationService;
+  @Autowired
+  private CurrencyListService currencyListService;
+  @Autowired
+  private UnitService unitService;
+  @Autowired
+  private TaxTypeService taxTypeService;
+  @Autowired
+  private TaxRateService taxRateService;
+  @Autowired
+  private UsersDetails usersDetails;
 
-    // Lambda expression to get RoleName from authority
-    Function<String, RoleName> getRoleName
-        = (authority) -> {
-      for (RoleName allRoles : RoleName.values()) {
-        if (allRoles.name().equals(authority)) {
-          return allRoles;
-        }
-      }
-      return RoleName.USER;
-    };
+//  public SpecificationController(SpecificationGroupService specificationGroupService, SpecificationService specificationService, UsersDetailsService usersDetailsService, AuthoritiesService authoritiesService, UserExtService userExtService, ShopService shopService, BalanceTypeService balanceTypeService, AccountAndBalanceService accountAndBalanceService, AccountSourceService accountSourceService, AccountDestinationService accountDestinationService, CurrencyListService currencyListService, UnitService unitService, TaxTypeService taxTypeService, TaxRateService taxRateService, UsersDetails usersDetails) {
+//    this.specificationGroupService = specificationGroupService;
+//    this.specificationService = specificationService;
+//    this.usersDetailsService = usersDetailsService;
+//    this.authoritiesService = authoritiesService;
+//    this.userExtService = userExtService;
+//    this.shopService = shopService;
+//    this.balanceTypeService = balanceTypeService;
+//    this.accountAndBalanceService = accountAndBalanceService;
+//    this.accountSourceService = accountSourceService;
+//    this.accountDestinationService = accountDestinationService;
+//    this.currencyListService = currencyListService;
+//    this.unitService = unitService;
+//    this.taxTypeService = taxTypeService;
+//    this.taxRateService = taxRateService;
+//    this.usersDetails = usersDetails;
+//  }
 
-    KakeiPonUsersDetails kakeiPonUsersDetails
-        = new KakeiPonUsersDetails();
-
-    kakeiPonUsersDetails.setUsername(
-        userDetails.getUsername());
-    kakeiPonUsersDetails.setPassword(
-        userDetails.getPassword());
-    kakeiPonUsersDetails.setAuthorities(
-        new Authorities());
-
-    for (var authority : userDetails.getAuthorities()) {
-      kakeiPonUsersDetails.getAuthorities().setAuthority(
-          getRoleName.apply(authority.getAuthority())
-      );
-    }
-
-    kakeiPonUsersDetails.setAccountNonExpired(
-        userDetails.isAccountNonExpired());
-    kakeiPonUsersDetails.setAccountNonLocked(
-        userDetails.isAccountNonLocked());
-    kakeiPonUsersDetails.setCredentialsNonExpired(
-        userDetails.isCredentialsNonExpired());
-    kakeiPonUsersDetails.setEnabled(
-        userDetails.isEnabled());
-
-    return kakeiPonUsersDetails;
-  }
+//  public UsersDetails convertUserDetailsToKakeiPonUsersDetails(
+//      UserDetails userDetails) {
+//
+//    // Lambda expression to get RoleName from authority
+//    Function<String, RoleName> getRoleName
+//        = (authority) -> {
+//      for (RoleName allRoles : RoleName.values()) {
+//        if (allRoles.name().equals(authority)) {
+//          return allRoles;
+//        }
+//      }
+//      return RoleName.USER;
+//    };
+//
+//    UsersDetails usersDetails
+//        = new UsersDetails(user);
+//
+//    usersDetails.getUser().setId();
+//    usersDetails.getUser().setPassword(
+//        userDetails.getPassword());
+//    usersDetails.getUser().setAuthorities(
+//        new Authorities());
+//
+//    for (var authority : userDetails.getAuthorities()) {
+//      usersDetails.getAuthorities().setAuthority(
+//          getRoleName.apply(authority.getAuthority())
+//      );
+//    }
+//
+//    usersDetails.setAccountNonExpired(
+//        userDetails.isAccountNonExpired());
+//    usersDetails.setAccountNonLocked(
+//        userDetails.isAccountNonLocked());
+//    usersDetails.setCredentialsNonExpired(
+//        userDetails.isCredentialsNonExpired());
+//    usersDetails.setEnabled(
+//        userDetails.isEnabled());
+//
+//    return usersDetails;
+//  }
 
   @GetMapping("/spec")
   String index(
@@ -121,14 +135,8 @@ public class SpecificationController {
         = specificationGroupService.findAllToForm(false);
 
     for (SpecificationGroupForm groupForm : groupForms) {
-      groupForm.setKakeiPonUsersDetails(
-          convertUserDetailsToKakeiPonUsersDetails(
-              userDetails));
-      groupForm.setId(
-          userDetailsService.convertUsernameToId(
-              userDetails.getUsername()));
       UserExt userExt
-          = userExtService.findById(groupForm.getId());
+          = userExtService.findByUserId(groupForm.getUserId());
       userExtForm = userExtForm.setUserExtToForm(userExt);
       groupForm.setUserExtForm(userExtForm);
 
@@ -136,11 +144,12 @@ public class SpecificationController {
           = new AccountAndBalanceForm(
           accountAndBalanceService,
           accountSourceService,
-          accountDestinationService,
-          groupForm.getAccountAndBalanceId(),
-          groupForm.getAccountAndBalanceForm().getAccountSourceId(),
-          groupForm.getAccountAndBalanceForm().getAccountDestinationId());
-//      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+          accountDestinationService)
+          .setAccountAndBalanceFormAndAccountSourceFormAndAccountDestinationForm(
+              groupForm.getAccountAndBalanceId(),
+              groupForm.getAccountAndBalanceForm().getAccountSourceId(),
+              groupForm.getAccountAndBalanceForm().getAccountDestinationId());
+      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
 
       groupForm.setAccountAndBalanceId(
           accountAndBalanceForm.getAccountAndBalanceId());
@@ -148,8 +157,11 @@ public class SpecificationController {
           accountAndBalanceForm);
 
       AccountSourceForm accountSourceForm = new AccountSourceForm(
-          accountSourceService,
-          groupForm.getAccountAndBalanceForm().getAccountSourceId());
+          accountSourceService)
+          .setAccountSourceFormByDB(
+              groupForm
+                  .getAccountAndBalanceForm()
+                  .getAccountSourceId());
       accountAndBalanceForm
           .setAccountSourceId(
               accountSourceForm.getAccountSourceId());
@@ -157,17 +169,17 @@ public class SpecificationController {
 
       AccountDestinationForm accountDestinationForm
           = new AccountDestinationForm(
-          accountDestinationService,
-          groupForm.getAccountAndBalanceForm()
-              .getAccountDestinationId());
+          accountDestinationService)
+          .setAccountDestinationFormByDB(
+              groupForm.getAccountAndBalanceForm()
+                  .getAccountDestinationId());
       accountAndBalanceForm.setAccountDestinationId(
           accountDestinationForm.getAccountDestinationId());
       accountAndBalanceForm.setAccountDestinationForm(
           accountDestinationForm);
 
-      ShopForm shopForm = new ShopForm(
-          shopService,
-          groupForm.getShopId());
+      ShopForm shopForm = new ShopForm(shopService);
+      shopForm.setShopId(groupForm.getShopId());
       groupForm.setShopForm(shopForm);
 
       BalanceType balanceType
@@ -182,9 +194,9 @@ public class SpecificationController {
     return "/spec/showList";
   }
 
-  @GetMapping(value = "/spec/create/group/{id}")
+  @GetMapping(value = "/spec/create/group/{userId}")
   String createSpecificationGroup(
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
       @AuthenticationPrincipal UserDetails userDetails,
@@ -194,7 +206,7 @@ public class SpecificationController {
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       Model model) {
 
-    User user = userDetailsService.findById(id);
+    User user = usersDetailsService.findByUserId(userId).getUser();
 
     groupForm = new SpecificationGroupForm(
         specificationGroupService,
@@ -202,42 +214,30 @@ public class SpecificationController {
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
-        userDetailsService,
-        authoritiesService,
+        usersDetailsService,
+//        authoritiesService,
         userExtService,
         shopService,
         balanceTypeService,
         currencyListService,
         unitService,
         taxTypeService,
-        taxRateService,
-        id);
+        taxRateService);
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupService.getMaxGroupId(),
-            userDetails.getUsername(),
+            userId,
             false);
 
-    groupForm = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
+    groupForm = groupForm.setSpecificationGroupToForm(group);
 
-    groupForm.setId(id);
-    groupForm.setUsername(userDetails.getUsername());
+    groupForm.setUserId(userId);
+    groupForm.setId(userDetails.getUsername());
     groupForm.setUsersToForm(
-        kakeiPonUsersDetailsService,
-        authoritiesService,
+        usersDetailsService,
         user);
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
 
     Shop shop = shopService.findById(Long.parseLong("1"));
     groupForm.setShopId(shop.getShopId());
@@ -256,18 +256,11 @@ public class SpecificationController {
 
     SpecificationGroup specificationGroup
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupService.getMaxGroupId(),
-            userDetails.getUsername(),
+            userId,
             false);
-    groupForm = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        specificationGroup);
+    groupForm = groupForm.setSpecificationGroupToForm(specificationGroup);
 
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute(
@@ -277,13 +270,19 @@ public class SpecificationController {
     model.addAttribute(
         "accountSourceForm",
         new AccountSourceForm(
-            accountSourceService,
-            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+            accountSourceService)
+            .setAccountSourceFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountSourceId()));
     model.addAttribute(
         "accountDestinationForm",
         new AccountDestinationForm(
-            accountDestinationService,
-            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+            accountDestinationService)
+            .setAccountDestinationFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountDestinationId()));
     model.addAttribute("userDetails", userDetails);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
     model.addAttribute("selectedBalanceTypeId", groupForm.getBalanceTypeId());
@@ -291,10 +290,10 @@ public class SpecificationController {
     return "/spec/createGroup";
   }
 
-  @PostMapping(value = "/spec/edit/group/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/edit/group/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String editSpecificationGroup(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -303,7 +302,6 @@ public class SpecificationController {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute ShopForm shopForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
@@ -312,29 +310,23 @@ public class SpecificationController {
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     groupForm
-        = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
+        = groupForm.setSpecificationGroupToForm(group);
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
@@ -353,14 +345,16 @@ public class SpecificationController {
         accountAndBalanceForm);
 
     accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
     accountDestinationForm = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     accountAndBalanceForm.setAccountDestinationId(
         accountDestinationId);
     accountAndBalanceForm.setAccountDestinationForm(
@@ -369,7 +363,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -381,20 +375,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -412,7 +409,6 @@ public class SpecificationController {
       }
     }
 
-    System.out.println("XXXXXXXX >>>> groupForm : " + groupForm.toString());
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specificationForms", detailForms);
     model.addAttribute("currencyListForm", currencyListForm);
@@ -439,10 +435,10 @@ public class SpecificationController {
     return "/spec/editGroup";
   }
 
-  @PostMapping(value = "/spec/create/detail/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/create/detail/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String createSpecification(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -462,7 +458,8 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    shopForm = new ShopForm(shopService, shopId);
+    shopForm = new ShopForm(shopService);
+    shopForm.setShopId(shopId);
     groupForm.setShopId(shopForm.getShopId());
     groupForm.setShopForm(shopForm);
 
@@ -473,14 +470,16 @@ public class SpecificationController {
     groupForm.setBalanceTypeToForm(balanceType);
 
     accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
     accountDestinationForm = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     accountAndBalanceForm.setAccountDestinationId(
         accountDestinationId);
     accountAndBalanceForm.setAccountDestinationForm(
@@ -491,9 +490,9 @@ public class SpecificationController {
     groupForm.setAccountAndBalanceForm(
         accountAndBalanceForm);
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     detailForm
         = new SpecificationForm(
@@ -504,7 +503,7 @@ public class SpecificationController {
     List<SpecificationForm> specificationForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     if (specificationForms.size() == 1) {
@@ -516,20 +515,23 @@ public class SpecificationController {
       specificationForms.getFirst().setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specificationForms.getFirst().getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specificationForms.getFirst().getUnitId());
       specificationForms.getFirst().setUnitId(unitForm.getUnitId());
       specificationForms.getFirst().setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specificationForms.getFirst().getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specificationForms.getFirst().getTaxTypeId());
       specificationForms.getFirst().setTaxTypeId(taxTypeForm.getTaxTypeId());
       specificationForms.getFirst().setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specificationForms.getFirst().getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specificationForms.getFirst().getTaxRateId());
       specificationForms.getFirst().setTaxRateId(taxRateForm.getTaxRateId());
       specificationForms.getFirst().setTaxRateForm(taxRateForm);
     }
@@ -566,11 +568,11 @@ public class SpecificationController {
     return "/spec/createDetail";
   }
 
-  @PostMapping(value = "/spec/edit/detail/{specificationGroupId}/{specificationId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/edit/detail/{specificationGroupId}/{specificationId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String editSpecification(
       @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("specificationId") Long specificationId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -583,35 +585,38 @@ public class SpecificationController {
       @ModelAttribute AccountSourceForm accountSourceForm,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       @ModelAttribute BalanceType balanceType,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute CurrencyListForm currencyListForm,
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
     accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountDestinationForm = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
 
     Specification specification
         = specificationService.findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
         specificationGroupId,
         specificationId,
-        id,
+        userDetails.getUsername(),
         false);
 
     detailForm = detailForm.setSpecificationToForm(
         specification);
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
-    shopForm = new ShopForm(shopService, shopId);
+    shopForm = new ShopForm(shopService);
+    shopForm.setShopId(shopId);
     groupForm.setShopId(shopForm.getShopId());
     groupForm.setShopForm(shopForm);
 
@@ -653,24 +658,17 @@ public class SpecificationController {
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     Long balanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
 
     SpecificationGroup group
-        = specificationGroupService.findBySpecificationGroupIdAndUsernameAndDeleted(
+        = specificationGroupService.findBySpecificationGroupIdAndUserIdAndDeleted(
         specificationGroupService.getMaxGroupId(),
-        userDetails.getUsername(),
+        null,
         false);
-    groupForm = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
+    groupForm = groupForm.setSpecificationGroupToForm(group);
 
     groupForm.setGroupMemo(groupMemo);
 
@@ -686,9 +684,9 @@ public class SpecificationController {
     accountAndBalanceService.saveAndFlush(
         accountAndBalanceForm.toEntity());
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopForm.getShopId());
     groupForm.setShopId(shop.getShopId());
@@ -707,7 +705,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         groupForm.getSpecificationGroupId(),
-        userDetails.getUsername(),
+        null,
         false);
 
     balanceType
@@ -743,13 +741,19 @@ public class SpecificationController {
     model.addAttribute(
         "accountSourceForm",
         new AccountSourceForm(
-            accountSourceService,
-            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+            accountSourceService)
+            .setAccountSourceFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountSourceId()));
     model.addAttribute(
         "accountDestinationForm",
         new AccountDestinationForm(
-            accountDestinationService,
-            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+            accountDestinationService)
+            .setAccountDestinationFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountDestinationId()));
     model.addAttribute("userDetails", userDetails);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
     model.addAttribute("totalAmount", (long) Math.round(totalAmount));
@@ -757,10 +761,10 @@ public class SpecificationController {
     return "/spec/editGroup";
   }
 
-  @PostMapping(value = "/spec/update/group/{specificationGroupId}/{id}")
+  @PostMapping(value = "/spec/update/group/{specificationGroupId}/{userId}")
   String updateGroup(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute Specification specification,
@@ -774,25 +778,18 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     Long balanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
-    groupForm = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
+    groupForm = groupForm.setSpecificationGroupToForm(group);
 
     groupForm.setGroupMemo(groupMemo);
 
@@ -807,9 +804,9 @@ public class SpecificationController {
     accountAndBalanceService.saveAndFlush(
         accountAndBalanceForm.toEntity());
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopForm.getShopId());
     groupForm.setShopId(shop.getShopId());
@@ -834,7 +831,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         groupForm.getSpecificationGroupId(),
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -846,20 +843,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -890,13 +890,19 @@ public class SpecificationController {
     model.addAttribute(
         "accountSourceForm",
         new AccountSourceForm(
-            accountSourceService,
-            groupForm.getAccountAndBalanceForm().getAccountSourceId()));
+            accountSourceService)
+            .setAccountSourceFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountSourceId()));
     model.addAttribute(
         "accountDestinationForm",
         new AccountDestinationForm(
-            accountDestinationService,
-            groupForm.getAccountAndBalanceForm().getAccountDestinationId()));
+            accountDestinationService)
+            .setAccountDestinationFormByDB(
+                groupForm
+                    .getAccountAndBalanceForm()
+                    .getAccountDestinationId()));
     model.addAttribute("userDetails", userDetails);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
     model.addAttribute("selectedBalanceTypeId", groupForm.getBalanceTypeId());
@@ -905,10 +911,10 @@ public class SpecificationController {
     return "/spec/editGroup";
   }
 
-  @PostMapping(value = "/spec/save/create/detail/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/save/create/detail/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String saveCreateDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -928,7 +934,7 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     Long previousBalanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
@@ -953,15 +959,17 @@ public class SpecificationController {
     groupForm.setBalanceTypeToForm(balanceType);
 
     accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
     accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     accountAndBalanceForm.setAccountDestinationId(
         accountDestinationId);
     accountAndBalanceForm.setAccountDestinationForm(
@@ -974,18 +982,21 @@ public class SpecificationController {
         currencyListForm.getCurrencyId());
 
     unitForm = new UnitForm(
-        unitService,
-        detailForm.getUnitId());
+        unitService)
+        .setUnitFormByDB(
+            detailForm.getUnitId());
     detailForm.setUnitId(unitForm.getUnitId());
 
     taxTypeForm = new TaxTypeForm(
-        taxTypeService,
-        detailForm.getTaxTypeId());
+        taxTypeService)
+        .setTaxTypeFormByDB(
+            detailForm.getTaxTypeId());
     detailForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
 
     taxRateForm = new TaxRateForm(
-        taxRateService,
-        detailForm.getTaxRateId());
+        taxRateService)
+        .setTaxRateFormByDB(
+            detailForm.getTaxRateId());
     detailForm.setTaxRateId(taxRateForm.getTaxRateId());
 
     if (detailForm.getEntryDate() == null) {
@@ -1000,7 +1011,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -1012,20 +1023,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -1045,20 +1059,12 @@ public class SpecificationController {
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
 
-    System.out.println("XXXXXXXX >>>> group : " + group.toString());
-    groupForm = groupForm.setSpecificationGroupToForm(
-        kakeiPonUsersDetailsService,
-        shopService,
-        balanceTypeService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        group);
+    groupForm = groupForm.setSpecificationGroupToForm(group);
 
     balanceType
         = balanceTypeService.findById(
@@ -1068,7 +1074,6 @@ public class SpecificationController {
 
     groupForm.setGroupMemo(group.getGroupMemo());
 
-    System.out.println("XXXXXXXX >>>> groupForm : " + groupForm.toString());
     model.addAttribute(
         "specificationGroupForm", groupForm);
     model.addAttribute(
@@ -1101,7 +1106,7 @@ public class SpecificationController {
   String saveEditDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("specificationId") Long specificationId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1117,7 +1122,7 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     Long previousBalanceTypeId = groupForm.getBalanceTypeId();
 
@@ -1128,7 +1133,7 @@ public class SpecificationController {
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1139,15 +1144,17 @@ public class SpecificationController {
     groupForm.setBalanceTypeToForm(balanceType);
 
     AccountSourceForm accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     accountAndBalanceForm.setAccountDestinationId(
         accountDestinationId);
     accountAndBalanceForm.setAccountDestinationForm(
@@ -1162,18 +1169,21 @@ public class SpecificationController {
         currencyListForm.getCurrencyId());
 
     unitForm = new UnitForm(
-        unitService,
-        detailForm.getUnitId());
+        unitService)
+        .setUnitFormByDB(
+            detailForm.getUnitId());
     detailForm.setUnitId(unitForm.getUnitId());
 
     taxTypeForm = new TaxTypeForm(
-        taxTypeService,
-        detailForm.getTaxTypeId());
+        taxTypeService)
+        .setTaxTypeFormByDB(
+            detailForm.getTaxTypeId());
     detailForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
 
     taxRateForm = new TaxRateForm(
-        taxRateService,
-        detailForm.getTaxRateId());
+        taxRateService)
+        .setTaxRateFormByDB(
+            detailForm.getTaxRateId());
     detailForm.setTaxRateId(taxRateForm.getTaxRateId());
 
     if (detailForm.getEntryDate() == null) {
@@ -1189,7 +1199,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -1201,20 +1211,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -1266,10 +1279,10 @@ public class SpecificationController {
     return "/spec/editGroup";
   }
 
-  @GetMapping("/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchShop")
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchShop")
   String searchShop(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1281,13 +1294,13 @@ public class SpecificationController {
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setId(id);
+    groupForm.setUserId(userId);
 
     AccountAndBalance accountAndBalance
         = accountAndBalanceService.getById(accountAndBalanceId);
@@ -1324,10 +1337,10 @@ public class SpecificationController {
     return "/shop/showList";
   }
 
-  @GetMapping("/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchAccountSource")
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchAccountSource")
   String searchAccountSource(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1340,17 +1353,17 @@ public class SpecificationController {
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setId(id);
+    groupForm.setUserId(userId);
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1360,8 +1373,9 @@ public class SpecificationController {
     List<AccountSource> accountSources = accountSourceService.findAll();
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
 
     groupForm.setGroupMemo(groupMemo);
 
@@ -1381,10 +1395,10 @@ public class SpecificationController {
     return "/account/showSourceList";
   }
 
-  @GetMapping("/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchAccountDestination")
+  @GetMapping("/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/searchAccountDestination")
   String searchAccountDestination(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1396,20 +1410,20 @@ public class SpecificationController {
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setId(id);
+    groupForm.setUserId(userId);
 
     AccountAndBalance accountAndBalance
         = accountAndBalanceService.getById(accountAndBalanceId);
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1424,8 +1438,9 @@ public class SpecificationController {
 
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     List<AccountDestination> accountDestinations
         = accountDestinationService.findAll();
 
@@ -1447,11 +1462,11 @@ public class SpecificationController {
     return "/account/showDestinationList";
   }
 
-  @RequestMapping(value = "/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setShop",
+  @RequestMapping(value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setShop",
       method = RequestMethod.GET)
   String setShopToSpecificationGroup(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1465,23 +1480,23 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1502,8 +1517,9 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountSourceId(accountSourceId);
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     groupForm.getAccountAndBalanceForm().setAccountSourceForm(
         accountSourceForm);
 
@@ -1511,8 +1527,9 @@ public class SpecificationController {
         accountDestinationId);
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
 
@@ -1521,7 +1538,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -1533,20 +1550,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -1599,11 +1619,11 @@ public class SpecificationController {
   }
 
   @RequestMapping(
-      value = "/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setAccountSource",
+      value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setAccountSource",
       method = RequestMethod.GET)
   String setAccountSourceToAccountAndBalance(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1617,22 +1637,23 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(), false);
+            userId,
+            false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1653,8 +1674,9 @@ public class SpecificationController {
     groupForm.getAccountAndBalanceForm().setAccountSourceId(accountSourceId);
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     groupForm.getAccountAndBalanceForm().setAccountSourceForm(
         accountSourceForm);
 
@@ -1662,8 +1684,9 @@ public class SpecificationController {
         accountDestinationId);
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     groupForm.getAccountAndBalanceForm().setAccountDestinationForm(
         accountDestinationForm);
 
@@ -1672,7 +1695,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -1684,20 +1707,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -1750,11 +1776,11 @@ public class SpecificationController {
   }
 
   @RequestMapping(
-      value = "/{specificationGroupId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setAccountDestination",
+      value = "/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}/setAccountDestination",
       method = RequestMethod.GET)
   String setAccountDestinationToAccountAndBalance(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1768,23 +1794,23 @@ public class SpecificationController {
       @ModelAttribute TaxRateForm taxRateForm,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     SpecificationGroup group
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
     String groupMemo = group.getGroupMemo();
 
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
-    ShopForm shopForm = new ShopForm();
+    ShopForm shopForm = new ShopForm(shopService);
     shopForm = shopForm.setShopToForm(shop);
     groupForm.setShopForm(shopForm);
 
@@ -1807,8 +1833,9 @@ public class SpecificationController {
             accountSourceId);
     AccountSourceForm accountSourceForm
         = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     groupForm.getAccountAndBalanceForm()
         .setAccountSourceForm(
             accountSourceForm);
@@ -1818,8 +1845,9 @@ public class SpecificationController {
             accountDestinationId);
     AccountDestinationForm accountDestinationForm
         = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     groupForm
         .getAccountAndBalanceForm()
         .setAccountDestinationForm(
@@ -1830,7 +1858,7 @@ public class SpecificationController {
     List<SpecificationForm> specificationForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : specificationForms) {
@@ -1842,20 +1870,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 
@@ -1906,17 +1937,17 @@ public class SpecificationController {
     }
   }
 
-  @PostMapping(value = "/spec/delete/group/{specificationGroupId}/{id}")
+  @PostMapping(value = "/spec/delete/group/{specificationGroupId}/{userId}")
   String deleteGroup(
       @PathVariable("specificationGroupId") Long specificationGroupId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
     List<Specification> specifications
-        = specificationService.findBySpecificationGroupIdAndUsernameAndDeleted(
+        = specificationService.findBySpecificationGroupIdAndUserIdAndDeleted(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
     for (var spec : specifications) {
       spec.setDeleted(true);
@@ -1926,9 +1957,23 @@ public class SpecificationController {
     SpecificationGroupForm specificationGroupForm
         = new SpecificationGroupForm(
         specificationGroupService,
-        specificationGroupId,
-        userDetails.getUsername(),
-        false);
+        specificationService,
+        accountAndBalanceService,
+        accountSourceService,
+        accountDestinationService,
+        usersDetailsService,
+//        authoritiesService,
+        userExtService,
+        shopService,
+        balanceTypeService,
+        currencyListService,
+        unitService,
+        taxTypeService,
+        taxRateService)
+        .setSpecificationGroupFormByDB(
+            specificationGroupId,
+            userId,
+            false);
 
     specificationGroupForm.setDeleted(true);
 
@@ -1939,11 +1984,11 @@ public class SpecificationController {
     return "redirect:/spec";
   }
 
-  @PostMapping(value = "/spec/delete/detail/{specificationGroupId}/{specificationId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/delete/detail/{specificationGroupId}/{specificationId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String deleteDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("specificationId") Long specificationId,
-      @PathVariable("id") Integer id,
+      @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
       @PathVariable("shopId") Long shopId,
       @PathVariable("balanceTypeId") Long balanceTypeId,
@@ -1952,33 +1997,33 @@ public class SpecificationController {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute UserExtForm userExtForm,
       @ModelAttribute ShopForm shopForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
-    Double totalAmount = Double.parseDouble("0.0");
+    double totalAmount = Double.parseDouble("0.0");
 
     Long previousBalanceTypeId = groupForm.getBalanceTypeId();
 
     SpecificationGroup specificationGroup
         = specificationGroupService
-        .findBySpecificationGroupIdAndUsernameAndDeleted(
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
-            userDetails.getUsername(),
+            userId,
             false);
 
-    Authorities authorities
-        = authoritiesService.findByUsername(
-        userDetails.getUsername());
-    groupForm.setKakeiPonUsersDetails(
-        convertUserDetailsToKakeiPonUsersDetails(
-            userDetails));
+//    Authorities authorities
+//        = authoritiesService.findByUsername(
+//        userDetails.getUsername());
+//    groupForm.setUsersDetails(
+//        convertUserDetailsToKakeiPonUsersDetails(
+//            userDetails));
 
-    userExtForm = userExtService.findByIdToForm(id);
+    userExtForm = userExtService.findByUserIdToForm(userId);
     groupForm.setUserExtForm(userExtForm);
 
     Shop shop = shopService.findById(shopForm.getShopId());
@@ -1998,14 +2043,16 @@ public class SpecificationController {
         specificationGroup.getReceivingAndPaymentTime());
 
     accountSourceForm = new AccountSourceForm(
-        accountSourceService,
-        accountSourceId);
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
     accountDestinationForm = new AccountDestinationForm(
-        accountDestinationService,
-        accountDestinationId);
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
     accountAndBalanceForm.setAccountDestinationId(
         accountDestinationId);
     accountAndBalanceForm.setAccountDestinationForm(
@@ -2031,7 +2078,7 @@ public class SpecificationController {
         .findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
             specificationGroupId,
             specificationId,
-            id,
+            userDetails.getUsername(),
             false);
     detailForm = detailForm.setSpecificationToForm(
         specification);
@@ -2041,7 +2088,7 @@ public class SpecificationController {
     List<SpecificationForm> detailForms
         = specificationService.findBySpecificationGroupIdToForm(
         specificationGroupId,
-        userDetails.getUsername(),
+        userId,
         false);
 
     for (var specForm : detailForms) {
@@ -2052,20 +2099,23 @@ public class SpecificationController {
       specForm.setCurrencyListForm(currencyListForm);
 
       UnitForm unitForm = new UnitForm(
-          unitService,
-          specForm.getUnitId());
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
       specForm.setUnitId(unitForm.getUnitId());
       specForm.setUnitForm(unitForm);
 
       TaxTypeForm taxTypeForm = new TaxTypeForm(
-          taxTypeService,
-          specForm.getTaxTypeId());
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
       specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
       specForm.setTaxTypeForm(taxTypeForm);
 
       TaxRateForm taxRateForm = new TaxRateForm(
-          taxRateService,
-          specForm.getTaxRateId());
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
       specForm.setTaxRateId(taxRateForm.getTaxRateId());
       specForm.setTaxRateForm(taxRateForm);
 

@@ -10,32 +10,37 @@ import java.io.Serializable;
 @Component
 @Entity
 @Table(name = "users")
-@SecondaryTable(name = "authorities",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
+//@SecondaryTable(name = "authorities",
+//    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @Data
 public class User implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @SequenceGenerator(name = "users_seq", allocationSize = 1)
-  @Column(name = "id")
-  private Integer id;
-
-  @Column(name = "username")
-  private String username;
-
-  @OneToOne
-  @JoinColumn(name = "username", table = "authorities",
-      referencedColumnName = "username",
+  @JoinColumn(name = "user_id", table = "users_ext",
+      referencedColumnName = "user_id",
       insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn(name = "username")
-  private Authorities authorities;
+  @PrimaryKeyJoinColumn(name = "user_id")
+  private Long userId;
 
+  @Column(name = "id")
+  private String id;
 
   @Column(name = "password")
   private String password;
+
+  @Enumerated(EnumType.STRING)
+  private RoleName roleName;
+
+  @Column(name = "account_non_expired")
+  private Boolean accountNonExpired;
+
+  @Column(name = "account_non_locked")
+  private Boolean accountNonLocked;
+
+  @Column(name = "credentials_non_expired")
+  private Boolean credentialsNonExpired;
 
   @Column(name = "enabled")
   private Boolean enabled;
@@ -44,8 +49,9 @@ public class User implements Serializable {
     this.enabled = true;
   }
 
-  public User(String username, String password, Boolean enabled) {
-    this.username = username;
+  public User(Long userId, String id, String password, Boolean enabled) {
+    this.userId = userId;
+    this.id = id;
     this.password = password;
     this.enabled = true;
   }

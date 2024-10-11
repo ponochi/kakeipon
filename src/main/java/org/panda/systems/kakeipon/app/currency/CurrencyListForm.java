@@ -16,6 +16,8 @@ public class CurrencyListForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
+  private final CurrencyListService currencyListService;
+
   @Id
   @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
   @SequenceGenerator(name = "currency_seq", allocationSize = 1)
@@ -27,11 +29,18 @@ public class CurrencyListForm implements Serializable {
 
   public CurrencyListForm() {
 
+    this.currencyListService = null;
   }
 
-  public CurrencyListForm(CurrencyListService service,
+  public CurrencyListForm(CurrencyListService currencyListService) {
+
+    this.currencyListService = currencyListService;
+  }
+
+  public CurrencyListForm(CurrencyListService currencyListService,
                           Long currencyId) {
-    CurrencyList currency = service.findById(currencyId);
+    this.currencyListService = currencyListService;
+    CurrencyList currency = currencyListService.findById(currencyId);
 
     this.setCurrencyId(currency.getCurrencyId());
     this.setCurrencyName(currency.getCurrencyName());

@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
-import org.panda.systems.kakeipon.app.spec.SpecificationForm;
 import org.panda.systems.kakeipon.domain.model.common.Shop;
-import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.service.common.ShopService;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,6 +17,8 @@ import java.time.LocalDateTime;
 public class ShopForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
+
+  private final ShopService shopService;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,15 +62,22 @@ public class ShopForm implements Serializable {
   // Default constructor
   public ShopForm() {
 
+    this.shopService = null;
   }
 
-  public ShopForm(ShopService service, Long shopId) {
+  public ShopForm(ShopService shopService) {
+
+    this.shopService = shopService;
+  }
+
+  public ShopForm setShopFormByDB(Long shopId) {
+
     if (shopId == null) {
       shopId = Long.parseLong("1");
     } else {
       this.setShopId(shopId);
     }
-    Shop shop = service.findById(this.getShopId());
+    Shop shop = shopService.findById(this.getShopId());
     this.setShopName(shop.getShopName());
     this.setBranchName(shop.getBranchName());
     this.setShopUrl(shop.getShopUrl());
@@ -82,10 +88,12 @@ public class ShopForm implements Serializable {
     this.setShopMemo(shop.getShopMemo());
     this.setEntryDate(shop.getEntryDate());
     this.setUpdateDate(shop.getUpdateDate());
+
+    return this;
   }
 
   public ShopForm setShopToForm(Shop shop) {
-    ShopForm form = new ShopForm();
+    ShopForm form = new ShopForm(shopService);
 
     form.setShopId(shop.getShopId());
     form.setShopName(shop.getShopName());
