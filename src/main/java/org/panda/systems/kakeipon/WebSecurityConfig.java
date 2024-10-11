@@ -1,6 +1,6 @@
 package org.panda.systems.kakeipon;
 
-import org.panda.systems.kakeipon.domain.service.user.UsersDetailsService;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.reactive.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ public class WebSecurityConfig {
   @Autowired
   private DataSource dataSource;
   @Autowired
-  private UsersDetailsService usersDetailsService;
+  private UsersDetailService usersDetailService;
 
   @Bean
   PasswordEncoder passwordEncoder() {
@@ -36,7 +36,7 @@ public class WebSecurityConfig {
   }
 
 //  private UserDetails makeUser(String username, String password, String role) {
-//    return User
+//    return Users
 //        .withUsername(username)
 //        .password(new BCryptPasswordEncoder().encode(password))
 //        .roles(role)

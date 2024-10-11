@@ -16,7 +16,7 @@ import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
 import org.panda.systems.kakeipon.domain.service.common.UnitService;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.UsersDetailsService;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serial;
@@ -43,7 +43,7 @@ public class SpecificationForm implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Autowired
-  UsersDetailsService usersDetailsService;
+  UsersDetailService usersDetailService;
   @Autowired
   CurrencyListService currencyListService;
   @Autowired
@@ -211,7 +211,7 @@ public class SpecificationForm implements Serializable {
     return specification;
   }
 
-  // Setter for User
+  // Setter for Users
   public CurrencyListForm setCurrencyToForm(CurrencyList currencyList) {
     this.currencyListForm = new CurrencyListForm();
 

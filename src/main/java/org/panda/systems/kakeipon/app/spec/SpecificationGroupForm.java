@@ -6,22 +6,22 @@ import lombok.Data;
 import org.panda.systems.kakeipon.app.common.AccountAndBalanceForm;
 import org.panda.systems.kakeipon.app.common.BalanceTypeForm;
 import org.panda.systems.kakeipon.app.shop.ShopForm;
-import org.panda.systems.kakeipon.app.user.UserExtForm;
-import org.panda.systems.kakeipon.app.user.UserForm;
+import org.panda.systems.kakeipon.app.users.UsersExtForm;
+import org.panda.systems.kakeipon.app.users.UsersForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
-import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.model.user.UserExt;
+import org.panda.systems.kakeipon.domain.model.users.Users;
+import org.panda.systems.kakeipon.domain.model.users.UsersExt;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
 import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
 import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.*;
+import org.panda.systems.kakeipon.domain.service.users.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -56,9 +56,9 @@ public class SpecificationGroupForm implements Serializable {
   private final AccountAndBalanceService accountAndBalanceService;
   private final AccountSourceService accountSourceService;
   private final AccountDestinationService accountDestinationService;
-  private final UsersDetailsService usersDetailsService;
+  private final UsersDetailService usersDetailService;
   //  private final AuthoritiesService authoritiesService;
-  private final UserExtService userExtService;
+  private final UsersExtService usersExtService;
   private final ShopService shopService;
   private final BalanceTypeService balanceTypeService;
   private final CurrencyListService currencyListService;
@@ -80,7 +80,7 @@ public class SpecificationGroupForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "user_id")
-  UserExtForm userExtForm;
+  UsersExtForm usersExtForm;
 
   @Column(name = "id")
   String id;
@@ -90,7 +90,7 @@ public class SpecificationGroupForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "username")
-  UsersDetails usersDetails;
+  UsersDetail usersDetail;
 
   @Column(name = "shop_id")
   Long shopId;
@@ -152,9 +152,9 @@ public class SpecificationGroupForm implements Serializable {
     this.accountAndBalanceService = null;
     this.accountSourceService = null;
     this.accountDestinationService = null;
-    this.usersDetailsService = null;
+    this.usersDetailService = null;
     //  this.authoritiesService = null;
-    this.userExtService = null;
+    this.usersExtService = null;
     this.shopService = null;
     this.balanceTypeService = null;
     this.currencyListService = null;
@@ -168,9 +168,9 @@ public class SpecificationGroupForm implements Serializable {
                                 AccountAndBalanceService accountAndBalanceService,
                                 AccountSourceService accountSourceService,
                                 AccountDestinationService accountDestinationService,
-                                UsersDetailsService usersDetailsService,
+                                UsersDetailService usersDetailService,
 //                                AuthoritiesService authoritiesService,
-                                UserExtService userExtService,
+                                UsersExtService usersExtService,
                                 ShopService shopService,
                                 BalanceTypeService balanceTypeService,
                                 CurrencyListService currencyListService,
@@ -183,9 +183,9 @@ public class SpecificationGroupForm implements Serializable {
     this.accountAndBalanceService = accountAndBalanceService;
     this.accountSourceService = accountSourceService;
     this.accountDestinationService = accountDestinationService;
-    this.usersDetailsService = usersDetailsService;
+    this.usersDetailService = usersDetailService;
 //    this.authoritiesService = authoritiesService;
-    this.userExtService = userExtService;
+    this.usersExtService = usersExtService;
     this.shopService = shopService;
     this.balanceTypeService = balanceTypeService;
     this.currencyListService = currencyListService;
@@ -205,19 +205,19 @@ public class SpecificationGroupForm implements Serializable {
             null,
             Long.parseLong("1"),
             Long.parseLong("1"));
-    UsersDetails usersDetails = usersDetailsService.findByUserId(userId);
+    UsersDetail usersDetail = usersDetailService.findByUserId(userId);
     this.setId(id);
     this.setUsersToForm(
-        usersDetailsService,
+        usersDetailService,
 //        authoritiesService,
-        usersDetails.getUser());
+        usersDetail.getUsers());
 
-    UserExt userExt = null;
-    if (userExtService != null) {
-      userExt = userExtService.findByUserId(userId);
+    UsersExt usersExt = null;
+    if (usersExtService != null) {
+      usersExt = usersExtService.findByUserId(userId);
     }
-    if (userExt != null) {
-      this.setUserExtToForm(userExt);
+    if (usersExt != null) {
+      this.setUserExtToForm(usersExt);
     }
 
     ShopForm shopForm = new ShopForm(shopService);
@@ -287,15 +287,15 @@ public class SpecificationGroupForm implements Serializable {
 
     SpecificationForm specForm = new SpecificationForm();
 
-    if (usersDetailsService != null) {
-      UsersDetails usersDetailsTemporary = usersDetailsService.findByUserId(userId);
+    if (usersDetailService != null) {
+      UsersDetail usersDetailTemporary = usersDetailService.findByUserId(userId);
       List<Specification> specifications = null;
       if (specificationService != null) {
         if (specificationGroupService != null) {
           specifications = specificationService
           .findBySpecificationGroupIdAndUserIdAndDeleted(
               specificationGroupService.getMaxGroupId(),
-              usersDetailsTemporary.getUser().getUserId(),
+              usersDetailTemporary.getUsers().getUserId(),
               false);
         }
       }
@@ -387,9 +387,9 @@ public class SpecificationGroupForm implements Serializable {
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
-        usersDetailsService,
+        usersDetailService,
 //        authoritiesService,
-        userExtService,
+        usersExtService,
         shopService,
         balanceTypeService,
         currencyListService,
@@ -401,35 +401,35 @@ public class SpecificationGroupForm implements Serializable {
         specificationGroup.getSpecificationGroupId());
 
     form.setUserId(specificationGroup.getUserId());
-    User user
+    Users users
         = null;
-    if (usersDetailsService != null) {
-      user = usersDetailsService
-          .findByUserId(specificationGroup.getUserId()).getUser();
+    if (usersDetailService != null) {
+      users = usersDetailService
+          .findByUserId(specificationGroup.getUserId()).getUsers();
     }
-    UsersDetails usersDetails
-        = new UsersDetails(user);
-    usersDetails.getUser().setId(user.getId());
-    usersDetails.getUser().setPassword(user.getPassword());
-    usersDetails.getUser().setUserId(user.getUserId());
-    usersDetails.getUser().setId(user.getId());
-    usersDetails.getUser().setAccountNonExpired(true);
-    usersDetails.getUser().setAccountNonLocked(true);
-    usersDetails.getUser().setCredentialsNonExpired(true);
-    usersDetails.getUser().setEnabled(true);
-    form.setUsersDetails(usersDetails);
+    UsersDetail usersDetail
+        = new UsersDetail(users);
+    usersDetail.getUsers().setId(users.getId());
+    usersDetail.getUsers().setPassword(users.getPassword());
+    usersDetail.getUsers().setUserId(users.getUserId());
+    usersDetail.getUsers().setId(users.getId());
+    usersDetail.getUsers().setAccountNonExpired(true);
+    usersDetail.getUsers().setAccountNonLocked(true);
+    usersDetail.getUsers().setCredentialsNonExpired(true);
+    usersDetail.getUsers().setEnabled(true);
+    form.setUsersDetail(usersDetail);
 
-    UserExt userExt = new UserExt();
-    userExt.setUserId(user.getUserId());
-    userExt.setLastName(userExt.getLastName());
-    userExt.setFirstName(userExt.getFirstName());
-    userExt.setBirthDay(userExt.getBirthDay());
-    userExt.setPhoneNumber(userExt.getPhoneNumber());
-    userExt.setEmail(userExt.getEmail());
-    userExt.setEntryDate(userExt.getEntryDate());
-    userExt.setUpdateDate(userExt.getUpdateDate());
-    UserExtForm userExtForm = form.setUserExtToForm(userExt);
-    form.setUserExtForm(userExtForm);
+    UsersExt usersExt = new UsersExt();
+    usersExt.setUserId(users.getUserId());
+    usersExt.setLastName(usersExt.getLastName());
+    usersExt.setFirstName(usersExt.getFirstName());
+    usersExt.setBirthDay(usersExt.getBirthDay());
+    usersExt.setPhoneNumber(usersExt.getPhoneNumber());
+    usersExt.setEmail(usersExt.getEmail());
+    usersExt.setEntryDate(usersExt.getEntryDate());
+    usersExt.setUpdateDate(usersExt.getUpdateDate());
+    UsersExtForm usersExtForm = form.setUserExtToForm(usersExt);
+    form.setUsersExtForm(usersExtForm);
 
     form.setShopId(specificationGroup.getShopId());
     Shop shop = shopService.findById(specificationGroup.getShopId());
@@ -500,46 +500,46 @@ public class SpecificationGroupForm implements Serializable {
     return specificationGroup;
   }
 
-  public UserForm setUsersToForm(
-      UsersDetailsService usersDetailsService,
+  public UsersForm setUsersToForm(
+      UsersDetailService usersDetailService,
 //      AuthoritiesService authoritiesService,
-      User user) {
-    UserForm userForm = new UserForm(
-        usersDetailsService
+      Users users) {
+    UsersForm usersForm = new UsersForm(
+        usersDetailService
 //        authoritiesService
     );
 
-    userForm.setUserId(user.getUserId());
-    userForm.setId(user.getId());
-    userForm.setPassword(user.getPassword());
-    userForm.setEnabled(true);
-    userForm.setAccountNonExpired(true);
-    userForm.setAccountNonLocked(true);
-    userForm.setCredentialsNonExpired(true);
+    usersForm.setUserId(users.getUserId());
+    usersForm.setId(users.getId());
+    usersForm.setPassword(users.getPassword());
+    usersForm.setEnabled(true);
+    usersForm.setAccountNonExpired(true);
+    usersForm.setAccountNonLocked(true);
+    usersForm.setCredentialsNonExpired(true);
 
 
-    return userForm;
+    return usersForm;
   }
 
-  public UserExtForm setUserExtToForm(UserExt userExt) {
+  public UsersExtForm setUserExtToForm(UsersExt usersExt) {
 
-    UserExtForm userExtForm = new UserExtForm(userExtService);
+    UsersExtForm usersExtForm = new UsersExtForm(usersExtService);
 
-    userExtForm.setUserId(userExt.getUserId());
-    userExtForm.setLastName(userExt.getLastName());
-    userExtForm.setFirstName(userExt.getFirstName());
-    userExtForm.setBirthDay(userExt.getBirthDay());
-    userExtForm.setPhoneNumber(userExt.getPhoneNumber());
-    userExtForm.setEmail(userExt.getEmail());
+    usersExtForm.setUserId(usersExt.getUserId());
+    usersExtForm.setLastName(usersExt.getLastName());
+    usersExtForm.setFirstName(usersExt.getFirstName());
+    usersExtForm.setBirthDay(usersExt.getBirthDay());
+    usersExtForm.setPhoneNumber(usersExt.getPhoneNumber());
+    usersExtForm.setEmail(usersExt.getEmail());
     if (entryDate == null) {
-      userExtForm.setEntryDate(LocalDateTime.now());
-      userExtForm.setUpdateDate(userExt.getUpdateDate());
+      usersExtForm.setEntryDate(LocalDateTime.now());
+      usersExtForm.setUpdateDate(usersExt.getUpdateDate());
     } else {
-      userExtForm.setEntryDate(userExt.getEntryDate());
-      userExtForm.setUpdateDate(LocalDateTime.now());
+      usersExtForm.setEntryDate(usersExt.getEntryDate());
+      usersExtForm.setUpdateDate(LocalDateTime.now());
     }
 
-    return userExtForm;
+    return usersExtForm;
   }
 
   public ShopForm setShopToForm(Shop shop) {

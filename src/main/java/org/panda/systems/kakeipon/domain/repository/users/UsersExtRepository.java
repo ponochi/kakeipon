@@ -1,6 +1,6 @@
-package org.panda.systems.kakeipon.domain.repository.user;
+package org.panda.systems.kakeipon.domain.repository.users;
 
-import org.panda.systems.kakeipon.domain.model.user.UserExt;
+import org.panda.systems.kakeipon.domain.model.users.UsersExt;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserExtRepository extends JpaRepository<UserExt, Integer> {
+public interface UsersExtRepository extends JpaRepository<UsersExt, Integer> {
   @SuppressWarnings("NullableProblems")
   @Override
   @Query(value =
@@ -37,7 +37,7 @@ public interface UserExtRepository extends JpaRepository<UserExt, Integer> {
 //      "    username = auth.username " +
       "ORDER BY " +
       "  kpue.user_id", nativeQuery = true)
-  List<UserExt> findAll();
+  List<UsersExt> findAll();
 
   @Query(value =
       "SELECT " +
@@ -64,11 +64,11 @@ public interface UserExtRepository extends JpaRepository<UserExt, Integer> {
       "  kp.users_ext kpue " +
       "WHERE" +
       "  kpue.user_id = ?1", nativeQuery = true)
-  Optional<UserExt> findByUserId(Long userId);
+  Optional<UsersExt> findByUserId(Long userId);
 
   @Query(value = "SELECT MAX(user_id) FROM users_ext", nativeQuery = true)
   Integer getMaxId();
 
   @SuppressWarnings({"unchecked", "NullableProblems"})
-  UserExt saveAndFlush(UserExt entity);
+  UsersExt saveAndFlush(UsersExt entity);
 }

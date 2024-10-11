@@ -1,11 +1,11 @@
-package org.panda.systems.kakeipon.app.user;
+package org.panda.systems.kakeipon.app.users;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.user.RoleName;
-import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.service.user.UsersDetailsService;
+import org.panda.systems.kakeipon.domain.model.users.RoleName;
+import org.panda.systems.kakeipon.domain.model.users.Users;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,11 +19,11 @@ import java.io.Serializable;
 //@SecondaryTable(name = "authorities",
 //    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 @Data
-public class UserForm implements Serializable {
+public class UsersForm implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  private final UsersDetailsService usersDetailsService;
+  private final UsersDetailService usersDetailService;
 //  private final AuthoritiesService authoritiesService;
 
   @Bean
@@ -41,7 +41,7 @@ public class UserForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "user_id")
-  private UserExtForm userExtForm;
+  private UsersExtForm usersExtForm;
 
   @NotEmpty(message = "ユーザ名は必須です")
   @Column(name = "id")
@@ -76,42 +76,42 @@ public class UserForm implements Serializable {
   private Boolean credentialsNonExpired;
 
   // Default constructor
-  public UserForm() {
-    this.usersDetailsService = null;
+  public UsersForm() {
+    this.usersDetailService = null;
 //    this.authoritiesService = null;
   }
 
-  public UserForm(
-      UsersDetailsService usersDetailsService) {
+  public UsersForm(
+      UsersDetailService usersDetailService) {
     //    AuthoritiesService authoritiesService) {
 
-    this.usersDetailsService = usersDetailsService;
+    this.usersDetailService = usersDetailService;
 //    this.authoritiesService = authoritiesService;
   }
 
-  public UserForm setUserToForm(
-      UsersDetailsService usersDetailsService,
+  public UsersForm setUserToForm(
+      UsersDetailService usersDetailService,
 //      AuthoritiesService authoritiesService,
-      User user) {
+      Users users) {
 
-    UserForm userForm = new UserForm(
-        usersDetailsService);
+    UsersForm usersForm = new UsersForm(
+        usersDetailService);
 //        authoritiesService);
 
-    userForm.setUserId(user.getUserId());
-    userForm.setId(user.getId());
-    userForm.setPassword(user.getPassword());
-    userForm.setRoleName(user.getRoleName());
+    usersForm.setUserId(users.getUserId());
+    usersForm.setId(users.getId());
+    usersForm.setPassword(users.getPassword());
+    usersForm.setRoleName(users.getRoleName());
 
 //    Authorities authorities = authoritiesService.findByUsername(
-//        user.getId());
-//    userForm.setAuthoritiesToForm(authorities);
-    userForm.setEnabled(user.getEnabled());
-    userForm.setAccountNonExpired(true);
-    userForm.setAccountNonLocked(true);
-    userForm.setCredentialsNonExpired(true);
+//        users.getId());
+//    usersForm.setAuthoritiesToForm(authorities);
+    usersForm.setEnabled(users.getEnabled());
+    usersForm.setAccountNonExpired(true);
+    usersForm.setAccountNonLocked(true);
+    usersForm.setCredentialsNonExpired(true);
 
-    return userForm;
+    return usersForm;
   }
 
 //  public AuthoritiesForm setAuthoritiesToForm(

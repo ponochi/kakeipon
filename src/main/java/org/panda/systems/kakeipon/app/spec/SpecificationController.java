@@ -5,21 +5,21 @@ import org.panda.systems.kakeipon.app.account.AccountSourceForm;
 import org.panda.systems.kakeipon.app.common.*;
 import org.panda.systems.kakeipon.app.currency.CurrencyListForm;
 import org.panda.systems.kakeipon.app.shop.ShopForm;
-import org.panda.systems.kakeipon.app.user.UserExtForm;
+import org.panda.systems.kakeipon.app.users.UsersExtForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
 import org.panda.systems.kakeipon.domain.model.common.*;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
-import org.panda.systems.kakeipon.domain.model.user.User;
-import org.panda.systems.kakeipon.domain.model.user.UserExt;
+import org.panda.systems.kakeipon.domain.model.users.Users;
+import org.panda.systems.kakeipon.domain.model.users.UsersExt;
 import org.panda.systems.kakeipon.domain.service.account.AccountDestinationService;
 import org.panda.systems.kakeipon.domain.service.account.AccountSourceService;
 import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.user.*;
+import org.panda.systems.kakeipon.domain.service.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,11 +40,11 @@ public class SpecificationController implements Serializable {
   @Autowired
   private SpecificationService specificationService;
   @Autowired
-  private UsersDetailsService usersDetailsService;
+  private UsersDetailService usersDetailService;
 //  @Autowired
 //  private AuthoritiesService authoritiesService;
   @Autowired
-  private UserExtService userExtService;
+  private UsersExtService usersExtService;
   @Autowired
   private ShopService shopService;
   @Autowired
@@ -64,9 +64,9 @@ public class SpecificationController implements Serializable {
   @Autowired
   private TaxRateService taxRateService;
   @Autowired
-  private UsersDetails usersDetails;
+  private UsersDetail usersDetail;
 
-//  public SpecificationController(SpecificationGroupService specificationGroupService, SpecificationService specificationService, UsersDetailsService usersDetailsService, AuthoritiesService authoritiesService, UserExtService userExtService, ShopService shopService, BalanceTypeService balanceTypeService, AccountAndBalanceService accountAndBalanceService, AccountSourceService accountSourceService, AccountDestinationService accountDestinationService, CurrencyListService currencyListService, UnitService unitService, TaxTypeService taxTypeService, TaxRateService taxRateService, UsersDetails usersDetails) {
+//  public SpecificationController(SpecificationGroupService specificationGroupService, SpecificationService specificationService, UsersDetailService usersDetailsService, AuthoritiesService authoritiesService, UsersExtService userExtService, ShopService shopService, BalanceTypeService balanceTypeService, AccountAndBalanceService accountAndBalanceService, AccountSourceService accountSourceService, AccountDestinationService accountDestinationService, CurrencyListService currencyListService, UnitService unitService, TaxTypeService taxTypeService, TaxRateService taxRateService, UsersDetail usersDetails) {
 //    this.specificationGroupService = specificationGroupService;
 //    this.specificationService = specificationService;
 //    this.usersDetailsService = usersDetailsService;
@@ -84,7 +84,7 @@ public class SpecificationController implements Serializable {
 //    this.usersDetails = usersDetails;
 //  }
 
-//  public UsersDetails convertUserDetailsToKakeiPonUsersDetails(
+//  public UsersDetail convertUserDetailsToKakeiPonUsersDetails(
 //      UserDetails userDetails) {
 //
 //    // Lambda expression to get RoleName from authority
@@ -98,13 +98,13 @@ public class SpecificationController implements Serializable {
 //      return RoleName.USER;
 //    };
 //
-//    UsersDetails usersDetails
-//        = new UsersDetails(user);
+//    UsersDetail usersDetails
+//        = new UsersDetail(users);
 //
-//    usersDetails.getUser().setId();
-//    usersDetails.getUser().setPassword(
+//    usersDetails.getUsers().setId();
+//    usersDetails.getUsers().setPassword(
 //        userDetails.getPassword());
-//    usersDetails.getUser().setAuthorities(
+//    usersDetails.getUsers().setAuthorities(
 //        new Authorities());
 //
 //    for (var authority : userDetails.getAuthorities()) {
@@ -128,17 +128,17 @@ public class SpecificationController implements Serializable {
   @GetMapping("/spec")
   String index(
       @AuthenticationPrincipal UserDetails userDetails,
-      @ModelAttribute UserExtForm userExtForm,
+      @ModelAttribute UsersExtForm usersExtForm,
       Model model) {
 
     List<SpecificationGroupForm> groupForms
         = specificationGroupService.findAllToForm(false);
 
     for (SpecificationGroupForm groupForm : groupForms) {
-      UserExt userExt
-          = userExtService.findByUserId(groupForm.getUserId());
-      userExtForm = userExtForm.setUserExtToForm(userExt);
-      groupForm.setUserExtForm(userExtForm);
+      UsersExt usersExt
+          = usersExtService.findByUserId(groupForm.getUserId());
+      usersExtForm = usersExtForm.setUserExtToForm(usersExt);
+      groupForm.setUsersExtForm(usersExtForm);
 
       AccountAndBalanceForm accountAndBalanceForm
           = new AccountAndBalanceForm(
@@ -206,7 +206,7 @@ public class SpecificationController implements Serializable {
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       Model model) {
 
-    User user = usersDetailsService.findByUserId(userId).getUser();
+    Users users = usersDetailService.findByUserId(userId).getUsers();
 
     groupForm = new SpecificationGroupForm(
         specificationGroupService,
@@ -214,9 +214,9 @@ public class SpecificationController implements Serializable {
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
-        usersDetailsService,
+        usersDetailService,
 //        authoritiesService,
-        userExtService,
+        usersExtService,
         shopService,
         balanceTypeService,
         currencyListService,
@@ -236,8 +236,8 @@ public class SpecificationController implements Serializable {
     groupForm.setUserId(userId);
     groupForm.setId(userDetails.getUsername());
     groupForm.setUsersToForm(
-        usersDetailsService,
-        user);
+        usersDetailService,
+        users);
 
     Shop shop = shopService.findById(Long.parseLong("1"));
     groupForm.setShopId(shop.getShopId());
@@ -324,7 +324,7 @@ public class SpecificationController implements Serializable {
     groupForm
         = groupForm.setSpecificationGroupToForm(group);
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -490,7 +490,7 @@ public class SpecificationController implements Serializable {
     groupForm.setAccountAndBalanceForm(
         accountAndBalanceForm);
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -611,7 +611,7 @@ public class SpecificationController implements Serializable {
     detailForm = detailForm.setSpecificationToForm(
         specification);
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -684,7 +684,7 @@ public class SpecificationController implements Serializable {
     accountAndBalanceService.saveAndFlush(
         accountAndBalanceForm.toEntity());
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -804,7 +804,7 @@ public class SpecificationController implements Serializable {
     accountAndBalanceService.saveAndFlush(
         accountAndBalanceForm.toEntity());
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -1490,7 +1490,7 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -1647,7 +1647,7 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -1804,7 +1804,7 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
@@ -1961,9 +1961,9 @@ public class SpecificationController implements Serializable {
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
-        usersDetailsService,
+        usersDetailService,
 //        authoritiesService,
-        userExtService,
+        usersExtService,
         shopService,
         balanceTypeService,
         currencyListService,
@@ -1997,7 +1997,7 @@ public class SpecificationController implements Serializable {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @ModelAttribute UserExtForm userExtForm,
+      @ModelAttribute UsersExtForm usersExtForm,
       @ModelAttribute ShopForm shopForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
@@ -2019,12 +2019,12 @@ public class SpecificationController implements Serializable {
 //    Authorities authorities
 //        = authoritiesService.findByUsername(
 //        userDetails.getUsername());
-//    groupForm.setUsersDetails(
+//    groupForm.setUsersDetail(
 //        convertUserDetailsToKakeiPonUsersDetails(
 //            userDetails));
 
-    userExtForm = userExtService.findByUserIdToForm(userId);
-    groupForm.setUserExtForm(userExtForm);
+    usersExtForm = usersExtService.findByUserIdToForm(userId);
+    groupForm.setUsersExtForm(usersExtForm);
 
     Shop shop = shopService.findById(shopForm.getShopId());
     groupForm.setShopId(shop.getShopId());

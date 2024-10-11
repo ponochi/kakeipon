@@ -18,18 +18,18 @@
     <th>操作</th>
   </tr>
   </thead>
-  <tbody th:each="userForm: ${userForms}">
+  <tbody th:each="usersDetail: ${usersDetails}">
   <tr>
     <th>
-      <span th:text="${userForm.id}"></span>
+      <span th:text="${usersDetail.users.id}"></span>
     </th>
-    <td><span th:text="${userForm.username}"></span></td>
-    <td><span th:text="${userForm.authoritiesForm.getAuthority()}"></span></td>
+    <td><span th:text="${usersDetail.username}"></span></td>
+    <td><span th:text="${usersDetail.users.roleName}"></span></td>
     <td>
         <form id="userInfo"
-              th:action="@{'/users/__${userForm.id}__/show'}"
-              method="get">
-          <input id="id" th:value="${userForm.id}" type="hidden">
+              th:action="@{'/users/__${usersDetail.users.id}__/show'}"
+              method="GET">
+          <input id="id" th:value="${usersDetail.users.id}" type="hidden">
           <input type="submit" value="詳　細"/>
         </form>
     </td>
@@ -38,7 +38,7 @@
 </table>
 <div>
   <button onclick="location.href='/top'">メニュー画面</button>
-  <button onclick="location.href='/user/create'">新規ユーザ・登　録</button>
+  <button onclick="location.href='/users/create'">新規ユーザ・登　録</button>
 </div>
 </body>
 </html>

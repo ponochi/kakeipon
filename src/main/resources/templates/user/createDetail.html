@@ -6,11 +6,11 @@
   <meta charset="UTF-8">
   <title th:text="ユーザ登録"></title>
   <script src="/js/common.js" type="text/javascript"></script>
-  <script src="/js/user.js" type="text/javascript"></script>
+  <script src="/js/users.js" type="text/javascript"></script>
 </head>
 <body>
 <h3>ユーザ登録</h3>
-<form id="confirm" th:object="${userForm}"
+<form id="confirm" th:object="${usersForm}"
       th:action="@{/users/createConfirm}" method="post">
   <table>
     <tbody>
@@ -59,7 +59,7 @@
         <td class="require">*</td>
         <td>
           <input id="email" name="email"
-                 th:value="${userForm.usersExtForm.email}" type="text"
+                 th:value="${usersForm.usersExtForm.email}" type="text"
                  autocomplete="email"/>
           <span th:if="${#fields.hasErrors('usersExtForm.email')}"
                 th:errors="*{usersExtForm.email}"
@@ -142,7 +142,7 @@
         <td class="require">*</td>
         <td>
           <input id="phoneNumber" name="phoneNumber"
-                 th:value="${userForm.usersExtForm.phoneNumber}" type="text"/>
+                 th:value="${usersForm.usersExtForm.phoneNumber}" type="text"/>
           <span th:if="${#fields.hasErrors('usersExtForm.phoneNumber')}"
                 th:errors="*{usersExtForm.phoneNumber}" style="color:red">電話番号は必須です。</span>
         </td>
@@ -165,7 +165,7 @@
           <div>
             <label for="entryDate" aria-label="A date of entry"></label>
             <input id="entryDate" name="entryDate"
-                   th:value="${userForm.usersExtForm.entryDate}"
+                   th:value="${usersForm.usersExtForm.entryDate}"
                    readonly />
           </div>
         </td>
@@ -177,7 +177,7 @@
           <div>
             <label for="updateDate" aria-label="A date of update"></label>
             <input id="updateDate" name="updateDate"
-                   th:value="${userForm.usersExtForm.updateDate}"
+                   th:value="${usersForm.usersExtForm.updateDate}"
                    readonly="readonly"/>
           </div>
         </td>
@@ -189,7 +189,7 @@
   <script>setToBirthDayField()</script>
   <input id="canProcDate" th:value="true" type="hidden"/>
 </form>
-<form id="list" th:action="@{'/users'}" th:object="${userForm}" method="get">
+<form id="list" th:action="@{'/users'}" th:object="${usersForm}" method="get">
 </form>
 <div>
   <button onclick="location.href='/top'">メニュー画面</button>

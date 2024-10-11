@@ -1,4 +1,4 @@
-package org.panda.systems.kakeipon.domain.model.user;
+package org.panda.systems.kakeipon.domain.model.users;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.PastOrPresent;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @SecondaryTable(name = "users",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
 @Data
-public class UserExt implements Serializable {
+public class UsersExt implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 

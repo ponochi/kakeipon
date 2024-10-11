@@ -1,4 +1,4 @@
-package org.panda.systems.kakeipon.domain.model.user;
+package org.panda.systems.kakeipon.domain.model.users;
 
 import java.util.List;
 

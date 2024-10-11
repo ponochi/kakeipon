@@ -5,7 +5,7 @@
 //=========================================================================
 function transitToEditDetail() {
   let form = document.getElementById("showDetailForm");
-  form.action = "/user/edit";
+  form.action = "/users/edit";
   form.submit();
 }
 

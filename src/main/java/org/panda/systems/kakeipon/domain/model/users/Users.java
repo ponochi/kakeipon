@@ -1,4 +1,4 @@
-package org.panda.systems.kakeipon.domain.model.user;
+package org.panda.systems.kakeipon.domain.model.users;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,19 +13,19 @@ import java.io.Serializable;
 //@SecondaryTable(name = "authorities",
 //    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @Data
-public class User implements Serializable {
+public class Users implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
   @Id
+  @Column(name = "id")
+  private String id;
+
   @JoinColumn(name = "user_id", table = "users_ext",
       referencedColumnName = "user_id",
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn(name = "user_id")
   private Long userId;
-
-  @Column(name = "id")
-  private String id;
 
   @Column(name = "password")
   private String password;
@@ -45,11 +45,11 @@ public class User implements Serializable {
   @Column(name = "enabled")
   private Boolean enabled;
 
-  public User() {
+  public Users() {
     this.enabled = true;
   }
 
-  public User(Long userId, String id, String password, Boolean enabled) {
+  public Users(Long userId, String id, String password, Boolean enabled) {
     this.userId = userId;
     this.id = id;
     this.password = password;

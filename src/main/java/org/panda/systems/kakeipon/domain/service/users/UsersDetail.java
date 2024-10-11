@@ -1,41 +1,36 @@
-package org.panda.systems.kakeipon.domain.service.user;
+package org.panda.systems.kakeipon.domain.service.users;
 
 import lombok.Data;
-import org.panda.systems.kakeipon.domain.model.user.User;
+import org.panda.systems.kakeipon.domain.model.users.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 @Component
 @Data
-public class UsersDetails implements UserDetails {
-  private final User user;
+public class UsersDetail implements UserDetails {
+  private final Users users;
 
-  public UsersDetails(User user) {
-    this.user = user;
+  public UsersDetail(Users users) {
+    this.users = users;
   }
-
-//  public User getUser() {
-//    return user;
-//  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return AuthorityUtils.createAuthorityList("ROLE_" + this.user.getRoleName().name());
+    return AuthorityUtils.createAuthorityList("ROLE_" + this.users.getRoleName().name());
   }
 
   @Override
   public String getPassword() {
-    return this.user.getPassword();
+    return this.users.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return this.user.getId();
+    return this.users.getId();
   }
 
   @Override
