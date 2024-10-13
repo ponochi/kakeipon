@@ -8,7 +8,7 @@
 </head>
 <body>
 <form id="updateGroup"
-      th:action="@{'/spec/update/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__'}"
+      th:action="@{'/spec/update/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__'}"
       th:object="${specificationGroupForm}" method="POST">
     <div>
         <input id="specificationGroupId" name="specificationGroupId"
@@ -17,8 +17,8 @@
         <input id="accountAndBalanceId" name="accountAndBalanceId"
                th:value="${specificationGroupForm.accountAndBalanceId}"
                type="hidden">
-        <input id="id" name="id"
-               th:value="${specificationGroupForm.id}" type="hidden">
+        <input id="userId" name="userId"
+               th:value="${specificationGroupForm.userId}" type="hidden">
     </div>
 
     <table>
@@ -265,14 +265,14 @@
         </td>
         <td>
             <form th:id="'deleteDetail' + '__${specificationForm.specificationId}__'"
-                  th:action="@{'/spec/delete/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+                  th:action="@{'/spec/delete/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
                   method="POST">
                 <input id="specificationId" name="specificationId"
                        th:value="${specificationForm.specificationId}"
                        type="hidden">
             </form>
             <form th:id="'specDetail' + '__${specificationForm.specificationId}__'"
-                  th:action="@{'/spec/edit/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+                  th:action="@{'/spec/edit/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
                   method="POST">
                 <input id="delete" name="delete"
                        class="delete"
@@ -296,19 +296,19 @@
        type="hidden">
 
 <form id="createSpecDetail"
-      th:action="@{'/spec/create/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+      th:action="@{'/spec/create/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
       method="POST">
 </form>
 <form id="searchShop"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchShop'}"
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchShop'}"
       method="GET">
 </form>
 <form id="searchAccountSource"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountSource'}"
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountSource'}"
       method="GET">
 </form>
 <form id="searchAccountDestination"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountDestination'}"
+      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountDestination'}"
       method="GET">
 </form>
 

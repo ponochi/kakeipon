@@ -7,14 +7,14 @@
 </head>
 <body>
 <form id="specDetail"
-      th:action="@{'/spec/save/create/detail/__${specificationForm.specificationGroupId}__/__${specificationGroupForm.id}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+      th:action="@{'/spec/save/create/detail/__${specificationForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
       th:object="${specificationForm}" method="POST">
     <div>
         <input id="specificationGroupId" name="specificationGroupId"
                th:value="${specificationForm.specificationGroupId}"
                type="hidden">
-        <input id="id" name="id"
-               th:value="${specificationGroupForm.id}" type="hidden">
+        <input id="iserId" name="userId"
+               th:value="${specificationGroupForm.userId}" type="hidden">
         <input id="specificationId" name="specificationId"
                th:value="${specificationForm.specificationId}"
                type="hidden">

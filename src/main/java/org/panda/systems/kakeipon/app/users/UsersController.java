@@ -33,13 +33,13 @@ public class UsersController {
   }
 
   private void setUsers(UsersForm form, Users users) {
-    users.setId(form.getId());
+    users.setUsername(form.getUsername());
     users.setUserId(form.getUserId());
     users.setPassword(passwordEncoder.encode(form.getPassword()));
-    users.setEnabled(true);
-//    users.setAccountNonExpired(true);
-//    users.setAccountNonLocked(true);
-//    users.setCredentialsNonExpired(true);
+    users.setEnabled(form.getEnabled());
+    users.setAccountNonExpired(form.getAccountNonExpired());
+    users.setAccountNonLocked(form.getAccountNonLocked());
+    users.setCredentialsNonExpired(form.getCredentialsNonExpired());
   }
 
   private void setUsersExt(UsersExtForm form, UsersExt usersExt) {
@@ -58,12 +58,6 @@ public class UsersController {
     }
   }
 
-//  private void setAuthorities(AuthoritiesForm form, Authorities authorities) {
-//    authorities.setId(form.getId());
-//    authorities.setUsername(form.getUsername());
-//    authorities.setAuthority(form.getAuthority());
-//  }
-
 //  @ModelAttribute(name = "userForm")
   @ModelAttribute(name = "usersDetails")
   UsersForm setUpUserForm() {
@@ -76,18 +70,11 @@ public class UsersController {
   String list(Model model) {
     List<UsersDetail> usersDetails = usersDetailService.findAllUsersToForm();
     for (UsersDetail usersDetail : usersDetails) {
-      Users users = usersDetailService.findById(usersDetail.getUsername()).getUsers();
-//      usersDetail.setUserToForm(
-//          usersDetailsService,
-//          authoritiesService,
-//          users);
-//      AuthoritiesForm authoritiesForm = new AuthoritiesForm(
-//          authoritiesService)
-//          .setAuthorityById(users.getId());
-//      users.setAuthoritiesForm(authoritiesForm);
+      Users users = usersDetailService.findByUsername(usersDetail.getUsername()).getUsers();
     }
+
     model.addAttribute("usersDetails", usersDetails);
-    return "/user/showList";
+    return "/users/showList";
   }
 
   @RequestMapping(value = "/{userId}/show", method = RequestMethod.GET)
@@ -95,23 +82,14 @@ public class UsersController {
     Users users = usersDetailService.findByUserId(userId).getUsers();
     UsersForm usersForm = new UsersForm(
         usersDetailService);
-//        authoritiesService);
+
     usersForm.setUserId(users.getUserId());
-    usersForm.setId(users.getId());
+    usersForm.setUsername(users.getUsername());
     usersForm.setPassword(users.getPassword());
     usersForm.setEnabled(users.getEnabled());
     usersForm.setAccountNonExpired(true);
     usersForm.setAccountNonLocked(true);
     usersForm.setCredentialsNonExpired(true);
-
-//    Authorities authorities
-//        = authoritiesService.findById(usersForm.getId());
-//    AuthoritiesForm authoritiesForm = new AuthoritiesForm();
-//    authoritiesForm.setId(authorities.getId());
-//    authoritiesForm.setUsername(authorities.getUsername());
-//    authoritiesForm.setAuthority(authorities.getAuthority());
-
-//    usersForm.setAuthoritiesForm(authoritiesForm);
 
     UsersExt usersExt = usersExtService.findByUserId(userId);
     UsersExtForm usersExtForm = new UsersExtForm(usersExtService);
@@ -134,16 +112,11 @@ public class UsersController {
   String createForm(
       @ModelAttribute UsersForm usersForm,
       @ModelAttribute UsersExtForm usersExtForm,
-//      @ModelAttribute AuthoritiesForm authoritiesForm,
       Model model) {
 
-//    List<RoleName> authorityList = RoleName.getRoleNameList();
-
     usersForm.setUsersExtForm(usersExtForm);
-//    usersForm.setAuthoritiesForm(authoritiesForm);
 
     model.addAttribute("usersForm", usersForm);
-//    model.addAttribute("authorityList", authorityList);
     return "/user/createDetail";
   }
 
@@ -154,17 +127,9 @@ public class UsersController {
     UsersDetail usersDetail = usersDetailService.findByUserId(userId);
     UsersExtForm usersExtForm = usersExtService.findByUserIdToForm(userId);
 
-//    usersDetails.setUsersExtForm(usersExtForm);
-//    AuthoritiesForm authoritiesForm = new AuthoritiesForm(
-//        authoritiesService)
-//        .setAuthorityById(usersDetails.getUsers().getId());
-//    usersDetails.setAuthoritiesForm(authoritiesForm);
-
 //    List<RoleName> authorityList = RoleName.getRoleNameList();
 
     model.addAttribute("usersDetails", usersDetail);
-//    model.addAttribute("authorityList", authorityList);
-
     return "/user/editDetail";
   }
 
@@ -172,29 +137,26 @@ public class UsersController {
   String createConfirm(
       @Validated @ModelAttribute UsersForm usersForm,
       @Validated @ModelAttribute UsersExtForm usersExtForm,
-//      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
       @Validated @RequestParam("authoritiesForm.authority")
       RoleName authority,
       BindingResult result,
       Model model) {
 
-    if (usersDetailService.existsById(usersForm.getId())) {
+    if (usersDetailService.existsByUsername(usersForm.getUsername())) {
       result.rejectValue("username", "error.username", "このユーザ名は既に登録されています");
       return createForm(
-//          usersForm, usersExtForm, authoritiesForm, model);
           usersForm, usersExtForm, model);
     }
 
     if (result.hasErrors()) {
       return createForm(
-//          usersForm, usersExtForm, authoritiesForm, model);
           usersForm, usersExtForm, model);
     }
 
     Users users = new Users();
     UsersDetail usersDetail = new UsersDetail(users);
     setUsers(usersForm, users);
-    usersDetail.getUsers().setId(usersDetail.getUsers().getId());
+    usersDetail.getUsers().setUsername(usersDetail.getUsers().getUsername());
     Users resultUsers
         = usersDetailService.saveAndFlush(users);
 
@@ -204,13 +166,6 @@ public class UsersController {
     UsersExt resultUsersExt
         = usersExtService.saveUserExt(usersExt);
 
-//    Authorities authorities = new Authorities();
-//    authoritiesForm.setAuthority(authority);
-//    setAuthorities(authoritiesForm, authorities);
-//    authorities.setId(authoritiesForm.getId());
-//    Authorities resultAuthorities
-//        = authoritiesService.saveAuthorities(authorities);
-
     return "redirect:/users";
   }
 
@@ -218,7 +173,6 @@ public class UsersController {
   String confirm(
       @Validated @ModelAttribute UsersForm usersForm,
       @Validated @ModelAttribute UsersExtForm usersExtForm,
-//      @Validated @ModelAttribute AuthoritiesForm authoritiesForm,
       @Validated @RequestParam("authority") RoleName authority,
       BindingResult bindingResult,
       @PathVariable("userId") Long userId,
@@ -227,20 +181,12 @@ public class UsersController {
       return editForm(userId, model);
     }
     Users users = usersDetailService.findByUserId(userId).getUsers();
-    String username = users.getId();
     setUsers(usersForm, users);
-    users = usersDetailService.saveAndFlush(users);
+    usersDetailService.saveAndFlush(users);
 
     UsersExt usersExt = usersExtService.findByUserId(userId);
     setUsersExt(usersExtForm, usersExt);
     usersExtService.saveUserExt(usersExt);
-
-//    Authorities authorities
-//        = authoritiesService.findByUsername(username);
-//    authoritiesForm.setAuthority(authority);
-//    setAuthorities(authoritiesForm, authorities);
-//    authoritiesService.saveAuthorities(authorities);
-
 
     return "redirect:/users";
   }

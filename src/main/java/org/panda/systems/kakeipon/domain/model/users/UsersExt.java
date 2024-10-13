@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users_ext")
 @SecondaryTable(name = "users",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @Data
 public class UsersExt implements Serializable {
   @Serial

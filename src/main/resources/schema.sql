@@ -13,7 +13,6 @@ DROP TABLE IF EXISTS kp.third_class CASCADE;
 DROP TABLE IF EXISTS kp.second_class_by_order CASCADE;
 DROP TABLE IF EXISTS kp.second_class CASCADE;
 DROP TABLE IF EXISTS kp.first_class CASCADE;
--- DROP TABLE IF EXISTS kp.authorities CASCADE;
 DROP TABLE IF EXISTS kp.users_ext CASCADE;
 DROP TABLE IF EXISTS kp.users CASCADE;
 DROP TABLE IF EXISTS SPRING_SESSION_ATTRIBUTES;
@@ -32,8 +31,7 @@ DROP SEQUENCE IF EXISTS kp.third_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.second_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.first_class_seq CASCADE;
 DROP SEQUENCE IF EXISTS kp.users_ext_seq CASCADE;
--- DROP SEQUENCE IF EXISTS kp.users_seq CASCADE;
--- DROP SEQUENCE IF EXISTS kp.authorities_seq CASCADE;
+DROP SEQUENCE IF EXISTS kp.users_seq CASCADE;
 
 CREATE TABLE SPRING_SESSION
 (
@@ -60,20 +58,21 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES
     CONSTRAINT SPRING_SESSION_ATTRIBUTES_FK FOREIGN KEY (SESSION_PRIMARY_ID) REFERENCES SPRING_SESSION (PRIMARY_ID) ON DELETE CASCADE
 );
 
---CREATE SEQUENCE IF NOT EXISTS kp.users_seq START 1 INCREMENT 1;
+CREATE SEQUENCE IF NOT EXISTS kp.users_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.users -- ユーザテーブル
 (
---    id                      INT DEFAULT
+--    username                      INT DEFAULT
 --                                    nextval('kp.users_seq'),        -- ユーザID
-    user_id                 BIGINT               NOT NULL UNIQUE,   -- ユーザID
-    id                      VARCHAR(255)         NOT NULL UNIQUE,   -- ユーザ名
+    username                VARCHAR(255)         NOT NULL UNIQUE,   -- ユーザ名
+    user_id                 BIGINT
+        DEFAULT nextval('kp.users_seq'),                            -- ユーザID
     password                VARCHAR(255)         NOT NULL,          -- パスワード
     role_name               VARCHAR(255)         NOT NULL,          -- 権限
     enabled                 BOOLEAN DEFAULT TRUE NOT NULL,          -- 有効フラグ (true: 有効, false: 無効)
     account_non_expired     BOOLEAN DEFAULT TRUE NOT NULL,          -- アカウント期限切れフラグ (true: 有効, false: 無効)
     account_non_locked      BOOLEAN DEFAULT TRUE NOT NULL,          -- アカウントロックフラグ (true: 有効, false: 無効)
     credentials_non_expired BOOLEAN DEFAULT TRUE NOT NULL,          -- 資格情報期限切れフラグ (true: 有効, false: 無効)
-    PRIMARY KEY (id)
+    PRIMARY KEY (username)
 );
 
 CREATE SEQUENCE IF NOT EXISTS kp.users_ext_seq START 1 INCREMENT 1;
@@ -89,17 +88,6 @@ CREATE TABLE IF NOT EXISTS kp.users_ext -- ユーザ拡張テーブル
     update_date     TIMESTAMPTZ,                        -- 更新日時
     PRIMARY KEY (user_id)
 );
-
--- CREATE SEQUENCE IF NOT EXISTS kp.authorities_seq START 1 INCREMENT 1;
--- CREATE TABLE IF NOT EXISTS kp.authorities   -- 権限テーブル
--- (
---     auth_id     INT DEFAULT
---                             nextval('kp.authorities_seq'),  -- 権限ID
--- --    auth_id     BIGINT,                     -- 権限ID
---     username    VARCHAR(255)    NOT NULL,   -- ユーザ名
---     authority   TEXT,                       -- 権限
---     PRIMARY KEY (auth_id)
--- );
 
 CREATE SEQUENCE IF NOT EXISTS kp.first_class_seq START 1 INCREMENT 1;
 CREATE TABLE IF NOT EXISTS kp.first_class -- 支出入分類テーブル
@@ -222,7 +210,7 @@ CREATE TABLE IF NOT EXISTS kp.specification_group -- 明細グループテーブ
     update_date                TIMESTAMPTZ,                                             -- 更新日時
     version                    BIGINT       DEFAULT 0,                                  -- バージョン
     PRIMARY KEY (specification_group_id, user_id),
-    FOREIGN KEY (user_id) REFERENCES kp.users (user_id),
+--    FOREIGN KEY (user_id) REFERENCES kp.users (user_id),
     FOREIGN KEY (shop_id) REFERENCES kp.shop (shop_id),
     FOREIGN KEY (account_and_balance_id)
         REFERENCES kp.account_and_balance (account_and_balance_id),

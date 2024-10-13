@@ -10,13 +10,13 @@
 <body>
 <h3>ユーザ詳細</h3>
 <form id="userEdit" method="post"
-      th:action="@{'/users/__${usersForm.id}__/edit'}" th:object="${usersForm}">
+      th:action="@{'/users/__${usersForm.userId}__/edit'}" th:object="${usersForm}">
   <table>
     <tbody>
     <tr>
       <th>ID</th>
       <td>
-        <div id="id" th:text="${usersForm.id}"></div>
+        <div id="userId" th:text="${usersForm.userId}"></div>
       </td>
     </tr>
     <tr>

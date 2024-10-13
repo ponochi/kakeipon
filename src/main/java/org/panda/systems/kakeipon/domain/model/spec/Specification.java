@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @SecondaryTable(name = "specification_group",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "specification_group_id"))
 @SecondaryTable(name = "users",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @SecondaryTable(name = "currency",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "currency_id"))
 @SecondaryTable(name = "unit",

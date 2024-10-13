@@ -11,15 +11,15 @@
 <body>
 <h3>ユーザ編集</h3>
 <form id="confirm" th:object="${usersForm}"
-      th:action="@{/users/__${usersForm.id}__/confirm}" method="POST">
+      th:action="@{/users/__${usersForm.userId}__/confirm}" method="POST">
   <table>
     <tbody>
     <tr>
-      <th><label for="id" aria-label="A number of unique user id">ID</label></th>
+      <th><label for="userId" aria-label="A number of unique user id">ID</label></th>
       <td></td>
       <td>
-        <input id="id" name="id"
-               readonly th:value="${usersForm.id}"/>
+        <input id="userId" name="userId"
+               readonly th:value="${usersForm.userId}"/>
       </td>
     </tr>
     <tr>

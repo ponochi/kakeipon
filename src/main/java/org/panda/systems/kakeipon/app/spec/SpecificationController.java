@@ -101,7 +101,7 @@ public class SpecificationController implements Serializable {
 //    UsersDetail usersDetails
 //        = new UsersDetail(users);
 //
-//    usersDetails.getUsers().setId();
+//    usersDetails.getUsers().setUsername();
 //    usersDetails.getUsers().setPassword(
 //        userDetails.getPassword());
 //    usersDetails.getUsers().setAuthorities(

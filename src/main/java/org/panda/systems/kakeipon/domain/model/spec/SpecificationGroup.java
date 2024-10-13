@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "specification_group")
 @SecondaryTable(name = "users",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @SecondaryTable(name = "balance_type",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "balance_type_id"))
 @SecondaryTable(name = "account_and_balance",

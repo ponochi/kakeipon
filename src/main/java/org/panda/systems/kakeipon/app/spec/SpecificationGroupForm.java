@@ -33,9 +33,9 @@ import java.util.List;
 
 @Table(name = "specification_group")
 @SecondaryTable(name = "users",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 @SecondaryTable(name = "usersExt",
-    pkJoinColumns = @PrimaryKeyJoinColumn(name = "id"))
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @SecondaryTable(name = "shop",
     pkJoinColumns = @PrimaryKeyJoinColumn(name = "shop_id"))
 @SecondaryTable(name = "balance_type",
@@ -82,7 +82,7 @@ public class SpecificationGroupForm implements Serializable {
   @Column(name = "user_id")
   UsersExtForm usersExtForm;
 
-  @Column(name = "id")
+  @Column(name = "username")
   String id;
 
   @OneToOne
@@ -409,10 +409,10 @@ public class SpecificationGroupForm implements Serializable {
     }
     UsersDetail usersDetail
         = new UsersDetail(users);
-    usersDetail.getUsers().setId(users.getId());
+    usersDetail.getUsers().setUsername(users.getUsername());
     usersDetail.getUsers().setPassword(users.getPassword());
     usersDetail.getUsers().setUserId(users.getUserId());
-    usersDetail.getUsers().setId(users.getId());
+    usersDetail.getUsers().setUsername(users.getUsername());
     usersDetail.getUsers().setAccountNonExpired(true);
     usersDetail.getUsers().setAccountNonLocked(true);
     usersDetail.getUsers().setCredentialsNonExpired(true);
@@ -510,7 +510,7 @@ public class SpecificationGroupForm implements Serializable {
     );
 
     usersForm.setUserId(users.getUserId());
-    usersForm.setId(users.getId());
+    usersForm.setUsername(users.getUsername());
     usersForm.setPassword(users.getPassword());
     usersForm.setEnabled(true);
     usersForm.setAccountNonExpired(true);

@@ -16,7 +16,7 @@
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -43,7 +43,7 @@
                     <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -72,7 +72,7 @@
                     <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopForm.shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -99,7 +99,7 @@
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/__${shopForm.shopId}__' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -130,7 +130,7 @@
                     <th:block th:if="${accountDestinationId} eq null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -157,7 +157,7 @@
                     <th:block th:unless="${accountDestinationForm} eq null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -186,7 +186,7 @@
                     <th:block th:if="${accountDestinationForm} ne null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +
@@ -213,7 +213,7 @@
                     <th:block th:unless="${accountDestinationId} ne null">
                         <form th:action="@{
                             '/__${specificationGroupId}__' +
-                            '/__${id}__' +
+                            '/__${userId}__' +
                             '/__${accountAndBalanceId}__' +
                             '/1' +
                             '/__${balanceTypeForm.balanceTypeId}__' +

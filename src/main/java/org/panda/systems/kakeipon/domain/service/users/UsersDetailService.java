@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsersDetailService implements UserDetailsService {
@@ -19,8 +20,11 @@ public class UsersDetailService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String username)
       throws UsernameNotFoundException {
-    Users users = usersDetailRepository.findById(username)
-        .orElseThrow(() -> new UsernameNotFoundException(username + " is not found."));
+    Users users = usersDetailRepository.findByUsername(username);
+    if (users == null) {
+      //noinspection ThrowableNotThrown
+      new UsernameNotFoundException(username + " is not found.");
+    }
 
     return new UsersDetail(users);
   }
@@ -38,17 +42,24 @@ public class UsersDetailService implements UserDetailsService {
     return usersDetailRepository.findByUserId(userId);
   }
 
-  public UsersDetail findById(String username) {
+  public UsersDetail findByUsername(String username) {
     Users users = usersDetailRepository.findById(username).orElse(null);
     return new UsersDetail(users);
 
   }
 
-  public boolean existsById(String id) {
-    return usersDetailRepository.existsById(id);
+  public boolean existsByUserId(Long userId) {
+
+    return usersDetailRepository.existsByUserId(userId);
+  }
+
+  public boolean existsByUsername(String username) {
+
+    return usersDetailRepository.existsByUsername(username);
   }
 
   public Users saveAndFlush(Users entity) {
+
     return usersDetailRepository.saveAndFlush(entity);
   }
 

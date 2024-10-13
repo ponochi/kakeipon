@@ -61,7 +61,7 @@ public class UsersExtForm implements Serializable {
   public UsersExtForm setUserExtFormByDB(Long userId) {
 
     if (userId == null) {
-//      this.setId(Integer.parseInt("1"));
+//      this.setUsername(Integer.parseInt("1"));
     } else {
       this.setUserId(userId);
     }

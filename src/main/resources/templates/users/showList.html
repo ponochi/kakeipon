@@ -21,15 +21,15 @@
   <tbody th:each="usersDetail: ${usersDetails}">
   <tr>
     <th>
-      <span th:text="${usersDetail.users.id}"></span>
+      <span th:text="${usersDetail.users.userId}"></span>
     </th>
     <td><span th:text="${usersDetail.username}"></span></td>
     <td><span th:text="${usersDetail.users.roleName}"></span></td>
     <td>
         <form id="userInfo"
-              th:action="@{'/users/__${usersDetail.users.id}__/show'}"
+              th:action="@{'/users/__${usersDetail.users.userId}__/show'}"
               method="GET">
-          <input id="id" th:value="${usersDetail.users.id}" type="hidden">
+          <input id="userId" th:value="${usersDetail.users.userId}" type="hidden">
           <input type="submit" value="詳　細"/>
         </form>
     </td>

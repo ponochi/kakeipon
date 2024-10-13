@@ -17,15 +17,22 @@ public class Users implements Serializable {
   @Serial
   private static final long serialVersionUID = 1L;
 
-  @Id
-  @Column(name = "id")
-  private String id;
+  // Constructor with parameters
+  public Users(Long userId, String username, String password, Boolean enabled) {
+    this.userId = userId;
+    this.username = username;
+    this.password = password;
+    this.enabled = true;
+  }
 
-  @JoinColumn(name = "user_id", table = "users_ext",
-      referencedColumnName = "user_id",
-      insertable = false, updatable = false)
-  @PrimaryKeyJoinColumn(name = "user_id")
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "users_seq", allocationSize = 1)
+  @Column(name = "user_id")
   private Long userId;
+
+  @Column(name = "username")
+  private String username;
 
   @Column(name = "password")
   private String password;
@@ -46,13 +53,6 @@ public class Users implements Serializable {
   private Boolean enabled;
 
   public Users() {
-    this.enabled = true;
-  }
-
-  public Users(Long userId, String id, String password, Boolean enabled) {
-    this.userId = userId;
-    this.id = id;
-    this.password = password;
     this.enabled = true;
   }
 }

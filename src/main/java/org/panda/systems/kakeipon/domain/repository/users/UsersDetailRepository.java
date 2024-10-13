@@ -13,8 +13,8 @@ public interface UsersDetailRepository extends JpaRepository<Users, String> {
   @Override
   @Query(value =
       "SELECT " +
-      "   DISTINCT kpu.id," +
       "   kpu.user_id," +
+      "   kpu.username," +
       "   kpu.password," +
       "   kpu.role_name," +
       "   kpu.enabled," +
@@ -24,14 +24,14 @@ public interface UsersDetailRepository extends JpaRepository<Users, String> {
       " FROM" +
       "   users kpu" +
       " ORDER BY" +
-      "   kpu.id",
+      "   kpu.username",
       nativeQuery = true)
   List<Users> findAll();
 
   @Query(value =
       "SELECT " +
       "   kpu.user_id," +
-      "   kpu.id," +
+      "   kpu.username," +
       "   kpu.password," +
       "   kpu.role_name," +
       "   kpu.enabled," +
@@ -41,13 +41,13 @@ public interface UsersDetailRepository extends JpaRepository<Users, String> {
       " FROM" +
       "  kp.users kpu " +
       "WHERE " +
-      "  kpu.id = ?1", nativeQuery = true)
-  Users findById(Integer id);
+      "  kpu.username = ?1", nativeQuery = true)
+  Users findByUsername(String username);
 
   @Query(value =
       "SELECT" +
       "   kpu.user_id," +
-      "   kpu.id," +
+      "   kpu.username," +
       "   kpu.password," +
       "   kpu.role_name," +
       "   kpu.enabled," +
@@ -60,10 +60,11 @@ public interface UsersDetailRepository extends JpaRepository<Users, String> {
       "   kpu.user_id = ?1", nativeQuery = true)
   UsersDetail findByUserId(Long userId);
 
-  boolean existsById(String id);
+  boolean existsByUserId(Long userId);
+  boolean existsByUsername(String username);
 
-  @Query(value = "SELECT MAX(id) FROM users", nativeQuery = true)
-  Integer getMaxId();
+  @Query(value = "SELECT MAX(user_id) FROM users", nativeQuery = true)
+  Integer getMaxUserId();
 
   @SuppressWarnings({"unchecked", "NullableProblems"})
   Users saveAndFlush(Users entity);

@@ -24,7 +24,7 @@ public interface UsersExtRepository extends JpaRepository<UsersExt, Integer> {
       "  kpue.entry_date, " +
       "  kpue.update_date, " +
       "  (SELECT " +
-      "    kpu.id " +
+      "    kpu.username " +
       "  FROM " +
       "    kp.users kpu " +
       "  WHERE " +
@@ -53,7 +53,7 @@ public interface UsersExtRepository extends JpaRepository<UsersExt, Integer> {
 //      "    FROM" +
 //      "      authorities auth" +
 //      "    WHERE" +
-//      "      auth.username = kpu.id) AS authority " +
+//      "      auth.username = kpu.username) AS authority " +
 //      "  FROM " +
 //      "    kp.users kpu " +
 //      "  WHERE " +

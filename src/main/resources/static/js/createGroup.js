@@ -48,7 +48,7 @@ function changedShop() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("id");
+    = document.getElementById("username");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -68,7 +68,7 @@ function changedAccountSource() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("id");
+    = document.getElementById("username");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -88,7 +88,7 @@ function changedAccountDestination() {
   let specificationGroupId
     = document.getElementById("specificationGroupId");
   let userId
-    = document.getElementById("id");
+    = document.getElementById("username");
   let shopId
     = document.getElementById("shopId");
   let accountSourceId
@@ -123,7 +123,7 @@ function changedBalanceType() {
   let accountAndBalanceIdControl
     = document.getElementById("accountAndBalanceId");
   let userIdControl
-    = document.getElementById("id");
+    = document.getElementById("username");
   let shopIdControl
     = document.getElementById("shopId");
   let balanceTypeIdControl
