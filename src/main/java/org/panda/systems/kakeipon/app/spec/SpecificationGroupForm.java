@@ -10,7 +10,9 @@ import org.panda.systems.kakeipon.app.users.UsersExtForm;
 import org.panda.systems.kakeipon.app.users.UsersForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
-import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
+import org.panda.systems.kakeipon.domain.model.common.BalanceType;
+import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.model.users.Users;
@@ -21,7 +23,9 @@ import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.users.*;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetail;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
+import org.panda.systems.kakeipon.domain.service.users.UsersExtService;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -205,7 +209,7 @@ public class SpecificationGroupForm implements Serializable {
             null,
             Long.parseLong("1"),
             Long.parseLong("1"));
-    UsersDetail usersDetail = usersDetailService.findByUserId(userId);
+    Users users = usersDetailService.findByUserId(userId);
     this.setId(id);
     this.setUsersToForm(
         usersDetailService,
@@ -288,14 +292,14 @@ public class SpecificationGroupForm implements Serializable {
     SpecificationForm specForm = new SpecificationForm();
 
     if (usersDetailService != null) {
-      UsersDetail usersDetailTemporary = usersDetailService.findByUserId(userId);
+      Users usersTemporary = usersDetailService.findByUserId(userId);
       List<Specification> specifications = null;
       if (specificationService != null) {
         if (specificationGroupService != null) {
           specifications = specificationService
           .findBySpecificationGroupIdAndUserIdAndDeleted(
               specificationGroupService.getMaxGroupId(),
-              usersDetailTemporary.getUsers().getUserId(),
+              usersTemporary.getUserId(),
               false);
         }
       }
@@ -405,7 +409,7 @@ public class SpecificationGroupForm implements Serializable {
         = null;
     if (usersDetailService != null) {
       users = usersDetailService
-          .findByUserId(specificationGroup.getUserId()).getUsers();
+          .findByUserId(specificationGroup.getUserId());
     }
     UsersDetail usersDetail
         = new UsersDetail(users);

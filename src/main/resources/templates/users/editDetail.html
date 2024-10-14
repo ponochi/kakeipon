@@ -12,6 +12,12 @@
 <h3>ユーザ編集</h3>
 <form id="confirm" th:object="${usersForm}"
       th:action="@{/users/__${usersForm.userId}__/confirm}" method="POST">
+  <div>
+    <input th:field="*{enabled}" type="hidden"/>
+    <input th:field="*{accountNonExpired}" type="hidden"/>
+    <input th:field="*{accountNonLocked}" type="hidden"/>
+    <input th:field="*{credentialsNonExpired}" type="hidden"/>
+  </div>
   <table>
     <tbody>
     <tr>
@@ -150,15 +156,15 @@
       </td>
     </tr>
     <tr>
-      <th><label for="authority">権限</label></th>
+      <th><label for="roleName">権限</label></th>
       <td class="require">*</td>
       <td>
-        <select id="authority" name="authoritiesForm.authority"
-                th:field="${usersForm.authoritiesForm.authority}">
-          <option th:each="item : ${authorityList}"
+        <select id="roleName" name="authoritiesForm.roleName"
+                th:field="${usersForm.roleName}">
+          <option th:each="item : ${roleNames}"
                   th:value="${item}"
                   th:text="${item}"
-                  th:selected="${item} == ${usersForm.authoritiesForm.authority}"></option>
+                  th:selected="${item} == ${usersForm.roleName}"></option>
         </select>
       </td>
     </tr>

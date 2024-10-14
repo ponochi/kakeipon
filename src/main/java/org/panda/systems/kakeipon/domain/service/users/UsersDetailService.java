@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsersDetailService implements UserDetailsService {
@@ -38,7 +37,7 @@ public class UsersDetailService implements UserDetailsService {
     return usersDetails;
   }
 
-  public UsersDetail findByUserId(Long userId) {
+  public Users findByUserId(Long userId) {
     return usersDetailRepository.findByUserId(userId);
   }
 
