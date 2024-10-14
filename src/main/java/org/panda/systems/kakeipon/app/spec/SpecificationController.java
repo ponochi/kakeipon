@@ -8,7 +8,9 @@ import org.panda.systems.kakeipon.app.shop.ShopForm;
 import org.panda.systems.kakeipon.app.users.UsersExtForm;
 import org.panda.systems.kakeipon.domain.model.account.AccountDestination;
 import org.panda.systems.kakeipon.domain.model.account.AccountSource;
-import org.panda.systems.kakeipon.domain.model.common.*;
+import org.panda.systems.kakeipon.domain.model.common.AccountAndBalance;
+import org.panda.systems.kakeipon.domain.model.common.BalanceType;
+import org.panda.systems.kakeipon.domain.model.common.Shop;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.model.spec.SpecificationGroup;
 import org.panda.systems.kakeipon.domain.model.users.Users;
@@ -19,7 +21,9 @@ import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
-import org.panda.systems.kakeipon.domain.service.users.*;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetail;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
+import org.panda.systems.kakeipon.domain.service.users.UsersExtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -206,7 +210,7 @@ public class SpecificationController implements Serializable {
       @ModelAttribute AccountDestinationForm accountDestinationForm,
       Model model) {
 
-    Users users = usersDetailService.findByUserId(userId).getUsers();
+    Users users = usersDetailService.findByUserId(userId);
 
     groupForm = new SpecificationGroupForm(
         specificationGroupService,
@@ -430,7 +434,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "selectedBalanceTypeId", groupForm.getBalanceTypeId());
     model.addAttribute(
-        "totalAmount", (long) Math.round(totalAmount));
+        "totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -756,7 +760,7 @@ public class SpecificationController implements Serializable {
                     .getAccountDestinationId()));
     model.addAttribute("userDetails", userDetails);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
-    model.addAttribute("totalAmount", (long) Math.round(totalAmount));
+    model.addAttribute("totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -906,7 +910,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute("userDetails", userDetails);
     model.addAttribute("balanceTypes", balanceTypeService.findAll());
     model.addAttribute("selectedBalanceTypeId", groupForm.getBalanceTypeId());
-    model.addAttribute("totalAmount", (long) Math.round(totalAmount));
+    model.addAttribute("totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -1097,7 +1101,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
-    model.addAttribute("totalAmount", (long) Math.round(totalAmount));
+    model.addAttribute("totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -1274,7 +1278,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
-    model.addAttribute("totalAmount", (long) Math.round(totalAmount));
+    model.addAttribute("totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }
@@ -1609,7 +1613,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "taxRateForm", taxRateForm);
     model.addAttribute(
-        "totalAmount", (long) Math.round(totalAmount));
+        "totalAmount", Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -1766,7 +1770,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "taxRateForm", taxRateForm);
     model.addAttribute(
-        "totalAmount", (long) Math.round(totalAmount));
+        "totalAmount", Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -1928,7 +1932,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "taxRateForm", taxRateForm);
     model.addAttribute(
-        "totalAmount", (long) Math.round(totalAmount));
+        "totalAmount", Math.round(totalAmount));
 
     if (specificationGroupId == null) {
       return "/spec/createGroup";
@@ -2157,7 +2161,7 @@ public class SpecificationController implements Serializable {
         "accountDestinationForm",
         accountDestinationForm);
     model.addAttribute(
-        "totalAmount", (long) Math.round(totalAmount));
+        "totalAmount", Math.round(totalAmount));
 
     return "/spec/editGroup";
   }

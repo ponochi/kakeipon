@@ -3,7 +3,9 @@ package org.panda.systems.kakeipon.app.users;
 import org.panda.systems.kakeipon.domain.model.users.RoleName;
 import org.panda.systems.kakeipon.domain.model.users.Users;
 import org.panda.systems.kakeipon.domain.model.users.UsersExt;
-import org.panda.systems.kakeipon.domain.service.users.*;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetail;
+import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
+import org.panda.systems.kakeipon.domain.service.users.UsersExtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -69,9 +71,9 @@ public class UsersController {
   @RequestMapping(value = "", method = RequestMethod.GET)
   String list(Model model) {
     List<UsersDetail> usersDetails = usersDetailService.findAllUsersToForm();
-    for (UsersDetail usersDetail : usersDetails) {
-      Users users = usersDetailService.findByUsername(usersDetail.getUsername()).getUsers();
-    }
+//    for (UsersDetail usersDetail : usersDetails) {
+//      Users users = usersDetailService.findByUserId(usersDetail.getUsers().getUserId()).getUsers();
+//    }
 
     model.addAttribute("usersDetails", usersDetails);
     return "/users/showList";
@@ -79,13 +81,14 @@ public class UsersController {
 
   @RequestMapping(value = "/{userId}/show", method = RequestMethod.GET)
   String show(@PathVariable Long userId, Model model) {
-    Users users = usersDetailService.findByUserId(userId).getUsers();
+    Users users = usersDetailService.findByUserId(userId);
     UsersForm usersForm = new UsersForm(
         usersDetailService);
 
     usersForm.setUserId(users.getUserId());
     usersForm.setUsername(users.getUsername());
     usersForm.setPassword(users.getPassword());
+    usersForm.setRoleName(users.getRoleName());
     usersForm.setEnabled(users.getEnabled());
     usersForm.setAccountNonExpired(true);
     usersForm.setAccountNonLocked(true);
@@ -105,7 +108,7 @@ public class UsersController {
     usersForm.setUsersExtForm(usersExtForm);
 
     model.addAttribute("usersForm", usersForm);
-    return "/user/showDetail";
+    return "/users/showDetail";
   }
 
   @GetMapping("/create")
@@ -117,28 +120,39 @@ public class UsersController {
     usersForm.setUsersExtForm(usersExtForm);
 
     model.addAttribute("usersForm", usersForm);
-    return "/user/createDetail";
+    return "/users/createDetail";
   }
 
   @RequestMapping(value = "/{userId}/edit", method = RequestMethod.POST)
   String editForm(@PathVariable("userId") Long userId,
+                  @ModelAttribute UsersForm usersForm,
                   Model model) {
 
-    UsersDetail usersDetail = usersDetailService.findByUserId(userId);
+    Users users = usersDetailService.findByUserId(userId);
+    usersForm.setUsername(users.getUsername());
+    usersForm.setPassword(users.getPassword());
+    usersForm.setRoleName(users.getRoleName());
+    usersForm.setEnabled(users.getEnabled());
+    usersForm.setAccountNonExpired(users.getAccountNonExpired());
+    usersForm.setAccountNonLocked(users.getAccountNonLocked());
+    usersForm.setCredentialsNonExpired(users.getCredentialsNonExpired());
+
     UsersExtForm usersExtForm = usersExtService.findByUserIdToForm(userId);
 
-//    List<RoleName> authorityList = RoleName.getRoleNameList();
+    usersForm.setUsersExtForm(usersExtForm);
 
-    model.addAttribute("usersDetails", usersDetail);
-    return "/user/editDetail";
+    List<RoleName> roleNames = RoleName.getRoleNameList();
+
+    model.addAttribute("usersForm", usersForm);
+    model.addAttribute("roleNames", roleNames);
+    return "/users/editDetail";
   }
 
   @PostMapping("/createConfirm")
   String createConfirm(
       @Validated @ModelAttribute UsersForm usersForm,
       @Validated @ModelAttribute UsersExtForm usersExtForm,
-      @Validated @RequestParam("authoritiesForm.authority")
-      RoleName authority,
+      RoleName roleName,
       BindingResult result,
       Model model) {
 
@@ -173,15 +187,17 @@ public class UsersController {
   String confirm(
       @Validated @ModelAttribute UsersForm usersForm,
       @Validated @ModelAttribute UsersExtForm usersExtForm,
-      @Validated @RequestParam("authority") RoleName authority,
-      BindingResult bindingResult,
       @PathVariable("userId") Long userId,
+      BindingResult bindingResult,
       Model model) {
+
     if (bindingResult.hasErrors()) {
-      return editForm(userId, model);
+      return editForm(userId, usersForm, model);
     }
-    Users users = usersDetailService.findByUserId(userId).getUsers();
+
+    Users users = usersDetailService.findByUserId(userId);
     setUsers(usersForm, users);
+
     usersDetailService.saveAndFlush(users);
 
     UsersExt usersExt = usersExtService.findByUserId(userId);

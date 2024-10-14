@@ -11,6 +11,12 @@
 <h3>ユーザ詳細</h3>
 <form id="userEdit" method="post"
       th:action="@{'/users/__${usersForm.userId}__/edit'}" th:object="${usersForm}">
+  <div>
+    <input th:field="*{enabled}" type="hidden"/>
+    <input th:field="*{accountNonExpired}" type="hidden"/>
+    <input th:field="*{accountNonLocked}" type="hidden"/>
+    <input th:field="*{credentialsNonExpired}" type="hidden"/>
+  </div>
   <table>
     <tbody>
     <tr>
@@ -64,7 +70,7 @@
     <tr>
       <th>権限</th>
       <td>
-        <div id="roleName" th:text="${usersForm.authority}"></div>
+        <div id="roleName" th:text="${usersForm.roleName}"></div>
       </td>
     </tr>
     <tr>

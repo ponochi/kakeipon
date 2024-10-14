@@ -1,7 +1,6 @@
 package org.panda.systems.kakeipon.domain.repository.users;
 
 import org.panda.systems.kakeipon.domain.model.users.Users;
-import org.panda.systems.kakeipon.domain.service.users.UsersDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -58,7 +57,7 @@ public interface UsersDetailRepository extends JpaRepository<Users, String> {
       "   kp.users kpu" +
       " WHERE" +
       "   kpu.user_id = ?1", nativeQuery = true)
-  UsersDetail findByUserId(Long userId);
+  Users findByUserId(Long userId);
 
   boolean existsByUserId(Long userId);
   boolean existsByUsername(String username);
