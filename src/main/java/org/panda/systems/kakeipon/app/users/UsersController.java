@@ -38,6 +38,7 @@ public class UsersController {
     users.setUsername(form.getUsername());
     users.setUserId(form.getUserId());
     users.setPassword(passwordEncoder.encode(form.getPassword()));
+    users.setRoleName(form.getRoleName());
     users.setEnabled(form.getEnabled());
     users.setAccountNonExpired(form.getAccountNonExpired());
     users.setAccountNonLocked(form.getAccountNonLocked());
@@ -195,10 +196,15 @@ public class UsersController {
       return editForm(userId, usersForm, model);
     }
 
+    System.out.println("0000 >>>> usersForm.getRoleName() = " + usersForm.getRoleName());
     Users users = usersDetailService.findByUserId(userId);
     setUsers(usersForm, users);
 
-    usersDetailService.saveAndFlush(users);
+    System.out.println("0000 >>>> users.getRoleName() = " + users.getRoleName());
+
+    users = usersDetailService.saveAndFlush(users);
+
+    System.out.println("1111 >>>> users.getRoleName() = " + users.getRoleName());
 
     UsersExt usersExt = usersExtService.findByUserId(userId);
     setUsersExt(usersExtForm, usersExt);
