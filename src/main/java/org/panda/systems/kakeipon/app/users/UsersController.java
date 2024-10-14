@@ -66,15 +66,11 @@ public class UsersController {
   UsersForm setUpUserForm() {
     return new UsersForm(
         usersDetailService);
-//        authoritiesService);
   }
 
   @RequestMapping(value = "", method = RequestMethod.GET)
   String list(Model model) {
     List<UsersDetail> usersDetails = usersDetailService.findAllUsersToForm();
-//    for (UsersDetail usersDetail : usersDetails) {
-//      Users users = usersDetailService.findByUserId(usersDetail.getUsers().getUserId()).getUsers();
-//    }
 
     model.addAttribute("usersDetails", usersDetails);
     return "/users/showList";
@@ -118,9 +114,17 @@ public class UsersController {
       @ModelAttribute UsersExtForm usersExtForm,
       Model model) {
 
+    usersForm.setEnabled(true);
+    usersForm.setAccountNonExpired(true);
+    usersForm.setAccountNonLocked(true);
+    usersForm.setCredentialsNonExpired(true);
+
     usersForm.setUsersExtForm(usersExtForm);
 
+    List<RoleName> roleNames = RoleName.getRoleNameList();
+
     model.addAttribute("usersForm", usersForm);
+    model.addAttribute("roleNames", roleNames);
     return "/users/createDetail";
   }
 
@@ -169,11 +173,13 @@ public class UsersController {
     }
 
     Users users = new Users();
-    UsersDetail usersDetail = new UsersDetail(users);
+//    UsersDetail usersDetail = new UsersDetail(users);
     setUsers(usersForm, users);
-    usersDetail.getUsers().setUsername(usersDetail.getUsers().getUsername());
+//    usersDetail.getUsers().setUsername(usersDetail.getUsers().getUsername());
+    System.out.println("0000 >>>> users = " + users);
     Users resultUsers
         = usersDetailService.saveAndFlush(users);
+    System.out.println("0000 >>>> resultUsers = " + resultUsers);
 
     UsersExt usersExt = new UsersExt();
     setUsersExt(usersExtForm, usersExt);
@@ -196,15 +202,10 @@ public class UsersController {
       return editForm(userId, usersForm, model);
     }
 
-    System.out.println("0000 >>>> usersForm.getRoleName() = " + usersForm.getRoleName());
     Users users = usersDetailService.findByUserId(userId);
     setUsers(usersForm, users);
 
-    System.out.println("0000 >>>> users.getRoleName() = " + users.getRoleName());
-
-    users = usersDetailService.saveAndFlush(users);
-
-    System.out.println("1111 >>>> users.getRoleName() = " + users.getRoleName());
+    usersDetailService.saveAndFlush(users);
 
     UsersExt usersExt = usersExtService.findByUserId(userId);
     setUsersExt(usersExtForm, usersExt);

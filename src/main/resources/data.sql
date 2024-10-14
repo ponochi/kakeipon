@@ -1,6 +1,7 @@
 --[users]========================================================================================
-INSERT INTO users(user_id, username, password, role_name, enabled)
-VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceA',
+INSERT INTO users(username, password, role_name, enabled)
+VALUES ('juiceA',
+-- VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceA',
         '{bcrypt}$2a$10$mekheplkOdsT5v5VLdF.heNd60EEXT3JyVU9qpq.DscBxmMkdutOa',
         'ADMIN', true); -- password: test,
 --[users_ext]========================================================================================
@@ -11,8 +12,9 @@ VALUES ((SELECT MAX(user_id) AS user_id FROM users), 'Foo1', 'Bar1',
         '00011112222',
         '2024-07-19 00:00:00', NULL); -- password: test
 
-INSERT INTO users(user_id, username, password, role_name, enabled)
-VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceB',
+INSERT INTO users(username, password, role_name, enabled)
+VALUES ('juiceB',
+-- VALUES ((SELECT (COALESCE(MAX(kpu.user_id), 0) + 1) AS user_id FROM kp.users kpu), 'juiceB',
         '{bcrypt}$2a$10$yVqiUjrYj5jPMMZ0/M2xh.J6PZqiONu4QT3oB4ZNuF/z1RQX.qLE2',
         'USER', true); -- password: test,
 --[users_ext]========================================================================================
