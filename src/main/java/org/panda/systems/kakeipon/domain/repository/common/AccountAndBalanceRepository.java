@@ -14,7 +14,7 @@ public interface AccountAndBalanceRepository
   @SuppressWarnings("JpaQlInspection")
   @Query(nativeQuery = true,
       value = "SELECT" +
-      "   MAX(taab.account_and_balance_id) account_and_balance_id" +
+          "   MAX(taab.account_and_balance_id) AS account_and_balance_id" +
       " FROM" +
       "   account_and_balance taab")
   Long getMaxAccountAndBalanceId();

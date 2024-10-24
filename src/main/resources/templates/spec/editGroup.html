@@ -8,17 +8,17 @@
 </head>
 <body>
 <form id="updateGroup"
-      th:action="@{'/spec/update/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__'}"
+      th:action="@{'/spec/update/group/__*{specificationGroupId}__/__*{userId}__'}"
       th:object="${specificationGroupForm}" method="POST">
     <div>
         <input id="specificationGroupId" name="specificationGroupId"
-               th:value="${specificationGroupForm.specificationGroupId}"
+               th:value="*{specificationGroupId}"
                type="hidden">
         <input id="accountAndBalanceId" name="accountAndBalanceId"
-               th:value="${specificationGroupForm.accountAndBalanceId}"
+               th:value="*{accountAndBalanceId}"
                type="hidden">
         <input id="userId" name="userId"
-               th:value="${specificationGroupForm.userId}" type="hidden">
+               th:value="*{userId}" type="hidden">
     </div>
 
     <table>
@@ -26,31 +26,27 @@
             <td>入出金日時</td>
             <td>
                 <span>
-                    <label for="receivingAndPaymentDate"></label>
-                    <input id="receivingAndPaymentDate" name="receivingAndPaymentDate"
-                           th:value="${specificationGroupForm.receivingAndPaymentDate}"
-                           onchange="changedReceivingAndPaymentDate()"
-                           type="date">
+                    <label>
+                        <input onchange="changedReceivingAndPaymentDate()"
+                               th:field="*{receivingAndPaymentDate}" type="date">
+                    </label>
                 </span>
                 <span>
-                    <label for="receivingAndPaymentTime"></label>
-                    <input id="receivingAndPaymentTime" name="receivingAndPaymentTime"
-                           th:value="${specificationGroupForm.receivingAndPaymentTime}"
-                           onchange="changedReceivingAndPaymentTime()"
-                           type="time">
+                    <label>
+                        <input onchange="changedReceivingAndPaymentTime()"
+                               th:field="*{receivingAndPaymentTime}"
+                               type="time">
+                    </label>
                 </span>
             </td>
         </tr>
         <tr>
             <td><label for="shop">お店</label></td>
-            <td th:object="${specificationGroupForm.shopId}">
-                <th:block th:if="${specificationGroupForm.shopForm} ne null">
-                    <input id="shopId" name="shopId"
-                           readonly
-                           th:value="${specificationGroupForm.shopId}" type="hidden">
+            <td>
+                <th:block th:if="*{shopForm} ne null">
+                    <input readonly th:field="*{shopId}" type="hidden"/>
                     <input form="dummy" id="shop" name="shop"
-                           readonly
-                           th:value="${shopForm.shopName}" type="text">
+                           readonly th:value="${shopForm.shopName}" type="text"/>
                 </th:block>
                 <th:block th:unless="${specificationGroupForm.shopForm} ne null">
                     <input id="shopId" name="shopId"
@@ -80,15 +76,13 @@
         </tr>
         <tr>
             <td>出金元</td>
-            <td th:object="${accountSourceForm}">
-                <th:block th:if="${specificationGroupForm.accountAndBalanceForm.accountSourceId} ne null">
+            <td th:object="${specificationGroupForm.accountAndBalanceForm}">
+                <th:block th:if="*{accountSourceId} ne null">
                     <input id="accountSourceId" name="accountSourceId"
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountSourceId}"
-                           type="hidden" readonly>
+                           readonly th:value="*{accountSourceId}" type="hidden">
                     <label for="accountSourceName"></label>
                     <input id="accountSourceName" name="accountSourceName"
-                           th:value="${accountSourceForm.accountName}"
-                           type="text" readonly>
+                           readonly th:value="${accountSourceForm.accountName}" type="text"/>
                 </th:block>
                 <th:block
                         th:unless="${specificationGroupForm.accountAndBalanceForm.accountSourceId} ne null">
@@ -103,13 +97,11 @@
         </tr>
         <tr>
             <td>入金先</td>
-            <td th:object="${accountDestinationForm}">
+            <td th:object="${specificationGroupForm.accountAndBalanceForm}">
                 <th:block
-                        th:if="${specificationGroupForm.accountAndBalanceForm.accountDestinationId} ne null">
+                        th:if="*{accountDestinationId} ne null">
                     <input id="accountDestinationId" name="accountDestinationId"
-                           readonly
-                           th:value="${specificationGroupForm.accountAndBalanceForm.accountDestinationId}"
-                           type="hidden">
+                           readonly th:value="*{accountDestinationId}" type="hidden"/>
                     <label for="accountDestinationName"></label>
                     <input id="accountDestinationName" name="accountDestinationName"
                            th:value="${accountDestinationForm.accountName}"
@@ -129,37 +121,77 @@
         <tr>
             <td>合計</td>
             <td>
-                <label for="totalAmount"></label>
-                <input id="totalAmount" name="totalAmount"
-                       th:value="${totalAmount}" readonly>
+                <label><input readonly th:value="${totalAmount}"></label>
             </td>
         </tr>
         <tr>
             <td>備考</td>
             <td>
-                <label for="groupMemo"></label>
-                <textarea id="groupMemo" name="groupMemo"
-                          th:field="*{groupMemo}"></textarea>
+                <label><input th:field="*{groupMemo}" type="text"/></label>
             </td>
         </tr>
     </table>
 </form>
+<div>
+    <input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
+    <input form="createSpecDetail" type="submit" value="明細追加">
+    <input form="updateGroup" id="saveOrUpdateGroup" type="submit" value="保　存">
+</div>
 <table>
     <tr>
         <th>
             <hr>
             <div id="header" class="grid">
-                <div class="brand-name"><input class="spec-header brand-name" th:value="商品名" readonly/></div>
-                <div class="price"><input class="spec-header price" th:value="単価" readonly/></div>
-                <div class="currency-name"><input class="spec-header currency-name-header" th:value="通貨" readonly/>
+                <div class="brand-name">
+                    <label>
+                        <input class="spec-header brand-name" readonly th:value="商品名"/>
+                    </label>
                 </div>
-                <div class="quantity"><input class="spec-header quantity" th:value="数量" readonly/></div>
-                <div class="unit-name"><input class="spec-header unit-name-header" th:value="単位" readonly/></div>
-                <div class="tax-type"><input class="spec-header tax-type" th:value="税区分" readonly/></div>
-                <div class="tax-rate"><input class="spec-header tax-rate" th:value="税率" readonly/></div>
-                <div class="tax"><input class="spec-header tax-header" th:value="消費税" readonly/></div>
-                <div class="subtotal"><input class="spec-header subtotal" th:value="小計" readonly/></div>
-                <div class="spec-memo"><input class="spec-header spec-memo" th:value="備考" readonly/></div>
+                <div class="price">
+                    <label>
+                        <input class="spec-header price" readonly th:value="単価"/>
+                    </label>
+                </div>
+                <div class="currency-name">
+                    <label>
+                        <input class="spec-header currency-name-header" readonly th:value="通貨"/>
+                    </label>
+                </div>
+                <div class="quantity">
+                    <label>
+                        <input class="spec-header quantity" readonly th:value="数量"/>
+                    </label>
+                </div>
+                <div class="unit-name">
+                    <label>
+                        <input class="spec-header unit-name-header" readonly th:value="単位"/>
+                    </label>
+                </div>
+                <div class="tax-type">
+                    <label>
+                        <input class="spec-header tax-type" readonly th:value="税区分"/>
+                    </label>
+                </div>
+                <div class="tax-rate">
+                    <label>
+                        <input class="spec-header tax-rate" readonly th:value="税率"/>
+                    </label>
+                </div>
+                <div class="tax">
+                    <label>
+                        <input class="spec-header tax-header" readonly th:value="消費税"/>
+                    </label>
+                </div>
+                <div class="subtotal">
+                    <label>
+                        <input class="spec-header subtotal" readonly th:value="小計"/>
+                    </label>
+                </div>
+                <div class="spec-memo">
+                    <label>
+                        <input class="spec-header spec-memo" readonly th:value="備考"/>
+                    </label>
+                </div>
             </div>
         </th>
     </tr>
@@ -168,97 +200,83 @@
             <hr>
             <div class="grid">
                 <div class="brand-name">
-                    <input class="brand-name"
-                           th:value="${specificationForm.name}" readonly/>
+                    <label>
+                        <input class="brand-name" readonly th:value="*{name}"/>
+                    </label>
                 </div>
-                <div class="price">
-                    <input class="price"
-                           th:value="${specificationForm.price}"
-                           readonly/>
+                <div class="price" th:object="${specificationForm}">
+                    <label>
+                        <input class="price" id="price" name="price" readonly th:value="*{price}"/>
+                    </label>
                 </div>
                 <div class="currency-name" th:object="${specificationForm}">
                     <input id="currencyId" name="currencyId"
                            readonly
-                           th:value="${specificationForm.currencyId}" type="hidden">
+                           th:value="*{currencyId}" type="hidden"/>
                     <label for="currencyName"></label>
                     <input id="currencyName" name="currencyName"
                            class="currency-name"
-                           th:value="${specificationForm.currencyListForm.currencyName}"
-                           type="text" readonly>
+                           readonly
+                           th:value="*{currencyListForm.currencyName}" type="text"/>
                 </div>
-                <div class="quantity">
-                    <input class="quantity"
-                           th:value="${specificationForm.quantity}"
-                           readonly/>
+                <div class="quantity" th:object="${specificationForm}">
+                    <label>
+                        <input class="quantity" readonly th:value="*{quantity}"/>
+                    </label>
                 </div>
                 <div class="unit-name" th:object="${specificationForm}">
                     <input id="unitId" name="unitId"
-                           readonly
-                           th:value="${specificationForm.unitId}" type="hidden">
+                           readonly th:value="*{unitId}" type="hidden"/>
                     <label for="unitName"></label>
-                    <input id="unitName" name="unitName"
-                           class="unit-name"
-                           th:value="${specificationForm.unitForm.unitName}"
-                           type="text" readonly>
+                    <input class="unit-name" id="unitName" name="unitName"
+                           readonly th:value="*{unitForm.unitName}" type="text">
                 </div>
                 <div class="tax-type" th:object="${specificationForm}">
                     <input id="taxTypeId" name="taxTypeId"
                            readonly
-                           th:value="${specificationForm.taxTypeId}" type="hidden">
+                           th:value="*{taxTypeId}" type="hidden">
                     <label for="taxTypeName"></label>
-                    <input id="taxTypeName" name="taxTypeName"
-                           class="tax-type"
-                           th:value="${specificationForm.taxTypeForm.taxTypeName}"
-                           type="text" readonly>
+                    <input class="tax-type" id="taxTypeName" name="taxTypeName"
+                           readonly th:value="*{taxTypeForm.taxTypeName}" type="text">
                 </div>
                 <div class="tax-rate" th:object="${specificationForm}">
                     <input id="taxRateId" name="taxRateId"
                            readonly
-                           th:value="${specificationForm.taxRateId}" type="hidden">
+                           th:value="*{taxRateId}" type="hidden">
                     <label for="taxRateName"></label>
-                    <input id="taxRateName" name="taxRateName"
-                           class="tax-rate"
-                           th:value="${specificationForm.taxRateForm.taxRate}"
-                           type="text" readonly>
+                    <input class="tax-rate" id="taxRateName" name="taxRateName"
+                           readonly th:value="*{taxRateForm.taxRate}" type="text">
                 </div>
-                <div class="tax">
-                    <input class="tax"
-                           th:value="${specificationForm.tax}"
-                           readonly/>
+                <div class="tax" th:object="${specificationForm}">
+                    <label>
+                        <input class="tax" readonly th:value="*{tax}"/>
+                    </label>
                 </div>
-                <div class="subtotal">
+                <div class="subtotal" th:object="${specificationForm}">
                     <th:block th:if="${specificationForm.taxTypeId} eq 1">
-                        <input class="subtotal"
-                               th:value="${specificationForm.price}
-                                * ${specificationForm.quantity}
-                                + ${specificationForm.tax}"
-                               type="text"
-                               th:with="total=${total}
-                                + ${specificationForm.price}
-                                * ${specificationForm.quantity}
-                                + ${specificationForm.tax}"
-                               readonly/>
+                        <label>
+                            <input class="subtotal" readonly
+                                   th:value="${specificationForm.price}
+                                    * ${specificationForm.quantity}
+                                    + ${specificationForm.tax}"
+                                   th:with="total=${total} + *{price} * *{quantity} + *{tax}"
+                                   type="text"/>
+                        </label>
                     </th:block>
                     <th:block th:unless="${specificationForm.taxTypeId} eq 1">
                         <input class="subtotal"
-                               th:value="${specificationForm.price}
+                               readonly th:value="${specificationForm.price}
                                 * ${specificationForm.quantity}"
-                               type="text"
-                               th:with="total=${total}
-                                + ${specificationForm.price}
-                                * ${specificationForm.quantity}"
-                               readonly/>
+                               th:with="total=${total} + *{price} * *{quantity}" type="text"/>
                     </th:block>
                 </div>
-                <div class="spec-memo">
-                    <input class="spec-memo"
-                           th:value="${specificationForm.specMemo}"
-                           readonly/>
+                <div class="spec-memo" th:object="${specificationForm}">
+                    <label>
+                        <input class="spec-memo" readonly th:value="*{specMemo}"/>
+                    </label>
                 </div>
-                <div class="deleted">
-                    <input class="deleted"
-                           th:value="${specificationForm.deleted}"
-                           type="hidden" readonly/>
+                <div class="deleted" th:object="${specificationForm}">
+                    <input class="deleted" readonly th:value="*{deleted}" type="hidden"/>
                 </div>
                 <hr>
             </div>
@@ -268,51 +286,56 @@
                   th:action="@{'/spec/delete/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
                   method="POST">
                 <input id="specificationId" name="specificationId"
-                       th:value="${specificationForm.specificationId}"
+                       th:value="*{specificationId}"
                        type="hidden">
             </form>
-            <form th:id="'specDetail' + '__${specificationForm.specificationId}__'"
-                  th:action="@{'/spec/edit/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
-                  method="POST">
+            <form method="POST"
+                  th:action="@{'/spec/edit/detail/__${specificationGroupForm.specificationGroupId}__/__*{specificationId}__/__*{userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+                  th:id="'specDetail' + '__*{specificationId}__'" th:object="${specificationForm}">
                 <input id="delete" name="delete"
                        class="delete"
-                       th:form="'deleteDetail' + '__${specificationForm.specificationId}__'"
+                       th:form="'deleteDetail' + '__*{specificationId}__'"
                        type="submit" value="削　除">
                 <input id="edit" name="edit"
                        class="edit"
-                       th:form="'specDetail' + '__${specificationForm.specificationId}__'"
+                       th:form="'specDetail' + '__*{specificationId}__'"
                        type="submit" value="編　集">
             </form>
         </td>
     </tr>
 </table>
 
-<input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
-<input form="createSpecDetail" type="submit" value="明細追加">
-<input id="saveOrUpdateGroup" form="updateGroup" type="submit" value="登　録">
+<div th:object="${specificationGroupForm}">
+    <input id="balanceTypeIdInput" name="balanceTypeIdInput"
+           th:value="*{balanceTypeId}" type="hidden">
 
-<input id="balanceTypeIdInput" name="balanceTypeIdInput"
-       th:value="${specificationGroupForm.balanceTypeId}"
-       type="hidden">
-
-<form id="createSpecDetail"
-      th:action="@{'/spec/create/detail/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
-      method="POST">
-</form>
-<form id="searchShop"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchShop'}"
-      method="GET">
-</form>
-<form id="searchAccountSource"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountSource'}"
-      method="GET">
-</form>
-<form id="searchAccountDestination"
-      th:action="@{'/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountDestination'}"
-      method="GET">
-</form>
+    <th:block th:if="__${specificationGroupForm.groupMemo}__ ne null">
+        <form id="createSpecDetail"
+              method="POST"
+              th:action="@{'/spec/create/detail/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__?groupMemo=__*{groupMemo}__'}">
+        </form>
+    </th:block>
+    <th:block th:unless="__${specificationGroupForm.groupMemo}__ ne null">
+        <form id="createSpecDetail"
+              method="POST"
+              th:action="@{'/spec/create/detail/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__?groupMemo='}">
+        </form>
+    </th:block>
+    <form id="searchShop"
+          method="GET"
+          th:action="@{'/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchShop'}">
+    </form>
+    <form id="searchAccountSource"
+          method="GET"
+          th:action="@{'/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountSource'}">
+    </form>
+    <form id="searchAccountDestination"
+          method="GET"
+          th:action="@{'/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__/searchAccountDestination'}">
+    </form>
+</div>
 
 <form id="dummy"></form>
-<script src="/js/createGroup.js"></script>
+<script src="/js/createGroupAndDetail.js"></script>
 </body>
 </html>

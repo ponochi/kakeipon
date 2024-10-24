@@ -31,7 +31,7 @@ public class CurrencyController {
     List<CurrencyList> currencies = currencyService.findAll();
     CurrencyListForm currencyListForm = new CurrencyListForm();
 
-    model.addAttribute("form", form);
+    model.addAttribute("currencyListForm", currencyListForm);
     model.addAttribute("currencies", currencies);
 
     return "/currency/add";
@@ -43,10 +43,12 @@ public class CurrencyController {
     currency.setCurrencyName(form.getCurrencyName());
 
     currency = currencyService.saveAndFlush(currency);
-
+    CurrencyListForm currencyListForm = new CurrencyListForm();
+    currencyListForm.setCurrencyId(currency.getCurrencyId());
+    currencyListForm.setCurrencyName(currency.getCurrencyName());
     List<CurrencyList> currencies = currencyService.findAll();
 
-    model.addAttribute("form", form);
+    model.addAttribute("currencyListForm", currencyListForm);
     model.addAttribute("currencies", currencies);
 
     return "/currency/showList";
@@ -57,11 +59,11 @@ public class CurrencyController {
       @PathVariable("currencyId") Long currencyId,
       @ModelAttribute CurrencyListForm form, Model model) {
 
-    CurrencyList currency = currencyService.findById(currencyId);
-    form.setCurrencyId(currency.getCurrencyId());
-    form.setCurrencyName(currency.getCurrencyName());
+    CurrencyList currncyList = currencyService.findById(currencyId);
+    form.setCurrencyId(currncyList.getCurrencyId());
+    form.setCurrencyName(currncyList.getCurrencyName());
 
-    model.addAttribute("currency", currency);
+    model.addAttribute("currncyList", currncyList);
 
     return "/currency/editDetail";
   }

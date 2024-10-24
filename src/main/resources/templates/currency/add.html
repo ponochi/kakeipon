@@ -9,8 +9,9 @@
 </head>
 <body>
 <h3>通貨登録</h3>
-<form id="confirm" th:object="${currencyListForm}"
-      th:action="@{'/currency/list'}" method="POST">
+<form id="confirm"
+      method="POST"
+      th:action="@{'/currency/list'}" th:object="${currencyListForm}">
   <table>
     <tbody>
       <tr>
@@ -19,13 +20,13 @@
         <td>
           <input id="currencyName" name="currencyName" type="text" />
           <span th:if="${#fields.hasErrors('currencyName')} ? 'has-error'"
-                th:errors="*{currencyName}" style="color:red">通貨名は必須です。</span>
+                style="color:red" th:errors="${currencyListForm.currencyName}">通貨名は必須です。</span>
         </td>
       </tr>
     </tbody>
   </table>
 </form>
-<form id="list" th:action="@{'/currency'}" th:object="${currencyListForm}" method="get">
+<form id="list" method="GET" th:action="@{'/currency'}" th:object="${currencyListForm}">
 </form>
 <div>
   <button onclick="location.href='/top'">メニュー画面</button>

@@ -3,13 +3,13 @@ package org.panda.systems.kakeipon.app.spec;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.panda.systems.kakeipon.app.common.TaxRateForm;
-import org.panda.systems.kakeipon.app.currency.CurrencyListForm;
 import org.panda.systems.kakeipon.app.common.TaxTypeForm;
 import org.panda.systems.kakeipon.app.common.UnitForm;
+import org.panda.systems.kakeipon.app.currency.CurrencyListForm;
 import org.panda.systems.kakeipon.domain.model.common.TaxRate;
-import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
 import org.panda.systems.kakeipon.domain.model.common.TaxType;
 import org.panda.systems.kakeipon.domain.model.common.Unit;
+import org.panda.systems.kakeipon.domain.model.currency.CurrencyList;
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.panda.systems.kakeipon.domain.service.common.TaxRateService;
 import org.panda.systems.kakeipon.domain.service.common.TaxTypeService;
@@ -80,7 +80,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "currency_id")
-  CurrencyListForm currencyListForm;
+  private CurrencyListForm currencyListForm;
 
   private Long unitId;
 
@@ -89,7 +89,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "unit_id")
-  UnitForm unitForm;
+  private UnitForm unitForm;
 
   @Column
   private Long quantity;
@@ -101,7 +101,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_type_id")
-  TaxTypeForm taxTypeForm;
+  private TaxTypeForm taxTypeForm;
 
   @Column(name = "tax_rate_id")
   private Long taxRateId;
@@ -111,7 +111,7 @@ public class SpecificationForm implements Serializable {
       insertable = false, updatable = false)
   @PrimaryKeyJoinColumn
   @Column(name = "tax_rate_id")
-  TaxRateForm taxRateForm;
+  private TaxRateForm taxRateForm;
 
   @Column(name = "tax")
   private Long tax;
@@ -148,18 +148,18 @@ public class SpecificationForm implements Serializable {
     this.setSpecificationId(specification.getSpecificationId());
     this.setUserId(specification.getUserId());
     this.setName(specification.getName());
-    this.setPrice(Long.parseLong("0"));
+    this.setPrice(0L);
     this.setCurrencyId(specification.getCurrencyId());
     this.setUnitId(specification.getUnitId());
     this.setQuantity(Long.parseLong("1"));
     this.setTaxTypeId(specification.getTaxTypeId());
     this.setTaxRateId(specification.getTaxRateId());
-    this.setTax(Long.parseLong("0"));
+    this.setTax(0L);
     this.setSpecMemo(specification.getSpecMemo());
     this.setDeleted(specification.getDeleted());
     this.setEntryDate(specification.getEntryDate());
     this.setUpdateDate(specification.getUpdateDate());
-    this.setVersion(Long.parseLong("0"));
+    this.setVersion(0L);
   }
 
   public SpecificationForm setSpecificationToForm(Specification specification) {

@@ -61,7 +61,6 @@ public class SpecificationGroupForm implements Serializable {
   private final AccountSourceService accountSourceService;
   private final AccountDestinationService accountDestinationService;
   private final UsersDetailService usersDetailService;
-  //  private final AuthoritiesService authoritiesService;
   private final UsersExtService usersExtService;
   private final ShopService shopService;
   private final BalanceTypeService balanceTypeService;
@@ -87,7 +86,7 @@ public class SpecificationGroupForm implements Serializable {
   UsersExtForm usersExtForm;
 
   @Column(name = "username")
-  String id;
+  String username;
 
   @OneToOne
   @JoinColumn(name = "username", table = "users",
@@ -157,7 +156,6 @@ public class SpecificationGroupForm implements Serializable {
     this.accountSourceService = null;
     this.accountDestinationService = null;
     this.usersDetailService = null;
-    //  this.authoritiesService = null;
     this.usersExtService = null;
     this.shopService = null;
     this.balanceTypeService = null;
@@ -173,7 +171,6 @@ public class SpecificationGroupForm implements Serializable {
                                 AccountSourceService accountSourceService,
                                 AccountDestinationService accountDestinationService,
                                 UsersDetailService usersDetailService,
-//                                AuthoritiesService authoritiesService,
                                 UsersExtService usersExtService,
                                 ShopService shopService,
                                 BalanceTypeService balanceTypeService,
@@ -188,7 +185,6 @@ public class SpecificationGroupForm implements Serializable {
     this.accountSourceService = accountSourceService;
     this.accountDestinationService = accountDestinationService;
     this.usersDetailService = usersDetailService;
-//    this.authoritiesService = authoritiesService;
     this.usersExtService = usersExtService;
     this.shopService = shopService;
     this.balanceTypeService = balanceTypeService;
@@ -209,11 +205,12 @@ public class SpecificationGroupForm implements Serializable {
             null,
             Long.parseLong("1"),
             Long.parseLong("1"));
-    Users users = usersDetailService.findByUserId(userId);
-    this.setId(id);
+    if (usersDetailService != null) {
+      Users users = usersDetailService.findByUserId(userId);
+    }
+    this.setUsername(id);
     this.setUsersToForm(
         usersDetailService,
-//        authoritiesService,
         usersDetail.getUsers());
 
     UsersExt usersExt = null;
@@ -313,17 +310,17 @@ public class SpecificationGroupForm implements Serializable {
             specForm.setSpecificationId(count);
             specForm.setUserId(this.getUserId());
             specForm.setName("");
-            specForm.setPrice(Long.parseLong("0"));
+            specForm.setPrice(0L);
             specForm.setCurrencyId(Long.parseLong("1"));
             specForm.setQuantity(Long.parseLong("1"));
             specForm.setUnitId(Long.parseLong("1"));
             specForm.setTaxTypeId(Long.parseLong("1"));
             specForm.setTaxRateId(Long.parseLong("1"));
-            specForm.setTax(Long.parseLong("0"));
+            specForm.setTax(0L);
             specForm.setSpecMemo("");
             specForm.setDeleted(false);
             specForm.setEntryDate(LocalDateTime.now());
-            specForm.setVersion(Long.parseLong("0"));
+            specForm.setVersion(0L);
           }
         }
 
@@ -345,7 +342,7 @@ public class SpecificationGroupForm implements Serializable {
 
     if (specificationGroupId == null) {
       this.setSpecificationGroupId(null);
-      this.setId(id);
+      this.setUsername(username);
       this.setShopId(Long.parseLong("1"));
       this.setBalanceTypeId(Long.parseLong("1"));
       this.setDeleted(false);
@@ -385,14 +382,13 @@ public class SpecificationGroupForm implements Serializable {
   public SpecificationGroupForm setSpecificationGroupToForm(
       SpecificationGroup specificationGroup) {
 
-    SpecificationGroupForm form = new SpecificationGroupForm(
+    SpecificationGroupForm groupForm = new SpecificationGroupForm(
         specificationGroupService,
         specificationService,
         accountAndBalanceService,
         accountSourceService,
         accountDestinationService,
         usersDetailService,
-//        authoritiesService,
         usersExtService,
         shopService,
         balanceTypeService,
@@ -401,10 +397,10 @@ public class SpecificationGroupForm implements Serializable {
         taxTypeService,
         taxRateService);
 
-    form.setSpecificationGroupId(
+    groupForm.setSpecificationGroupId(
         specificationGroup.getSpecificationGroupId());
 
-    form.setUserId(specificationGroup.getUserId());
+    groupForm.setUserId(specificationGroup.getUserId());
     Users users
         = null;
     if (usersDetailService != null) {
@@ -413,67 +409,87 @@ public class SpecificationGroupForm implements Serializable {
     }
     UsersDetail usersDetail
         = new UsersDetail(users);
-    usersDetail.getUsers().setUsername(users.getUsername());
-    usersDetail.getUsers().setPassword(users.getPassword());
-    usersDetail.getUsers().setUserId(users.getUserId());
-    usersDetail.getUsers().setUsername(users.getUsername());
-    usersDetail.getUsers().setAccountNonExpired(true);
-    usersDetail.getUsers().setAccountNonLocked(true);
-    usersDetail.getUsers().setCredentialsNonExpired(true);
-    usersDetail.getUsers().setEnabled(true);
-    form.setUsersDetail(usersDetail);
+    if (users != null) {
+      usersDetail.getUsers().setUsername(users.getUsername());
+      usersDetail.getUsers().setPassword(users.getPassword());
+      usersDetail.getUsers().setUserId(users.getUserId());
+      usersDetail.getUsers().setUsername(users.getUsername());
+      usersDetail.getUsers().setAccountNonExpired(true);
+      usersDetail.getUsers().setAccountNonLocked(true);
+      usersDetail.getUsers().setCredentialsNonExpired(true);
+      usersDetail.getUsers().setEnabled(true);
+      groupForm.setUsersDetail(usersDetail);
+    }
 
     UsersExt usersExt = new UsersExt();
-    usersExt.setUserId(users.getUserId());
-    usersExt.setLastName(usersExt.getLastName());
-    usersExt.setFirstName(usersExt.getFirstName());
-    usersExt.setBirthDay(usersExt.getBirthDay());
-    usersExt.setPhoneNumber(usersExt.getPhoneNumber());
-    usersExt.setEmail(usersExt.getEmail());
-    usersExt.setEntryDate(usersExt.getEntryDate());
-    usersExt.setUpdateDate(usersExt.getUpdateDate());
-    UsersExtForm usersExtForm = form.setUserExtToForm(usersExt);
-    form.setUsersExtForm(usersExtForm);
+    if (users != null) {
+      usersExt.setUserId(users.getUserId());
+      usersExt.setLastName(usersExt.getLastName());
+      usersExt.setFirstName(usersExt.getFirstName());
+      usersExt.setBirthDay(usersExt.getBirthDay());
+      usersExt.setPhoneNumber(usersExt.getPhoneNumber());
+      usersExt.setEmail(usersExt.getEmail());
+      usersExt.setEntryDate(usersExt.getEntryDate());
+      usersExt.setUpdateDate(usersExt.getUpdateDate());
+      UsersExtForm usersExtForm = groupForm.setUserExtToForm(usersExt);
+      groupForm.setUsersExtForm(usersExtForm);
+    }
 
-    form.setShopId(specificationGroup.getShopId());
-    Shop shop = shopService.findById(specificationGroup.getShopId());
-    shopForm = form.setShopToForm(shop);
-    form.setShopForm(shopForm);
+    groupForm.setShopId(specificationGroup.getShopId());
+    Shop shop = null;
+    if (shopService != null) {
+      shop = shopService.findById(specificationGroup.getShopId());
+      shopForm = groupForm.setShopToForm(shop);
+      groupForm.setShopForm(shopForm);
+    }
 
-    form.setReceivingAndPaymentDate(
+    groupForm.setReceivingAndPaymentDate(
         specificationGroup.getReceivingAndPaymentDate());
-    form.setReceivingAndPaymentTime(
+    groupForm.setReceivingAndPaymentTime(
         specificationGroup.getReceivingAndPaymentTime());
 
-    form.setBalanceTypeId(specificationGroup.getBalanceTypeId());
+    groupForm.setBalanceTypeId(specificationGroup.getBalanceTypeId());
     BalanceType balanceType
-        = balanceTypeService.findById(
-        specificationGroup.getBalanceTypeId());
-    balanceTypeForm = form.setBalanceTypeToForm(balanceType);
-    form.setBalanceTypeForm(balanceTypeForm);
+        = null;
+    if (balanceTypeService != null) {
+      balanceType = balanceTypeService.findById(
+          specificationGroup.getBalanceTypeId());
+      balanceTypeForm = groupForm.setBalanceTypeToForm(balanceType);
+      groupForm.setBalanceTypeForm(balanceTypeForm);
+    }
 
-    form.setAccountAndBalanceId(
+    AccountAndBalanceForm accountAndBalanceForm
+        = new AccountAndBalanceForm(
+        accountAndBalanceService,
+        accountSourceService,
+        accountDestinationService);
+    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+
+    groupForm.setAccountAndBalanceId(
         specificationGroup.getAccountAndBalanceId());
     AccountAndBalance accountAndBalance
-        = accountAndBalanceService.getById(
-        specificationGroup.getAccountAndBalanceId());
-    accountAndBalanceForm = form.setAccountAndBalanceToForm(accountAndBalance);
-    form.setAccountAndBalanceForm(accountAndBalanceForm);
+        = null;
+    if (accountAndBalanceService != null) {
+      accountAndBalance = accountAndBalanceService.getById(
+          specificationGroup.getAccountAndBalanceId());
+      accountAndBalanceForm = groupForm.setAccountAndBalanceToForm(accountAndBalance);
+      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+    }
 
-    form.setGroupMemo(specificationGroup.getGroupMemo());
+    groupForm.setGroupMemo(specificationGroup.getGroupMemo());
 
-    form.setDeleted(specificationGroup.getDeleted());
+    groupForm.setDeleted(specificationGroup.getDeleted());
 
     if (specificationGroup.getEntryDate() == null) {
-      form.setEntryDate(LocalDateTime.now());
-      form.setUpdateDate(specificationGroup.getUpdateDate());
+      groupForm.setEntryDate(LocalDateTime.now());
+      groupForm.setUpdateDate(specificationGroup.getUpdateDate());
     } else {
-      form.setEntryDate(specificationGroup.getEntryDate());
-      form.setUpdateDate(LocalDateTime.now());
+      groupForm.setEntryDate(specificationGroup.getEntryDate());
+      groupForm.setUpdateDate(LocalDateTime.now());
     }
-    form.setVersion(specificationGroup.getVersion());
+    groupForm.setVersion(specificationGroup.getVersion());
 
-    return form;
+    return groupForm;
   }
 
   public SpecificationGroup toEntity() {
@@ -506,11 +522,9 @@ public class SpecificationGroupForm implements Serializable {
 
   public UsersForm setUsersToForm(
       UsersDetailService usersDetailService,
-//      AuthoritiesService authoritiesService,
       Users users) {
     UsersForm usersForm = new UsersForm(
         usersDetailService
-//        authoritiesService
     );
 
     usersForm.setUserId(users.getUserId());
@@ -520,7 +534,6 @@ public class SpecificationGroupForm implements Serializable {
     usersForm.setAccountNonExpired(true);
     usersForm.setAccountNonLocked(true);
     usersForm.setCredentialsNonExpired(true);
-
 
     return usersForm;
   }

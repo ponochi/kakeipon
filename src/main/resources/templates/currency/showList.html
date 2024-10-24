@@ -9,26 +9,24 @@
 通貨一覧
 
 <table>
-    <tr th:each="currency : ${currencies}">
+    <tr th:each="currncy : ${currencies}">
         <td>
             <form id="edit"
-                  th:action="@{'/currency/__${currency.currencyId}__/edit'}"
-                  method="get">
+                  method="GET"
+                  th:action="@{'/currency/__${currncy.currencyId}__/edit'}"
+                  th:object="${currency}">
 
-                <input id="currencyId" class="currency-id"
-                       th:value="${currency.currencyId}"
-                       type="hidden" />
-                <label for="currencyName"></label>
-                <input id="currencyName" class="currency-name"
-                       th:value="${currency.currencyName}"
-                       type="text"/>
+                <input class="currency-id" th:value="${currncy.currencyId}" type="hidden"/>
+                <label>
+                    <input class="currency-name" th:value="${currncy.currencyName}" type="text"/>
+                </label>
                 <input type="submit" value="編　集"/>
             </form>
         </td>
     </tr>
 </table>
 <form id="add" th:action="@{'/currency/add'}"
-      th:object="${currency}" method="get">
+      method="GET" th:object="${currency}">
 </form>
 <div>
     <button onclick="location.href='/top'">メニュー画面</button>

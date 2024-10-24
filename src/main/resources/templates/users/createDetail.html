@@ -3,204 +3,283 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title th:text="ユーザ登録"></title>
-  <script src="/js/common.js" type="text/javascript"></script>
-  <script src="/js/users.js" type="text/javascript"></script>
+    <meta charset="UTF-8">
+    <title th:text="ユーザ登録"></title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/user-manage.css" rel="stylesheet">
+    <script src="/js/common.js" type="text/javascript"></script>
+    <script src="/js/users.js" type="text/javascript"></script>
 </head>
 <body>
-<h3>ユーザ登録</h3>
-<form id="confirm" th:object="${usersForm}"
-      th:action="@{/users/createConfirm}" method="post">
-  <div>
-    <input th:field="*{enabled}" type="hidden"/>
-    <input th:field="*{accountNonExpired}" type="hidden"/>
-    <input th:field="*{accountNonLocked}" type="hidden"/>
-    <input th:field="*{credentialsNonExpired}" type="hidden"/>
-  </div>
-  <table>
-    <tbody>
-      <tr>
-        <th><label for="userId"></label></th>
-        <td></td>
-        <td>
-          <input id="userId" name="userId" th:field="*{userId}" type="hidden"/>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="username">ユーザ名</label></th>
-        <td class="require">*</td>
-        <td>
-          <input id="username" name="username" type="text"
-                 autocomplete="username"/>
-          <span th:if="${#fields.hasErrors('username')}"
-                th:errors="*{username}" style="color:red">ユーザ名は必須です。</span>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="lastName">姓</label></th>
-        <td></td>
-        <td><input id="lastName" name="lastName"
-                   th:value="*{usersExtForm.lastName}" type="text"/>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="firstName">名</label></th>
-        <td></td>
-        <td><input id="firstName" name="firstName"
-                   th:value="*{usersExtForm.firstName}" type="text"/>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="password">パスワード</label></th>
-        <td class="require">*</td>
-        <td>
-          <input id="password" name="password" type="text"/>
-          <span th:if="${#fields.hasErrors('password')}"
-                th:errors="*{password}" style="color:red">パスワードは必須です。</span>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="email">email</label></th>
-        <td class="require">*</td>
-        <td>
-          <input id="email" name="email"
-                 th:value="${usersForm.usersExtForm.email}" type="text"
-                 autocomplete="email"/>
-          <span th:if="${#fields.hasErrors('usersExtForm.email')}"
-                th:errors="*{usersExtForm.email}"
-                style="color:red">emailは必須です。</span>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="yearSelect" aria-label="Year and Month, Date of birth day fields">生年月日</label></th>
-        <td>*</td>
-        <td>
-          <div id="yyyymmdd">
-            <span>
-              <select id="yearSelect" name="yearSelect" onchange="setToBirthDayField()"></select>
-              <label for="yearSelect">年</label>
-            </span>
-            <span>
-              <select id="monthSelect" name="monthSelect" onchange="setToBirthDayField()">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-              </select>
-              <label for="monthSelect">月</label>
-            </span>
-            <span>
-              <select id="dateSelect" name="dateSelect" onchange="setToBirthDayField()">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-              </select>
-              <label for="dateSelect">日</label>
-            </span>
-            <span>
-              <label for="birthDay" aria-label="A date of birth day"></label>
-              <input id="birthDay" name="birthDay"
-                     th:value="*{usersExtForm.birthDay}"
-                     type="hidden"/>
-            </span>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="phoneNumber">電話番号</label></th>
-        <td class="require">*</td>
-        <td>
-          <input id="phoneNumber" name="phoneNumber"
-                 th:value="${usersForm.usersExtForm.phoneNumber}" type="text"/>
-          <span th:if="${#fields.hasErrors('usersExtForm.phoneNumber')}"
-                th:errors="*{usersExtForm.phoneNumber}" style="color:red">電話番号は必須です。</span>
-        </td>
-      </tr>
-      <tr>
-        <th><label for="roleName">権限</label></th>
-        <td class="require">*</td>
-        <td>
-          <select id="roleName" name="roleName">
-            <option th:each="item : ${roleNames}"
-                    th:value="${item}"
-                    th:text="${item}" th:selected="${item} == '2'"></option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <th>登録日</th>
-        <td></td>
-        <td>
-          <div>
-            <label for="entryDate" aria-label="A date of entry"></label>
-            <input id="entryDate" name="entryDate"
-                   th:value="${usersForm.usersExtForm.entryDate}"
-                   readonly />
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th>変更日</th>
-        <td></td>
-        <td>
-          <div>
-            <label for="updateDate" aria-label="A date of update"></label>
-            <input id="updateDate" name="updateDate"
-                   th:value="${usersForm.usersExtForm.updateDate}"
-                   readonly="readonly"/>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<div class="container-fluid top-uc-container">
+    <h3>ユーザ登録</h3>
+    <form id="confirm" method="post"
+          th:action="@{/users/createConfirm}" th:object="${usersForm}">
+        <div>
+            <input th:field="*{enabled}" type="hidden"/>
+            <input th:field="*{accountNonExpired}" type="hidden"/>
+            <input th:field="*{accountNonLocked}" type="hidden"/>
+            <input th:field="*{credentialsNonExpired}" type="hidden"/>
+        </div>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="userId"></label></th>
+                <td class="non-require">&nbsp;</td>
+                <td>
+                    <label for="userId"></label>
+                    <input id="userId" name="userId"
+                           th:field="*{userId}" type="hidden"/>
+                </td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="username">ユーザ名</label></th>
+                <td class="require">*</td>
+                <td>
+                    <label for="username"></label>
+                    <input class="input-fields" id="username" name="username"
+                           th:value="${usersForm.username}" type="text">
+                    <!-- autocomplete="username"/> -->
+                    <span style="color:red"
+                          th:errors="*{username}" th:if="${#fields.hasErrors('username')}">ユーザ名は必須です。</span>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="lastName">姓</label></th>
+                <td class="non-require">&nbsp;</td>
+                <td>
+                    <input class="input-fields" id="lastName" name="lastName"
+                           th:value="*{usersExtForm.lastName}" type="text"/>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="firstName">名</label></th>
+                <td class="non-require">&nbsp;</td>
+                <td>
+                    <label for="firstName"></label>
+                    <input class="input-fields" id="firstName" name="firstName"
+                           th:value="*{usersExtForm.firstName}" type="text"/>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="password">パスワード</label></th>
+                <td class="require">*</td>
+                <td>
+                    <input class="input-fields" id="password" name="password"
+                           th:value="*{password}" type="text"/>
+                    <span style="color:red"
+                          th:errors="*{password}" th:if="${#fields.hasErrors('password')}">パスワードは必須です。</span>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="email">email</label></th>
+                <td class="require">*</td>
+                <td>
+                    <input class="input-fields" id="email" name="email"
+                           th:value="${usersForm.usersExtForm.email}" type="text"/>
+                    <span style="color:red"
+                          th:errors="*{usersExtForm.email}"
+                          th:if="${#fields.hasErrors('usersExtForm.email')}">emailは必須です。</span>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label aria-label="Year and Month, Date of birth day fields" for="yearSelect">生年月日</label></th>
+                <td class="require">*</td>
+                <td>
+                    <div class="form-group birth-day" id="yyyymmdd">
+                        <label for="yearSelect"></label>
+                        <select class="year-select" id="yearSelect" name="yearSelect"
+                                onchange="setToBirthDayField()"></select>
+                        <label for="yearSelect">年</label>
+                        <select class="month-select" id="monthSelect" name="monthSelect"
+                                onchange="setToBirthDayField()">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <label for="monthSelect">月</label>
+                        <select class="date-select" id="dateSelect" name="dateSelect"
+                                onchange="setToBirthDayField()">
+                            <option value="01">01</option>
+                            <option value="02">02</option>
+                            <option value="03">03</option>
+                            <option value="04">04</option>
+                            <option value="05">05</option>
+                            <option value="06">06</option>
+                            <option value="07">07</option>
+                            <option value="08">08</option>
+                            <option value="09">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                            <option value="31">31</option>
+                        </select>
+                        <label for="dateSelect">日</label>
+                        <label aria-label="A date of birth day" for="birthDay"></label>
+                        <input id="birthDay" name="birthDay"
+                               th:value="*{usersExtForm.birthDay}" type="hidden"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="phoneNumber">電話番号</label></th>
+                <td class="require">*</td>
+                <td>
+                    <label for="phoneNumber"></label>
+                    <input class="input-fields" id="phoneNumber" name="phoneNumber"
+                           th:value="*{usersExtForm.phoneNumber}" type="text"/>
+                    <span style="color:red"
+                          th:errors="*{usersExtForm.phoneNumber}"
+                          th:if="${#fields.hasErrors('usersExtForm.phoneNumber')}">電話番号は必須です。</span>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th><label for="roleName">権限</label></th>
+                <td class="require">*</td>
+                <td>
+                    <label for="roleName"></label>
+                    <select class="role-name" id="roleName" name="roleName"
+                            th:field="*{roleName}">
+                        <option th:each="item : ${roleNames}"
+                                th:selected="${item} == '2'"
+                                th:text="${item}" th:value="${item}"></option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th>登録日</th>
+                <td class="non-require">&nbsp;</td>
+                <td>
+                    <label aria-label="A date of entry" for="entryDate"></label>
+                    <input class="input-fields" id="entryDate" name="entryDate"
+                           readonly
+                           th:value="*{usersExtForm.entryDate}"/>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="margin">&nbsp;</td>
+            </tr>
+        </table>
+        <table class="create-user-tbl">
+            <tr>
+                <th>変更日</th>
+                <td class="non-require">&nbsp;</td>
+                <td>
+                    <label aria-label="A date of update" for="updateDate"></label>
+                    <input class="input-fields" id="updateDate" name="updateDate"
+                           readonly="readonly"
+                           th:value="*{usersExtForm.updateDate}"/>
+                </td>
+            </tr>
+        </table>
+        <table class="margin-tbl">
+            <tr>
+                <td class="info">
+                    <span>*) 必須項目</span>
+                </td>
+            </tr>
+        </table>
+    </form>
 
-  <script>setToDefaultYYYYMMDDField()</script>
-  <script>setToBirthDayField()</script>
-  <input id="canProcDate" th:value="true" type="hidden"/>
-</form>
-<form id="list" th:action="@{'/users'}" th:object="${usersForm}" method="get">
-</form>
-<div>
-  <button onclick="location.href='/top'">メニュー画面</button>
-  <button form="list"> ユーザ・一覧画面</button>
-    <button form="confirm" type="submit">登　録</button>
+    <script>setToDefaultYYYYMMDDField()</script>
+    <script>setToBirthDayField()</script>
+    <input id="canProcDate" th:value="true" type="hidden"/>
+    <form id="list" method="get" th:action="@{'/users'}" th:object="${usersForm}"></form>
+
+    <div class="footer-btn">
+        <button class="confirm" form="confirm" type="submit">登　録</button>
+        <button class="cancel" onclick="cancelUserEntry()" type="button">キャンセル</button>
+        <button class="to-user-list" form="list"> ユーザ・一覧画面</button>
+        <button class="to-menu" onclick="location.href='/top'">メニュー画面</button>
+    </div>
 </div>
 
 </body>

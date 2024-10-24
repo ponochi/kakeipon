@@ -77,8 +77,7 @@ function setToYYYYMMDDField() {
       = document.getElementById("yearSelect");
     currentYear = new Date().getFullYear();
     year = new Date(birthDay.value).getFullYear();
-    console.log("currentYear: " + currentYear)
-    console.log("year: " + year)
+
   for (let i = 99; i >= 0; i--) {
     let yr_option = document.createElement("option");
     let procYear = currentYear - i;

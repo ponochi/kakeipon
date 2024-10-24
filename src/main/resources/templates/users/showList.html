@@ -3,42 +3,57 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title th:text="ユーザ一覧"></title>
-  <script th:src="@{/js/users.js}"></script>
+    <meta charset="UTF-8">
+    <title th:text="ユーザ一覧"></title>
+    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" rel="stylesheet">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/user-manage.css" rel="stylesheet">
+    <script th:src="@{/js/users.js}"></script>
 </head>
 <body>
-<h3>ユーザ一覧</h3>
-<table>
-  <thead>
-  <tr>
-    <th>ID</th>
-    <th>ユーザ名</th>
-    <th>権限</th>
-    <th>操作</th>
-  </tr>
-  </thead>
-  <tbody th:each="usersDetail: ${usersDetails}">
-  <tr>
-    <th>
-      <span th:text="${usersDetail.users.userId}"></span>
-    </th>
-    <td><span th:text="${usersDetail.username}"></span></td>
-    <td><span th:text="${usersDetail.users.roleName}"></span></td>
-    <td>
-        <form id="userInfo"
-              th:action="@{'/users/__${usersDetail.users.userId}__/show'}"
-              method="GET">
-          <input id="userId" th:value="${usersDetail.users.userId}" type="hidden">
-          <input type="submit" value="詳　細"/>
-        </form>
-    </td>
-  </tr>
-  </tbody>
-</table>
-<div>
-  <button onclick="location.href='/top'">メニュー画面</button>
-  <button onclick="location.href='/users/create'">新規ユーザ・登　録</button>
+<div class="container-fluid top-ul-container">
+    <h3>ユーザ一覧</h3>
+    <table class="user-info-tbl">
+        <thead>
+        <tr>
+            <th class="tbl-header user-id">ID</th>
+            <th class="tbl-header user-name">ユーザ名</th>
+            <th class="tbl-header role-name">権限</th>
+            <th class="tbl-header user-control">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="user-info-tbl-row" th:each="usersDetail: ${usersDetails}">
+            <td class="user-id" th:text="${usersDetail.users.userId}">
+            </td>
+            <td class="user-name" th:text="${usersDetail.username}"></td>
+            <td class="role-name" th:text="${usersDetail.users.roleName}"></td>
+            <td class="user-control">
+                <form id="userInfo"
+                      method="GET"
+                      th:action="@{'/users/__${usersDetail.users.userId}__/show'}">
+                    <input id="userId" th:value="${usersDetail.users.userId}" type="hidden">
+                    <input class="btn btn-outline-success" type="submit" value="詳　細"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <table class="margin-tbl">
+        <tr>
+            <td class="margin">&nbsp;</td>
+        </tr>
+    </table>
+
+    <div class="footer-ul-btn">
+        <button class="create-user" id="createUser" name="createUser"
+                onclick="location.href='/users/create'">新規ユーザ・登録
+        </button>
+        <button class="to-menu" id="toMenu" name="toMenu"
+                onclick="location.href='/top'">メニュー画面
+        </button>
+    </div>
 </div>
 </body>
 </html>

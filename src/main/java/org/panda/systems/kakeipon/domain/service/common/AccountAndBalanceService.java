@@ -26,7 +26,12 @@ public class AccountAndBalanceService implements Serializable {
   }
 
   public AccountAndBalance getById(Long accountAndBalanceId) {
-    return accountRepository.getById(accountAndBalanceId);
+    AccountAndBalance accountAndBalance = accountRepository.getById(accountAndBalanceId);
+    if (accountAndBalance == null) {
+      accountAndBalance = new AccountAndBalance();
+      accountAndBalance.setAccountAndBalanceId(accountRepository.getMaxAccountAndBalanceId() + 1);
+    }
+    return accountAndBalance;
   }
 
   public AccountAndBalance saveAndFlush(AccountAndBalance entity) {

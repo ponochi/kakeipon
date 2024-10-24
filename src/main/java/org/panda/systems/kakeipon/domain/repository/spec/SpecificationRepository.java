@@ -2,7 +2,6 @@ package org.panda.systems.kakeipon.domain.repository.spec;
 
 import org.panda.systems.kakeipon.domain.model.spec.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -52,11 +51,11 @@ public interface SpecificationRepository
                     " AND" +
                     "   ts.deleted = ?4")
     Specification findBySpecificationGroupIdAndSpecificationIdAndUserIdAndDeleted(
-            Long specificationGroupId, Long specificationId, String userId, Boolean deleted);
+        Long specificationGroupId, Long specificationId, Long userId, Boolean deleted);
 
     List<Specification> findAllByDeleted(Boolean deleted);
 
-    List<Specification> findBySpecificationGroupIdAndUserIdAndDeleted(
+  List<Specification> findBySpecificationGroupIdAndUserIdAndDeletedOrderBySpecificationIdDesc(
             Long specificationGroupId, Long userId, Boolean deleted);
 
     @SuppressWarnings({"unchecked", "NullableProblems"})

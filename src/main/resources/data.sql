@@ -25,12 +25,6 @@ VALUES ((SELECT MAX(user_id) AS user_id FROM users), 'Foo2', 'Bar2',
         '00011112222',
         '2024-07-20 00:00:00', NULL); -- password: test
 
---[authorities]==================================================================================
--- INSERT INTO authorities(username, authority)
--- VALUES ('juiceA', 'ADMIN');
--- INSERT INTO authorities(username, authority)
--- VALUES ('juiceB', 'USER');
-
 --[first_class]=================================================================================
 --[支出]===========================================================================================
 INSERT INTO first_class(first_class_name) VALUES ('支出');

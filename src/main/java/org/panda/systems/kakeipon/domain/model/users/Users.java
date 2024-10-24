@@ -10,8 +10,6 @@ import java.io.Serializable;
 @Component
 @Entity
 @Table(name = "users")
-//@SecondaryTable(name = "authorities",
-//    pkJoinColumns = @PrimaryKeyJoinColumn(name = "username"))
 @Data
 public class Users implements Serializable {
   @Serial

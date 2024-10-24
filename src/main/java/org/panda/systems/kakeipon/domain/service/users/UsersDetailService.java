@@ -2,7 +2,6 @@ package org.panda.systems.kakeipon.domain.service.users;
 
 import org.panda.systems.kakeipon.domain.model.users.Users;
 import org.panda.systems.kakeipon.domain.repository.users.UsersDetailRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,8 +12,16 @@ import java.util.List;
 
 @Service
 public class UsersDetailService implements UserDetailsService {
-  @Autowired
-  UsersDetailRepository usersDetailRepository;
+
+  @SuppressWarnings("ClassEscapesDefinedScope")
+  public final UsersDetailRepository usersDetailRepository;
+
+  public UsersDetailService(
+      @SuppressWarnings("ClassEscapesDefinedScope")
+      UsersDetailRepository usersDetailRepository) {
+
+    this.usersDetailRepository = usersDetailRepository;
+  }
 
   @Override
   public UserDetails loadUserByUsername(String username)
@@ -42,7 +49,7 @@ public class UsersDetailService implements UserDetailsService {
   }
 
   public UsersDetail findByUsername(String username) {
-    Users users = usersDetailRepository.findById(username).orElse(null);
+    Users users = usersDetailRepository.findByUsername(username);
     return new UsersDetail(users);
 
   }

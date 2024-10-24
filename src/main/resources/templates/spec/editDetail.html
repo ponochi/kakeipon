@@ -7,17 +7,15 @@
 </head>
 <body>
 <form id="specDetail"
-      th:action="@{'/spec/save/edit/detail/__${specificationForm.specificationGroupId}__/__${specificationForm.specificationId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
+      th:action="@{'/spec/save/edit/detail/__*{specificationGroupId}__/__*{specificationId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${accountSourceForm.accountSourceId}__/__${accountDestinationForm.accountDestinationId}__'}"
       th:object="${specificationForm}" method="POST">
     <div>
-        <input id="specificationGroupId" name="specificationGroupId"
-               th:value="${specificationForm.specificationGroupId}"
-               type="hidden">
-        <input id="userId" name="userId"
-               th:value="${specificationGroupForm.userId}" type="hidden">
-        <input id="specificationId" name="specificationId"
-               th:value="${specificationForm.specificationId}"
-               type="hidden">
+        <input th:field="*{specificationGroupId}" type="hidden">
+        <input th:field="*{specificationId}" type="hidden">
+        <div th:object="${specificationGroupForm}">
+            <label><input th:field="*{userId}" type="text"></label>
+            <label><input th:field="*{groupMemo}" type="text"></label>
+        </div>
     </div>
 
     <table>
@@ -26,9 +24,9 @@
                 <div th:text="商品名"></div>
             </th>
             <td>
-                <input id="name" name="name" class="brand-name"
-                       th:value="${specificationForm.name}"
-                       type="text" />
+                <label>
+                    <input class="brand-name" th:field="*{name}" type="text"/>
+                </label>
             </td>
         </tr>
         <tr>
@@ -36,10 +34,10 @@
                 <div th:text="単価"></div>
             </th>
             <td>
-                <input id="price" name="price" class="price"
-                       onchange="calculateTax()"
-                       th:value="${specificationForm.price}"
-                       type="number" />
+                <label>
+                    <input class="price" onchange="calculateTax()"
+                           th:field="*{price}" type="number"/>
+                </label>
             </td>
         </tr>
         <tr>
@@ -64,11 +62,10 @@
                 <div th:text="数量"></div>
             </th>
             <td>
-                <label for="quantity"></label>
-                <input id="quantity" name="quantity" class="quantity"
-                       onchange="calculateTax()"
-                       th:value="${specificationForm.quantity}"
-                       type="number" />
+                <label>
+                    <input class="quantity" onchange="calculateTax()"
+                           th:field="*{quantity}" type="number"/>
+                </label>
             </td>
         </tr>
         <tr>
@@ -92,16 +89,14 @@
                 <div th:text="税区分"></div>
             </th>
             <td>
-                <label for="taxType"></label>
-                <select id="taxType"
-                        name="taxType"
-                        onchange="calculateTax()"
-                        th:field="*{taxTypeId}">
-                    <option th:each="taxType : ${taxTypes}"
-                            th:value="${taxType.taxTypeId}"
-                            th:label="${taxType.taxTypeName}">
-                    </option>
-                </select>
+                <label>
+                    <select onchange="calculateTax()" th:field="*{taxTypeId}">
+                        <option th:each="taxType : ${taxTypes}"
+                                th:label="${taxType.taxTypeName}"
+                                th:value="${taxType.taxTypeId}">
+                        </option>
+                    </select>
+                </label>
             </td>
         </tr>
         <tr>
@@ -109,16 +104,14 @@
                 <div th:text="税率"></div>
             </th>
             <td>
-                <label for="taxRate"></label>
-                <select id="taxRate"
-                        name="taxRate"
-                        onchange="calculateTax()"
-                        th:field="*{taxRateId}">
-                    <option th:each="taxRate : ${taxRates}"
-                            th:value="${taxRate.taxRateId}"
-                            th:label="'__${taxRate.taxRate}__' + '%'">
-                    </option>
-                </select>
+                <label>
+                    <select onchange="calculateTax()" th:field="*{taxRateId}">
+                        <option th:each="taxRate : ${taxRates}"
+                                th:text="'__${taxRate.taxRate}__' + '%'"
+                                th:value="${taxRate.taxRateId}">
+                        </option>
+                    </select>
+                </label>
             </td>
         </tr>
         <tr>
@@ -126,21 +119,19 @@
                 <div th:text="消費税"></div>
             </th>
             <td>
-                <label for="tax"></label>
-                <input id="tax" name="tax" class="tax"
-                       th:value="${specificationForm.tax}"
-                       type="number" />
-         </td>
+                <label>
+                    <input class="tax" th:field="*{tax}" type="number"/>
+                </label>
+            </td>
         </tr>
         <tr>
             <th>
                 <div th:text="備考"></div>
             </th>
             <td>
-                <label for="specMemo"></label>
-                <input id="specMemo" name="specMemo"
-                       class="spec-memo"
-                       th:value="${specificationForm.specMemo}" />
+                <label>
+                    <input class="spec-memo" th:field="*{specMemo}"/>
+                </label>
             </td>
         </tr>
     </table>
@@ -149,13 +140,30 @@
 </div>
 
 <input onclick="location.href='/top'" type="submit" value="メニュー画面"/>
-<input onclick="location.href='/spec'" type="submit" value="前の画面">
+<input id="cancel" name="cancel" type="submit" value="キャンセル">
 <input form="specDetail" type="submit" value="登　録">
 
-<input id="balanceTypeId" name="balanceTypeId"
-       th:value="${specificationGroupForm.balanceTypeId}"
-       type="hidden">
+<div th:object="${specificationGroupForm}">
+    <input th:field="*{balanceTypeId}" type="hidden">
+</div>
 
-<script src="/js/createGroup.js"></script>
+<script src="/js/createGroupAndDetail.js"></script>
+<script th:inline="javascript">
+    const cancelBtn = document.getElementById("cancel");
+
+    cancelBtn.addEventListener("click", () => {
+        const specificationGroupId = /*[[${specificationGroupId}]]*/"specificationGroupId";
+        const userId = /*[[${userId}]]*/"userId";
+        // const accountAndBalanceId = /*[[${accountAndBalanceId}]]*/"accountAndBalanceId";
+        // console.log("accountAndBalanceId = " + accountAndBalanceId);
+        // const shopId = /*[[${shopId}]]*/"shopId";
+        // const balanceTypeId = /*[[${balanceTypeId}]]*/"balanceTypeId";
+        // const accountSourceId = /*[[${accountSourceId}]]*/"accountSourceId";
+        // const accountDestinationId = /*[[${accountDestinationId}]]*/"accountDestinationId";
+
+        goBackUrl(accountAndBalanceId, shopId, balanceTypeId,
+            accountSourceId, accountDestinationId);
+    });
+</script>
 </body>
 </html>

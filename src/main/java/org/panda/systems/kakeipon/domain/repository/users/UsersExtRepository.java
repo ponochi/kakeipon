@@ -31,10 +31,6 @@ public interface UsersExtRepository extends JpaRepository<UsersExt, Integer> {
       "    kpu.user_id = kpue.user_id) AS username " +
       "FROM" +
       "  users_ext kpue " +
-//      "  INNER JOIN" +
-//      "    authorities auth " +
-//      "  ON " +
-//      "    username = auth.username " +
       "ORDER BY " +
       "  kpue.user_id", nativeQuery = true)
   List<UsersExt> findAll();
@@ -47,17 +43,6 @@ public interface UsersExtRepository extends JpaRepository<UsersExt, Integer> {
       "  kpue.email, " +
       "  kpue.birth_day, " +
       "  kpue.phone_number, " +
-//      "  (SELECT " +
-//      "    (SELECT" +
-//      "      auth.authority " +
-//      "    FROM" +
-//      "      authorities auth" +
-//      "    WHERE" +
-//      "      auth.username = kpu.username) AS authority " +
-//      "  FROM " +
-//      "    kp.users kpu " +
-//      "  WHERE " +
-//      "    kpu.user_id = kpue.user_id), " +
       "  kpue.entry_date, " +
       "  kpue.update_date " +
       "FROM" +

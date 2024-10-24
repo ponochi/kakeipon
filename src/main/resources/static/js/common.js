@@ -1,7 +1,5 @@
 function debug() {
   let password = document.getElementById("password").value;
-
-  console.log("password : " + password);
 }
 
 var shopId = window.sessionStorage.getItem("shopId");

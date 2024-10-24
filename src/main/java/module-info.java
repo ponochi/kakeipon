@@ -24,6 +24,7 @@ module org.panda.systems.kakeipon {
   requires spring.security.crypto;
   requires spring.security.web;
   requires spring.jdbc;
+  requires spring.aop;
   exports org.panda.systems.kakeipon;
   exports org.panda.systems.kakeipon.app.common;
   exports org.panda.systems.kakeipon.app.login;
@@ -49,11 +50,13 @@ module org.panda.systems.kakeipon {
   opens org.panda.systems.kakeipon.app.shop;
   exports org.panda.systems.kakeipon.app.account;
   opens org.panda.systems.kakeipon.app.account;
+  exports org.panda.systems.kakeipon.app.users;
   opens org.panda.systems.kakeipon.app.users;
   exports org.panda.systems.kakeipon.domain.model.account;
   opens org.panda.systems.kakeipon.domain.model.account;
   exports org.panda.systems.kakeipon.domain.model.currency;
   opens org.panda.systems.kakeipon.domain.model.currency;
+  exports org.panda.systems.kakeipon.domain.model.users;
   opens org.panda.systems.kakeipon.domain.model.users;
   opens org.panda.systems.kakeipon.domain.repository.account;
   opens org.panda.systems.kakeipon.domain.repository.currency;
@@ -61,5 +64,6 @@ module org.panda.systems.kakeipon {
   opens org.panda.systems.kakeipon.domain.service.account;
   exports org.panda.systems.kakeipon.domain.service.currency;
   opens org.panda.systems.kakeipon.domain.service.currency;
+  exports org.panda.systems.kakeipon.domain.service.users;
   opens org.panda.systems.kakeipon.domain.service.users;
 }

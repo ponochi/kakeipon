@@ -21,55 +21,49 @@
     </tr>
     <tr th:each="specificationGroupForm, stat : ${specificationGroupForms}">
         <td>
-            <form th:id="'specGroup' + '__${specificationGroupForm.specificationGroupId}__'"
-                  th:action="@{'/spec/edit/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__/__${specificationGroupForm.accountAndBalanceId}__/__${specificationGroupForm.shopId}__/__${specificationGroupForm.balanceTypeId}__/__${specificationGroupForm.accountAndBalanceForm.accountSourceId}__/__${specificationGroupForm.accountAndBalanceForm.accountDestinationId}__'}"
+            <form th:action="@{'/spec/edit/group/__*{specificationGroupId}__/__*{userId}__/__*{accountAndBalanceId}__/__*{shopId}__/__*{balanceTypeId}__/__*{accountAndBalanceForm.accountSourceId}__/__*{accountAndBalanceForm.accountDestinationId}__'}"
+                  th:id="'specGroup' + '__*{specificationGroupId}__'"
                   th:object="${specificationGroupForm}" method="POST">
-                <input id="accountAndBalanceId" name="accountAndBalanceId"
-                       th:value="${specificationGroupForm.accountAndBalanceId}"
-                       type="hidden">
-                <input id="userId" name="userId"
-                       th:value="${specificationGroupForm.userId}"
-                       type="hidden" readonly>
+                <input id="accountAndBalanceId" name="accountAndBalanceId" th:value="*{accountAndBalanceId}"
+                       type="hidden"/>
+                <input id="userId" name="userId" th:value="*{userId}" type="hidden"/>
                 <span>
-                    <label for="receivingAndPaymentDate"></label>
-                    <input id="receivingAndPaymentDate" name="receivingAndPaymentDate"
-                           th:value="${specificationGroupForm.receivingAndPaymentDate}"
-                           onchange="changedReceivingAndPaymentDate()"
-                           type="date" readonly>
-                    <label for="receivingAndPaymentTime"></label>
-                    <input id="receivingAndPaymentTime" name="receivingAndPaymentTime"
-                           th:value="${specificationGroupForm.receivingAndPaymentTime}"
-                           onchange="changedReceivingAndPaymentTime()"
-                           type="time" readonly>
+                    <label>
+                        <input onchange="changedReceivingAndPaymentDate()"
+                               readonly th:value="*{receivingAndPaymentDate}" type="date">
+                    </label>
+                    <label>
+                        <input onchange="changedReceivingAndPaymentTime()"
+                               readonly th:value="*{receivingAndPaymentTime}" type="time"/>
+                    </label>
                 </span>
                 <span>
-                    <label for="shop"></label>
-                    <input id="shop" name="shop"
-                           th:value="${specificationGroupForm.getShopForm().getShopName()}"
-                           type="text" readonly>
+                    <label>
+                        <input readonly th:value="*{shopForm.shopName}" type="text"/>
+                    </label>
                 </span>
                 <span>
-                    <label for="balanceType"></label>
-                    <input id="balanceType" name="balanceType"
-                           th:value="${specificationGroupForm.getBalanceTypeForm().getBalanceTypeName()}"
-                           type="text" readonly>
+                    <label>
+                        <input readonly
+                               th:value="*{balanceTypeForm.balanceTypeName}" type="text">
+                    </label>
                 </span>
                 <span>
-                    <label for="accountSource"></label>
-                    <input id="accountSource" name="accountSource"
-                           th:value="${specificationGroupForm.getAccountAndBalanceForm().getAccountSourceForm().accountName}"
-                           type="text" readonly>
+                    <label>
+                        <input readonly
+                               th:value="*{accountAndBalanceForm.accountSourceForm.accountName}" type="text">
+                    </label>
                 </span>
                 <span>
-                    <label for="accountDestination"></label>
-                    <input id="accountDestination" name="accountDestination"
-                           th:value="${specificationGroupForm.getAccountAndBalanceForm().getAccountDestinationForm().getAccountName()}"
-                           type="text" readonly>
+                    <label>
+                        <input readonly
+                               th:value="*{accountAndBalanceForm.accountDestinationForm.accountName}" type="text">
+                    </label>
                 </span>
                 <span>
-                    <label for="groupMemo"></label>
-                    <textarea id="groupMemo" name="groupMemo" th:inline="text"
-                              readonly>[[${specificationGroupForm.groupMemo}]]</textarea>
+                    <label>
+                        <input readonly th:value="*{groupMemo}"/>
+                    </label>
                 </span>
                 <span>
                     <input id="delete" name="delete"
@@ -82,25 +76,20 @@
             </form>
             <form th:id="'deleteGroup' + '__${specificationGroupForm.specificationGroupId}__'"
                   th:action="@{'/spec/delete/group/__${specificationGroupForm.specificationGroupId}__/__${specificationGroupForm.userId}__'}"
-                  th:object="${specificationGroupForm}"
-                  method="POST">
-                <input id="specificationGroupId" name="specificationGroupId"
-                       th:value="${specificationGroupForm.specificationGroupId}"
-                       type="hidden">
-                <input id="userId" name="userId"
-                       th:value="${specificationGroupForm.userId}"
-                       type="hidden">
+                  method="POST" th:object="${specificationGroupForm}">
+                <input name="specificationGroupId" th:value="*{specificationGroupId}" type="hidden">
+                <input name="userId" th:value="*{userId}" type="hidden">
             </form>
         </td>
     </tr>
 </table>
 
 <form id="list" th:action="@{'/spec'}"
-      th:object="${specificationGroupForm}" method="GET">
+      method="GET" th:object="${specificationGroupForms}">
 </form>
 <form id="create"
       th:action="@{'/spec/create/group/' + '__${specificationGroupForms[0].userId}__'}"
-      th:object="${specificationGroupForms}" method="GET">
+      method="POST" th:object="${specificationGroupForms}">
 </form>
 
 <div>

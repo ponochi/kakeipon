@@ -21,6 +21,7 @@ import org.panda.systems.kakeipon.domain.service.common.*;
 import org.panda.systems.kakeipon.domain.service.currency.CurrencyListService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationGroupService;
 import org.panda.systems.kakeipon.domain.service.spec.SpecificationService;
+import org.panda.systems.kakeipon.domain.service.spec.SpecificationTransactionalService;
 import org.panda.systems.kakeipon.domain.service.users.UsersDetail;
 import org.panda.systems.kakeipon.domain.service.users.UsersDetailService;
 import org.panda.systems.kakeipon.domain.service.users.UsersExtService;
@@ -32,7 +33,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -45,8 +48,6 @@ public class SpecificationController implements Serializable {
   private SpecificationService specificationService;
   @Autowired
   private UsersDetailService usersDetailService;
-//  @Autowired
-//  private AuthoritiesService authoritiesService;
   @Autowired
   private UsersExtService usersExtService;
   @Autowired
@@ -69,65 +70,8 @@ public class SpecificationController implements Serializable {
   private TaxRateService taxRateService;
   @Autowired
   private UsersDetail usersDetail;
-
-//  public SpecificationController(SpecificationGroupService specificationGroupService, SpecificationService specificationService, UsersDetailService usersDetailsService, AuthoritiesService authoritiesService, UsersExtService userExtService, ShopService shopService, BalanceTypeService balanceTypeService, AccountAndBalanceService accountAndBalanceService, AccountSourceService accountSourceService, AccountDestinationService accountDestinationService, CurrencyListService currencyListService, UnitService unitService, TaxTypeService taxTypeService, TaxRateService taxRateService, UsersDetail usersDetails) {
-//    this.specificationGroupService = specificationGroupService;
-//    this.specificationService = specificationService;
-//    this.usersDetailsService = usersDetailsService;
-//    this.authoritiesService = authoritiesService;
-//    this.userExtService = userExtService;
-//    this.shopService = shopService;
-//    this.balanceTypeService = balanceTypeService;
-//    this.accountAndBalanceService = accountAndBalanceService;
-//    this.accountSourceService = accountSourceService;
-//    this.accountDestinationService = accountDestinationService;
-//    this.currencyListService = currencyListService;
-//    this.unitService = unitService;
-//    this.taxTypeService = taxTypeService;
-//    this.taxRateService = taxRateService;
-//    this.usersDetails = usersDetails;
-//  }
-
-//  public UsersDetail convertUserDetailsToKakeiPonUsersDetails(
-//      UserDetails userDetails) {
-//
-//    // Lambda expression to get RoleName from authority
-//    Function<String, RoleName> getRoleName
-//        = (authority) -> {
-//      for (RoleName allRoles : RoleName.values()) {
-//        if (allRoles.name().equals(authority)) {
-//          return allRoles;
-//        }
-//      }
-//      return RoleName.USER;
-//    };
-//
-//    UsersDetail usersDetails
-//        = new UsersDetail(users);
-//
-//    usersDetails.getUsers().setUsername();
-//    usersDetails.getUsers().setPassword(
-//        userDetails.getPassword());
-//    usersDetails.getUsers().setAuthorities(
-//        new Authorities());
-//
-//    for (var authority : userDetails.getAuthorities()) {
-//      usersDetails.getAuthorities().setAuthority(
-//          getRoleName.apply(authority.getAuthority())
-//      );
-//    }
-//
-//    usersDetails.setAccountNonExpired(
-//        userDetails.isAccountNonExpired());
-//    usersDetails.setAccountNonLocked(
-//        userDetails.isAccountNonLocked());
-//    usersDetails.setCredentialsNonExpired(
-//        userDetails.isCredentialsNonExpired());
-//    usersDetails.setEnabled(
-//        userDetails.isEnabled());
-//
-//    return usersDetails;
-//  }
+  @Autowired
+  private SpecificationTransactionalService specificationTransactionalService;
 
   @GetMapping("/spec")
   String index(
@@ -144,16 +88,13 @@ public class SpecificationController implements Serializable {
       usersExtForm = usersExtForm.setUserExtToForm(usersExt);
       groupForm.setUsersExtForm(usersExtForm);
 
+      AccountAndBalance accountAndBalance
+          = accountAndBalanceService.getById(
+          groupForm.getAccountAndBalanceId());
+
       AccountAndBalanceForm accountAndBalanceForm
-          = new AccountAndBalanceForm(
-          accountAndBalanceService,
-          accountSourceService,
-          accountDestinationService)
-          .setAccountAndBalanceFormAndAccountSourceFormAndAccountDestinationForm(
-              groupForm.getAccountAndBalanceId(),
-              groupForm.getAccountAndBalanceForm().getAccountSourceId(),
-              groupForm.getAccountAndBalanceForm().getAccountDestinationId());
-      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+          = new AccountAndBalanceForm()
+          .setAccountAndBalanceToForm(accountAndBalance);
 
       groupForm.setAccountAndBalanceId(
           accountAndBalanceForm.getAccountAndBalanceId());
@@ -182,9 +123,10 @@ public class SpecificationController implements Serializable {
       accountAndBalanceForm.setAccountDestinationForm(
           accountDestinationForm);
 
-      ShopForm shopForm = new ShopForm(shopService);
-      shopForm.setShopId(groupForm.getShopId());
-      groupForm.setShopForm(shopForm);
+      Shop shop = shopService.findById(
+          groupForm.getShopId());
+      groupForm.setShopId(shop.getShopId());
+      groupForm.setShopToForm(shop);
 
       BalanceType balanceType
           = balanceTypeService.findById(
@@ -198,7 +140,7 @@ public class SpecificationController implements Serializable {
     return "/spec/showList";
   }
 
-  @GetMapping(value = "/spec/create/group/{userId}")
+  @PostMapping(value = "/spec/create/group/{userId}")
   String createSpecificationGroup(
       @PathVariable("userId") Long userId,
       @ModelAttribute SpecificationGroupForm groupForm,
@@ -219,7 +161,6 @@ public class SpecificationController implements Serializable {
         accountSourceService,
         accountDestinationService,
         usersDetailService,
-//        authoritiesService,
         usersExtService,
         shopService,
         balanceTypeService,
@@ -229,31 +170,61 @@ public class SpecificationController implements Serializable {
         taxRateService);
 
     SpecificationGroup group
-        = specificationGroupService
-        .findBySpecificationGroupIdAndUserIdAndDeleted(
-            specificationGroupService.getMaxGroupId(),
-            userId,
-            false);
+        = new SpecificationGroup();
+//    SpecificationGroup group
+//        = specificationGroupService
+//        .findBySpecificationGroupIdAndUserIdAndDeleted(
+//            specificationGroupService.getNextGroupId(),
+//            userId,
+//            false);
 
-    groupForm = groupForm.setSpecificationGroupToForm(group);
-
+//    groupForm = groupForm.setSpecificationGroupToForm(group);
     groupForm.setUserId(userId);
-    groupForm.setId(userDetails.getUsername());
+    groupForm.setUsername(userDetails.getUsername());
+    groupForm.setReceivingAndPaymentDate(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()));
+    groupForm.setReceivingAndPaymentTime(LocalTime.of(LocalTime.now().getHour(), LocalTime.now().getMinute(), 0));
+    groupForm.setAccountAndBalanceId(accountAndBalanceForm.getAccountAndBalanceId());
+//    groupForm.setGroupMemo();
+    groupForm.setDeleted(false);
     groupForm.setUsersToForm(
         usersDetailService,
         users);
 
     Shop shop = shopService.findById(Long.parseLong("1"));
     groupForm.setShopId(shop.getShopId());
-    shopForm = shopForm.setShopToForm(shop);
-    groupForm.setShopForm(shopForm);
+    groupForm.setShopToForm(shop);
 
     BalanceType balanceType
-        = balanceTypeService.findById(
-        balanceTypeForm.getBalanceTypeId());
+        = balanceTypeService.findById(Long.parseLong("1"));
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
 
+    accountSourceForm = new AccountSourceForm(
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            Long.parseLong("1"));
+    accountAndBalanceForm.setAccountSourceId(
+        accountSourceForm.getAccountSourceId());
+    accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
+
+    accountDestinationForm = new AccountDestinationForm(
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            Long.parseLong("1"));
+    accountAndBalanceForm.setAccountDestinationId(
+        accountDestinationForm.getAccountDestinationId());
+    accountAndBalanceForm.setAccountDestinationForm(
+        accountDestinationForm);
+
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.saveAndFlush(
+        accountAndBalanceForm.toEntity());
+
+    accountAndBalanceForm
+        .setAccountAndBalanceToForm(accountAndBalance);
+
+    groupForm.setAccountAndBalanceId(
+        accountAndBalanceForm.getAccountAndBalanceId());
     specificationGroupService
         .saveAndFlushSpecificationGroup(
             groupForm.toEntity());
@@ -270,7 +241,7 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "accountAndBalanceId",
         groupForm.getAccountAndBalanceForm().getAccountAndBalanceId());
-    model.addAttribute("shopForm", shopForm);
+    model.addAttribute("shopForm", groupForm.getShopForm());
     model.addAttribute(
         "accountSourceForm",
         new AccountSourceForm(
@@ -294,8 +265,8 @@ public class SpecificationController implements Serializable {
     return "/spec/createGroup";
   }
 
-  @PostMapping(value = "/spec/edit/group/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
-  String editSpecificationGroup(
+  @GetMapping(value = "/spec/edit/group/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  String cancelCreateSpecificationDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("userId") Long userId,
       @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
@@ -305,7 +276,7 @@ public class SpecificationController implements Serializable {
       @PathVariable("accountDestinationId") Long accountDestinationId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
-      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
+//      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
       @ModelAttribute ShopForm shopForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
@@ -328,10 +299,6 @@ public class SpecificationController implements Serializable {
     groupForm
         = groupForm.setSpecificationGroupToForm(group);
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
-
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
     shopForm = shopForm.setShopToForm(shop);
@@ -342,6 +309,18 @@ public class SpecificationController implements Serializable {
         balanceTypeId);
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
+
+    AccountAndBalance accountAndBalance;
+    if (group.getAccountAndBalanceId() == null) {
+      accountAndBalance
+          = accountAndBalanceService.getById(Long.parseLong("1"));
+    } else {
+      accountAndBalance
+          = accountAndBalanceService.getById(group.getAccountAndBalanceId());
+    }
+    AccountAndBalanceForm accountAndBalanceForm
+        = new AccountAndBalanceForm()
+        .setAccountAndBalanceToForm(accountAndBalance);
 
     groupForm.setAccountAndBalanceId(
         accountAndBalanceForm.getAccountAndBalanceId());
@@ -365,7 +344,7 @@ public class SpecificationController implements Serializable {
         accountDestinationForm);
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -413,6 +392,7 @@ public class SpecificationController implements Serializable {
       }
     }
 
+
     model.addAttribute("specificationGroupForm", groupForm);
     model.addAttribute("specificationForms", detailForms);
     model.addAttribute("currencyListForm", currencyListForm);
@@ -436,6 +416,154 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "totalAmount", Math.round(totalAmount));
 
+    model.addAttribute(
+        "groupMemo", groupForm.getGroupMemo());
+
+    return "/spec/editGroup";
+  }
+
+  @PostMapping(value = "/spec/edit/group/{specificationGroupId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  String editSpecificationGroup(
+      @PathVariable("specificationGroupId") Long specificationGroupId,
+      @PathVariable("userId") Long userId,
+      @PathVariable("accountAndBalanceId") Long accountAndBalanceId,
+      @PathVariable("shopId") Long shopId,
+      @PathVariable("balanceTypeId") Long balanceTypeId,
+      @PathVariable("accountSourceId") Long accountSourceId,
+      @PathVariable("accountDestinationId") Long accountDestinationId,
+      @ModelAttribute SpecificationGroupForm groupForm,
+      @ModelAttribute SpecificationForm detailForm,
+      @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
+      @ModelAttribute ShopForm shopForm,
+      @ModelAttribute BalanceTypeForm balanceTypeForm,
+      @ModelAttribute AccountSourceForm accountSourceForm,
+      @ModelAttribute AccountDestinationForm accountDestinationForm,
+      @ModelAttribute CurrencyListForm currencyListForm,
+      @ModelAttribute UnitForm unitForm,
+      @ModelAttribute TaxTypeForm taxTypeForm,
+      @ModelAttribute TaxRateForm taxRateForm,
+      @AuthenticationPrincipal UserDetails userDetails,
+      Model model) {
+
+    double totalAmount = Double.parseDouble("0.0");
+
+    SpecificationGroup group
+        = specificationGroupService
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
+            specificationGroupId,
+            userId,
+            false);
+    groupForm
+        = groupForm.setSpecificationGroupToForm(group);
+
+    Shop shop = shopService.findById(shopId);
+    groupForm.setShopId(shop.getShopId());
+    shopForm = shopForm.setShopToForm(shop);
+    groupForm.setShopForm(shopForm);
+
+    BalanceType balanceType
+        = balanceTypeService.findById(
+        balanceTypeId);
+    groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
+    groupForm.setBalanceTypeToForm(balanceType);
+
+    groupForm.setAccountAndBalanceId(
+        accountAndBalanceForm.getAccountAndBalanceId());
+    groupForm.setAccountAndBalanceForm(
+        accountAndBalanceForm);
+
+    accountSourceForm = new AccountSourceForm(
+        accountSourceService)
+        .setAccountSourceFormByDB(
+            accountSourceId);
+    accountAndBalanceForm.setAccountSourceId(accountSourceId);
+    accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
+
+    accountDestinationForm = new AccountDestinationForm(
+        accountDestinationService)
+        .setAccountDestinationFormByDB(
+            accountDestinationId);
+    accountAndBalanceForm.setAccountDestinationId(
+        accountDestinationId);
+    accountAndBalanceForm.setAccountDestinationForm(
+        accountDestinationForm);
+
+    List<SpecificationForm> detailForms
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
+        specificationGroupId,
+        userId,
+        false);
+
+    for (var specForm : detailForms) {
+      currencyListForm = new CurrencyListForm(
+          currencyListService,
+          specForm.getCurrencyId());
+      specForm.setCurrencyId(
+          currencyListForm.getCurrencyId());
+      specForm.setCurrencyListForm(currencyListForm);
+
+      unitForm = new UnitForm(
+          unitService)
+          .setUnitFormByDB(
+              specForm.getUnitId());
+      specForm.setUnitId(unitForm.getUnitId());
+      specForm.setUnitForm(unitForm);
+
+      taxTypeForm = new TaxTypeForm(
+          taxTypeService)
+          .setTaxTypeFormByDB(
+              specForm.getTaxTypeId());
+      specForm.setTaxTypeId(taxTypeForm.getTaxTypeId());
+      specForm.setTaxTypeForm(taxTypeForm);
+
+      taxRateForm = new TaxRateForm(
+          taxRateService)
+          .setTaxRateFormByDB(
+              specForm.getTaxRateId());
+      specForm.setTaxRateId(taxRateForm.getTaxRateId());
+      specForm.setTaxRateForm(taxRateForm);
+
+      if (taxTypeForm.getTaxTypeId() == 1) {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity()
+              * (1.0 + ((double) taxRateForm.getTaxRate() / 100)));
+        }
+      } else {
+        if (currencyListForm.getCurrencyId() == 1) {
+          totalAmount += (specForm.getPrice()
+              * specForm.getQuantity());
+        }
+      }
+    }
+
+
+    model.addAttribute("specificationGroupForm", groupForm);
+    model.addAttribute("specificationForms", detailForms);
+    model.addAttribute("currencyListForm", currencyListForm);
+    model.addAttribute("unitForm", unitForm);
+    model.addAttribute("taxTypeForm", taxTypeForm);
+    model.addAttribute("taxRateForm", taxRateForm);
+    model.addAttribute("shopForm", shopForm);
+    model.addAttribute(
+        "accountAndBalanceForm",
+        accountAndBalanceForm);
+    model.addAttribute(
+        "accountSourceForm", accountSourceForm);
+    model.addAttribute(
+        "accountDestinationForm",
+        accountDestinationForm);
+    model.addAttribute("userDetails", userDetails);
+    model.addAttribute(
+        "balanceTypes", balanceTypeService.findAll());
+    model.addAttribute(
+        "selectedBalanceTypeId", groupForm.getBalanceTypeId());
+    model.addAttribute(
+        "totalAmount", Math.round(totalAmount));
+
+    model.addAttribute(
+        "groupMemo", groupForm.getGroupMemo());
+
     return "/spec/editGroup";
   }
 
@@ -455,48 +583,13 @@ public class SpecificationController implements Serializable {
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute CurrencyListForm currencyListForm,
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @RequestParam(name = "groupMemo") String groupMemo,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
-
-    shopForm = new ShopForm(shopService);
-    shopForm.setShopId(shopId);
-    groupForm.setShopId(shopForm.getShopId());
-    groupForm.setShopForm(shopForm);
-
-    BalanceType balanceType
-        = balanceTypeService.findById(
-        balanceTypeId);
-    groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
-    groupForm.setBalanceTypeToForm(balanceType);
-
-    accountSourceForm = new AccountSourceForm(
-        accountSourceService)
-        .setAccountSourceFormByDB(
-            accountSourceId);
-    accountAndBalanceForm.setAccountSourceId(accountSourceId);
-    accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
-
-    accountDestinationForm = new AccountDestinationForm(
-        accountDestinationService)
-        .setAccountDestinationFormByDB(
-            accountDestinationId);
-    accountAndBalanceForm.setAccountDestinationId(
-        accountDestinationId);
-    accountAndBalanceForm.setAccountDestinationForm(
-        accountDestinationForm);
-
-    groupForm.setAccountAndBalanceId(
-        accountAndBalanceForm.getAccountAndBalanceId());
-    groupForm.setAccountAndBalanceForm(
-        accountAndBalanceForm);
-
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
 
     detailForm
         = new SpecificationForm(
@@ -505,7 +598,7 @@ public class SpecificationController implements Serializable {
     detailForm.setDeleted(false);
 
     List<SpecificationForm> specificationForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -568,6 +661,12 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "accountDestinationForm",
         accountDestinationForm);
+    model.addAttribute(
+        "accountDestinationForm",
+        accountDestinationForm);
+    model.addAttribute(
+        "groupMemo",
+        groupMemo);
 
     return "/spec/createDetail";
   }
@@ -593,6 +692,7 @@ public class SpecificationController implements Serializable {
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @ModelAttribute String groupMemo,
       @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
@@ -606,7 +706,7 @@ public class SpecificationController implements Serializable {
             accountDestinationId);
 
     Specification specification
-        = specificationService.findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
+        = specificationService.findBySpecificationGroupIdAndSpecificationIdAndUsernameAndDeleted(
         specificationGroupId,
         specificationId,
         userDetails.getUsername(),
@@ -614,10 +714,6 @@ public class SpecificationController implements Serializable {
 
     detailForm = detailForm.setSpecificationToForm(
         specification);
-
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
 
     shopForm = new ShopForm(shopService);
     shopForm.setShopId(shopId);
@@ -647,19 +743,21 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "taxRates", taxRateService.findAll());
     model.addAttribute("userDetails", userDetails);
+    model.addAttribute("groupMemo", groupMemo);
 
     return "/spec/editDetail";
   }
 
-  @PostMapping(value = "/spec/save/group")
+  @PostMapping(value = "/spec/save/group/{userId}")
   String saveGroup(
+      @PathVariable("userId") Long userId,
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute Specification specification,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute ShopForm shopForm,
       @ModelAttribute BalanceTypeForm balanceTypeForm,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
     double totalAmount = Double.parseDouble("0.0");
@@ -667,30 +765,41 @@ public class SpecificationController implements Serializable {
     Long balanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
 
-    SpecificationGroup group
-        = specificationGroupService.findBySpecificationGroupIdAndUserIdAndDeleted(
-        specificationGroupService.getMaxGroupId(),
-        null,
-        false);
-    groupForm = groupForm.setSpecificationGroupToForm(group);
+    if (groupForm.getSpecificationGroupId() == null) {
+      SpecificationGroup group
+          = new SpecificationGroup();
 
-    groupForm.setGroupMemo(groupMemo);
+      AccountSourceForm accountSourceForm
+          = new AccountSourceForm(
+          accountSourceService)
+          .setAccountSourceFormByDB(
+              Long.parseLong("1"));
+      accountAndBalanceForm.setAccountSourceId(
+          accountSourceForm.getAccountSourceId());
+      accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
-    groupForm.setAccountAndBalanceId(
-        accountAndBalanceForm.getAccountAndBalanceId());
-    groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+      AccountDestinationForm accountDestinationForm
+          = new AccountDestinationForm(
+          accountDestinationService)
+          .setAccountDestinationFormByDB(
+              Long.parseLong("1"));
+      accountAndBalanceForm.setAccountDestinationId(
+          accountDestinationForm.getAccountDestinationId());
+      accountAndBalanceForm.setAccountDestinationForm(
+          accountDestinationForm);
 
-    accountAndBalanceForm.setAccountSourceId(
-        groupForm.getAccountAndBalanceForm().getAccountSourceId());
-    accountAndBalanceForm.setAccountDestinationId(
-        groupForm.getAccountAndBalanceForm().getAccountDestinationId());
+      group.setAccountAndBalanceId(
+          accountAndBalanceForm.getAccountAndBalanceId());
 
-    accountAndBalanceService.saveAndFlush(
-        accountAndBalanceForm.toEntity());
+      group.setUserId(userId);
+      group.setDeleted(false);
+      groupForm = groupForm.setSpecificationGroupToForm(group);
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
+      groupForm.setAccountAndBalanceForm(accountAndBalanceForm);
+
+      accountAndBalanceService.saveAndFlush(
+          accountAndBalanceForm.toEntity());
+    }
 
     Shop shop = shopService.findById(shopForm.getShopId());
     groupForm.setShopId(shop.getShopId());
@@ -704,10 +813,11 @@ public class SpecificationController implements Serializable {
     groupForm.setBalanceTypeToForm(balanceType);
 
     SpecificationGroup specGroup = groupForm.toEntity();
-    specificationGroupService.updateSpecificationGroup(specGroup);
+    specificationGroupService
+        .saveAndFlushSpecificationGroup(specGroup);
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         groupForm.getSpecificationGroupId(),
         null,
         false);
@@ -808,10 +918,6 @@ public class SpecificationController implements Serializable {
     accountAndBalanceService.saveAndFlush(
         accountAndBalanceForm.toEntity());
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
-
     Shop shop = shopService.findById(shopForm.getShopId());
     groupForm.setShopId(shop.getShopId());
     shopForm = shopForm.setShopToForm(shop);
@@ -824,7 +930,8 @@ public class SpecificationController implements Serializable {
     groupForm.setBalanceTypeToForm(balanceType);
 
     SpecificationGroup specGroup = groupForm.toEntity();
-    specificationGroupService.updateSpecificationGroup(specGroup);
+    specificationGroupService
+        .saveAndFlushSpecificationGroup(specGroup);
 
     balanceType
         = balanceTypeService.findById(
@@ -833,7 +940,7 @@ public class SpecificationController implements Serializable {
     groupForm.setBalanceTypeToForm(balanceType);
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         groupForm.getSpecificationGroupId(),
         userId,
         false);
@@ -931,29 +1038,23 @@ public class SpecificationController implements Serializable {
       @ModelAttribute BalanceTypeForm balanceTypeForm,
       @ModelAttribute AccountSourceForm accountSourceForm,
       @ModelAttribute AccountDestinationForm accountDestinationForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute CurrencyListForm currencyListForm,
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
     double totalAmount = Double.parseDouble("0.0");
 
-    Long previousBalanceTypeId = groupForm.getBalanceTypeId();
     String groupMemo = groupForm.getGroupMemo();
 
     detailForm.setSpecificationGroupId(
         specificationGroupId);
 
-    groupForm.setAccountAndBalanceId(
-        accountAndBalanceForm.getAccountAndBalanceId());
-    groupForm.setAccountAndBalanceForm(
-        accountAndBalanceForm);
-
-    Shop shop = shopService.findById(shopForm.getShopId());
-    groupForm.setShopId(shop.getShopId());
+    Shop shop = shopService.findById(shopId);
     shopForm = shopForm.setShopToForm(shop);
+    groupForm.setShopId(shop.getShopId());
     groupForm.setShopForm(shopForm);
 
     BalanceType balanceType
@@ -962,13 +1063,27 @@ public class SpecificationController implements Serializable {
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
 
-    accountSourceForm = new AccountSourceForm(
+    AccountAndBalance accountAndBalance
+        = accountAndBalanceService.getById(accountAndBalanceId);
+    groupForm.setAccountAndBalanceId(
+        accountAndBalance.getAccountAndBalanceId());
+    groupForm.setAccountAndBalanceForm(
+        new AccountAndBalanceForm()
+            .setAccountAndBalanceToForm(
+                accountAndBalance));
+
+    groupForm.getAccountAndBalanceForm()
+        .setAccountSourceId(accountSourceId);
+    accountSourceForm
+        = new AccountSourceForm(
         accountSourceService)
         .setAccountSourceFormByDB(
             accountSourceId);
     accountAndBalanceForm.setAccountSourceId(accountSourceId);
     accountAndBalanceForm.setAccountSourceForm(accountSourceForm);
 
+    groupForm.getAccountAndBalanceForm()
+        .setAccountDestinationId(accountDestinationId);
     accountDestinationForm
         = new AccountDestinationForm(
         accountDestinationService)
@@ -1009,11 +1124,12 @@ public class SpecificationController implements Serializable {
       detailForm.setUpdateDate(LocalDateTime.now());
     }
 
+    detailForm.setDeleted(false);
     specificationService.saveAndFlushSpecification(
         detailForm.toEntity());
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -1061,22 +1177,13 @@ public class SpecificationController implements Serializable {
       }
     }
 
-    SpecificationGroup group
-        = specificationGroupService
-        .findBySpecificationGroupIdAndUserIdAndDeleted(
-            specificationGroupId,
-            userId,
-            false);
-
-    groupForm = groupForm.setSpecificationGroupToForm(group);
-
     balanceType
         = balanceTypeService.findById(
-        previousBalanceTypeId);
+        balanceTypeId);
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
 
-    groupForm.setGroupMemo(group.getGroupMemo());
+    groupForm.setGroupMemo(groupMemo);
 
     model.addAttribute(
         "specificationGroupForm", groupForm);
@@ -1106,7 +1213,7 @@ public class SpecificationController implements Serializable {
     return "/spec/editGroup";
   }
 
-  @PostMapping(value = "/spec/save/edit/detail/{specificationGroupId}/{specificationId}/{id}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
+  @PostMapping(value = "/spec/save/edit/detail/{specificationGroupId}/{specificationId}/{userId}/{accountAndBalanceId}/{shopId}/{balanceTypeId}/{accountSourceId}/{accountDestinationId}")
   String saveEditDetail(
       @PathVariable("specificationGroupId") Long specificationGroupId,
       @PathVariable("specificationId") Long specificationId,
@@ -1119,16 +1226,15 @@ public class SpecificationController implements Serializable {
       @ModelAttribute SpecificationGroupForm groupForm,
       @ModelAttribute SpecificationForm detailForm,
       @ModelAttribute AccountAndBalanceForm accountAndBalanceForm,
-      @AuthenticationPrincipal UserDetails userDetails,
       @ModelAttribute CurrencyListForm currencyListForm,
       @ModelAttribute UnitForm unitForm,
       @ModelAttribute TaxTypeForm taxTypeForm,
       @ModelAttribute TaxRateForm taxRateForm,
+      @ModelAttribute String groupMemo,
+      @AuthenticationPrincipal UserDetails userDetails,
       Model model) {
 
     double totalAmount = Double.parseDouble("0.0");
-
-    Long previousBalanceTypeId = groupForm.getBalanceTypeId();
 
     groupForm.setAccountAndBalanceId(
         accountAndBalanceForm.getAccountAndBalanceId());
@@ -1201,7 +1307,7 @@ public class SpecificationController implements Serializable {
     specificationService.saveAndFlushSpecification(detailForm.toEntity());
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -1251,9 +1357,11 @@ public class SpecificationController implements Serializable {
 
     balanceType
         = balanceTypeService.findById(
-        previousBalanceTypeId);
+        balanceTypeId);
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
+
+    groupForm.setGroupMemo(groupMemo);
 
     model.addAttribute(
         "specificationGroupForm", groupForm);
@@ -1332,9 +1440,9 @@ public class SpecificationController implements Serializable {
     model.addAttribute(
         "balanceTypeForm", groupForm.getBalanceTypeForm());
     model.addAttribute(
-        "accountSource", accountSource);
+        "accountSourceId", accountSourceId);
     model.addAttribute(
-        "accountDestination", accountDestination);
+        "accountDestinationId", accountDestinationId);
     model.addAttribute(
         "userDetails", userDetails);
 
@@ -1494,10 +1602,6 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
-
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
     ShopForm shopForm = new ShopForm(shopService);
@@ -1540,7 +1644,7 @@ public class SpecificationController implements Serializable {
     groupForm.setGroupMemo(groupMemo);
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -1651,10 +1755,6 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
-
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
     ShopForm shopForm = new ShopForm(shopService);
@@ -1697,7 +1797,7 @@ public class SpecificationController implements Serializable {
     groupForm.setGroupMemo(groupMemo);
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -1808,10 +1908,6 @@ public class SpecificationController implements Serializable {
             false);
     String groupMemo = group.getGroupMemo();
 
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
-
     Shop shop = shopService.findById(shopId);
     groupForm.setShopId(shop.getShopId());
     ShopForm shopForm = new ShopForm(shopService);
@@ -1860,7 +1956,7 @@ public class SpecificationController implements Serializable {
     groupForm.setGroupMemo(groupMemo);
 
     List<SpecificationForm> specificationForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -1953,37 +2049,20 @@ public class SpecificationController implements Serializable {
         specificationGroupId,
         userId,
         false);
-    for (var spec : specifications) {
-      spec.setDeleted(true);
-    }
-    specificationService.saveAllSpecifications(specifications);
 
-    SpecificationGroupForm specificationGroupForm
-        = new SpecificationGroupForm(
-        specificationGroupService,
-        specificationService,
-        accountAndBalanceService,
-        accountSourceService,
-        accountDestinationService,
-        usersDetailService,
-//        authoritiesService,
-        usersExtService,
-        shopService,
-        balanceTypeService,
-        currencyListService,
-        unitService,
-        taxTypeService,
-        taxRateService)
-        .setSpecificationGroupFormByDB(
-            specificationGroupId,
-            userId,
-            false);
+    specificationService.saveAllSpecificationsDelete(
+        specifications);
 
-    specificationGroupForm.setDeleted(true);
+    SpecificationGroup specificationGroup
+        = specificationGroupService
+        .findBySpecificationGroupIdAndUserIdAndDeleted(
+            specificationGroupId, userId, false);
+
+    specificationGroup.setDeleted(true);
 
     specificationGroupService
         .saveAndFlushSpecificationGroup(
-            specificationGroupForm.toEntity());
+            specificationGroup);
 
     return "redirect:/spec";
   }
@@ -2011,21 +2090,12 @@ public class SpecificationController implements Serializable {
 
     double totalAmount = Double.parseDouble("0.0");
 
-    Long previousBalanceTypeId = groupForm.getBalanceTypeId();
-
     SpecificationGroup specificationGroup
         = specificationGroupService
         .findBySpecificationGroupIdAndUserIdAndDeleted(
             specificationGroupId,
             userId,
             false);
-
-//    Authorities authorities
-//        = authoritiesService.findByUsername(
-//        userDetails.getUsername());
-//    groupForm.setUsersDetail(
-//        convertUserDetailsToKakeiPonUsersDetails(
-//            userDetails));
 
     usersExtForm = usersExtService.findByUserIdToForm(userId);
     groupForm.setUsersExtForm(usersExtForm);
@@ -2079,18 +2149,17 @@ public class SpecificationController implements Serializable {
 
     Specification specification
         = specificationService
-        .findBySpecificationGroupIdAndSpecificationIdAndIdAndDeleted(
+        .findBySpecificationGroupIdAndSpecificationIdAndUsernameAndDeleted(
             specificationGroupId,
             specificationId,
             userDetails.getUsername(),
             false);
     detailForm = detailForm.setSpecificationToForm(
         specification);
-    detailForm.setDeleted(true);
-    specificationService.saveAndFlushSpecification(detailForm.toEntity());
+    specificationService.saveAndFlushSpecificationDelete(detailForm.toEntity());
 
     List<SpecificationForm> detailForms
-        = specificationService.findBySpecificationGroupIdToForm(
+        = specificationService.findBySpecificationGroupIdOrderBySpecificationIdDescToForm(
         specificationGroupId,
         userId,
         false);
@@ -2139,7 +2208,7 @@ public class SpecificationController implements Serializable {
 
     balanceType
         = balanceTypeService.findById(
-        previousBalanceTypeId);
+        balanceTypeId);
     groupForm.setBalanceTypeId(balanceType.getBalanceTypeId());
     groupForm.setBalanceTypeToForm(balanceType);
 
@@ -2165,4 +2234,13 @@ public class SpecificationController implements Serializable {
 
     return "/spec/editGroup";
   }
+
+//  @RequestMapping(method = RequestMethod.POST, params = "cancel")
+//  String cancel(
+//      @RequestParam("specificationGroupId") Long specificationGroupId,
+//      @AuthenticationPrincipal UserDetails userDetails,
+//      Model model) {
+//
+//    return "redirect:/spec/";
+//  }
 }

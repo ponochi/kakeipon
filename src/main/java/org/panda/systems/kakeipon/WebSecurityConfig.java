@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -27,7 +27,7 @@ public class WebSecurityConfig {
   @Autowired
   private DataSource dataSource;
   @Autowired
-  private UsersDetailService usersDetailService;
+  private UsersDetailService usersDetailsService;
 
   @Bean
   PasswordEncoder passwordEncoder() {
@@ -36,7 +36,7 @@ public class WebSecurityConfig {
   }
 
 //  private UserDetails makeUser(String username, String password, String role) {
-//    return Users
+//    return User
 //        .withUsername(username)
 //        .password(new BCryptPasswordEncoder().encode(password))
 //        .roles(role)
@@ -56,8 +56,8 @@ public class WebSecurityConfig {
         ).formLogin(login -> login
             .loginPage("/login")
             .loginProcessingUrl("/sign_in")
-//            .usernameParameter("username")
-//            .passwordParameter("password")
+            .usernameParameter("username")
+            .passwordParameter("password")
             .defaultSuccessUrl("/top", true)
             .failureUrl("/login?error=true")
         );

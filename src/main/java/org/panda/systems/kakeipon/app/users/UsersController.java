@@ -24,8 +24,6 @@ public class UsersController {
   private UsersDetailService usersDetailService;
   @Autowired
   private UsersExtService usersExtService;
-//  @Autowired
-//  private AuthoritiesService authoritiesService;
   @Autowired
   private PasswordEncoder passwordEncoder;
 
@@ -173,13 +171,9 @@ public class UsersController {
     }
 
     Users users = new Users();
-//    UsersDetail usersDetail = new UsersDetail(users);
     setUsers(usersForm, users);
-//    usersDetail.getUsers().setUsername(usersDetail.getUsers().getUsername());
-    System.out.println("0000 >>>> users = " + users);
     Users resultUsers
         = usersDetailService.saveAndFlush(users);
-    System.out.println("0000 >>>> resultUsers = " + resultUsers);
 
     UsersExt usersExt = new UsersExt();
     setUsersExt(usersExtForm, usersExt);

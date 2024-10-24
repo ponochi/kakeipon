@@ -1,6 +1,5 @@
 package org.panda.systems.kakeipon.domain.service.common;
 
-import org.hibernate.validator.internal.IgnoreForbiddenApisErrors;
 import org.panda.systems.kakeipon.domain.model.common.BalanceType;
 import org.panda.systems.kakeipon.domain.repository.common.BalanceTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +16,6 @@ public class BalanceTypeService implements Serializable {
 
   @Autowired
   private BalanceTypeRepository balanceTypeRepository;
-
-  public BalanceTypeService() {
-    super();
-  }
 
   public List<BalanceType> findAll() {
     return balanceTypeRepository.findAll();
